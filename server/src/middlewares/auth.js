@@ -5,8 +5,10 @@ import asyncHandler from '../utils/asyncHandler.js'
 
 const verifyJWT = asyncHandler(async(req , res, next) => {
 
+ const token =
+  req.cookies?.accessToken ||
+  req.headers.authorization?.replace("Bearer ", "");
 
-    const token = req.headers.authorization?.replace("Bearer ", "");
 
     if(!token){
          throw new ApiError(401, "Unauthorized request");
@@ -19,7 +21,8 @@ const verifyJWT = asyncHandler(async(req , res, next) => {
     throw new ApiError(401, "Invalid or expired token");
   }
 
-   const user = await User.findById(decoded.userId);
+   const user = await User.findById(decoded.userId).select("-password -refreshToken");
+
 
   if (!user) {
     throw new ApiError(401, "User not found");

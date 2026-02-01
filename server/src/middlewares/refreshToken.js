@@ -45,13 +45,26 @@ const generateToken = asyncHandler(async(req , res) => {
 
     const options = {
         httpOnly : true,
-        secure : true,
-        sameSite: "strict",
+        secure : false,          // localhost ke liye false
+        sameSite: "lax",
     };
 
 
-    // 5️⃣ Set new refresh token
-  res.cookie("refreshToken", newRefreshToken, options);
+ res.cookie("accessToken", accessToken, {
+  httpOnly: true,
+  secure: false, // localhost
+  sameSite: "lax",
+  maxAge: 15 * 60 * 1000, // 15 min
+});
+
+res.cookie("refreshToken", newRefreshToken, {
+  httpOnly: true,
+  secure: false,
+  sameSite: "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
+
 
   // 6️⃣ Send access token in response
   return res.status(200).json(
@@ -62,7 +75,7 @@ const generateToken = asyncHandler(async(req , res) => {
     )
   );
 
- 
+
  
 
     //return res.status(200)

@@ -44,8 +44,18 @@ user.refreshToken = refreshToken;
   httpOnly: true,
   secure: false,          // localhost ke liye false
   sameSite: "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+  maxAge: 15 * 60 * 1000, // 15min
 });
+
+ res.cookie("accessToken", accessToken, {
+  httpOnly: true,
+  secure: false, // localhost
+  sameSite: "lax",
+  maxAge: 15 * 60 * 1000, // 15 min
+});
+
+
+ 
 
 return res.status(201).json(
   new ApiResponse(
@@ -128,8 +138,16 @@ const loginUser = asyncHandler(async(req , res) => {
   httpOnly: true,
   secure: false,          // ❗ localhost
   sameSite: "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+  maxAge: 15 * 60 * 1000, // 15min
 });
+
+res.cookie("accessToken", accessToken, {
+  httpOnly: true,
+  secure: false, // localhost
+  sameSite: "lax",
+  maxAge: 15 * 60 * 1000, // 15 min
+});
+
 
 return res.status(200).json(
   new ApiResponse(
@@ -163,11 +181,19 @@ await User.findByIdAndUpdate(
     { new: true }
   );
 
-  res.clearCookie("refreshToken", {
+  res.clearCookie("accessToken", {
   httpOnly: true,
   secure: false,
   sameSite: "lax",
 });
+
+ res.clearCookie("refreshToken", {
+  httpOnly: true,
+  secure: false,
+  sameSite: "lax",
+});
+
+
 
 return res.status(200).json(
   new ApiResponse(200, {}, "Logout successful")
@@ -191,7 +217,7 @@ return res.status(200).json(
   }
 
   return res.status(200).json(
-    new ApiResponse(200, user, "User fetched successfully")
+    new ApiResponse(200, { user }, "User fetched successfully")
   );
 });
 

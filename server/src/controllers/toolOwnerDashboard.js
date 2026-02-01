@@ -96,8 +96,8 @@ export const createTool = async (req, res) => {
 
   res.status(500).json({
     success: false,
-    message: error.message,
-    stack: error.stack, // sirf dev ke liye
+    message: "Tool creation failed. Please try again.",
+   
     });
   }
 };

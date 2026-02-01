@@ -63,15 +63,22 @@ api.interceptors.response.use(
           { withCredentials: true }
         );
 
-        const newAccessToken = res.data.data.accessToken;
+        const newAccessToken = res.data?.data?.accessToken;
+
+         if (!newAccessToken) {
+          throw new Error("No access token received");
+        }
 
         setAccessToken(newAccessToken);
-        api.defaults.headers.Authorization =
+
+
+        api.defaults.headers.common.Authorization =
           "Bearer " + newAccessToken;
 
         processQueue(null, newAccessToken);
 
          return api(originalRequest);
+
       } catch (err) {
         processQueue(err, null);
         clearAccessToken();

@@ -61,6 +61,21 @@ function AiArt() {
         <p>{tool.description}</p>
       </section>
 
+       {/* ✅ VISIT TOOL BUTTON (P0-3) */}
+      {tool.url && (
+        <section className="aiart-section visit-tool-section">
+          <a
+            href={tool.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="visit-tool-btn"
+          >
+            Visit {tool.name} →
+          </a>
+        </section>
+      )}
+
+
       {/* USE CASES */}
       {tool.useCases?.length > 0 && (
         <section className="aiart-section">

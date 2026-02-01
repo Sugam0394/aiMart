@@ -1,0 +1,57 @@
+ /* ----------------------
+   AUTH NAVBAR
+------------------------ */
+.auth-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #4F46E5; /* AI-Mart Indigo */
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Logo */
+.auth-navbar .logo h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Navigation Links */
+.auth-navbar .nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-navbar .nav-links li a {
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.auth-navbar .nav-links li a:hover {
+  color: #C7D2FE; /* Lighter Indigo on hover */
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .auth-navbar .nav-links {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+

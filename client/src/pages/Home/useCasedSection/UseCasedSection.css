@@ -1,0 +1,61 @@
+ /* =========================
+   Use Case Section
+   ========================= */
+.usecase-section {
+  background: #f3f4f6;
+  padding: 2.5rem 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+}
+
+.usecase-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4f46e5;
+  margin-bottom: 0.5rem;
+}
+
+.usecase-section p {
+  font-size: 0.95rem;
+  color: #374151; /* ✅ better contrast */
+  margin-bottom: 1.5rem;
+}
+
+/* =========================
+   Tool Grid
+   ========================= */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); /* ✅ rem units */
+  gap: 1.5rem;
+}
+
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width: 1024px) {
+  .tool-grid {
+    grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .usecase-section {
+    padding: 1.8rem 1rem;
+  }
+
+  .usecase-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .usecase-section p {
+    font-size: 0.85rem;
+  }
+
+  .tool-grid {
+    grid-template-columns: repeat(auto-fill, minmax(8.75rem, 1fr));
+    gap: 1rem;
+  }
+}
+
+

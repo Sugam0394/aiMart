@@ -1,0 +1,31 @@
+/* ----------------------
+   LOGOUT BUTTON
+------------------------ */
+.logout-button {
+  padding: 0.5rem 1.2rem;
+  background-color: #EF4444; /* Red for logout action */
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.logout-button:hover {
+  background-color: #DC2626; /* Darker red on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.logout-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4); /* subtle focus ring */
+}

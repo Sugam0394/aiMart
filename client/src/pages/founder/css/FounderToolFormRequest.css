@@ -1,0 +1,69 @@
+/* Pending tools card */
+.request-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #f59e0b; /* amber for pending */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Text */
+.request-card p {
+  font-size: 13px;
+  color: #334155;
+  margin: 0;
+}
+
+.request-card strong {
+  color: #0f172a;
+}
+
+/* Website link */
+.request-card a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.request-card a:hover {
+  text-decoration: underline;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.action-buttons button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+/* Approve */
+.action-buttons button:first-child {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Reject */
+.action-buttons button:last-child {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Hover UX */
+.action-buttons button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}

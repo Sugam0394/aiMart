@@ -1,0 +1,125 @@
+ /* SearchSection.css */
+
+/* ----------------------
+   SECTION WRAPPER
+------------------------ */
+.search-section-wrapper {
+  margin: 2rem 0;
+}
+
+.search-section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ----------------------
+   SEARCH CONTROLS
+------------------------ */
+.search-controls input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #D1D5DB; /* gray border */
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-controls input:focus {
+  border-color: #4F46E5; /* primary Indigo focus */
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* ----------------------
+   SEARCH SUGGESTIONS
+------------------------ */
+.search-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.search-suggestions span {
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background-color: #E0E7FF; /* soft Indigo */
+  color: #4F46E5;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.search-suggestions span:hover,
+.search-suggestions .active-suggestion {
+  background-color: #4F46E5; /* Primary Indigo */
+  color: white;
+  transform: scale(1.05);
+}
+
+/* ----------------------
+   TOOL CARDS GRID
+------------------------ */
+.tool-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* ----------------------
+   EMPTY / LOADING / ERROR STATES
+------------------------ */
+.empty-state,
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  background-color: #F9FAFB; /* light bg for status */
+  border-radius: 12px;
+}
+
+.empty-image {
+  width: 120px;
+  height: auto;
+}
+
+.empty-text {
+  font-size: 1rem;
+  color: #6B7280; /* gray text */
+}
+
+.empty-reset-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4F46E5;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.empty-reset-btn:hover {
+  background-color: #3730A3; /* darker Indigo */
+  transform: scale(1.05);
+}
+
+
+
+
+
+
+ 
+
+
+
+ 
+

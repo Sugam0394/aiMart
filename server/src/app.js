@@ -1,0 +1,79 @@
+import express from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
+
+
+const app = express();
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true,
+  })
+);
+
+
+
+app.use(express.json({limit: "20kb"}))
+app.use(express.urlencoded({extended: true, limit: "20kb"}))
+app.use(express.static("public"))
+app.use(cookieParser())
+
+// Auth Router
+
+import AuthRouter from './routes/authRoutes.js';
+
+app.use("/api" , AuthRouter)
+
+
+// userRouter
+
+import userRouter from './routes/userRoute.js';
+
+app.use("/api", userRouter)
+
+
+// adminRouter
+
+import adminRouter from './routes/adminRoutes.js';
+
+app.use("/api" , adminRouter)
+
+
+import toolOwnerRouter from "./routes/founderRoutes.js";
+
+app.use("/api" , toolOwnerRouter )
+
+import handleLogicRouter from './routes/toolRoutes.js';
+
+app.use('/api', handleLogicRouter)
+
+
+
+import OwnerRouter from '././routes/toolOwnerDashboardRoutes.js'
+
+app.use('/api' , OwnerRouter )
+
+
+import PublicRouter from './routes/publicRoutes.js';
+
+app.use('/api' , PublicRouter)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export default app

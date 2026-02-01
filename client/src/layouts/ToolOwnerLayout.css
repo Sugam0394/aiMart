@@ -1,0 +1,86 @@
+ /* ----------------------
+   TOOLOWNER LAYOUT
+------------------------ */
+.toolowner-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #F3F4F6; /* Neutral background like AI-Mart */
+  font-family: 'Inter', sans-serif;
+}
+
+/* ----------------------
+   TOP NAVBAR
+------------------------ */
+.top-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #4F46E5; /* Primary Indigo */
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-navbar h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.top-navbar .nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.top-navbar .nav-links a {
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.top-navbar .nav-links a:hover,
+.top-navbar .nav-links a.active {
+  color: #C7D2FE; /* Light Indigo on hover/active */
+  transform: translateY(-2px);
+}
+
+.top-navbar .nav-right {
+  font-weight: 600;
+}
+
+/* ----------------------
+   PAGE CONTENT
+------------------------ */
+.toolowner-layout > .content {
+  flex: 1;
+  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ----------------------
+   RESPONSIVE
+------------------------ */
+@media (max-width: 768px) {
+  .top-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .top-navbar .nav-links {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+
+
+
+ 
+

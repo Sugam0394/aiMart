@@ -1,0 +1,90 @@
+ .approved-dashboard {
+  padding: 24px;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Loader & Empty */
+.loader,
+.empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Grid */
+.approved-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Card */
+.approved-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.approved-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.tool-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Badge */
+.status-badge.approved {
+  background: #e7f8ee;
+  color: #1b8f4b;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Body */
+.card-body p {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.card-body span {
+  color: #777;
+  font-size: 0.72rem;
+}
+
+.card-body strong {
+  font-weight: 500;
+  color: #222;
+}
+
+/* Footer */
+.card-footer {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  font-size: 0.75rem;
+  color: #888;
+  text-align: right;
+}
+

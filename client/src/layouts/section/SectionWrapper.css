@@ -1,0 +1,40 @@
+ /* ======================
+   SECTION WRAPPER (ONLY HERE)
+====================== */
+
+.section-wrapper {
+  width: 100%;
+  margin-bottom: 4rem;
+}
+
+.section-default {
+  background: #FFFFFF;
+  padding: 3rem 0;        /* 🔥 full-width section */
+}
+
+.section-soft {
+  background: #EEF2FF;
+  padding: 3rem 0;
+}
+
+/* INNER CONTENT CONTROL */
+.section-container {
+  max-width: 1400px;      /* 🔥 DESKTOP WIDTH */
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* TITLES */
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #4F46E5;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: #6B7280;
+}

@@ -1,0 +1,106 @@
+ /* Home.css */
+
+/* ----------------------
+   BASE / HOME LAYOUT
+------------------------ */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem; /* space between sections */
+  padding: 2rem 2rem; /* thoda kam padding for full-width feel */
+  background-color: #F3F4F6; /* Neutral BG */
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+ 
+
+ 
+
+ 
+ 
+
+/* ----------------------
+   TOOL GRID / CARDS
+------------------------ */
+.tool-grid,
+.tool-cards-grid,
+.tools-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Individual tool cards */
+.tool-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.tool-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.3rem;
+}
+
+.tool-card p {
+  font-size: 0.9rem;
+  color: #6B7280;
+}
+
+/* ----------------------
+   RESPONSIVE
+------------------------ */
+@media (max-width: 1024px) {
+  .home-page {
+    padding: 2rem 1.5rem;
+  }
+
+  .section-wrapper {
+    padding: 1.5rem 2rem;
+  }
+
+  .tool-card h3 {
+    font-size: 1rem;
+  }
+
+  .tool-card p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-page {
+    padding: 1rem 1rem;
+    gap: 2.5rem;
+  }
+
+  .section-wrapper {
+    padding: 1rem 1rem;
+    gap: 1rem;
+  }
+
+  .tool-card {
+    padding: 0.8rem;
+  }
+}
+
+.home-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+ 
+

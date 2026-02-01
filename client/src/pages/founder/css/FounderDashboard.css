@@ -1,0 +1,39 @@
+ /* Wrapper layout */
+.founder-dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #f1f5f9; /* soft light background for dashboard */
+}
+
+/* Main content */
+.dashboard-content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Each view section */
+.view-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Page title inside each component (optional override) */
+.view-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1e293b;
+}
+
+/* Grid style inside each view if needed */
+.view-section .requests-grid,
+.view-section .approved-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+

@@ -1,0 +1,113 @@
+ /* ================================
+   TOOL CARD WRAPPER
+================================ */
+.tool-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.12);
+}
+
+/* ================================
+   IMAGE
+================================ */
+.tool-card-image {
+  width: 100%;
+  height: 140px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f8fafc;
+}
+
+.tool-card-image img {
+  max-width: 150px;
+  max-height: 130px;
+  object-fit: contain;
+   transition: transform 0.25s ease;
+   border-radius: 10px;
+}
+
+.tool-card:hover .tool-card-image img {
+  transform: scale(1.05);
+}
+
+/* ================================
+   FOOTER
+================================ */
+.tool-card-footer {
+  padding: 12px 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+/* ================================
+   TOOL NAME
+================================ */
+.tool-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ================================
+   VIEW LINK
+================================ */
+.tool-view {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2563eb;
+
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+}
+
+.tool-card:hover .tool-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .tool-card-image {
+    height: 140px;
+  }
+
+  .tool-name {
+    font-size: 14px;
+  }
+}
+
+
+ 
+
+
+
+
+

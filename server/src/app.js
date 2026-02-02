@@ -60,6 +60,11 @@ import PublicRouter from './routes/publicRoutes.js';
 app.use('/api' , PublicRouter)
 
 
+import ExploreRouter from '../src/explore/routes/explore.routes.js';
+
+app.use('/api', ExploreRouter);
+
+
 
 
 

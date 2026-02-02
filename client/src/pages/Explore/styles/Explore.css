@@ -1,0 +1,28 @@
+.explore-intents {
+  padding: 24px;
+}
+
+.explore-intents h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.intent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.intent-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f7f7f7;
+  cursor: pointer;
+  font-weight: 500;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.intent-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}

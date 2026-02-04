@@ -1,0 +1,71 @@
+ /* ===============================
+   ToolStep – Section Style Only
+   =============================== */
+
+.tool-step-container {
+  width: 100%;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ---------- Header ---------- */
+
+.tool-step-container .step-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tool-step-container .step-header h2 {
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.tool-step-container .step-header p {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+/* ---------- Empty State ---------- */
+
+.tool-step-container .no-data {
+  padding: 56px 0;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.95rem;
+}
+
+/* ---------- Grid (same visual language as ToolGrid) ---------- */
+
+.tool-step-container .tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+/* ---------- Card Wrapper ---------- */
+/* ToolGrid me wrapper nahi hota, yahan hota hai — isliye yeh zaroori hai */
+
+.tool-step-container .tool-item {
+  display: flex;
+  height: 100%;
+}
+
+/* ToolCard ko stretch karne ke liye */
+.tool-step-container .tool-item > * {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Hover polish (same vibe as tools page) ---------- */
+
+.tool-step-container .tool-item:hover {
+  transform: translateY(-3px);
+  transition: transform 0.18s ease;
+}
+
+
+

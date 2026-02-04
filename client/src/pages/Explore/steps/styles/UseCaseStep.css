@@ -1,0 +1,86 @@
+/* UseCaseStep.css */
+
+.usecase-step {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.usecase-step h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+}
+
+/* No data state */
+.no-data {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* Use case buttons grid */
+.usecase-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Individual use case button */
+.usecase-btn {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.usecase-btn:hover {
+  border-color: #6366f1;
+  background: #eef2ff;
+  transform: translateY(-1px);
+}
+
+/* Active / selected state */
+.usecase-btn.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.25);
+}
+
+/* Continue button */
+.continue-btn {
+  margin-top: 8px;
+  align-self: center;
+  min-width: 180px;
+  padding: 14px 20px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.continue-btn:hover:not(:disabled) {
+  background: #000000;
+  transform: translateY(-1px);
+}
+
+.continue-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}

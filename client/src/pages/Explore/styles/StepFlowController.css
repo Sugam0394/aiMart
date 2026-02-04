@@ -1,28 +1,83 @@
-.step-flow-container {
-  width: 100%;
-  max-width: 720px;
-
-  background: #ffffff;
-  border-radius: 12px;
-
-  padding: 2.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-
+ /* Base shared layout */
+.step-loader,
+.step-initial,
+.step-error,
+.step-completed {
+  min-height: 60vh;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  animation: fadeIn 0.25s ease-in-out;
 }
 
-@media (max-width: 640px) {
-  .step-flow-container {
-    padding: 1.75rem;
-    border-radius: 10px;
+/* Loading */
+.step-loader {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #2563eb; /* blue-600 */
+}
+
+/* Initial / preparing */
+.step-initial {
+  font-size: 1.05rem;
+  color: #6b7280; /* gray-500 */
+}
+
+/* Error state */
+.step-error {
+  flex-direction: column;
+  gap: 12px;
+  background: #fef2f2; /* red-50 */
+  border-radius: 12px;
+  color: #b91c1c; /* red-700 */
+}
+
+.step-error p {
+  margin: 0;
+}
+
+.step-error .error-msg {
+  font-size: 0.95rem;
+  color: #7f1d1d;
+}
+
+/* Retry button */
+.step-error button {
+  margin-top: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  background: #dc2626; /* red-600 */
+  color: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.step-error button:hover {
+  background: #b91c1c; /* red-700 */
+}
+
+/* Completed state */
+.step-completed {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #16a34a; /* green-600 */
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-.step-flow-header {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #111827;
-}
+
 
 

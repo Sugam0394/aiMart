@@ -1,6 +1,5 @@
 import ExploreSession from "../exploreModel/exploreModel.js";
-
- import { ExploreService} from '../services/exploreService.js'
+import { ExploreService} from '../services/exploreService.js'
 
  
  
@@ -8,25 +7,34 @@ import ExploreSession from "../exploreModel/exploreModel.js";
 
 
 // Start a new explore session
-export const startExplore = async (req, res) => {
+ export const startExplore = async (req, res) => {
   try {
     const { userId } = req.body;
 
+    console.log("REQ BODY:", req.body);
+
     if (!userId) {
-      return res.status(400).json({ success: false, message: "userId is required" });
+      return res.status(400).json({
+        success: false,
+        message: "userId is required",
+      });
     }
 
-    // Service handles session creation
     const session = await ExploreService.createSession(userId);
 
     return res.status(201).json({
       success: true,
-      message: "Explore session started",
-      data: session,
+      data: {
+        sessionId: session.sessionId,
+        currentStep: session.currentStep || "INTENT",
+      },
     });
   } catch (err) {
     console.error("startExplore error:", err);
-    return res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to start explore session",
+    });
   }
 };
 
@@ -36,6 +44,11 @@ export const handleExploreStep = async (req, res) => {
   try {
     const { sessionId, currentStep, payload } = req.body;
 
+
+    // Check if everything is coming through
+    console.log("Processing Step:", currentStep, "for session:", sessionId);
+
+    
     if (!sessionId || !currentStep) {
       return res.status(400).json({ success: false, message: "sessionId and currentStep required" });
     }

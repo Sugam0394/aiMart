@@ -1,52 +1,93 @@
- 
+ .explore-container-main {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
-.explore-wrapper {
-  min-height: 100vh;
-  width: 100%;
-  background-color: #F3F4F6; /* same neutral background */
-  
+/* Vertical Line logic */
+.explore-progress-line {
+  position: absolute;
+  left: 45px;
+  top: 60px;
+  bottom: 100px;
+  width: 2px;
+  background: #E5E7EB;
+  z-index: 0;
+}
+
+.step-shell {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #F3F4F6;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+/* STEP WIDTH RULES as discussed */
+.step-shell.active:nth-child(2) { max-width: 700px; margin-left: auto; margin-right: auto; } /* Intent */
+.step-shell.active:nth-child(3) { max-width: 900px; margin-left: auto; margin-right: auto; } /* UseCase */
+.step-shell.active:nth-child(4) { max-width: 100%; } /* Tools */
+
+.step-shell.completed {
+  background: #F9FAFB;
+  padding: 16px 24px;
+}
+
+.step-indicator {
+  width: 40px;
+  height: 40px;
+  background: #4F46E5;
+  color: white;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 2rem;
-  box-sizing: border-box;
+  font-weight: bold;
 }
 
-/* Inner flow container (rendered by StepFlowController) */
-.explore-wrapper > * {
-  width: 100%;
-  max-width: 900px; /* focused reading width */
-  
-  background-color: #ffffff;
-  border-radius: 12px;
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-
-  padding: 2.5rem;
-  box-sizing: border-box;
+.step-shell.locked {
+  opacity: 0.5;
+  filter: grayscale(1);
+  pointer-events: none;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .explore-wrapper {
-    padding: 1.5rem;
-  }
-
-  .explore-wrapper > * {
-    padding: 2rem;
-  }
+.edit-btn {
+  background: none;
+  border: none;
+  color: #4F46E5;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
-/* Mobile */
-@media (max-width: 640px) {
-  .explore-wrapper {
-    padding: 1rem;
-  }
+.edit-btn:hover { background: #EEF2FF; }
 
-  .explore-wrapper > * {
-    padding: 1.5rem;
-    border-radius: 10px;
-  }
+ .explore-container-main {
+  max-width: 900px; /* Saas level width */
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
 }
+
+/* Steps ke beech ka visual connection (optional) */
+.step-shell:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 43px; /* Indicator ke center mein align karo */
+  width: 2px;
+  height: 20px;
+  background: #E5E7EB;
+  margin-top: 10px;
+}
+ 
+
 

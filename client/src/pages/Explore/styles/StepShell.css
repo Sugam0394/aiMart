@@ -1,0 +1,96 @@
+/* =========================
+   STEP SHELL — BASE
+   ========================= */
+
+.step-shell {
+  width: 100%;
+  display: flex;
+  justify-content: center;   /* horizontal centering */
+  padding: 4rem 1rem;        /* breathing space (top/bottom > sides) */
+  box-sizing: border-box;
+}
+
+/* Inner content wrapper logic is implicit:
+   child component will naturally size itself
+*/
+
+/* =========================
+   VARIANT WIDTH RULES
+   ========================= */
+
+/* STEP 1 — INTENT (thinking space) */
+.step-shell--intent {
+  max-width: 70%;
+}
+
+/* STEP 2 — USE CASE (balanced decisions) */
+.step-shell--usecase {
+  max-width: 88%;
+}
+
+/* STEP 3 — TOOLS (exploration space) */
+.step-shell--tools {
+  max-width: 100%;
+}
+
+ /* =========================
+   SUBTLE TRANSITIONS
+   ========================= */
+
+.step-shell {
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+/* Collapsed state */
+.step-shell.collapsed {
+  opacity: 0.85;
+}
+
+/* Expanded state */
+.step-shell.expanded {
+  opacity: 1;
+}
+
+/* Content animation */
+.step-shell-content {
+  animation: fadeIn 150ms ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+/* =========================
+   RESPONSIVE OVERRIDES
+   ========================= */
+
+@media (max-width: 1024px) {
+  .step-shell--intent {
+    max-width: 80%;
+  }
+
+  .step-shell--usecase {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .step-shell {
+    padding: 3rem 1rem;
+  }
+
+  .step-shell--intent,
+  .step-shell--usecase,
+  .step-shell--tools {
+    max-width: 100%;
+  }
+}

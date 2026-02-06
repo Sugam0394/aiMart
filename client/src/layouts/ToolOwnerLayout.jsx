@@ -1,40 +1,62 @@
-import React from 'react'
- 
- import { NavLink, Outlet } from "react-router-dom";
-import './ToolOwnerLayout.css'
-
+ import React from 'react';
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import './ToolOwnerLayout.css';
 
 function ToolOwnerLayout() {
+  const navigate = useNavigate();
 
-  
- 
-
-     return (
-<div className="toolowner-layout">
-
-      {/* 🔝 TOP NAVBAR */}
-      <nav className="top-navbar">
-        <h2 >
-          AI Mart
-        </h2>
-
-        <div className="nav-links">
-          <NavLink to="/home">Home</NavLink>
-          <NavLink to="/explore">Explore</NavLink>
-          <NavLink to="/toolowner/dashboard">Dashboard</NavLink>
-           <NavLink to="/toolowner/settings">Settings</NavLink> 
+  return (
+    <div className="toolowner-container">
+      {/* 🛠️ SIDEBAR - The Command Center */}
+      <aside className="owner-sidebar">
+        <div className="sidebar-logo" onClick={() => navigate("/home")}>
+          AI<span>Mart</span>
+          <small>Creator</small>
         </div>
 
-        <div className="nav-right">
-          ToolOwner
-        </div>
-      </nav>
+        <div className="sidebar-links">
+          <p className="menu-label">Main Menu</p>
+          <NavLink to="/toolowner/dashboard" className={({ isActive }) => isActive ? "active-link" : ""}>
+             <span className="icon">📊</span> Dashboard
+          </NavLink>
+          <NavLink to="/home" className={({ isActive }) => isActive ? "active-link" : ""}>
+             <span className="icon">🌐</span> View Site
+          </NavLink>
+          <NavLink to="/explore" className={({ isActive }) => isActive ? "active-link" : ""}>
+             <span className="icon">🔎</span> Explore Tools
+          </NavLink>
 
-      {/* 🔻 PAGE CONTENT */}
-      <Outlet />
+          <p className="menu-label">Configuration</p>
+          <NavLink to="/toolowner/settings" className={({ isActive }) => isActive ? "active-link" : ""}>
+             <span className="icon">⚙️</span> Settings
+          </NavLink>
+        </div>
+
+        <div className="sidebar-footer">
+          <div className="owner-mini-card">
+            <div className="dot active-dot"></div>
+            <span>Tool Owner Mode</span>
+          </div>
+        </div>
+      </aside>
+
+      {/* 📦 MAIN CONTENT AREA */}
+      <div className="owner-content-wrapper">
+        <header className="owner-top-bar">
+          <div className="top-bar-left">
+            <h3>Management Console</h3>
+          </div>
+          <div className="top-bar-right">
+            <span className="owner-badge">Partner</span>
+          </div>
+        </header>
+
+        <main className="owner-page-content">
+          <Outlet />
+        </main>
+      </div>
     </div>
-     )
-  
+  );
 }
 
-export default ToolOwnerLayout
+export default ToolOwnerLayout;

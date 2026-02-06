@@ -1,19 +1,14 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import api from '../../../api/axios'
-import toast from 'react-hot-toast'
-import '../css/PendingToolFormRequest.css'
+import React, { useState, useEffect } from 'react';
+import api from '../../../api/axios';
+import toast from 'react-hot-toast';
+import '../css/PendingToolFormRequest.css';
 
 function PendingToolFormRequest() {
-
-
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(null); // toolId
+  const [actionLoading, setActionLoading] = useState(null);
 
- 
-
-    const fetchPendingTools = async () => {
+  const fetchPendingTools = async () => {
     try {
       setLoading(true);
       const res = await api.get("/pendingTool");
@@ -29,112 +24,104 @@ function PendingToolFormRequest() {
     fetchPendingTools();
   }, []);
 
-   const handleAction = async (toolId, action) => {
-  try {
-    setActionLoading(toolId);
-
-    if (action === "approve") {
-      await api.patch(`/approve/${toolId}`);
-    } else if (action === "reject") {
-      await api.patch(`/reject/${toolId}`);
+  const handleAction = async (toolId, action) => {
+    try {
+      setActionLoading(toolId);
+      if (action === "approve") {
+        await api.patch(`/approve/${toolId}`);
+      } else if (action === "reject") {
+        await api.patch(`/reject/${toolId}`);
+      }
+      toast.success(`Tool ${action}ed successfully`);
+      fetchPendingTools();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Action failed");
+    } finally {
+      setActionLoading(null);
     }
+  };
 
-    toast.success(`Tool ${action}ed successfully`);
-    fetchPendingTools();
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Action failed");
-  } finally {
-    setActionLoading(null);
-  }
-};
-
-
- if (loading) {
-    return (
-      <div className="founder-dashboard-section">
-        <h2>Pending Tools</h2>
-        <p>Loading pending tools...</p>
-      </div>
-    );
-  }
-
-
-
+  if (loading) return (
+    <div className="skeleton-loader">
+      <div className="spinner-ring"></div>
+      <p>Verifying pending submissions...</p>
+    </div>
+  );
 
   return (
-       <div className="founder-dashboard-section">
-      <h2>Pending Tools</h2>
+    <div className="founder-section">
+      <div className="section-header">
+        <h2>Pending Tool Submissions</h2>
+        <span className="badge-count">{tools.length} Waiting</span>
+      </div>
 
       {tools.length === 0 ? (
-        <p className="empty-text">No pending tools 🎉</p>
+        <div className="empty-box">
+          <p>No pending tools 🎉 Everything is up to date!</p>
+        </div>
       ) : (
-        tools.map((tool) => (
-          <div key={tool._id} className="request-card pending">
-            {/* Header */}
-            <div className="tool-header">
-           <img
-  src={tool.logo || "/default-logo.png"}
-  alt={tool.name}
-  className="tool-logo"
-  onError={(e) => {
-    e.target.src = "/default-logo.png";
-  }}
-/>
-
-
-              <div className="tool-meta">
-                <h3>{tool.name}</h3>
-                {tool.tagline && <p className="tagline">{tool.tagline}</p>}
+        <div className="tool-requests-list">
+          {tools.map((tool) => (
+            <div key={tool._id} className="modern-tool-card">
+              <div className="card-top">
+                <div className="tool-brand">
+                  <img
+                    src={tool.logo || "/default-logo.png"}
+                    alt={tool.name}
+                    className="tool-logo-img"
+                    onError={(e) => { e.target.src = "/default-logo.png"; }}
+                  />
+                  <div className="tool-meta-info">
+                    <h3>{tool.name}</h3>
+                    <p className="tool-tagline">{tool.tagline || "No tagline provided"}</p>
+                  </div>
+                </div>
+                <div className="category-pill">{tool.primaryCategory}</div>
               </div>
 
-              <span className="status-badge pending">PENDING</span>
+              <div className="card-mid">
+                <p className="tool-desc">{tool.description}</p>
+                
+                <div className="info-grid">
+                  <div className="info-item">
+                    <label>Website</label>
+                    <a href={tool.url} target="_blank" rel="noreferrer">{tool.url}</a>
+                  </div>
+                  <div className="info-item">
+                    <label>Submitted By</label>
+                    <span>{tool.createdBy?.email || "Unknown"}</span>
+                  </div>
+                </div>
+
+                <div className="tags-container">
+                  {tool.intentTags?.map((tag, index) => (
+                    <span key={index} className="intent-tag">#{tag}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="card-actions">
+                <button
+                  className="btn-outline-reject"
+                  disabled={actionLoading === tool._id}
+                  onClick={() => handleAction(tool._id, "reject")}
+                >
+                  {actionLoading === tool._id ? "..." : "Reject Submission"}
+                </button>
+                <button
+                  className="btn-solid-approve"
+                  disabled={actionLoading === tool._id}
+                  onClick={() => handleAction(tool._id, "approve")}
+                >
+                  {actionLoading === tool._id ? "Processing..." : "Approve & Publish"}
+                </button>
+              </div>
             </div>
-
-            <p className="description">{tool.description}</p>
-
-            <p>
-              <strong>Website:</strong>{" "}
-              <a href={tool.url} target="_blank" rel="noreferrer">
-                {tool.url}
-              </a>
-            </p>
-
-            <p>
-              <strong>Category:</strong> {tool.primaryCategory}
-            </p>
-
-            <p>
-              <strong>Intent Tags:</strong>{" "}
-              {tool.intentTags?.length ? tool.intentTags.join(", ") : "—"}
-            </p>
-
-            <p>
-              <strong>Submitted By:</strong>{" "}
-              {tool.createdBy?.email || "Unknown"}
-            </p>
-
-            <div className="action-buttons">
-              <button
-                className="btn approve"
-                disabled={actionLoading === tool._id}
-                onClick={() => handleAction(tool._id, "approve")}
-              >
-                {actionLoading === tool._id ? "Processing..." : "Approve"}
-              </button>
-
-              <button
-                className="btn reject"
-                disabled={actionLoading === tool._id}
-                onClick={() => handleAction(tool._id, "reject")}
-              >
-                Reject
-              </button>
-            </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
-  )
+  );
 }
 
-export default PendingToolFormRequest
+export default PendingToolFormRequest; 

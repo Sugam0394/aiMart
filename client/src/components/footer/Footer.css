@@ -1,108 +1,55 @@
-/* ================================
-   FOOTER WRAPPER
-================================ */
-.footer {
-  width: 100%;
-  margin-top: 80px;
-
-  background-color: #0f172a; /* dark navy */
-  color: #e5e7eb;
-
-  padding: 48px 0 20px;
+ .footer {
+  background: white;
+  padding: 4rem 5% 2rem 5%;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: auto;
 }
 
-/* ================================
-   CONTAINER
-================================ */
-.footer .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* ================================
-   TOP SECTION
-================================ */
 .footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 40px;
-
-  padding-bottom: 32px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
 }
 
-/* ================================
-   BRAND
-================================ */
 .footer h3 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: #ffffff;
+  color: #4F46E5;
+  margin-bottom: 0.5rem;
 }
 
 .footer p {
-  font-size: 14px;
-  color: #9ca3af;
-  max-width: 260px;
-  line-height: 1.6;
+  color: #6B7280;
+  font-size: 0.9rem;
 }
 
-/* ================================
-   LINKS
-================================ */
 .footer h4 {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #ffffff;
+  color: #111827;
+  margin-bottom: 1rem;
 }
 
 .footer ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-.footer ul li {
-  font-size: 14px;
-  color: #9ca3af;
-  margin-bottom: 10px;
+.footer li {
+  color: #6B7280;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.2s;
 }
 
-.footer ul li:hover {
-  color: #ffffff;
+.footer li:hover {
+  color: #4F46E5;
 }
 
-/* ================================
-   BOTTOM BAR
-================================ */
-.footer > div:last-child {
+.footer-bottom {
   text-align: center;
-  padding-top: 16px;
-}
-
-.footer > div:last-child p {
-  font-size: 13px;
-  color: #6b7280;
-}
-
-/* ================================
-   RESPONSIVE
-================================ */
-@media (max-width: 768px) {
-  .footer-top {
-    flex-direction: column;
-    gap: 32px;
-  }
-
-  .footer {
-    padding: 36px 0 18px;
-  }
+  border-top: 1px solid #F3F4F6;
+  padding-top: 2rem;
+  color: #9CA3AF;
+  font-size: 0.85rem;
 }
  
 

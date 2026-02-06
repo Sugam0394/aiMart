@@ -1,82 +1,124 @@
- /* ----------------------
-   TOOLOWNER LAYOUT
------------------------- */
-.toolowner-layout {
+ .toolowner-container {
+  display: flex;
   min-height: 100vh;
+  background-color: #f8fafc; /* Subtle gray background */
+}
+
+/* Sidebar Styling */
+.owner-sidebar {
+  width: 260px;
+  background-color: #0f172a; /* Deep Navy/Slate */
+  color: #fff;
   display: flex;
   flex-direction: column;
-  background-color: #F3F4F6; /* Neutral background like AI-Mart */
-  font-family: 'Inter', sans-serif;
-}
-
-/* ----------------------
-   TOP NAVBAR
------------------------- */
-.top-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #4F46E5; /* Primary Indigo */
-  color: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.top-navbar h2 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.top-navbar .nav-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.top-navbar .nav-links a {
-  color: white;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.top-navbar .nav-links a:hover,
-.top-navbar .nav-links a.active {
-  color: #C7D2FE; /* Light Indigo on hover/active */
-  transform: translateY(-2px);
-}
-
-.top-navbar .nav-right {
-  font-weight: 600;
-}
-
-/* ----------------------
-   PAGE CONTENT
------------------------- */
-.toolowner-layout > .content {
-  flex: 1;
-  padding: 2rem;
-  width: 100%;
+  position: fixed;
+  height: 100vh;
+  padding: 30px 20px;
   box-sizing: border-box;
 }
 
-/* ----------------------
-   RESPONSIVE
------------------------- */
-@media (max-width: 768px) {
-  .top-navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.8rem;
-  }
+.sidebar-logo {
+  font-size: 24px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
+.sidebar-logo span { color: #6366f1; }
+.sidebar-logo small { 
+  display: block; 
+  font-size: 10px; 
+  letter-spacing: 2px; 
+  text-transform: uppercase; 
+  color: #94a3b8; 
+}
 
-  .top-navbar .nav-links {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
+.menu-label {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 25px 0 10px 10px;
+}
+
+.sidebar-links { display: flex; flex-direction: column; gap: 8px; }
+
+.sidebar-links a {
+  text-decoration: none;
+  color: #94a3b8;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.sidebar-links a .icon { margin-right: 12px; font-size: 18px; }
+
+.sidebar-links a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.sidebar-links a.active-link {
+  background: #4f46e5;
+  color: #fff;
+}
+
+/* Main Content Wrapper */
+.owner-content-wrapper {
+  margin-left: 260px; /* Same as sidebar width */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-top-bar {
+  height: 70px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.owner-top-bar h3 { font-size: 18px; color: #1e293b; font-weight: 600; }
+
+.owner-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.owner-page-content {
+  padding: 40px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.owner-mini-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.active-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #22c55e;
 }
 
 

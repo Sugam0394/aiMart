@@ -122,104 +122,127 @@ const handleLogoChange = (e) => {
   if (!formData) return null;
 
   return (
-      <>
-      <form onSubmit={handleSubmit} className="create-tool-form">
-        <h2>Edit Tool</h2>
+    <div className="create-tool-wrapper">
+      <div className="form-header">
+        <h2>Update Tool Details</h2>
+        <p>Refine your tool's information to keep it competitive and accurate.</p>
+      </div>
 
-        <input
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+      <form onSubmit={handleSubmit} className="modern-form">
+        <div className="form-grid">
+          
+          {/* LEFT COLUMN: PRIMARY INFO */}
+          <div className="form-column">
+            <div className="section-card">
+              <h3>Core Identity</h3>
+              <div className="input-box">
+                <label>Tool Name</label>
+                <input name="name" value={formData.name} onChange={handleChange} required />
+              </div>
+              
+              <div className="input-box">
+                <label>Tagline</label>
+                <input name="tagline" value={formData.tagline} onChange={handleChange} />
+              </div>
 
-        <input
-          name="tagline"
-          value={formData.tagline}
-          onChange={handleChange}
-        />
+              <div className="input-box">
+                <label>Website URL</label>
+                <input name="url" value={formData.url} onChange={handleChange} required />
+              </div>
 
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
+              <div className="input-box">
+                <label>Description</label>
+                <textarea name="description" value={formData.description} onChange={handleChange} required />
+              </div>
+            </div>
 
-        <input
-          name="url"
-          value={formData.url}
-          onChange={handleChange}
-          required
-        />
+            <div className="section-card">
+              <h3>Visual Assets</h3>
+              <div className="logo-upload-zone has-file">
+                 <input type="file" id="edit-logo" onChange={handleLogoChange} hidden />
+                 <label htmlFor="edit-logo" className="upload-label">
+                    {logoPreview ? (
+                      <div className="preview-container">
+                        <img src={logoPreview} alt="Tool Logo" />
+                        <span className="change-hint">Click to replace logo</span>
+                      </div>
+                    ) : (
+                      <div className="upload-placeholder">
+                        <span className="icon">📁</span>
+                        <span>Upload New Logo</span>
+                      </div>
+                    )}
+                 </label>
+              </div>
+            </div>
+          </div>
 
-        <input
-          name="primaryCategory"
-          value={formData.primaryCategory}
-          onChange={handleChange}
-          required
-        />
+          {/* RIGHT COLUMN: CLASSIFICATION & SETTINGS */}
+          <div className="form-column">
+            <div className="section-card">
+              <h3>Taxonomy & Discovery</h3>
+              
+              <div className="input-box">
+                <label>Primary Category</label>
+                <input name="primaryCategory" value={formData.primaryCategory} onChange={handleChange} required />
+              </div>
 
-        <input
-          placeholder="Categories (comma separated)"
-          value={formData.categories.join(", ")}
-          onChange={(e) => handleArrayChange("categories", e.target.value)}
-        />
+              <div className="input-box">
+                <label>Intent Tags</label>
+                <input 
+                  value={formData.intentTags.join(", ")} 
+                  onChange={(e) => handleArrayChange("intentTags", e.target.value)} 
+                  placeholder="e.g. ai-writing, summarizer"
+                  required 
+                />
+              </div>
 
-        <input
-          placeholder="Intent Tags (comma separated)"
-          value={formData.intentTags.join(", ")}
-          onChange={(e) => handleArrayChange("intentTags", e.target.value)}
-          required
-        />
+              <div className="input-box">
+                <label>Output Types</label>
+                <input 
+                  value={formData.outputType.join(", ")} 
+                  onChange={(e) => handleArrayChange("outputType", e.target.value)} 
+                  placeholder="e.g. Text, PDF, Image"
+                />
+              </div>
+            </div>
 
-        <input
-          placeholder="Output Type (comma separated)"
-          value={formData.outputType.join(", ")}
-          onChange={(e) => handleArrayChange("outputType", e.target.value)}
-        />
+            <div className="section-card">
+              <h3>Service Configuration</h3>
+              <div className="input-row">
+                <div className="input-box">
+                  <label>Usage Mode</label>
+                  <select name="usageMode" value={formData.usageMode} onChange={handleChange}>
+                    <option value="online">Online/Web</option>
+                    <option value="download">Downloadable</option>
+                  </select>
+                </div>
+                <div className="input-box">
+                  <label>Pricing Model</label>
+                  <select name="pricingType" value={formData.pricingType} onChange={handleChange}>
+                    <option value="free">Free</option>
+                    <option value="paid">Paid</option>
+                    <option value="freemium">Freemium</option>
+                  </select>
+                </div>
+              </div>
+            </div>
 
-        <select
-          name="usageMode"
-          value={formData.usageMode}
-          onChange={handleChange}
-        >
-          <option value="online">Online</option>
-          <option value="download">Download</option>
-        </select>
+            <div className="form-actions">
+              <button type="submit" className="submit-btn update-theme" disabled={loading}>
+                {loading ? "Saving Changes..." : "Save Updates"}
+              </button>
+              <button type="button" className="cancel-btn" onClick={() => navigate("/toolowner/dashboard")}>
+                Discard Changes
+              </button>
+            </div>
+          </div>
 
-        <select
-          name="pricingType"
-          value={formData.pricingType}
-          onChange={handleChange}
-        >
-          <option value="free">Free</option>
-          <option value="paid">Paid</option>
-        </select>
-
-        {/* Logo */}
-        <input type="file" onChange={handleLogoChange} />
-        {logoPreview && (
-          <img
-            src={logoPreview}
-            alt="Logo Preview"
-            style={{ width: "80px", marginTop: "10px" }}
-          />
-        )}
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Updating..." : "Update Tool"}
-        </button>
+        </div>
       </form>
 
-      {toast && (
-        <Toast
-          type={toast.type}
-          message={toast.message}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </>
+      {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
+    </div>
   );
 }
 

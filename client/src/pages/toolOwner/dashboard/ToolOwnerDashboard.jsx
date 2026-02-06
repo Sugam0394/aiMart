@@ -1,27 +1,25 @@
- import React from "react";
+ // ToolOwnerDashboard.jsx
+import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "../css/ToolOwnerDashboard.css";
 
 function ToolOwnerDashboard() {
   return (
-    <div className="toolowner-dashboard">
+    <div className="owner-dashboard-container">
+      <header className="dashboard-sub-nav">
+        <div className="tab-group">
+          <NavLink to="" end className={({ isActive }) => isActive ? "tab active" : "tab"}>
+            My Tools
+          </NavLink>
+          <NavLink to="create-tool" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+            Add New Tool
+          </NavLink>
+        </div>
+      </header>
 
-      {/* 🧱 SIDEBAR */}
-      <aside className="dashboard-sidebar">
-        <NavLink to="" end>
-          My Tools
-        </NavLink>
-
-        <NavLink to="create-tool">
-          Create Tool
-        </NavLink>
-      </aside>
-
-      {/* 📦 CONTENT */}
-      <main className="dashboard-content">
+      <main className="dashboard-render-area">
         <Outlet />
       </main>
-
     </div>
   );
 }

@@ -1,33 +1,39 @@
 import React from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import "./FounderLayout.css"; // Nayi CSS file banayein
 
 function FounderLayout() {
   const navigate = useNavigate();
 
   return (
-    <div className="founder-layout">
+    <div className="founder-wrapper">
       {/* 🔝 Top Navbar */}
-      <nav className="top-navbar">
-        <h2 className="logo" onClick={() => navigate("/home")}>
-          AI Bridge
-        </h2>
+      <nav className="founder-navbar">
+        <div className="nav-container">
+          <h2 className="brand-logo" onClick={() => navigate("/home")}>
+            AI <span>Bridge</span>
+          </h2>
 
-        <div className="nav-links">
-          <NavLink to="/home">Home</NavLink>
-          <NavLink to="/explore">Explore</NavLink>
-          <NavLink to="/founder/dashboard">Dashboard</NavLink>
-          <NavLink to="/founder/settings">Settings</NavLink>
-        </div>
+          <div className="nav-menu">
+            <NavLink to="/home" className={({ isActive }) => (isActive ? "active-link" : "")}>Home</NavLink>
+            <NavLink to="/explore" className={({ isActive }) => (isActive ? "active-link" : "")}>Explore</NavLink>
+            <NavLink to="/founder/dashboard" className={({ isActive }) => (isActive ? "active-link" : "")}>Dashboard</NavLink>
+            <NavLink to="/founder/settings" className={({ isActive }) => (isActive ? "active-link" : "")}>Settings</NavLink>
+          </div>
 
-        <div className="nav-right">
-          Founder
+          <div className="founder-profile">
+            <div className="status-indicator"></div>
+            <span>Founder</span>
+          </div>
         </div>
       </nav>
 
-      {/* Page content */}
-      <Outlet />
+      {/* Page content wrapper */}
+      <main className="dashboard-content">
+        <Outlet />
+      </main>
     </div>
   );
 }
 
-export default FounderLayout;
+export default FounderLayout; 

@@ -1,15 +1,12 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import api from '../../../api/axios'
 import toast from 'react-hot-toast'
 import '../css/ApprovedToolFormRequest.css'
 
 function ApprovedToolFormRequest() {
-
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch approved / live tools
   const fetchApprovedTools = async () => {
     try {
       const res = await api.get("/approvedTool");
@@ -25,63 +22,80 @@ function ApprovedToolFormRequest() {
     fetchApprovedTools();
   }, []);
 
-  if (loading) return <p>Loading approved tools...</p>;
-
-
+  if (loading) return (
+    <div className="status-loading">
+      <div className="loader-ring"></div>
+      <p>Fetching published tools...</p>
+    </div>
+  );
 
   return (
-    <div className="founder-dashboard-section">
-      <h2>Approved / Live Tools</h2>
+    <div className="approved-section">
+      <div className="section-header">
+        <h2>Live Tools Directory</h2>
+        <div className="live-indicator">
+          <span className="blink-dot"></span>
+          {tools.length} Tools Online
+        </div>
+      </div>
 
       {tools.length === 0 ? (
-        <p>No approved tools yet</p>
+        <div className="empty-catalog">
+          <p>No tools have been published yet.</p>
+        </div>
       ) : (
-        tools.map((tool) => (
-          <div key={tool._id} className="request-card approved">
-            
-            {/* 🔹 Logo + Name */}
-            <div className="tool-header">
-              <img
-                src={tool.logo}
-                alt={tool.name}
-                className="tool-logo"
-              />
-              <div>
-                <h3>{tool.name}</h3>
-                <p className="tagline">{tool.tagline}</p>
+        <div className="published-grid">
+          {tools.map((tool) => (
+            <div key={tool._id} className="published-tool-card">
+              
+              <div className="card-header-main">
+                <img
+                  src={tool.logo || "/default-logo.png"}
+                  alt={tool.name}
+                  className="mini-logo"
+                  onError={(e) => { e.target.src = "/default-logo.png"; }}
+                />
+                <div className="header-text">
+                  <h3>{tool.name}</h3>
+                  <span className="live-badge">LIVE</span>
+                </div>
+              </div>
+
+              <div className="card-body-main">
+                <p className="tool-tag">{tool.tagline}</p>
+                
+                <div className="meta-grid">
+                  <div className="meta-box">
+                    <label>Category</label>
+                    <span>{tool.primaryCategory}</span>
+                  </div>
+                  <div className="meta-box">
+                    <label>Owner</label>
+                    <span className="owner-mail">{tool.createdBy?.email || "N/A"}</span>
+                  </div>
+                </div>
+
+                <div className="intent-pills">
+                  {tool.intentTags?.map((tag, i) => (
+                    <span key={i} className="pill">#{tag}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="card-footer-main">
+                <div className="date-info">
+                  Published: {new Date(tool.updatedAt).toLocaleDateString()}
+                </div>
+                <a href={tool.url} target="_blank" rel="noreferrer" className="view-link">
+                  Visit Tool ↗
+                </a>
               </div>
             </div>
-
-            <p className="description">{tool.description}</p>
-
-            <p>
-              <strong>Website:</strong>{" "}
-              <a href={tool.url} target="_blank" rel="noreferrer">
-                {tool.url}
-              </a>
-            </p>
-
-            <p><strong>Primary Category:</strong> {tool.primaryCategory}</p>
-            <p><strong>Intent Tags:</strong> {tool.intentTags.join(", ")}</p>
-
-            <p>
-              <strong>Tool Owner:</strong>{" "}
-              {tool.createdBy?.email || "N/A"}
-            </p>
-
-            <p>
-              <strong>Approved On:</strong>{" "}
-              {new Date(tool.updatedAt).toLocaleString()}
-            </p>
-
-            <span className={`status-badge ${tool.status}`}>
-              {tool.status.toUpperCase()}
-            </span>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div> 
   )
 }
 
-export default ApprovedToolFormRequest
+export default ApprovedToolFormRequest; 

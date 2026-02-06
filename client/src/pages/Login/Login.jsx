@@ -44,7 +44,7 @@ function Login() {
     toast.success("Login successful 🚀", { id: "login" });
 
     if (role === "user") {
-      navigate("/home", { replace: true });
+      navigate("/explore", { replace: true });
     } else if (role === "toolOwner") {
       navigate("/toolowner/dashboard", { replace: true });
     } else if (role === "founder") {

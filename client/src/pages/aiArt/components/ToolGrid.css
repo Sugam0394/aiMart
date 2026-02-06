@@ -1,22 +1,80 @@
- /* ToolGrid.css */
+/* ===== TOOL GRID WRAPPER ===== */
 
-/* ----------------------
-   GRID CONTAINER
------------------------- */
 .tools-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 28px;
 }
 
-/* EMPTY TEXT */
+/* Empty state */
 .empty-text {
-  color: #6B7280;
-  font-size: 1rem;
   text-align: center;
-  margin: 1rem 0;
+  color: #64748b;
+  font-size: 15px;
+  margin-top: 12px;
 }
+
+/* ===== TOOL CARD BASE (assumes ToolCard already styled lightly) ===== */
+
+.tool-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.tool-card:hover {
+  transform: translateY(-6px);
+  border-color: #4f46e5;
+  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.12);
+}
+
+/* ===== TEXT INSIDE CARD ===== */
+
+.tool-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.tool-card p {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* ===== BADGE / TAG (optional if used) ===== */
+
+.tool-badge {
+  display: inline-block;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+/* ===== RESPONSIVE (desktop priority) ===== */
+
+@media (max-width: 1024px) {
+  .tools-container {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .tools-container {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+ 
 
 
 

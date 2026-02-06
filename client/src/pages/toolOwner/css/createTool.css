@@ -1,168 +1,200 @@
- /* ================================
-   CREATE TOOL FORM (ROOT)
-================================ */
-.create-tool-form {
-  width: 100%;
-  max-width: 900px;
-  background: #ffffff;
-  padding: 32px;
-  border-radius: 14px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-
-  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+ /* Edit Specific Polishing */
+.update-theme {
+  background: #0f172a !important; /* Darker Slate for Edit */
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2) !important;
 }
 
-/* ================================
-   TITLE
-================================ */
-.create-tool-form h2 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #111827;
+.update-theme:hover {
+  background: #1e293b !important;
+}
+
+.cancel-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  background: transparent;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+/* Ensure the logo preview looks sharp in Edit mode */
+.logo-upload-zone.has-file {
+  border-style: solid;
+  border-color: #e2e8f0;
+  background: #ffffff;
+}
+
+/* Container Wrapper */
+.create-tool-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.form-header {
+  margin-bottom: 30px;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.form-header p {
+  color: #64748b;
+}
+
+/* The Main Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Card Styling */
+.section-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.section-card h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #4f46e5;
+  margin-bottom: 20px;
+  border-left: 4px solid #4f46e5;
+  padding-left: 12px;
+}
+
+/* Inputs & Labels */
+.input-box {
+  margin-bottom: 18px;
+}
+
+.input-box label {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.input-box input, 
+.input-box textarea, 
+.input-box select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.input-box input:focus, 
+.input-box textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Logo Upload Area */
+.logo-upload-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logo-upload-zone:hover {
+  border-color: #4f46e5;
+  background: #f5f3ff;
+}
+
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-container img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.change-hint {
+  font-size: 12px;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.upload-placeholder .icon {
+  font-size: 32px;
+  display: block;
   margin-bottom: 8px;
 }
 
-/* ================================
-   INPUTS / TEXTAREA / SELECT
-================================ */
-.create-tool-form input,
-.create-tool-form textarea,
-.create-tool-form select {
+/* Submit Button */
+.submit-btn {
   width: 100%;
-  padding: 12px 14px;
-  border-radius: 8px;
-  border: 1px solid #E5E7EB;
-
-  font-size: 14px;
-  color: #111827;
-  background: #ffffff;
-
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-}
-
-.create-tool-form textarea {
-  min-height: 110px;
-  resize: vertical;
-}
-
-/* Focus */
-.create-tool-form input:focus,
-.create-tool-form textarea:focus,
-.create-tool-form select:focus {
-  outline: none;
-  border-color: #4F46E5;
-  box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
-}
-
-/* ================================
-   URL INPUT WRAPPER
-================================ */
-.url-input-wrapper {
-  width: 100%;
-}
-
-/* ================================
-   LOGO UPLOAD
-================================ */
-.logo-upload-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-}
-
-.create-tool-form input[type="file"] {
+  padding: 16px;
+  background: #4f46e5;
+  color: white;
   border: none;
-  padding: 0;
-  font-size: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
 }
 
-/* Logo preview */
-.logo-preview {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  border: 1px solid #E5E7EB;
-  overflow: hidden;
+.submit-btn:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
 }
 
-.logo-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Clear logo */
-.clear-logo {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: rgba(0,0,0,0.7);
-  color: #ffffff;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
+.hint-box {
   font-size: 12px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-/* ================================
-   FIELD HINTS
-================================ */
-.field-hint {
-  background: #EEF2FF;
-  border-left: 4px solid #4F46E5;
-  padding: 10px 14px;
+  color: #6366f1;
+  margin-top: 5px;
+  background: #eef2ff;
+  padding: 6px 10px;
   border-radius: 6px;
-
-  font-size: 13px;
-  color: #374151;
-  line-height: 1.4;
 }
 
-/* ================================
-   SUBMIT BUTTON
-================================ */
-.create-tool-form button {
-  margin-top: 10px;
-  height: 44px;
-  border-radius: 10px;
-  border: none;
-
-  font-size: 15px;
-  font-weight: 600;
-
-  background: #4F46E5;
-  color: #ffffff;
-  cursor: pointer;
-
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-
-.create-tool-form button:hover {
-  background: #4338CA;
-}
-
-.create-tool-form button:disabled {
-  background: #A5B4FC;
-  cursor: not-allowed;
-}
-
-/* ================================
-   RESPONSIVE
-================================ */
-@media (max-width: 768px) {
-  .create-tool-form {
-    padding: 20px;
-    border-radius: 10px;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
  
 

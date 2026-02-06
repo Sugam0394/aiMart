@@ -10,6 +10,7 @@ import { getMyTools } from '../../../api/toolOwner/tool.services';
 function CreateTool() {
  const navigate = useNavigate();
 const fileInputRef = useRef(null);
+const [activeHint, setActiveHint] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,7 +31,6 @@ const fileInputRef = useRef(null);
   const [toast, setToast] = useState(null);
   const [loading, setLoading] = useState(false);
    const [checking, setChecking] = useState(true);
-   const [activeHint, setActiveHint] = useState(null);
 
 
  
@@ -70,27 +70,11 @@ if (checking) {
  
 
 
-//  URL HELPER FUNCTION 
-const normalizeUrl = (url) => {
-  if (!url) return "";
-  if (!/^https?:\/\//i.test(url)) {
-    return "https://" + url;
-  }
-  return url;
-};
 
 
  
 
 // clear handler Main Logi
- const clearUrlAndLogo = () => {
-  setFormData(prev => ({ ...prev, url: "" }));
-  setLogoFile(null);
-  setLogoPreview(null);
-  if (fileInputRef.current) {
-    fileInputRef.current.value = "";
-  }
-};
 
  
 
@@ -168,181 +152,125 @@ const normalizeUrl = (url) => {
 
   
   return (
-     <>
-      <form onSubmit={handleSubmit} className="create-tool-form">
-        <h2>Create New Tool</h2>
+ <div className="create-tool-wrapper">
+    <div className="form-header">
+      <h2>List Your AI Tool</h2>
+      <p>Fill in the details to submit your tool for community approval.</p>
+    </div>
 
-        <input name="name" placeholder="Tool Name" onChange={handleChange} required />
+    <form onSubmit={handleSubmit} className="modern-form">
+      <div className="form-grid">
+        
+        {/* LEFT COLUMN: BASIC INFO */}
+        <div className="form-column">
+          <div className="section-card">
+            <h3>Basic Details</h3>
+            <div className="input-box">
+              <label>Tool Name</label>
+              <input name="name" placeholder="e.g. ChatGP-Pro" onChange={handleChange} required />
+            </div>
+            
+            <div className="input-box">
+              <label>Tagline</label>
+              <input name="tagline" placeholder="Briefly describe its power" onChange={handleChange} />
+            </div>
 
+            <div className="input-box">
+              <label>Website URL</label>
+              <input name="url" placeholder="https://yourtool.com" value={formData.url} onChange={handleChange} required />
+            </div>
 
+            <div className="input-box">
+              <label>Description</label>
+              <textarea name="description" placeholder="What makes this tool special?" onChange={handleChange} required />
+            </div>
+          </div>
 
+          <div className="section-card">
+            <h3>Visual Identity</h3>
+            <div className={`logo-upload-zone ${logoPreview ? 'has-file' : ''}`}>
+              <input type="file" accept="image/*" ref={fileInputRef} onChange={handleLogoChange} id="logo-input" hidden />
+              <label htmlFor="logo-input" className="upload-label">
+                {logoPreview ? (
+                  <div className="preview-container">
+                    <img src={logoPreview} alt="Preview" />
+                    <span className="change-hint">Change Logo</span>
+                  </div>
+                ) : (
+                  <div className="upload-placeholder">
+                    <span className="icon">📁</span>
+                    <span>Upload Tool Logo</span>
+                  </div>
+                )}
+              </label>
+            </div>
+          </div>
+        </div>
 
-        <input name="tagline" placeholder="Short tagline" onChange={handleChange} />
+        {/* RIGHT COLUMN: CLASSIFICATION */}
+        <div className="form-column">
+          <div className="section-card">
+            <h3>Categories & Tags</h3>
+            
+            <div className="input-box">
+              <label>Primary Category</label>
+              <input
+                name="primaryCategory"
+                placeholder="e.g. Productivity"
+                onChange={handleChange}
+                required
+                onFocus={() => setActiveHint("primaryCategory")}
+                onBlur={() => setActiveHint(null)}
+              />
+              {activeHint === "primaryCategory" && <p className="hint-box">Main purpose of the tool.</p>}
+            </div>
 
+            <div className="input-box">
+              <label>Intent Tags (Comma separated)</label>
+              <input placeholder="write-code, edit-video..." onChange={(e) => handleArrayChange("intentTags", e.target.value)} required />
+            </div>
 
+            <div className="input-box">
+              <label>Pricing Model</label>
+              <select name="pricingType" onChange={handleChange}>
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+                <option value="freemium">Freemium</option>
+              </select>
+            </div>
+          </div>
 
+          <div className="section-card">
+            <h3>Deployment</h3>
+            <div className="input-row">
+              <div className="input-box">
+                <label>Type</label>
+                <select name="toolType" onChange={handleChange} required>
+                  <option value="ai">AI Tool</option>
+                  <option value="utility">Utility</option>
+                </select>
+              </div>
+              <div className="input-box">
+                <label>Mode</label>
+                <select name="usageMode" onChange={handleChange}>
+                  <option value="online">Online/Web</option>
+                  <option value="download">Downloadable</option>
+                </select>
+              </div>
+            </div>
+          </div>
 
-          <textarea name="description" placeholder="Full description" onChange={handleChange} required />
+          <div className="form-actions">
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? "Processing..." : "Submit for Approval"}
+            </button>
+          </div>
+        </div>
 
-
-
-
-         <div className="url-input-wrapper">
-  <input
-    name="url"
-    placeholder="Tool URL"
-    value={formData.url}
-    onChange={handleChange}
-    onBlur={(e) =>
-      setFormData(prev => ({
-        ...prev,
-        url: normalizeUrl(e.target.value.trim()),
-      }))
-    }
-    required
-  />
-
-   
-</div>
-
- 
-
-
-
-
-
-
-        <label className="logo-upload-label">Tool Logo</label>
-        <input
-  type="file"
-  accept="image/*"
-  ref={fileInputRef}
-  onChange={handleLogoChange}
-/>
-
-   {logoPreview && (
-  <div className="logo-preview">
-    <img src={logoPreview} alt="Logo Preview" />
-    <span className="clear-logo" onClick={clearUrlAndLogo}>✕</span>
+      </div>
+    </form>
+    {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
   </div>
-)}
-
-
-
-
-
-  <input
-  type="text"
-  name="primaryCategory"
-  placeholder="Primary Category"
-  value={formData.primaryCategory}
-  onChange={handleChange}
-  required
-  onFocus={() => setActiveHint("primaryCategory")}
-  onBlur={() => setActiveHint(null)}
-/>
-   
-    
-
-{activeHint === "primaryCategory" && (
-  <div className="field-hint">
-    Choose the main purpose of your tool. <br />
-    <strong>Examples:</strong><br />
-    Study → learning, exams, notes<br />
-    Content → writing, video, design<br />
-    Business → marketing, finance, productivity
-  </div>
-)}
-
-
-
-
-       <input
-  placeholder="Categories "
-  onFocus={() => setActiveHint("categories")}
-  onBlur={() => setActiveHint(null)}
-  onChange={(e) => handleArrayChange("categories", e.target.value)}
-/>
-
-{activeHint === "categories" && (
-  <div className="field-hint">
-    Add related topics your tool belongs to. <br />
-    <strong>Example:</strong> productivity, focus, task-management
-  </div>
-)}
-
-<input
-  placeholder="Intent Tags (comma separated)"
-  required
-  onFocus={() => setActiveHint("intentTags")}
-  onBlur={() => setActiveHint(null)}
-  onChange={(e) => handleArrayChange("intentTags", e.target.value)}
-/>
-
-{activeHint === "intentTags" && (
-  <div className="field-hint">
-    What problem does your tool solve for users? <br />
-    <strong>Example:</strong> write-faster, summarize-text, plan-day
-  </div>
-)}
-
-         
-   <input
-  placeholder="Output Type (comma separated)"
-  onFocus={() => setActiveHint("outputType")}
-  onBlur={() => setActiveHint(null)}
-  onChange={(e) => handleArrayChange("outputType", e.target.value)}
-/>
-
-{activeHint === "outputType" && (
-  <div className="field-hint">
-    What does your tool generate? <br />
-    <strong>Example:</strong> text, pdf, image, checklist
-  </div>
-)}
-
-
-
-
-
-
-
-
-        <select name="toolType" onChange={handleChange} required>
-          <option value="">Tool Type</option>
-          <option value="ai">AI</option>
-          <option value="utility">Utility</option>
-          <option value="service">Service</option>
-        </select>
-
-
-
-
-
-
-        <select name="usageMode" onChange={handleChange}>
-          <option value="online">Online</option>
-          <option value="download">Download</option>
-        </select>
-
-        <select name="pricingType" onChange={handleChange}>
-          <option value="free">Free</option>
-          <option value="paid">Paid</option>
-        </select>
-
-
-
-
-
-
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Submitting..." : "Submit Tool"}
-        </button>
-      </form>
-
-      {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
-    </>
   ); 
 
 }

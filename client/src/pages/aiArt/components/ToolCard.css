@@ -1,108 +1,72 @@
- /* ================================
-   TOOL CARD WRAPPER
-================================ */
 .tool-card {
-  background: #ffffff;
-  border-radius: 14px;
-  overflow: hidden;
-
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  overflow: hidden; /* Image corners round karne ke liye */
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-base);
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-  border: 1px solid #f1f5f9;
-
   display: flex;
   flex-direction: column;
+  height: 100%; /* Saare cards ek barabar height ke */
 }
 
 .tool-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 14px 32px rgba(0,0,0,0.12);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-light);
 }
 
-/* ================================
-   IMAGE
-================================ */
+/* 📸 80% Image Section */
 .tool-card-image {
   width: 100%;
-  height: 140px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #f8fafc;
+  aspect-ratio: 4 / 3; /* Perfect rectangle look */
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .tool-card-image img {
-  max-width: 150px;
-  max-height: 130px;
-  object-fit: contain;
-   transition: transform 0.25s ease;
-   border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Image stretch nahi hogi, crop hogi to fit */
+  transition: transform var(--transition-slow);
 }
 
 .tool-card:hover .tool-card-image img {
-  transform: scale(1.05);
+  transform: scale(1.05); /* Subtle zoom on hover */
 }
 
-/* ================================
-   FOOTER
-================================ */
+/* 📝 Bottom Footer (The remaining 20%) */
 .tool-card-footer {
-  padding: 12px 14px;
-
+  padding: var(--spacing-md) var(--spacing-lg);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
-  border-top: 1px solid #f1f5f9;
+  align-items: center;
+  background: white;
 }
 
-/* ================================
-   TOOL NAME
-================================ */
 .tool-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #0f172a;
-
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0; /* Extra spacing hatao */
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; /* Bada naam dot-dot ho jayega */
 }
 
-/* ================================
-   VIEW LINK
-================================ */
 .tool-view {
-  font-size: 13px;
-  font-weight: 500;
-  color: #2563eb;
-
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: all 0.2s ease;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  white-space: nowrap;
+  opacity: 0.8;
+  transition: opacity var(--transition-base);
 }
 
 .tool-card:hover .tool-view {
   opacity: 1;
-  transform: translateX(0);
-}
-
-/* ================================
-   RESPONSIVE
-================================ */
-@media (max-width: 768px) {
-  .tool-card-image {
-    height: 140px;
-  }
-
-  .tool-name {
-    font-size: 14px;
-  }
-}
+} 
 
 
  

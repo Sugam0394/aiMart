@@ -26,8 +26,6 @@
  // Dasboard 
  import FounderDashboard from "./pages/founder/Dashboard/FounderDashboard.jsx";
  import ToolOwnerDashboard from "./pages/toolOwner/dashboard/ToolOwnerDashboard.jsx";
-import UserDashboard from "./pages/user/dashboard/UserDashboard.jsx";
- // routes
  import ProtectedRoute from "./routes/ProtectedRoute.jsx";
  
 
@@ -82,7 +80,6 @@ function App() {
 
       <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
       <Route element={<UserLayout />}>
-     <Route path="/user/dashboard" element={<UserDashboard />} />
         <Route path="/settings" element={<UserSettings />} />
       </Route>
         </Route>

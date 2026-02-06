@@ -10,6 +10,7 @@ const initialState = {
     tools: []
   },
   stepPayload: null, // Backend se aane wale options (e.g. use-case list ya tools list)
+  useCasePayload: null, // Preserved for Edit back-navigation
   loading: false,
   error: null,
 };
@@ -29,6 +30,7 @@ const exploreSlice = createSlice({
       state.exploreSessionId = sessionId;
       state.currentStep = step;
       state.stepPayload = payload;
+      if (step === "USE_CASE") state.useCasePayload = payload;
       state.loading = false;
 
       // 🔥 Sync selections: Jo user ne abhi choose kiya, use save kar lo
@@ -50,6 +52,7 @@ const exploreSlice = createSlice({
       }
       if (targetStep === "USE_CASE") {
         state.selections.tools = [];
+        state.stepPayload = state.useCasePayload;
       }
     },
 

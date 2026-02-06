@@ -1,39 +1,61 @@
- /* Wrapper layout */
+/* FounderDashboard.css */
+
 .founder-dashboard-wrapper {
   display: flex;
-  min-height: 100vh;
-  background: #f1f5f9; /* soft light background for dashboard */
+  min-height: calc(100vh - 70px); /* Top Nav ki height minus ki */
+  background-color: #f8fafc;
 }
 
-/* Main content */
-.dashboard-content {
-  flex: 1;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.dashboard-main-area {
+  flex-grow: 1;
+  padding: 2.5rem;
+  overflow-y: auto;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
-/* Each view section */
-.view-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.content-header {
+  margin-bottom: 2rem;
 }
 
-/* Page title inside each component (optional override) */
-.view-section h2 {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 16px;
+.content-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
   color: #1e293b;
+  margin-bottom: 0.5rem;
 }
 
-/* Grid style inside each view if needed */
-.view-section .requests-grid,
-.view-section .approved-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px;
+.content-header p {
+  color: #64748b;
+  font-size: 0.9rem;
 }
+
+/* Section transition effect */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .founder-dashboard-wrapper {
+    flex-direction: column;
+  }
+  
+  .dashboard-main-area {
+    padding: 1.5rem;
+  }
+}
+
+/* Card Styling (If your internal components use cards) */
+.view-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 20px;
+} 
 

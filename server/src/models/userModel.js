@@ -52,6 +52,12 @@ const userSchema = new mongoose.Schema({
     refreshToken: {
       type: String,
     },
+    savedTools: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tool",
+  }
+],
 
     isEmailVerified: {
       type: Boolean,

@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "seed": "node src/data/seed.js "
+    
   },
   "author": "Sugam singh",
   "license": "ISC",

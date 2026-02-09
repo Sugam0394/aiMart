@@ -1,5 +1,6 @@
  import Tool from "../models/toolModel.js";
  import { resolveTrendingMoment } from "../moment/trendingToolsMoment.js";
+ import { useCaseMap } from "../moment/useCaseMap.js";
  
 
 
@@ -74,21 +75,36 @@
 };
 
 
-// section - 3: Get Tools By Use-Case Service
+ 
+ // section - 3: Get Tools By Use-Case Service
 export const getToolsByUseCase = async (useCaseKey) => {
-  return await Tool.find({
-    useCases: { $in: [useCaseKey] },
-    status: "live"
-  })
-    .select(
-      "name tagline logo intentTags primaryCategory pricingType"
-    )
-    .sort({
-      isFeatured: -1,
-      isPopular: -1,
-      createdAt: -1
-    })
+  // 1. Get keywords from the map based on the active key
+  const keywords = useCaseMap[useCaseKey] || [];
+  if (keywords.length === 0) return [];
+
+  // 2. Create a regex pattern for broad matching (e.g., /coding|programming|dev/i)
+  const keywordRegex = new RegExp(keywords.join('|'), 'i');
+
+  const query = {
+    status: "live",
+    $or: [
+      { useCases: { $in: [useCaseKey] } }, // Direct match if exists
+      { primaryCategory: { $regex: keywordRegex } }, // Match primary category
+      { intentTags: { $in: keywords.map(kw => new RegExp(kw, 'i')) } }, // Match any intent tags
+      { name: { $regex: keywordRegex } }, // Match tool name for safety
+      { categories: { $in: keywords.map(kw => new RegExp(kw, 'i')) } } // Match secondary categories
+    ]
+  };
+
+  return await Tool.find(query)
+    .select("name tagline logo intentTags primaryCategory pricingType slug isPopular isFeatured")
+    .sort({ isFeatured: -1, isPopular: -1, createdAt: -1 })
+    .limit(15) 
     .lean();
 };
+
+
+
+ 
  
 

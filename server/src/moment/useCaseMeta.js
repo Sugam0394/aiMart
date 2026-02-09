@@ -1,4 +1,7 @@
-export const useCaseMeta = {
+
+
+
+ const useCaseMeta = {
   "study-better": {
     title: "Study Better",
     subtitle: "AI tools for students and learners",
@@ -34,3 +37,5 @@ export const useCaseMeta = {
     subtitle: "AI tools for productivity",
   },
 };
+
+export default useCaseMeta

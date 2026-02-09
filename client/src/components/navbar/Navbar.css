@@ -1,50 +1,51 @@
- .nav-container {
+.nav-container {
+  text-decoration: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
+  height: 80px;
+  padding: 0 5%;
   background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px); /* Modern Glass effect */
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid #f1f5f9;
+  list-style: none;
 }
 
 .nav-container h2 {
-  color: #4F46E5; /* Primary Indigo */
-  font-weight: 800;
-  letter-spacing: -1px;
+ color: #4f46e5; /* Indigo Theme */
+  font-weight: 900;
+  font-size: 1.6rem;
+  text-decoration: none;
 }
 
 .nav-container ul {
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  gap: 20px;
   list-style: none;
 }
 
-.nav-container a {
+.nav-container ul li a {
   text-decoration: none;
-  color: #4B5563;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: 600;
+  color: #475569;
 }
 
-.nav-container a:hover {
-  color: #4F46E5;
-}
-
-/* Register Button Style */
-.nav-container li:last-child a {
-  background: #4F46E5;
+/* Button style for Register */
+.nav-container ul li:last-child a {
+  background: #4f46e5;
   color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  transition: opacity 0.2s;
+  padding: 10px 22px;
+  border-radius: 50px;
+  transition: 0.3s;
 }
 
-.nav-container li:last-child a:hover {
-  opacity: 0.9;
-}
+.nav-container ul li:last-child a:hover {
+  background: #4338ca;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+} 
 
 

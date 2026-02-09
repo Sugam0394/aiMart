@@ -63,13 +63,16 @@ const authSlice = createSlice({
     role: null,
     loading: false,
     error: null,
+    isInitialized: false, // New flag to track initialization
   },
   reducers: {
     logout: (state) => {
       state.user = null;
       state.role = null;
       state.error = null;
+      state.isInitialized = true; // Reset initialization on logout
       clearAccessToken();
+      localStorage.removeItem("user");
 
     },
   },
@@ -84,6 +87,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         state.role = action.payload.role;
+        state.isInitialized = true; // Initialization complete
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -100,6 +104,10 @@ const authSlice = createSlice({
         state.loading = false;
        state.user = action.payload;
        state.role = action.payload.role;
+       state.isInitialized = true;
+      // Local storage mein user info save karo (Token toh utils handle kar raha hai)
+       localStorage.setItem("user", JSON.stringify(action.payload));
+
 })
       .addCase(loginUser.rejected, (state, action) => {
        state.loading = false;
@@ -112,7 +120,13 @@ const authSlice = createSlice({
     state.user = action.payload;
     state.role = action.payload.role;
   }
-});
+  state.isInitialized = true; // Initialization complete
+})
+    .addCase(syncUserRole.rejected, (state) => {
+      state.user = null;
+      state.role = null;
+      state.isInitialized = true; // 👈 Error aaya tab bhi checking khatam
+    });
 
 
 

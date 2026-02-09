@@ -2,15 +2,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchToolsByUseCase } from "../../../app/features/MomentSlice";
 import ToolCard from "../../aiArt/components/ToolCard";
-import { useNavigate } from "react-router-dom";
 import './UseCasedSection.css';
 
-function UseCaseSection({ useCaseKey, title, subtitle }) {
- 
-  const navigate = useNavigate();
+function UseCaseSection({ useCaseKey }) {
   const dispatch = useDispatch();
-
-
+  
+  // Redux state se section data nikaalo
   const section = useSelector(
     (state) => state.moment.useCaseSections?.[useCaseKey]
   );
@@ -19,37 +16,44 @@ function UseCaseSection({ useCaseKey, title, subtitle }) {
   const status = section?.status;
 
   useEffect(() => {
-    if (!section) {
+    // Agar data pehle se nahi hai, ya status idle hai, tabhi fetch karo
+    if (!section || status === "idle") {
       dispatch(fetchToolsByUseCase(useCaseKey));
     }
-  }, [useCaseKey, section , dispatch]);
+  }, [useCaseKey, section, status, dispatch]);
 
+  // 1. Loading State (Skeletons yahan fit honge)
   if (status === "loading") {
-    return <p>Loading {title}...</p>;
+    return (
+      <div className="usecase-row-container skeleton-active">
+        {[1, 2, 3, 4].map((n) => (
+          <div key={n} className="tool-card-skeleton" style={{ width: '280px', height: '180px', background: '#f0f0f0', borderRadius: '12px' }}></div>
+        ))}
+      </div>
+    );
   }
 
-  if (status === "error") { return <p>Failed to load {title}. Please try again.</p>; }
+  // 2. Error State
+  if (status === "failed") {
+    return <p className="error-text">Unable to load tools for this section.</p>;
+  }
 
-  if (!tools.length) {
-    return null; 
+  // 3. Empty State (Pura section gayab kar do agar tools zero hain)
+  if (status === "succeeded" && tools.length === 0) {
+    return null;
   }
 
   return (
-      <div className="usecase-section">
-      <h2>{title}</h2>
-      {subtitle && <p>{subtitle}</p>}
-
-      <div className="tool-grid">
+    <div className="usecase-section-wrapper">
+      {/* Agar hum chahein toh yahan meta.title bhi dikha sakte hain, 
+          lekin humne SectionWrapper Home.jsx mein rakha hai, toh yahan sirf cards dikhayenge */}
+      <div className="usecase-row-container">
         {tools.map((tool) => (
-          <ToolCard
-            key={tool._id}
-            tool={tool}
-            onClick={() => navigate(`/tools/${tool._id}`)} // ✅ ToolPage navigation
-          />
+          <ToolCard key={tool._id} tool={tool} />
         ))}
       </div>
     </div>
   );
 }
 
-export default UseCaseSection;
+export default UseCaseSection; 

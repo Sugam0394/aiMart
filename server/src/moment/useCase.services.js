@@ -1,15 +1,12 @@
-
 import { useCaseMap } from "../moment/useCaseMap.js";
 
-
-
-// section - 3: Derive Use Cases From Tool
 export const deriveUseCasesFromTool = ({
   intentTags = [],
   primaryCategory = "",
   categories = [],
   outputTypes = []
 }) => {
+  // Saare signals ko ek array mein daalo aur lowercase karo
   const signals = [
     ...intentTags,
     primaryCategory,
@@ -21,15 +18,16 @@ export const deriveUseCasesFromTool = ({
 
   const matchedUseCases = new Set();
 
-  for (const [useCase, keywords] of Object.entries(useCaseMap)) {
+  for (const [useCaseKey, keywords] of Object.entries(useCaseMap)) {
+    // AI Power: Yeh check karta hai ki kya signal mein keyword hai ya keyword mein signal
     const hasMatch = signals.some(signal =>
-      keywords.includes(signal)
+      keywords.some(kw => signal.includes(kw) || kw.includes(signal))
     );
 
     if (hasMatch) {
-      matchedUseCases.add(useCase);
+      matchedUseCases.add(useCaseKey);
     }
   }
 
   return Array.from(matchedUseCases);
-};
+}; 

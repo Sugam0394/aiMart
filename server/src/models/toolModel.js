@@ -60,6 +60,7 @@ const toolSchema = new mongoose.Schema(
 useCases: {
   type: [String], 
   index: true,
+  required: true,
   // example: ["grow-business", "design-faster"]
 },
 
@@ -91,7 +92,26 @@ useCases: {
       default: "free",
       index: true,
     },
+    // Add these inside toolSchema
+slug: {
+  type: String,
+  unique: true,
+  lowercase: true,
+  trim: true,
+  index: true // SEO and Fast lookup
+},
 
+avgRating: {
+  type: Number,
+  default: 0,
+  min: 0,
+  max: 5
+},
+
+totalReviews: {
+  type: Number,
+  default: 0
+},
   
 
    
@@ -190,6 +210,8 @@ toolSchema.pre("save", function() {
 toolSchema.index({ primaryCategory: 1, intentTags: 1 });
 toolSchema.index({ isFeatured: 1, status: 1 });
 toolSchema.index({ isPopular: 1, toolType: 1 });
+// Index for SEO and clean search
+toolSchema.index({ name: 'text', tagline: 'text', description: 'text' });
 
-const Tool = mongoose.model("Tool", toolSchema);
+const Tool = mongoose.model("Tool", toolSchema, 'tools');
 export default Tool;

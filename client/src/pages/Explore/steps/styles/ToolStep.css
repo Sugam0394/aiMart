@@ -1,71 +1,156 @@
- /* ===============================
-   ToolStep – Section Style Only
-   =============================== */
+/* ToolStep.css - AI-Mart Curated Recommendations */
 
-.tool-step-container {
-  width: 100%;
-  padding: 28px 32px;
+.tool-step-premium {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 2.5rem;
+  animation: fadeIn 0.5s ease;
 }
 
-/* ---------- Header ---------- */
-
-.tool-step-container .step-header {
+.selection-header {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #F3F4F6;
+  padding-bottom: 1rem;
 }
 
-.tool-step-container .step-header h2 {
-  font-size: 1.7rem;
+.selection-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.selection-counter {
+  background: #EEF2FF;
+  color: #4F46E5;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.85rem;
   font-weight: 600;
 }
 
-.tool-step-container .step-header p {
-  font-size: 0.95rem;
-  color: #6b7280;
-}
-
-/* ---------- Empty State ---------- */
-
-.tool-step-container .no-data {
-  padding: 56px 0;
-  text-align: center;
-  color: #9ca3af;
-  font-size: 0.95rem;
-}
-
-/* ---------- Grid (same visual language as ToolGrid) ---------- */
-
-.tool-step-container .tool-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
-}
-
-/* ---------- Card Wrapper ---------- */
-/* ToolGrid me wrapper nahi hota, yahan hota hai — isliye yeh zaroori hai */
-
-.tool-step-container .tool-item {
-  display: flex;
-  height: 100%;
-}
-
-/* ToolCard ko stretch karne ke liye */
-.tool-step-container .tool-item > * {
-  flex: 1;
+/* --- GROUP STYLING --- */
+.tool-group-wrapper {
   display: flex;
   flex-direction: column;
+  gap: 1.25rem;
 }
 
-/* ---------- Hover polish (same vibe as tools page) ---------- */
-
-.tool-step-container .tool-item:hover {
-  transform: translateY(-3px);
-  transition: transform 0.18s ease;
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
+
+.group-title {
+  font-size: 1.1rem;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.group-subtitle {
+  font-size: 0.85rem;
+  color: #6B7280;
+}
+
+.group-count {
+  font-size: 0.8rem;
+  color: #9CA3AF;
+  font-weight: 500;
+}
+
+/* --- TOOLS GRID & CARDS --- */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.tool-card-wrapper {
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+.tool-card-wrapper:hover {
+  transform: translateY(-5px);
+}
+
+.tool-card-wrapper.selected {
+  border-color: #4F46E5;
+  background: #F5F7FF;
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1);
+}
+
+/* --- BADGES & OVERLAYS --- */
+.match-badge {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  background: linear-gradient(135deg, #4F46E5, #818CF8);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+}
+
+.selection-checkmark {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 24px;
+  height: 24px;
+  background: #4F46E5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 10;
+  border: 2px solid white;
+}
+
+/* --- FOOTER ACTIONS --- */
+.action-footer {
+  position: sticky;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 1.5rem 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid #E5E7EB;
+  margin-top: 2rem;
+}
+
+.skip-btn {
+  background: transparent;
+  border: none;
+  color: #6B7280;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+}
+
+.skip-btn:hover {
+  color: #111827;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+} 
+ 
 
 
 

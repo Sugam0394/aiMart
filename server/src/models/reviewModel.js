@@ -15,12 +15,13 @@ const reviewSchema = new mongoose.Schema(
       required: true,
     },
 
-    rating: {
-      type: Number,
-      min: 1,
-      max: 5,
-      required: true,
-    },
+   // review.model.js tweaks
+rating: {
+  utility: { type: Number, default: 0 },
+  easeOfUse: { type: Number, default: 0 },
+  valueForMoney: { type: Number, default: 0 },
+  average: { type: Number, required: true } // Overall score
+},
 
     comment: {
       type: String,

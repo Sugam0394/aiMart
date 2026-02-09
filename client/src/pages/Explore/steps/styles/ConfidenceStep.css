@@ -1,69 +1,118 @@
- /* ConfidenceStep.css */
+/* ConfidenceStep.css - AI-Mart Finale */
 
-.confidence-step {
-  max-width: 520px;
-  margin: 40px auto;
-  padding: 36px 28px;
-  background: #ffffff;
-  border-radius: 22px;
-  border: 1.5px solid #e5e7eb;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.confidence-step-premium {
   text-align: center;
-}
-
-/* Heading */
-.confidence-step h2 {
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-/* Summary box */
-.summary {
-  background: #f9fafb;
+  padding: 2rem;
+  background: white;
   border-radius: 16px;
-  padding: 18px 20px;
+  border: 1px solid #E5E7EB;
+  animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- SUCCESS ANIMATION --- */
+.success-animation {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+}
+
+.check-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 4px solid #EEF2FF;
+  border-top-color: #4F46E5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.rocket-emoji {
+  font-size: 2.5rem;
+  line-height: 80px;
+  display: block;
+}
+
+/* --- TYPOGRAPHY --- */
+.final-title {
+  color: #111827;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.final-subtitle {
+  color: #6B7280;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* --- SUMMARY GRID --- */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.summary-card {
+  background: #F9FAFB;
+  padding: 1rem;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  text-align: left;
+  gap: 0.25rem;
+  border: 1px solid #F3F4F6;
 }
 
-.summary p {
-  font-size: 0.95rem;
-  color: #374151;
-  margin: 0;
-}
-
-.summary strong {
-  color: #111827;
+.summary-label {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   font-weight: 600;
 }
 
-/* Confirm button */
-.confidence-step button {
-  margin-top: 8px;
-  padding: 14px 24px;
-  border-radius: 999px;
+.summary-value {
+  font-size: 0.9rem;
+  color: #4F46E5;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+/* --- FINAL BUTTON --- */
+.final-confirm-btn {
+  background: #4F46E5;
+  color: white;
   border: none;
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 1rem 2.5rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-/* Hover */
-.confidence-step button:hover {
+.final-confirm-btn:hover {
+  background: #4338CA;
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
 }
 
-/* Active click */
-.confidence-step button:active {
-  transform: translateY(0);
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.25);
+.footer-note {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #9CA3AF;
 }
+
+/* Animations */
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes scaleUp { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+@media (max-width: 640px) {
+  .summary-grid { grid-template-columns: 1fr; }
+} 

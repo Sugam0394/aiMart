@@ -1,25 +1,25 @@
- import ToolCard from "./ToolCard";
+import ToolCard from "./ToolCard";
 import "./ToolGrid.css";
-import SectionWrapper from "../../../layouts/section/SectionWrapper";
 
 function ToolGrid({ tools }) {
-  if (!tools.length) {
-    return <SectionWrapper title="Trending Tools">
-      <p className="empty-text">No tools available yet</p>
-    </SectionWrapper>;
+  // Agar tools nahi hain toh sirf ek simple message dikhao
+  if (!tools || !tools.length) {
+    return (
+      <div className="tools-empty-state">
+        <p className="empty-text">No tools available at the moment.</p>
+      </div>
+    );
   }
 
   return (
-    <SectionWrapper title="Trending Tools" subtitle="Top AI tools right now">
-      <div className="tools-container">
-        {tools.map((tool) => (
-          <ToolCard key={tool._id} tool={tool} />
-        ))}
-      </div>
-    </SectionWrapper>
+    <div className="tools-container">
+      {tools.map((tool) => (
+        <ToolCard key={tool._id || tool.id} tool={tool} />
+      ))}
+    </div>
   );
 }
 
-export default ToolGrid;
+export default ToolGrid; 
 
 

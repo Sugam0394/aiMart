@@ -65,6 +65,10 @@ import ExploreRouter from '../src/explore/routes/explore.routes.js';
 app.use('/api', ExploreRouter);
 
 
+ import reviewRouter from './routes/reviewRoutes.js'
+
+app.use('/api', reviewRouter)
+
 
 
 

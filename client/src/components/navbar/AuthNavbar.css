@@ -1,52 +1,34 @@
- .auth-navbar {
+.auth-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  padding: 20px 5%;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .auth-navbar .logo h2 {
-  color: #4F46E5; /* Brand Indigo */
+  color: #4f46e5; /* Indigo Theme */
   font-weight: 800;
   letter-spacing: -1px;
 }
 
 .auth-navbar .nav-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 25px;
   list-style: none;
-  align-items: center;
 }
 
 .auth-navbar .nav-links a {
   text-decoration: none;
-  color: #4B5563; /* Text Gray */
-  font-weight: 500;
+  color: #64748b;
+  font-weight: 600;
   font-size: 0.95rem;
-  transition: color 0.2s;
+  transition: 0.2s;
 }
 
 .auth-navbar .nav-links a:hover {
-  color: #4F46E5;
-}
-
-/* Specific styling for the 'Register' link to make it look like a button */
-.auth-navbar .nav-links li:last-child a {
-  background: #4F46E5;
-  color: white;
-  padding: 0.5rem 1.2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-}
-
-.auth-navbar .nav-links li:last-child a:hover {
-  background: #4338CA;
-  transform: translateY(-1px);
-}
+  color: #4f46e5;
+} 
+ 
 

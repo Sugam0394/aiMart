@@ -1,79 +1,109 @@
-.intent-step {
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 32px;
+/* IntentStep.css - AI-Mart Search Experience */
+
+.intent-step-premium {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-
-  animation: fadeIn 0.3s ease-in-out;
+  gap: 1.5rem;
+  width: 100%;
 }
 
-/* Heading */
-.intent-step h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #111827; /* gray-900 */
+.input-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6B7280;
+  margin-bottom: 0.75rem;
 }
 
-/* Input field */
-.intent-step input {
-  padding: 14px 16px;
-  font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid #d1d5db; /* gray-300 */
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.intent-step input::placeholder {
-  color: #9ca3af; /* gray-400 */
-}
-
-.intent-step input:focus {
-  border-color: #2563eb; /* blue-600 */
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-/* Button */
-.intent-step button {
-  margin-top: 8px;
-  padding: 14px;
-  font-size: 1rem;
-  font-weight: 600;
+/* --- PREMIUM INPUT WRAPPER --- */
+.glass-input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  border: 2px solid #E5E7EB;
   border-radius: 12px;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.glass-input-wrapper:focus-within {
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.premium-input {
+  flex: 1;
   border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  color: #111827;
+  font-family: 'Inter', sans-serif;
+}
+
+.premium-input::placeholder {
+  color: #9CA3AF;
+}
+
+/* --- CONTINUE BUTTON --- */
+.continue-btn {
+  background: #4F46E5;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-
-  background: #2563eb; /* blue-600 */
-  color: #ffffff;
-
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.intent-step button:hover:not(:disabled) {
-  background: #1d4ed8; /* blue-700 */
-  transform: translateY(-1px);
+.continue-btn:hover:not(:disabled) {
+  background: #4338CA;
+  transform: translateX(2px);
 }
 
-.intent-step button:disabled {
-  background: #93c5fd; /* blue-300 */
+.continue-btn:disabled {
+  background: #E5E7EB;
   cursor: not-allowed;
+  color: #9CA3AF;
 }
 
-/* Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* --- SUGGESTION CHIPS --- */
+.suggestions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
+
+.suggestion-hint {
+  font-size: 0.8rem;
+  color: #9CA3AF;
+  font-weight: 500;
+}
+
+.suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  color: #374151;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chip:hover {
+  background: #EEF2FF;
+  border-color: #C7D2FE;
+  color: #4F46E5;
+} 

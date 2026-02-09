@@ -1,13 +1,14 @@
- import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { startExploreThunk } from '../../app/exploreFeatures/exploreThunks';
+import { jumpToStep } from '../../app/exploreFeatures/exploreSlice';
 import StepShell from './StepShell';
 import "./styles/StepFlowController.css";
 
 import { 
   selectCurrentStep, 
   selectExploreError, 
-  selectExploreLoading 
+  selectExploreLoading,
 } from '../../app/exploreFeatures/exploreSelectors';
 
 import IntentStep from './steps/IntentStep';
@@ -20,66 +21,95 @@ function StepFlowController() {
   const currentStep = useSelector(selectCurrentStep);
   const loading = useSelector(selectExploreLoading);
   const error = useSelector(selectExploreError);
-
-  // Debugging logs
-  console.log("StepFlowController Status:", { currentStep, loading, error });
+  const selections = useSelector((state) => state.explore.selections);
 
   useEffect(() => {
-    // 🔥 Sabse important check: Sirf tabhi dispatch karo agar pehle se koi step na ho
-    // Isse infinite loop ruk jayega
+    // Fresh session start logic
     if (!currentStep && !loading && !error) {
-      console.log("Effect Triggered! Starting fresh session...");
       dispatch(startExploreThunk());
     }
   }, [dispatch, currentStep, loading, error]); 
 
-  // 1️⃣ Global loading state
+  // 1. Initial Loading State
   if (loading && !currentStep) {
-    return <div className="step-loader">Initializing AI Mart Explore...</div>;
-  }
-
-  // 2️⃣ Global error state
-  if (error) {
     return (
-      <div className="step-error">
-        <p>Arey! Kuch gadbad ho gayi.</p>
-        <p className="error-msg">{error}</p>
-        <button onClick={() => window.location.reload()}>Retry</button>
+      <div className="explore-loader-container">
+        <div className="ai-pulse-loader"></div>
+        <p>Initializing AI Mart Explore...</p>
       </div>
     );
   }
 
-  // 3️⃣ Backend-driven rendering
-  // Backend se milne wale strings ko handle karna
-  switch (currentStep) {
-    case "INTENT":
-      return  (
-         <StepShell variant="intent">
-      <IntentStep />
-    </StepShell>
-      )
-
-    case "USE_CASE":
-      return <StepShell variant="use-case"><UseCaseStep /></StepShell>;
-
-    case "TOOLS": // 💡 Tip: Backend mein check karna "TOOL" hai ya "TOOLS"
-    case "TOOL":
-      return <StepShell variant="tools"><ToolStep /></StepShell>;
-    case "CONFIDENCE":
-      return <ConfidenceStep />;
-
-    case "COMPLETED":
-      return <div className="step-completed">Setup Finished! 🚀</div>;
-
-    default:
-      return (
-        <div className="step-initial">
-          <p>Preparing your workspace...</p>
-        </div>
-      );
+  // 2. Error State
+  if (error) {
+    return (
+      <div className="step-error-card">
+        <div className="error-icon">⚠️</div>
+        <h3>System Interruption</h3>
+        <p className="error-msg">{error}</p>
+        <button className="retry-btn" onClick={() => window.location.reload()}>
+          Try Again
+        </button>
+      </div>
+    );
   }
+
+  // 3. Normalized Step Rendering
+  const step = currentStep?.toUpperCase();
+
+  return (
+    <div className="step-flow-wrapper">
+      {/* --- STEP 1: INTENT --- */}
+      <StepShell 
+        stepNumber="1"
+        title="What's your goal?"
+        isCompleted={step !== 'INTENT'}
+        isLocked={false}
+        summaryValue={selections.intent}
+        onEdit={() => dispatch(jumpToStep('INTENT'))}
+      >
+        <IntentStep />
+      </StepShell>
+
+      {/* --- STEP 2: USE CASE --- */}
+      <StepShell 
+        stepNumber="2"
+        title="What exactly do you need?"
+        isCompleted={step === 'TOOLS' || step === 'CONFIDENCE'}
+        isLocked={step === 'INTENT'}
+        summaryValue={selections.useCase}
+        onEdit={() => dispatch(jumpToStep('USE_CASE'))}
+      >
+        <UseCaseStep />
+      </StepShell>
+
+      {/* --- STEP 3: TOOLS --- */}
+      <StepShell 
+        stepNumber="3"
+        title="Recommended Tools"
+        isCompleted={step === 'CONFIDENCE'}
+        isLocked={step === 'INTENT' || step === 'USE_CASE'}
+      >
+        <ToolStep />
+      </StepShell>
+
+      {/* --- FINAL STEP: CONFIDENCE (Optional Popup/Section) --- */}
+      {step === 'CONFIDENCE' && (
+        <div className="final-confirmation-area">
+          <ConfidenceStep />
+        </div>
+      )}
+
+      {step === 'COMPLETED' && (
+        <div className="explore-success-screen">
+          <h2>Mission Accomplished! 🚀</h2>
+          <p>Your workspace is ready with selected tools.</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default StepFlowController;
+export default StepFlowController; 
 
  

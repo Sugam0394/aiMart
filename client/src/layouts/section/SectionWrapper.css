@@ -1,40 +1,78 @@
- /* ======================
-   SECTION WRAPPER (ONLY HERE)
-====================== */
-
+/* --- Core Wrapper --- */
 .section-wrapper {
+  margin-bottom: var(--section-gap);
   width: 100%;
-  margin-bottom: 4rem;
+  /* Animation ke liye ready */
+  transition: all 0.6s ease-out;
 }
 
-.section-default {
-  background: #FFFFFF;
-  padding: 3rem 0;        /* 🔥 full-width section */
-}
-
-.section-soft {
-  background: #EEF2FF;
-  padding: 3rem 0;
-}
-
-/* INNER CONTENT CONTROL */
 .section-container {
-  max-width: 1400px;      /* 🔥 DESKTOP WIDTH */
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  padding: 0 20px;
 }
 
-/* TITLES */
+/* --- Header Styling --- */
+.section-header {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
 .section-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #4F46E5;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+  margin: 0;
 }
 
 .section-subtitle {
-  font-size: 1rem;
-  color: #6B7280;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-size: 0.95rem;
 }
+
+/* --- THE SCROLL ENGINE (Spotify Style) --- */
+.section-content-viewport {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 20px;
+  overflow-x: auto !important;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory; /* Cards snap honge */
+  padding-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+
+.section-content-viewport::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* --- Ensuring Children align correctly --- */
+.section-content-viewport > * {
+  flex: 0 0 auto; /* Stop shrinking */
+  scroll-snap-align: start; /* Snap target */
+}
+
+/* --- Variants --- */
+.section-soft {
+  background-color: var(--bg-light);
+  padding: 40px 0;
+  border-radius: 24px;
+}
+
+/* --- Mobile Polish --- */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.3rem;
+  }
+  
+  .section-content-viewport {
+    gap: 12px;
+    /* Mobile par thoda extra padding taaki card edge se na chipke */
+    padding-left: 5px; 
+  }
+} 

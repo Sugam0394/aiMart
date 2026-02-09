@@ -1,14 +1,14 @@
- import React, { useState } from "react";
+import React, { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import "./UserLayout.css"; 
+import "./UserLayout.css";
 
 function UserLayout() {
   const { user, role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Navigatation Logic
+  // Navigation Logic for Settings
   const handleProfileClick = () => {
     if (role === "user") navigate("/settings");
     else if (role === "toolOwner") navigate("/toolowner/settings");
@@ -27,39 +27,56 @@ function UserLayout() {
           <div className="nav-links">
             <NavLink to="/home">Home</NavLink>
             <NavLink to="/explore">Explore</NavLink>
+            {/* Direct access to Saved Tools */}
+            <NavLink to="/saved" className="nav-saved-link">
+              <span className="nav-heart">❤️</span> Saved
+            </NavLink>
           </div>
         </div>
 
         <div className="nav-right">
           {user ? (
-            <div className="user-profile-section" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+            <div 
+              className="user-profile-section" 
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
               <div className="profile-trigger">
                 <div className="user-info">
                   <span className="user-name">{user.name || "Account"}</span>
                   <span className="user-role-badge">{role}</span>
                 </div>
                 <div className="nav-avatar">
-                   {user.profilePicture ? (
-                     <img src={user.profilePicture} alt="User" />
-                   ) : (
-                     user.name?.charAt(0) || "U"
-                   )}
+                  {user.profilePicture ? (
+                    <img src={user.profilePicture} alt="User" />
+                  ) : (
+                    user.name?.charAt(0).toUpperCase() || "U"
+                  )}
                 </div>
               </div>
 
               {/* 💧 DROPDOWN MENU */}
               {isDropdownOpen && (
                 <div className="nav-dropdown">
+                  <div className="dropdown-item" onClick={() => { navigate("/saved"); setIsDropdownOpen(false); }}>
+                    <i className="icon">📂</i> My Saved
+                  </div>
+                  
                   <div className="dropdown-item" onClick={handleProfileClick}>
                     <i className="settings-icon">⚙️</i> Settings
                   </div>
+
                   {role === "toolOwner" && (
-                    <div className="dropdown-item" onClick={() => navigate("/toolowner/dashboard")}>
+                    <div className="dropdown-item" onClick={() => { navigate("/toolowner/dashboard"); setIsDropdownOpen(false); }}>
                       <i className="dash-icon">📊</i> Dashboard
                     </div>
                   )}
+
                   <div className="dropdown-divider"></div>
-                  {/* Logout logic yahan bhi handle kar sakte ho */}
+                  
+                  <div className="dropdown-item logout" onClick={() => { /* Logout logic here */ }}>
+                    <i className="logout-icon">🚪</i> Logout
+                  </div>
                 </div>
               )}
             </div>
@@ -77,6 +94,6 @@ function UserLayout() {
   );
 }
 
-export default UserLayout;
+export default UserLayout; 
 
 

@@ -1,16 +1,14 @@
- .app-layout {
+.app-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #F3F4F6; /* Global Light Grey */
-  font-family: 'Inter', sans-serif;
 }
 
 .app-main {
-  flex: 1; /* Push footer to bottom */
+  flex: 1;
   width: 100%;
-  max-width: 1300px;
+  max-width: 1200px; /* Standard content width */
   margin: 0 auto;
-  padding: 2rem 1.5rem;
-}
+  padding: 0 20px;
+} 
 

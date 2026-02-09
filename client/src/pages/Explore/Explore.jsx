@@ -8,9 +8,11 @@ function Explore() {
 
   return (
       
- <section className="explore-page">
-      <ExploreWrapper />
-    </section>
+ <main className="explore-layout">
+      <div className="explore-container">
+        <ExploreWrapper />
+      </div>
+    </main>
 
       
   )

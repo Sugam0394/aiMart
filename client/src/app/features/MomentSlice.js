@@ -6,10 +6,14 @@ export const fetchToolsByUseCase = createAsyncThunk(
   "moment/fetchToolsByUseCase",
   async (useCaseKey, { rejectWithValue }) => {
     try {
+      console.log("DEBUG 2: API Call Started for ->", useCaseKey);
       const res = await api.get(`/useCased/${useCaseKey}`);
+
+      console.log("DEBUG 3: API Response Data ->", res.data); // Ya
       return {
         useCase: useCaseKey,
-        tools: res.data.tools
+        tools: res.data.tools,
+        meta : res.data.meta
       };
     } catch (err) {
       console.error("Error fetching use case tools:", err);
@@ -96,10 +100,11 @@ const momentSlice = createSlice({
         };
       })
       .addCase(fetchToolsByUseCase.fulfilled, (state, action) => {
-        const { useCase, tools } = action.payload;
+        const { useCase, tools , meta } = action.payload;
         state.useCaseSections[useCase] = {
           status: "succeeded",
           tools,
+          meta,
         };
       })
       .addCase(fetchToolsByUseCase.rejected, (state, action) => {

@@ -1,104 +1,125 @@
-/* UseCaseStep.css */
+/* UseCaseStep.css - AI-Mart Grid Selection */
 
 .usecase-step {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2.5rem 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.5rem;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
 .usecase-step h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: #111827;
-  text-align: center;
-  margin: 0;
+  margin-bottom: 0.5rem;
 }
 
-/* No data state */
-.no-data {
-  text-align: center;
-  color: #6b7280;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  margin: 0;
-  padding: 0.5rem 0;
-}
-
-/* Use case buttons grid */
-.usecase-list {
+/* --- GRID LAYOUT --- */
+.usecase-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-/* Individual use case button */
-.usecase-btn {
-  padding: 1rem 1.25rem;
+/* --- SELECTION OPTION CARD (Assuming these styles for SelectionOption) --- */
+.selection-option {
+  background: white;
+  border: 2px solid #E5E7EB;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  color: #111827;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-  cursor: pointer;
+  padding: 1.25rem;
   text-align: center;
-  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  color: #374151;
+}
+
+.selection-option:hover {
+  border-color: #C7D2FE;
+  background: #F9FAFB;
+  transform: translateY(-2px);
+}
+
+.selection-option.selected {
+  border-color: #4F46E5;
+  background: #EEF2FF;
+  color: #4F46E5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+/* --- ACTION BUTTON --- */
+.primary-action-btn {
+  align-self: flex-start;
+  background: #4F46E5;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+}
+
+.primary-action-btn:hover:not(:disabled) {
+  background: #4338CA;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 10px -1px rgba(79, 70, 229, 0.3);
+}
+
+.primary-action-btn:disabled {
+  background: #D1D5DB;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* --- EMPTY STATE --- */
+.no-data-state {
+  padding: 3rem;
+  text-align: center;
+  background: #F9FAFB;
+  border: 2px dashed #E5E7EB;
+  border-radius: 12px;
+}
+
+.no-data-state .icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .usecase-grid {
+    grid-template-columns: 1fr 1fr; /* 2 columns on mobile */
+  }
+} 
+
+/* Add this to UseCaseStep.css or SelectionOption.css */
+.usecase-btn {
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 1.25rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
 }
 
 .usecase-btn:hover {
-  border-color: #c7d2fe;
-  background: #eef2ff;
+  border-color: #C7D2FE;
+  background: #F9FAFB;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.12);
 }
 
-/* Active / selected state */
 .usecase-btn.active {
-  background: #6366f1;
-  border-color: #6366f1;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
-}
-
-.usecase-btn.active:hover {
-  background: #4f46e5;
-  border-color: #4f46e5;
-  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
-}
-
-/* Continue button */
-.continue-btn {
-  margin-top: 0.25rem;
-  align-self: center;
-  min-width: 160px;
-  padding: 0.875rem 1.5rem;
-  border-radius: 999px;
-  border: none;
-  background: #111827;
-  color: #ffffff;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.continue-btn:hover:not(:disabled) {
-  background: #000000;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-}
-
-.continue-btn:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  border-color: #4F46E5;
+  background: #EEF2FF;
+  color: #4F46E5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
 }

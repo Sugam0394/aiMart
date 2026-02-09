@@ -1,85 +1,44 @@
- .explore-step {
-  background: #fff; /* card feel */
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  padding: 2rem;
-  max-width: 700px;
-  margin: 2rem auto;
+/* AI-Mart Explore Page Styles */
+
+.explore-layout {
+  min-height: calc(100vh - 80px); /* Adjust based on your Navbar height */
+  background-color: #F3F4F6; /* Neutral background from your pattern */
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
 }
 
-.explore-step h2 {
-  font-family: 'Inter', sans-serif;
-  color: #4F46E5; /* Indigo */
-  font-weight: 700;
-  font-size: 1.8rem;
+.explore-container {
+  width: 100%;
+  max-width: 900px; /* Focused width for wizard flow */
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-out;
 }
 
-.explore-step p {
-  color: #6B7280; /* secondary text */
-  font-size: 1rem;
+/* Base Animations for the Flow */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.explore-step button {
-  background-color: #4F46E5;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-}
-
-.explore-step button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79,70,229,0.2);
-}
-
-.explore-step button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.usecase-list, .tool-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-}
-
-.usecase-list button, .tool-card {
-  padding: 1rem;
-  border-radius: 12px;
-  background: #F9FAFB;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  transition: all 0.2s ease;
-}
-
-.usecase-list button.active, .tool-card.active {
-  background: #EEF2FF;
-  border: 1px solid #4F46E5;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79,70,229,0.2);
-}
-.step-loader, .step-error {
-  text-align: center;
-  padding: 2rem;
-  background: #FEF3C7; /* subtle alert bg */
-  border-radius: 8px;
-  margin: 2rem auto;
-  max-width: 500px;
-}
+/* Responsive adjustments */
 @media (max-width: 640px) {
-  .explore-step {
+  .explore-layout {
     padding: 1rem;
-    margin: 1rem;
+    align-items: flex-start; /* Better scrolling on small mobile */
   }
-
-  .explore-step h2 {
-    font-size: 1.5rem;
+  
+  .explore-container {
+    max-width: 100%;
   }
-}
+} 
 
 
 

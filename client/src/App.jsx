@@ -1,6 +1,8 @@
- import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+ import { getAccessToken } from "./utils/token.js";
 
- //layout
+//layout
  import PublicLayout from "./layouts/PublicLayout";
  import AuthLayout from "./layouts/AuthLayout.jsx";
  import UserLayout from "./layouts/UserLayout.jsx";
@@ -13,6 +15,7 @@
  import Login from "./pages/Login/Login";
  import Register from "./pages/Register/Register";
  import AiArt from "./pages/aiArt/AiArt.jsx";
+ import SavedTools from "./components/SavedTools/SavedTools.jsx";
 
 
 
@@ -43,7 +46,11 @@
  import FounderSettings from "./pages/founder/settings/FounderSettings.jsx";
  import UserSettings from "./pages/user/settings/UserSettings.jsx";
  
-import './App.css'
+ 
+
+// Data Initializer
+import DataInitializer from "./components/DataInit/DataInitializer.jsx";
+import AppInitializer from "./components/DataInit/AppInitializer.jsx";
 
 
 
@@ -52,10 +59,20 @@ import './App.css'
 
 
 function App() {
- 
+ const { isInitialized } = useSelector((state) => state.auth);
+ const token = getAccessToken();
+
 
   return (
      <BrowserRouter>
+     <AppInitializer /> {/* Global data initialization component */}
+    <DataInitializer /> {/* Global data initialization component */}
+
+     {token && !isInitialized ? (
+    <div className="loading-screen">
+      <h2>Authenticating...</h2>
+    </div>
+  ) : (
   <Routes>
 
     {/* 🌍 PUBLIC LAYOUT */}
@@ -74,6 +91,7 @@ function App() {
       <Route element={<UserLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/saved" element={<SavedTools />} />
         <Route path="/tools/:id" element={<AiArt />} />
       </Route>
     </Route>
@@ -119,6 +137,8 @@ function App() {
 
 
   </Routes>
+  )}
+      
 </BrowserRouter>
 
   )

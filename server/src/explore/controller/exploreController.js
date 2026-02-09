@@ -1,5 +1,6 @@
 import ExploreSession from "../exploreModel/exploreModel.js";
 import { ExploreService} from '../services/exploreService.js'
+import { momentMapper } from "../utils/momentMapper.js";
 
  
  
@@ -68,7 +69,9 @@ export const handleExploreStep = async (req, res) => {
 
 
 // Complete the explore session
-export const completeExplore = async (req, res) => {
+ // controller/exploreController.js
+
+ export const completeExplore = async (req, res) => {
   try {
     const { sessionId } = req.body;
 
@@ -76,15 +79,19 @@ export const completeExplore = async (req, res) => {
       return res.status(400).json({ success: false, message: "sessionId is required" });
     }
 
-    const completedSession = await ExploreService.completeSession(sessionId);
+    // Khud logic likhne ke bajaye Service ka method call karein
+    const result = await ExploreService.completeSession(sessionId);
 
     return res.status(200).json({
       success: true,
-      message: "Explore session completed",
-      data: completedSession,
+      ...result
     });
+
   } catch (err) {
-    console.error("completeExplore error:", err);
-    return res.status(500).json({ success: false, message: "Server error" });
+    console.error("❌ completeExplore error:", err);
+    return res.status(500).json({ 
+      success: false, 
+      message: err.message || "Server error" 
+    });
   }
 };

@@ -1,93 +1,51 @@
- .explore-container-main {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 20px;
-  position: relative;
+/* ExploreWrapper.css - Vertical Wizard Pattern */
+
+.explore-container-main {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem; /* Consistent spacing between step cards */
+  position: relative;
+  padding-bottom: 3rem;
 }
 
-/* Vertical Line logic */
-.explore-progress-line {
+/* Optional: Vertical line connecting the steps (SaaS Style) */
+.explore-container-main::before {
+  content: '';
   position: absolute;
-  left: 45px;
-  top: 60px;
-  bottom: 100px;
+  left: 28px; /* Aligned with StepShell icons */
+  top: 0;
+  bottom: 0;
   width: 2px;
-  background: #E5E7EB;
+  background: #E5E7EB; /* Light gray line */
   z-index: 0;
 }
 
-.step-shell {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid #F3F4F6;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  z-index: 1;
-  transition: all 0.4s ease;
-}
-
-/* STEP WIDTH RULES as discussed */
-.step-shell.active:nth-child(2) { max-width: 700px; margin-left: auto; margin-right: auto; } /* Intent */
-.step-shell.active:nth-child(3) { max-width: 900px; margin-left: auto; margin-right: auto; } /* UseCase */
-.step-shell.active:nth-child(4) { max-width: 100%; } /* Tools */
-
-.step-shell.completed {
-  background: #F9FAFB;
-  padding: 16px 24px;
-}
-
-.step-indicator {
-  width: 40px;
-  height: 40px;
-  background: #4F46E5;
-  color: white;
-  border-radius: 50%;
+/* Loading State */
+.explore-loading {
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-weight: bold;
-}
-
-.step-shell.locked {
-  opacity: 0.5;
-  filter: grayscale(1);
-  pointer-events: none;
-}
-
-.edit-btn {
-  background: none;
-  border: none;
+  align-items: center;
+  height: 200px;
+  font-family: 'Inter', sans-serif;
   color: #4F46E5;
   font-weight: 600;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
+  font-size: 1.2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-.edit-btn:hover { background: #EEF2FF; }
-
- .explore-container-main {
-  max-width: 900px; /* Saas level width */
-  margin: 50px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* Step Transition Animation */
+.explore-container-main > * {
   position: relative;
+  z-index: 1; /* Keeping cards above the vertical line */
 }
 
-/* Steps ke beech ka visual connection (optional) */
-.step-shell:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 43px; /* Indicator ke center mein align karo */
-  width: 2px;
-  height: 20px;
-  background: #E5E7EB;
-  margin-top: 10px;
-}
+@media (max-width: 640px) {
+  .explore-container-main::before {
+    left: 20px; /* Adjust line for smaller mobile icons */
+  }
+} 
  
 
 

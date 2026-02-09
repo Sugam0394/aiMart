@@ -7,28 +7,29 @@ import { exploreFailure , exploreStart , exploreSuccess } from "./exploreSlice";
  import { startExplore , submitExploreStep , completeExplore } from "../../api/explore/exploreApi";
 
 // 1️⃣ Start Explore Session
- export const startExploreThunk = createAsyncThunk(
+export const startExploreThunk = createAsyncThunk(
   "explore/start",
   async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(exploreStart());
       const response = await startExplore();
       
-      console.log("API RAW RESPONSE:", response); // Isse check karo structure
-
-      // Safely unpack
-      const data = response?.data?.data || response?.data; 
+      // ✅ Axios already unwraps to response.data
+      const { data } = response; // Backend ka main object
       
-      if(!data) throw new Error("No data received from server");
+      if (!data?.sessionId || !data?.currentStep) {
+        throw new Error("Invalid response structure");
+      }
 
       dispatch(exploreSuccess({
-          sessionId: data.sessionId,
-          step: data.currentStep || "INTENT",
-          payload: {},
+        sessionId: data.sessionId,
+        step: data.currentStep,
+        payload: {}, // Intent step has no payload initially
       }));
+      
+      return data;
     } catch (error) {
-      console.error("THUNK ERROR:", error);
-      const message = error.response?.data?.message || error.message;
+      const message = error?.response?.data?.message || error.message || "Session failed";
       dispatch(exploreFailure(message));
       return rejectWithValue(message);
     }
@@ -36,28 +37,39 @@ import { exploreFailure , exploreStart , exploreSuccess } from "./exploreSlice";
 );
 
 
- export const submitExploreStepThunk = createAsyncThunk(
+ // exploreThunks.js
+export const submitExploreStepThunk = createAsyncThunk(
   "explore/submitStep",
-  async ({ sessionId, stepData, currentStep }, { dispatch, rejectWithValue }) => {
+  async ({ sessionId, currentStep, stepData }, { dispatch, rejectWithValue }) => {
     try {
       dispatch(exploreStart());
 
       const response = await submitExploreStep({ sessionId, currentStep, stepData });
+      const { data } = response; // { nextStep, payload }
 
-      // ✅ Axios response structure handle karna (response.data backend ka JSON hai)
-      // Tumhara backend { success: true, data: { nextStep, payload } } bhej raha hai
-      const result = response.data; 
+      // 🔥 Track what user selected
+      let lastSelection = null;
+      
+      if (currentStep === "INTENT") {
+        lastSelection = { type: "intent", value: stepData.intent };
+      } else if (currentStep === "USE_CASE") {
+        lastSelection = { type: "useCase", value: stepData.useCase };
+      } else if (currentStep === "TOOLS") {
+        lastSelection = { type: "tools", value: stepData.toolIds };
+      }
 
       dispatch(
         exploreSuccess({
-          sessionId: sessionId, // sessionId change nahi hoti
-          step: result.nextStep, // "USE_CASE"
-          payload: result.payload, // Use cases list
+          sessionId,
+          step: data.nextStep,
+          payload: data.payload,
+          lastSelection, // ✅ Now properly tracked
         })
       );
+      
+      return data;
     } catch (error) {
-      // ✅ Serialized error message bhejo, pura object nahi
-      const message = error?.response?.data?.message || "Failed to submit step";
+      const message = error?.response?.data?.message || "Step failed";
       dispatch(exploreFailure(message));
       return rejectWithValue(message);
     }

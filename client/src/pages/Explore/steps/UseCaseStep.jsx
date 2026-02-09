@@ -6,23 +6,17 @@ import SelectionOption from './components/SelectionOption';
 
 import "./styles/UseCaseStep.css";
 
-function getOptionValue(useCase) {
-  const isObject = typeof useCase === 'object' && useCase !== null;
-  return isObject ? (useCase.id || useCase.value) : useCase;
-}
+ 
 
-function getOptionLabel(useCase) {
-  const isObject = typeof useCase === 'object' && useCase !== null;
-  return isObject ? (useCase.label || useCase.title) : useCase;
-}
-
+ // UseCaseStep.js
 function UseCaseStep() {
   const dispatch = useDispatch();
   const sessionId = useSelector(selectExploreSessionId);
   const stepPayload = useSelector(selectStepPayload);
   const [selectedUseCase, setSelectedUseCase] = useState(null);
 
-  const useCases = Array.isArray(stepPayload) ? stepPayload : stepPayload?.useCases || [];
+  // ✅ Simplified - Backend sends string array
+  const useCases = Array.isArray(stepPayload) ? stepPayload : [];
 
   const handleSubmit = () => {
     if (!selectedUseCase) return;
@@ -35,35 +29,38 @@ function UseCaseStep() {
     );
   };
 
+  if (useCases.length === 0) {
+    return (
+      <div className="usecase-step">
+        <div className="no-data-state">
+          <span className="icon">🔍</span>
+          <p>No use cases available. Please try a different intent.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="usecase-step">
-      <h2>Select what you want help with</h2>
+      <h2>What exactly do you need help with?</h2>
 
-      {useCases.length === 0 && (
-        <p className="no-data">No options found for this selection.</p>
-      )}
-
-      <div className="usecase-list">
-        {useCases.map((useCase, index) => {
-          const value = getOptionValue(useCase);
-          const label = getOptionLabel(useCase);
-          return (
-            <SelectionOption
-              key={value || index}
-              label={label}
-              isSelected={selectedUseCase === value}
-              onClick={() => setSelectedUseCase(value)}
-            />
-          );
-        })}
+      <div className="usecase-grid">
+        {useCases.map((useCase, index) => (
+          <SelectionOption
+            key={useCase || index}
+            label={useCase.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} // "code-generation" → "Code Generation"
+            isSelected={selectedUseCase === useCase}
+            onClick={() => setSelectedUseCase(useCase)}
+          />
+        ))}
       </div>
 
       <button
-        className="continue-btn"
+        className="primary-action-btn"
         onClick={handleSubmit}
         disabled={!selectedUseCase}
       >
-        Continue
+        Show Me Tools →
       </button>
     </div>
   );

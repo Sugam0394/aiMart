@@ -210,8 +210,10 @@ toolSchema.pre("save", function() {
 toolSchema.index({ primaryCategory: 1, intentTags: 1 });
 toolSchema.index({ isFeatured: 1, status: 1 });
 toolSchema.index({ isPopular: 1, toolType: 1 });
-// Index for SEO and clean search
 toolSchema.index({ name: 'text', tagline: 'text', description: 'text' });
+toolSchema.index({ useCases: 1, status: 1 }); 
+toolSchema.index({ isFeatured: 1, isPopular: 1, createdAt: -1 }); 
+toolSchema.index({ intentTags: 1, primaryCategory: 1, status: 1 });
 
 const Tool = mongoose.model("Tool", toolSchema, 'tools');
 export default Tool;

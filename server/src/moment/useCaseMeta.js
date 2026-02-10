@@ -1,6 +1,4 @@
 
-
-
  const useCaseMeta = {
   "study-better": {
     title: "Study Better",

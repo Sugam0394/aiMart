@@ -29,5 +29,8 @@ export const deriveUseCasesFromTool = ({
     }
   }
 
-  return Array.from(matchedUseCases);
+   return Array.from(matchedUseCases).map(uc =>
+  uc.toLowerCase().trim()
+);
+
 }; 

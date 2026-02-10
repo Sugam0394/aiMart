@@ -5,103 +5,135 @@
 
 
  // section - 1: Get Trending Tools Service
- export const getTrendingToolsService = async ({ intent, category }) => {
-  const { primaryCategories , intentTags } =
-    resolveTrendingMoment({ intent, category });
+export const getTrendingToolsService = async ({ intent, category }) => {
+  const { primaryCategories, intentTags } = resolveTrendingMoment({ intent, category });
 
-  // base query (always applied)
-  const query = {
-    status: "live",
-  };
+  const query = { status: "live" };
+
+  // ✅ Better: Combine conditions smartly
+  const matchConditions = [];
 
   if (primaryCategories?.length > 0) {
-  query.$or = [
-    { primaryCategory: { $in: primaryCategories } },
-    { categories: { $in: primaryCategories } },
-  ];
-}
-
-  // intent-based filtering (only if intent exists)
-  if (intentTags && intentTags.length > 0) {
-    query.intentTags = { $in: intentTags };
+    matchConditions.push(
+      { primaryCategory: { $in: primaryCategories } },
+      { categories: { $elemMatch: { $in: primaryCategories } } }
+    );
   }
 
-  const tools = await Tool.find(query)
-    .sort({
-      isFeatured: -1,
-      isPopular: -1,
-      createdAt: -1,
-    })
-    .limit(6)
-    .lean();
+  if (intentTags?.length > 0) {
+    matchConditions.push(
+      { intentTags: { $elemMatch: { $in: intentTags } } }
+    );
+  }
+
+  if (matchConditions.length > 0) {
+    query.$or = matchConditions;
+  }
+
+  // ✅ Use aggregation for better performance
+  const tools = await Tool.aggregate([
+    { $match: query },
+    {
+      $addFields: {
+        // ✅ Priority scoring
+        score: {
+          $add: [
+            { $cond: [{ $eq: ["$isFeatured", true] }, 10, 0] },
+            { $cond: [{ $eq: ["$isPopular", true] }, 5, 0] },
+            { $multiply: ["$avgRating", 2] }
+          ]
+        }
+      }
+    },
+    { $sort: { score: -1, createdAt: -1 } },
+    { $limit: 12 }, // ✅ Show more options
+    {
+      $project: {
+        name: 1,
+        tagline: 1,
+        logo: 1,
+        slug: 1,
+        primaryCategory: 1,
+        intentTags: 1,
+        pricingType: 1,
+        avgRating: 1,
+        isPopular: 1,
+        isFeatured: 1
+      }
+    }
+  ]);
 
   return tools;
 };
 
-// section - 2: Search Tools Service
- export const searchToolsService = async (term, category) => {
-  const query = {
-    status: 'live',
-  };
 
-  const orConditions = [];
 
-   if (term) {
-    const safeTerm = term.toLowerCase();
 
-    orConditions.push(
+ 
+ // section - 2: Search Tools Service
+export const searchToolsService = async (term, category) => {
+  let query = { status: 'live' };
+
+  if (term) {
+    const safeTerm = term.trim();
+    
+  
+    query.$or = [
       { name: { $regex: safeTerm, $options: 'i' } },
-      { intentTags: { $in: [safeTerm] } }
-    );
+      { tagline: { $regex: safeTerm, $options: 'i' } },
+      { intentTags: { $regex: safeTerm, $options: 'i' } } // Changed from $in to $regex for flexibility
+    ];
   }
-
 
   if (category) {
-    const safeCategory = category.toLowerCase();
-
-    orConditions.push(
-      { primaryCategory: safeCategory },
-      { categories: { $in: [safeCategory] } }
-    );
+    const safeCategory = category.trim().toLowerCase();
+ 
+    query.$and = query.$and || [];
+    query.$and.push({
+      $or: [
+        { primaryCategory: safeCategory },
+        { categories: { $in: [safeCategory] } }
+      ]
+    });
   }
 
-  if (orConditions.length > 0) {
-    query.$or = orConditions;
-  }
+  const tools = await Tool.find(query)
+    .select("name tagline logo slug primaryCategory pricingType avgRating")
+    .sort({ avgRating: -1, createdAt: -1 })
+    .limit(10) // Results thode badha diye
+    .lean();
 
-
-  const tools = await Tool.find(query).lean();
   return tools;
 };
 
 
  
+
+
  // section - 3: Get Tools By Use-Case Service
-export const getToolsByUseCase = async (useCaseKey) => {
-  // 1. Get keywords from the map based on the active key
-  const keywords = useCaseMap[useCaseKey] || [];
-  if (keywords.length === 0) return [];
+ // services/toolService.js
+ export const getToolsByUseCase = async (useCaseKey) => {
+  const normalizedKey = useCaseKey.toLowerCase().trim();
 
-  // 2. Create a regex pattern for broad matching (e.g., /coding|programming|dev/i)
-  const keywordRegex = new RegExp(keywords.join('|'), 'i');
-
-  const query = {
+  const tools = await Tool.find({
     status: "live",
-    $or: [
-      { useCases: { $in: [useCaseKey] } }, // Direct match if exists
-      { primaryCategory: { $regex: keywordRegex } }, // Match primary category
-      { intentTags: { $in: keywords.map(kw => new RegExp(kw, 'i')) } }, // Match any intent tags
-      { name: { $regex: keywordRegex } }, // Match tool name for safety
-      { categories: { $in: keywords.map(kw => new RegExp(kw, 'i')) } } // Match secondary categories
-    ]
-  };
-
-  return await Tool.find(query)
-    .select("name tagline logo intentTags primaryCategory pricingType slug isPopular isFeatured")
-    .sort({ isFeatured: -1, isPopular: -1, createdAt: -1 })
-    .limit(15) 
+    useCases: { $in: [normalizedKey] }
+  })
+    .select(
+      "name tagline logo slug primaryCategory intentTags pricingType avgRating isPopular isFeatured"
+    )
+    .sort({
+      isFeatured: -1,
+      isPopular: -1,
+      avgRating: -1,
+      createdAt: -1
+    })
+    .limit(15)
     .lean();
+
+  return tools;
 };
+
 
 
 

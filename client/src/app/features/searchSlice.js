@@ -1,28 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../api/axios';
 
-// Async thunk to fetch search results
-
 export const fetchSearchTools = createAsyncThunk(
   'search/fetchSearchTools',
   async ({ term, category }, { rejectWithValue }) => {
     try {
-      const safeTerm = term?.toLowerCase() || '';
-      const safeCategory = category?.toLowerCase() || '';
+      const safeTerm = term?.trim().toLowerCase() || '';
+      const safeCategory = category?.trim().toLowerCase() || '';
 
-      // prevent useless API call
       if (!safeTerm && !safeCategory) {
-        return [];
+        return { tools: [], count: 0 }; // ✅ Return structured data
       }
 
       const response = await api.get('/search', {
-        params: {
-          term: safeTerm,
-          category: safeCategory,
-        },
+        params: { term: safeTerm, category: safeCategory },
       });
 
-      return response.data.tools;
+      return {
+        tools: response.data.tools,
+        count: response.data.count, // ✅ Get count from backend
+      };
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || 'Search failed'
@@ -31,39 +28,48 @@ export const fetchSearchTools = createAsyncThunk(
   }
 );
 
-
-
 const searchSlice = createSlice({
   name: 'search',
   initialState: {
     tools: [],
+    count: 0, // ✅ Add count
     loading: false,
     error: null,
-    activeSections: [] // to track which dynamic sections to show
+    activeSections: [],
+    lastSearchTerm: '', // ✅ Track last search
   },
-  reducers: {},
-  extraReducers: builder => {
+  reducers: {
+    clearSearch: (state) => {
+      state.tools = [];
+      state.count = 0;
+      state.error = null;
+      state.lastSearchTerm = '';
+    },
+  },
+  extraReducers: (builder) => {
     builder
-      .addCase(fetchSearchTools.pending, state => {
+      .addCase(fetchSearchTools.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      
-        .addCase(fetchSearchTools.fulfilled, (state, action) => {
+      .addCase(fetchSearchTools.fulfilled, (state, action) => {
         state.loading = false;
-        state.tools = action.payload;
-
+        state.tools = action.payload.tools;
+        state.count = action.payload.count;
         state.activeSections = [
           ...new Set(
-            action.payload.flatMap(tool => tool.intentTags || [])
+            action.payload.tools.flatMap(tool => tool.intentTags || [])
           ),
         ];
       })
       .addCase(fetchSearchTools.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
+        state.tools = [];
+        state.count = 0;
       });
-  }
+  },
 });
 
-export default searchSlice.reducer;
+export const { clearSearch } = searchSlice.actions;
+export default searchSlice.reducer; 

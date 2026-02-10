@@ -13,7 +13,8 @@ export const fetchToolsByUseCase = createAsyncThunk(
       return {
         useCase: useCaseKey,
         tools: res.data.tools,
-        meta : res.data.meta
+        meta : res.data.meta,
+        count: res.data.count,
       };
     } catch (err) {
       console.error("Error fetching use case tools:", err);
@@ -38,13 +39,6 @@ const initialState = {
   trendingTools: [],         // Fetched tools array
   trendingStatus: "idle",    // idle | loading | succeeded | failed
   trendingError: null, 
-  
-  
-  // API error message
-
-   // 🔥 Use-Case Sections (NEW)
-  // example:
-  // "code-smarter": { status: "loading", tools: [] }
   useCaseSections: {},
 };
 
@@ -85,6 +79,13 @@ const momentSlice = createSlice({
       state.trendingStatus = "idle";
       state.trendingError = null;
     },
+    // ✅ Clear specific use-case section
+    clearUseCaseSection: (state, action) => {
+      const key = action.payload;
+      if (state.useCaseSections[key]) {
+        delete state.useCaseSections[key];
+      }
+    },
   },
 
   // ===========================
@@ -97,14 +98,17 @@ const momentSlice = createSlice({
         state.useCaseSections[key] = {
           status: "loading",
           tools: [],
+          meta: null,
+          count: 0,
         };
       })
       .addCase(fetchToolsByUseCase.fulfilled, (state, action) => {
-        const { useCase, tools , meta } = action.payload;
+        const { useCase, tools , meta , count } = action.payload;
         state.useCaseSections[useCase] = {
           status: "succeeded",
           tools,
           meta,
+          count,
         };
       })
       .addCase(fetchToolsByUseCase.rejected, (state, action) => {
@@ -112,6 +116,9 @@ const momentSlice = createSlice({
         state.useCaseSections[key] = {
           status: "failed",
           tools: [],
+          meta: null,
+          count: 0,
+          error: action.payload,
         };
       });
   },
@@ -130,6 +137,7 @@ export const {
   setTrendingToolsSuccess,
   setTrendingToolsError,
   resetTrendingTools,
+  clearUseCaseSection
 } = momentSlice.actions;
 
 export default momentSlice.reducer;

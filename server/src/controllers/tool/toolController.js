@@ -47,89 +47,135 @@ import useCaseMeta from "../../moment/useCaseMeta.js";
 };
 
 
+ 
+
 // Section-1: Trending Tools Controller
- export const getTrendingTools = async (req, res, next) => {
+export const getTrendingTools = async (req, res, next) => {
   try {
     const { intent, category } = req.query;
 
-   
+    // ✅ Input validation
+    if (intent && typeof intent !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid intent parameter'
+      });
+    }
 
-    const tools = await getTrendingToolsService({
-      intent,
-      category,
-    });
+    const tools = await getTrendingToolsService({ intent, category });
 
     res.status(200).json({
       success: true,
+      count: tools.length,
       data: tools,
     });
   } catch (error) {
-    next(error);
+    console.error('❌ Trending Tools Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch trending tools'
+    });
   }
 };
 
- 
 
-// section - 2: Search Tools Controller
+
+ 
+ // Section-2: Search Tools Controller
 export const searchToolsController = async (req, res) => {
+
   try {
+
     const term = req.query.term?.trim() || '';
+
     const category = req.query.category?.trim() || '';
 
+
+
     if (!term && !category) {
+
       return res.status(200).json({
+
         success: true,
+
+        count: 0,
+
         tools: [],
+
       });
+
     }
+
+
 
     const tools = await searchToolsService(term, category);
 
+
+
     res.status(200).json({
+
       success: true,
+
+      count: tools.length, // ✅ Add count
+
       tools,
+
     });
+
   } catch (error) {
-    console.error('Search Controller Error:', error);
+
+    console.error('❌ Search Error:', error);
+
     res.status(500).json({
+
       success: false,
-      message: 'Failed to search tools',
+
+      message: 'Search failed',
+
     });
+
   }
+
 };
- 
 
 
-// section - 3: Get Tools by Use-Case Controller
+
+
+
+// Section-3: Use-Case Controller  
  export const getToolsByUseCaseController = async (req, res) => {
   try {
     const { useCaseKey } = req.params;
-  console.log("DEBUG 5: Backend Received Key ->", useCaseKey);
-    if (!useCaseKey || !useCaseMeta[useCaseKey]) {
+
+    // 🔍 Normalize (safety)
+    const normalizedKey = useCaseKey?.toLowerCase().trim();
+
+    // ✅ Validation
+    if (!normalizedKey || !useCaseMeta[normalizedKey]) {
       return res.status(400).json({
         success: false,
-        message: "Invalid or missing Use-case key",
+        message: "Invalid use-case key",
       });
     }
 
-    const tools = await getToolsByUseCase(useCaseKey);
+    // 🔥 Service call
+    const tools = await getToolsByUseCase(normalizedKey);
 
-    console.log(`DEBUG 6: Tools Found in DB for ${useCaseKey} ->`, tools.length);
-
-    // AI Powered Response: Frontend ko title/subtitle bhi yahi se bhej rahe hain
     return res.status(200).json({
       success: true,
-      meta: useCaseMeta[useCaseKey], // Title aur Subtitle backend se jayega
+      meta: useCaseMeta[normalizedKey],
       count: tools.length,
       tools,
     });
 
   } catch (error) {
-    console.error(`❌ Error in use-case [${req.params.useCaseKey}]:`, error);
+    console.error(`❌ Use-case Error [${req.params.useCaseKey}]:`, error);
+
     return res.status(500).json({
       success: false,
-      message: "Server error while fetching tools",
+      message: "Failed to fetch tools by use-case",
     });
   }
 };
 
+ 

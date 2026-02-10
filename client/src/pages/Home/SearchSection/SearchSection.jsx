@@ -5,7 +5,7 @@ import './SearchSection.css';
 
 const SearchSection = () => {
   const [term, setTerm] = useState('');
-  const { tools, loading, error, search } = useSearchTools();
+  const { tools, count, loading, error, search, clearSearch } = useSearchTools();
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const suggestions = tools.length > 0
@@ -14,6 +14,7 @@ const SearchSection = () => {
 
   const handleKeyDown = (e) => {
     if (!suggestions.length) return;
+    
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActiveIndex((prev) => (prev + 1) % suggestions.length);
@@ -25,9 +26,11 @@ const SearchSection = () => {
     } else if (e.key === "Enter") {
       e.preventDefault();
       if (activeIndex >= 0) {
-        const selected = suggestions[activeIndex];
-        handleSearchSubmit(selected);
+        handleSearchSubmit(suggestions[activeIndex]);
       }
+    } else if (e.key === "Escape") {
+      // ✅ Clear search on Escape
+      handleClear();
     }
   };
 
@@ -37,10 +40,17 @@ const SearchSection = () => {
     setActiveIndex(-1);
   };
 
+  const handleClear = () => {
+    setTerm('');
+    clearSearch();
+    setActiveIndex(-1);
+  };
+
+  // ✅ Sort: Featured first, then popular, then by rating
   const sortedTools = [...tools].sort((a, b) => {
-    if (a.isFeatured && !b.isFeatured) return -1;
-    if (!a.isFeatured && b.isFeatured) return 1;
-    return 0;
+    if (a.isFeatured !== b.isFeatured) return b.isFeatured - a.isFeatured;
+    if (a.isPopular !== b.isPopular) return b.isPopular - a.isPopular;
+    return (b.avgRating || 0) - (a.avgRating || 0);
   });
 
   return (
@@ -54,24 +64,41 @@ const SearchSection = () => {
             type="text"
             placeholder="Search AI tools for your next big project..."
             value={term}
-            onChange={e => {
+            onChange={(e) => {
               const value = e.target.value;
               setTerm(value);
-              search(value);
+              if (value.trim()) {
+                search(value);
+              } else {
+                clearSearch();
+              }
               setActiveIndex(-1);
             }}
             onKeyDown={handleKeyDown}
           />
+          {/* ✅ Clear button */}
+          {term && (
+            <button className="clear-search-btn" onClick={handleClear}>
+              ✕
+            </button>
+          )}
         </div>
 
         {/* Status Messages */}
         {loading && <div className="search-status">Searching tools...</div>}
-        {error && <div className="search-status error">Error: Try again later.</div>}
+        {error && <div className="search-status error">{error}</div>}
+
+        {/* ✅ Show count */}
+        {!loading && term && count > 0 && (
+          <div className="search-count">
+            Found {count} tool{count !== 1 ? 's' : ''}
+          </div>
+        )}
 
         {!loading && term && tools.length === 0 && (
           <div className="empty-state">
             <p className="empty-text">No tools found for "<strong>{term}</strong>"</p>
-            <button className="empty-reset-btn" onClick={() => handleSearchSubmit('')}>
+            <button className="empty-reset-btn" onClick={handleClear}>
               Clear Search
             </button>
           </div>
@@ -92,12 +119,13 @@ const SearchSection = () => {
           </div>
         )}
 
-        {/* Results Grid - Consistent with Home Layout */}
-        <div className="tool-cards-grid">
-          {sortedTools.map(tool => (
-            <ToolCard key={tool.id || tool._id} tool={tool} />
-          ))}
-        </div>
+        {/* Results Grid */}
+        <div className="search-tools-row">
+  {sortedTools.map(tool => (
+    <ToolCard key={tool._id} tool={tool} />
+  ))}
+</div>
+
       </div>
     </section>
   );

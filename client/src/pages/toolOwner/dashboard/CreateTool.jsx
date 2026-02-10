@@ -1,10 +1,10 @@
 import React from 'react'
 import { useState , useEffect, useRef } from 'react';
 import { createTool } from '../../../api/toolOwner/tool.services'
-import '../css/CreateTool.css'
 import Toast from '../../../components/Toast/Toast';
 import { useNavigate } from "react-router-dom";
 import { getMyTools } from '../../../api/toolOwner/tool.services';
+import "./CreateTool.css"
  
 
 function CreateTool() {

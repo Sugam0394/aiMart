@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../../../api/axios";
 import toast from 'react-hot-toast';
-import "./FounderToolOwnerRequests.css";
+import "../css/FounderToolOwnerRequests.css"
 
 function FounderToolOwnerRequests() {
   const [requests, setRequests] = useState([]);

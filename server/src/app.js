@@ -5,9 +5,9 @@ import cookieParser from 'cookie-parser'
 
 const app = express();
 
-app.use(
+ app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: true, // Ye dynamically request bhejnewale URL ko allow kar dega
     credentials: true,
   })
 );

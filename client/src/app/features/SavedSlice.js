@@ -1,74 +1,103 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../api/axios';
 
-// 1. Fetch all saved tools
-export const fetchSavedTools = createAsyncThunk('saved/fetchSaved', async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.get('/saved-tools');
-    return response.data.data; 
-  } catch (err) {
-    return rejectWithValue(err.response.data);
+/* ================================
+   1. Fetch Saved Tools
+================================ */
+export const fetchSavedTools = createAsyncThunk(
+  'saved/fetchSaved',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get('/saved-tools');
+      return res.data?.data || res.data?.tools || [];
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
-});
+);
 
-// 2. Toggle Save (Updated logic to handle immediate UI)
-export const toggleSaveTool = createAsyncThunk('saved/toggleSave', async (toolData, { rejectWithValue }) => {
-  try {
-    // Agar hum toolData mein pura object bhej rahe hain (toolData._id)
-    const toolId = toolData._id || toolData; 
-    const response = await api.post(`/save/${toolId}`);
-    return { 
-      toolId, 
-      isSaved: response.data.isSaved, 
-      fullTool: toolData // Hum pura object payload mein bhej rahe hain
-    };
-  } catch (err) {
-    return rejectWithValue(err.response.data);
+/* ================================
+   2. Toggle Save Tool
+================================ */
+export const toggleSaveTool = createAsyncThunk(
+  'saved/toggleSave',
+  async (toolData, { rejectWithValue }) => {
+    try {
+      const toolId = typeof toolData === 'object' ? toolData._id : toolData;
+      const res = await api.post(`/save/${toolId}`);
+
+      return {
+        toolId,
+        isSaved: res.data.isSaved,
+        fullTool: typeof toolData === 'object' ? toolData : null,
+      };
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
-});
+);
 
+/* ================================
+   Slice
+================================ */
 const savedSlice = createSlice({
   name: 'saved',
   initialState: {
-    items: [], 
-    savedIds: [], 
-    status: 'idle'
+    items: [],       // full tool objects
+    savedIds: [],    // only IDs (string)
+    status: 'idle',
+    error: null,
   },
+
   reducers: {
-    // Logout ke waqt state saaf karne ke liye
     resetSavedState: (state) => {
       state.items = [];
       state.savedIds = [];
       state.status = 'idle';
-    }
+      state.error = null;
+    },
   },
+
   extraReducers: (builder) => {
     builder
+
+      /* ---------- Fetch Saved ---------- */
+      .addCase(fetchSavedTools.pending, (state) => {
+        state.status = 'loading';
+      })
+
       .addCase(fetchSavedTools.fulfilled, (state, action) => {
-        state.items = action.payload || [];
-        state.savedIds = action.payload?.map(tool => tool._id) || [];
+        state.items = action.payload;
+        state.savedIds = action.payload.map(t => t._id.toString());
         state.status = 'succeeded';
       })
-      // ... baaki thunks same ...
 
-.addCase(toggleSaveTool.fulfilled, (state, action) => {
-  const { toolId, isSaved, fullTool } = action.payload;
-  if (isSaved) {
-    if (!state.savedIds.includes(toolId)) {
-      state.savedIds.push(toolId);
-      // Agar humne tool object bheja hai, toh items array mein push karo
-      if (fullTool && typeof fullTool === 'object') {
-        state.items.push(fullTool);
-      }
-    }
-  } else {
-    // Unsave hone par dono jagah se nikaalo
-    state.savedIds = state.savedIds.filter(id => id !== toolId);
-    state.items = state.items.filter(item => item._id !== toolId);
-  }
-});
-  }
+      .addCase(fetchSavedTools.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+
+      /* ---------- Toggle Save ---------- */
+      .addCase(toggleSaveTool.fulfilled, (state, action) => {
+        const { toolId, isSaved, fullTool } = action.payload;
+        const id = toolId.toString();
+
+        if (isSaved) {
+          if (!state.savedIds.includes(id)) {
+            state.savedIds.push(id);
+
+            if (fullTool && !state.items.some(t => t._id === id)) {
+              state.items.push(fullTool);
+            }
+          }
+        } else {
+          state.savedIds = state.savedIds.filter(tid => tid !== id);
+          state.items = state.items.filter(item => item._id !== id);
+        }
+      });
+  },
 });
 
 export const { resetSavedState } = savedSlice.actions;
-export default savedSlice.reducer; 
+export default savedSlice.reducer;
+ 

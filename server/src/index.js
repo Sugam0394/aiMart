@@ -2,12 +2,11 @@
  import dotenv from 'dotenv'
  dotenv.config();
 
- 
 
 
- 
- import ConnectDB from './db/index.js';
  import app from './app.js';
+ import ConnectDB from './db/index.js';
+ 
  
  
  

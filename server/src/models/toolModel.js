@@ -29,7 +29,7 @@ const toolSchema = new mongoose.Schema(
      logo: {
   type: String,
   trim: true,
-  required: true,
+  default: "", // alow save
 },
 
 
@@ -60,7 +60,7 @@ const toolSchema = new mongoose.Schema(
 useCases: {
   type: [String], 
   index: true,
-  required: true,
+  
   // example: ["grow-business", "design-faster"]
 },
 
@@ -190,18 +190,23 @@ totalReviews: {
   { timestamps: true }
 );
 
-// =========================
-// 🔹 Pre-save Hook → Auto-populate useCases
-// =========================
-toolSchema.pre("save", function() {
-  this.useCases = deriveUseCasesFromTool({
-    intentTags: this.intentTags,
-    primaryCategory: this.primaryCategory,
-    categories: this.categories,
-    outputTypes: this.outputTypes
-  });
- 
+ toolSchema.pre("save", function (next) {
+  if (
+    this.isModified("intentTags") ||
+    this.isModified("primaryCategory") ||
+    this.isModified("categories") ||
+    this.isModified("outputTypes")
+  ) {
+    this.useCases = deriveUseCasesFromTool({
+      intentTags: this.intentTags,
+      primaryCategory: this.primaryCategory,
+      categories: this.categories,
+      outputTypes: this.outputTypes,
+    });
+  }
+  next();
 });
+
 
  
 // =========================

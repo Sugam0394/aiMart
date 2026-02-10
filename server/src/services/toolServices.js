@@ -81,7 +81,7 @@ export const searchToolsService = async (term, category) => {
     query.$or = [
       { name: { $regex: safeTerm, $options: 'i' } },
       { tagline: { $regex: safeTerm, $options: 'i' } },
-      { intentTags: { $regex: safeTerm, $options: 'i' } } // Changed from $in to $regex for flexibility
+      { intentTags: { $elemMatch: { $regex: safeTerm, $options: 'i' } } } // Changed from $in to $regex for flexibility
     ];
   }
 

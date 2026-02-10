@@ -3,7 +3,7 @@ import Tool from "../../models/toolModel.js";
 import Review from "../../models/reviewModel.js";
 import { getTrendingToolsService , searchToolsService , getToolsByUseCase } from "../../services/toolServices.js";
 import useCaseMeta from "../../moment/useCaseMeta.js";
- 
+import User from "../../models/userModel.js";
 
 // Frontend ko AI-ART page ke liye clean, trusted tool data dena —
 // sirf 1 tool, 1 curated review, slug ke basis pe.
@@ -30,14 +30,21 @@ import useCaseMeta from "../../moment/useCaseMeta.js";
     let isSaved = false;
     if (userId) {
       const user = await User.findById(userId);
-      isSaved = user.savedTools.includes(id);
+
+     if (user && user.savedTools) {
+  isSaved = user.savedTools.some(
+    toolId => toolId.toString() === id
+  );
+}
     }
+  const toolData = tool.toObject();
+
 
     // Response ko merge kar rahe hain extra info ke saath
     res.status(200).json({
       success: true,
       data: {
-        ...tool._doc, // Tool ka sara data
+        ...toolData, // Tool ka sara data
         isSaved // Frontend isse dekh kar heart icon fill karega
       },
     });

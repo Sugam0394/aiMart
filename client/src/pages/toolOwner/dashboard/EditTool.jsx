@@ -2,7 +2,7 @@
 import { useParams, useNavigate } from "react-router-dom";
  import { getMyTools , updateTool } from "../../../api/toolOwner/tool.services";
  import Toast from "../../../components/Toast/Toast";
- import '../css/CreateTool.css'
+ import '../css/EditTool.css'
 
 function EditTool() {
   const { id } = useParams();

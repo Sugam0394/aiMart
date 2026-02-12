@@ -4,25 +4,27 @@ import "./Navbar.css"
 
 function Navbar() {
   return (
-       <nav className='nav-container'>
-      {/* Logo */}
-      <div>
-        <Link to="/">
-          <h2>AI-Mart</h2>
+    <nav className='nav-container'>
+      {/* Logo Wrapper */}
+      <div className="nav-logo-wrapper">
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <h2 className="nav-logo-text">AI-Mart</h2>
         </Link>
       </div>
 
       {/* Navigation Links */}
-      <ul>
+      <ul className="nav-links">
         <li>
-          <Link to="/login">Login</Link>
+          <Link to="/login" style={{ textDecoration: 'none' }}>Login</Link>
         </li>
         <li>
-          <Link to="/register">Register</Link>
+          <Link to="/register" style={{ textDecoration: 'none' }} className="register-btn">
+            Register
+          </Link>
         </li>
       </ul>
     </nav>
   )
 }
 
-export default Navbar
+export default Navbar 

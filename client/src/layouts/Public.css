@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* Brahmastra to stop wobble */
 }
 
 .app-main {
@@ -9,6 +11,7 @@
   width: 100%;
   max-width: 1200px; /* Standard content width */
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
+  box-sizing: border-box;
 } 
 

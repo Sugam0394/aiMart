@@ -1,55 +1,77 @@
- .footer {
-  background: white;
-  padding: 4rem 5% 2rem 5%;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+.footer {
+  background: #FFFFFF;
+  padding: 4rem 16px 2rem 16px;
+  border-top: 1px solid #F1F5F9;
   margin-top: auto;
+  width: 100%;
 }
 
 .footer-top {
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
+  grid-template-columns: 1fr; /* Mobile: Single column stack */
+  gap: 2.5rem;
 }
 
-.footer h3 {
+/* Tablet & Desktop Layout */
+@media (min-width: 768px) {
+  .footer-top {
+    grid-template-columns: 2fr 1fr 1fr 1fr; /* Brand gets more space */
+  }
+}
+
+.footer-brand h3 {
   color: #4F46E5;
-  margin-bottom: 0.5rem;
-}
-
-.footer p {
-  color: #6B7280;
-  font-size: 0.9rem;
-}
-
-.footer h4 {
-  color: #111827;
+  font-size: 1.6rem;
+  font-weight: 800;
   margin-bottom: 1rem;
 }
 
-.footer ul {
+.footer-brand p {
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.footer-links h4 {
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-links ul {
   list-style: none;
   padding: 0;
 }
 
-.footer li {
-  color: #6B7280;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: color 0.2s;
+.footer-links li {
+  margin-bottom: 0.8rem;
 }
 
-.footer li:hover {
+/* Removing underlines from footer links too */
+.footer-links li a {
+  color: #6B7280;
+  text-decoration: none !important;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.footer-links li a:hover {
   color: #4F46E5;
+  padding-left: 4px; /* Subtle interaction */
 }
 
 .footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
   text-align: center;
-  border-top: 1px solid #F3F4F6;
+  border-top: 1px solid #F1F5F9;
   padding-top: 2rem;
   color: #9CA3AF;
   font-size: 0.85rem;
-}
+} 
  
 

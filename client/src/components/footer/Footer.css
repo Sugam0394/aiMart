@@ -73,5 +73,35 @@
   color: #9CA3AF;
   font-size: 0.85rem;
 } 
+
+/* Logo Consistency as per your rule */
+.footer-logo {
+  color: #4F46E5 !important;
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-decoration: none !important;
+  margin-bottom: 1rem;
+}
+
+.footer-links li a {
+  text-decoration: none !important; /* No underlines in footer too */
+  color: #6B7280;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.footer-links li a:hover {
+  color: #4F46E5;
+}
+
+/* Mobile Stack Rule */
+@media (max-width: 640px) {
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    text-align: left; /* Mobile par left alignment clean lagti hai */
+  }
+}
  
 

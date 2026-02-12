@@ -8,41 +8,40 @@ function Footer() {
       <div className='footer-top'>
         {/* Brand Section */}
         <div className="footer-brand">
-          <h3>AI-Mart</h3>
-          <p>Discover, compare, and master the best AI tools in the market. Built for the future of work.</p>
-        </div>
-
-        {/* Product Links */}
-        <div className="footer-links">
-          <h4>Product</h4>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/explore">Explore</Link></li>
-          </ul>
+          <h3 className="footer-logo">AI-Mart</h3>
+          <p>The discovery platform for AI tools.</p>
         </div>
 
         {/* Support Section */}
         <div className="footer-links">
           <h4>Support</h4>
           <ul>
-            <li><a href="sugamsingh022@gmail.com">support@aimart.com</a></li>
-            <li><Link to="/contact">Contact Us</Link></li>
-            <li><Link to="/privacy">Privacy Policy</Link></li>
+            {/* mailto: lagane se click karte hi email box khul jayega */}
+            <li><a href="mailto:sugamsingh022@gmail.com">sugam@aimart.com</a></li>
           </ul>
         </div>
 
-        {/* Developer Section */}
+        {/* Founder Connect */}
         <div className="footer-links">
-          <h4>Connect</h4>
+          <h4>Founder</h4>
           <ul>
-            <li><a href="https://github.com/Sugam0394" target="_blank" rel="noreferrer">GitHub</a></li>
-            <li><a href="www.linkedin.com/in/sugam-singh-2693a6386" target="_blank" rel="noreferrer">LinkedIn</a></li>
+            <li>
+              <a href="https://github.com/Sugam0394" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+            </li>
+            <li>
+              {/* FIXED: https:// add kiya hai taaki external link sahi chale */}
+              <a href="https://www.linkedin.com/in/sugam-singh-2693a6386" target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            </li>
           </ul>
         </div>
       </div>
 
       <div className='footer-bottom'>
-        <p>© 2026 AI-Mart. Engineered for Scale.</p>
+        <p>© 2026 AI-Mart.</p>
       </div>
     </footer>
   )

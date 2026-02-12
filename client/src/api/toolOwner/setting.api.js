@@ -3,9 +3,17 @@
 // GET Tool Owner Settings
 
 // 🔹 Get logged-in user profile
+ // 🔹 Get logged-in user profile
 export const getMyProfile = async () => {
-  const response = await api.get("/profile");
-  return response.data;
+  try {
+    const response = await api.get("/profile");
+    // FIX: 'res' ko 'response' karo
+    // alert("Mobile Data: " + JSON.stringify(response.data)); 
+    return response.data;
+  } catch (error) {
+    console.error("Profile Fetch Error:", error);
+    throw error;
+  }
 };
 
 // 🔹 Update logged-in user profile

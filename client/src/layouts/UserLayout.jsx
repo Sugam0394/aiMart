@@ -72,12 +72,7 @@ function UserLayout() {
                     </div>
                   )}
 
-                  <div className="dropdown-divider"></div>
-                  
-                  <div className="dropdown-item logout" onClick={() => { /* Logout logic here */ }}>
-                    <i className="logout-icon">🚪</i> Logout
                   </div>
-                </div>
               )}
             </div>
           ) : (

@@ -224,4 +224,114 @@
   }
 }
 
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* Brahmastra Fix */
+}
+
+.global-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  padding: 0 5%;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+}
+
+/* 📱 Mobile Link Fix: Agar space kam ho toh ye hide nahi honge, scroll honge */
+@media (max-width: 640px) {
+  .nav-links {
+    gap: 10px;
+  }
+  .nav-links a {
+    font-size: 13px;
+  }
+  .user-info {
+    display: none; /* Mobile par sirf avatar dikhao space ke liye */
+  }
+}
+
+.nav-links a {
+  text-decoration: none !important;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.nav-links a.active {
+  color: #4f46e5;
+}
+
+/* Profile Trigger (No Dropdown anymore) */
+.user-profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50px;
+  transition: background 0.2s;
+}
+
+.user-profile-trigger:hover {
+  background: #f8fafc;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.user-role-badge {
+  font-size: 10px;
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.nav-avatar {
+  width: 35px;
+  height: 35px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.nav-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 

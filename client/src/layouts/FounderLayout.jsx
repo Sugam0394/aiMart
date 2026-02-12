@@ -11,7 +11,7 @@ function FounderLayout() {
       <nav className="founder-navbar">
         <div className="nav-container">
           <h2 className="brand-logo" onClick={() => navigate("/home")}>
-            AI <span>Bridge</span>
+            AI <span>Mart</span>
           </h2>
 
           <div className="nav-menu">

@@ -1,106 +1,165 @@
-/* FounderLayout.css */
-:root {
-  --primary-color: #4f46e5; /* Indigo */
-  --bg-color: #f8fafc;
-  --nav-bg: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
+/* --- Core Layout (Constitution Rule 3) --- */
 .founder-wrapper {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  background-color: var(--bg-color);
-  font-family: 'Inter', sans-serif;
+  width: 100%;
+  background-color: #F8FAFC; /* Light Slate Background for Premium Feel */
+  overflow-x: hidden;
 }
 
+/* --- Founder Navbar (Rigid & Professional) --- */
 .founder-navbar {
-  background: var(--nav-bg);
-  border-bottom: 1px solid #e2e8f0;
-  padding: 0 2rem;
-  height: 70px;
-  display: flex;
-  align-items: center;
+  background: #ffffff;
+  border-bottom: 2px solid #EEF2F6;
+  height: 75px;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: var(--shadow);
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
+/* --- Brand Logo Consistency --- */
 .brand-logo {
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 900;
+  color: #4F46E5; /* Primary Indigo */
   cursor: pointer;
-  color: var(--text-main);
-  letter-spacing: -0.5px;
+  letter-spacing: -1px;
 }
 
 .brand-logo span {
-  color: var(--primary-color);
+  color: #1E293B;
 }
 
+/* --- Navigation Menu (The Heart of Dashboard) --- */
 .nav-menu {
   display: flex;
-  gap: 2rem;
+  gap: 24px;
+  align-items: center;
 }
 
 .nav-menu a {
-  text-decoration: none;
-  color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  padding: 0.5rem 0;
+  text-decoration: none !important;
+  color: #64748B; /* Secondary Text */
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  padding: 8px 4px;
   position: relative;
 }
 
-.nav-menu a:hover, .active-link {
-  color: var(--primary-color) !important;
+.nav-menu a:hover {
+  color: #4F46E5;
 }
 
-/* Active link underline effect */
+/* Active State with Bottom Border Indicator */
+.active-link {
+  color: #4F46E5 !important;
+}
+
 .active-link::after {
   content: '';
   position: absolute;
-  bottom: -5px;
+  bottom: -4px;
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--primary-color);
-  border-radius: 2px;
+  background: #4F46E5;
+  border-radius: 10px;
 }
 
+/* --- Founder Badge (Trust Signal) --- */
 .founder-profile {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #f1f5f9;
-  padding: 8px 16px;
+  background: #EEF2F6;
+  padding: 6px 14px;
   border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--text-main);
+  border: 1px solid #E2E8F0;
 }
 
 .status-indicator {
   width: 8px;
   height: 8px;
-  background: #22c55e;
+  background: #10B981; /* Green Online Status */
   border-radius: 50%;
-  box-shadow: 0 0 8px #22c55e;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 
-.dashboard-content {
-  max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 2rem;
+.founder-profile span {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1E293B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
+
+/* --- Main Content Spacing --- */
+.dashboard-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  box-sizing: border-box;
+}
+
+/* --- 📱 MOBILE CONSTITUTION (Rule 5) --- */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 16px;
+  }
+
+  /* Logo text chota mobile par */
+  .brand-logo { font-size: 1.2rem; }
+
+  /* Links will scroll horizontally if they don't fit */
+  .nav-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    padding: 12px 20px;
+    justify-content: space-around;
+    border-top: 1px solid #E2E8F0;
+    gap: 0;
+    z-index: 1000;
+  }
+
+  .nav-menu a {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  .active-link::after {
+    bottom: -8px;
+  }
+
+  .founder-profile {
+    padding: 4px 10px;
+  }
+
+  .founder-profile span {
+    font-size: 10px;
+  }
+
+  /* Content bottom padding for Mobile Navigation Bar */
+  .dashboard-content {
+    padding: 20px 16px 100px 16px;
+  }
+} 

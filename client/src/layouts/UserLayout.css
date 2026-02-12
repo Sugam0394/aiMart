@@ -1,104 +1,160 @@
-.global-navbar {
-  position: fixed;
-  top: 0;
+/* --- Core Layout --- */
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   width: 100%;
-  height: 70px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  overflow-x: hidden; /* Brahmastra against Vanshika's scroll issue */
+}
+
+/* --- Global Navbar (Sticky & Glass) --- */
+.global-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
-  z-index: 1000;
+  height: 72px;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  border-bottom: 1px solid #e2e8f0;
   box-sizing: border-box;
 }
 
-.nav-left { display: flex; align-items: center; gap: 40px; }
-
-.logo { 
-  font-size: 22px; 
-  font-weight: 800; 
-  cursor: pointer; 
-  color: #1e293b;
-  letter-spacing: -0.5px;
-}
-.logo span { color: #4f46e5; }
-
-.nav-links { display: flex; gap: 25px; align-items: center; }
-.nav-links a {
-  text-decoration: none;
-  color: #64748b;
-  font-weight: 500;
-  font-size: 15px;
-  transition: 0.2s;
+/* --- Left Side (Logo & Nav) --- */
+.nav-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 32px;
+  flex-shrink: 1; /* Logo ko squeeze hone se bachaega */
 }
 
-.nav-links a:hover { color: #4f46e5; }
-.nav-links a.active { color: #4f46e5; font-weight: 600; }
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #4f46e5;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
 
-.nav-heart { font-size: 14px; }
+.logo span { color: #1e293b; }
 
-/* Profile Section */
-.user-profile-section { position: relative; padding: 5px 0; }
-.profile-trigger { display: flex; align-items: center; gap: 12px; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
-.user-info { display: flex; flex-direction: column; text-align: right; }
-.user-name { font-size: 14px; font-weight: 600; color: #1e293b; }
-.user-role-badge { font-size: 9px; color: #4f46e5; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.nav-links a {
+  text-decoration: none !important;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-links a.active { color: #4f46e5; }
+
+/* --- Right Side (Profile Section) --- */
+.nav-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* Profile section hamesha pura dikhega */
+}
+
+.user-profile-section {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  border-radius: 50px;
+  transition: background 0.2s;
+}
+
+.profile-trigger:hover { background: #f1f5f9; }
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Name lamba ho toh '...' ho jaye */
+  white-space: nowrap;
+}
+
+.user-role-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
 
 .nav-avatar {
   width: 38px;
   height: 38px;
+  border-radius: 50%;
   background: #4f46e5;
   color: white;
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 700;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
 }
 
 .nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Dropdown */
+/* --- Dropdown Menu --- */
 .nav-dropdown {
   position: absolute;
-  top: 55px;
+  top: 120%;
   right: 0;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
   width: 200px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0;
   padding: 8px;
   animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .dropdown-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px;
+  padding: 10px 12px;
   font-size: 14px;
   color: #475569;
-  border-radius: 10px;
-  transition: 0.2s;
-  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
 }
 
-.dropdown-item:hover { background: #f1f5f9; color: #4f46e5; }
-.dropdown-item.logout:hover { background: #fef2f2; color: #ef4444; }
+.dropdown-item:hover { background: #f8fafc; color: #4f46e5; }
+.dropdown-item.logout { color: #ef4444; }
+.dropdown-item.logout:hover { background: #fef2f2; }
 
 .dropdown-divider {
   height: 1px;
@@ -106,19 +162,33 @@
   margin: 6px 0;
 }
 
-.content-area { padding-top: 70px; min-height: 100vh; }
-
-.btn-login {
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
+/* --- Content Area --- */
+.content-area {
+  flex: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
-.btn-login:hover { background: #4338ca; transform: translateY(-1px); } 
+/* --- Mobile Fixes (Constitution Rule 5) --- */
+@media (max-width: 768px) {
+  .global-navbar { padding: 0 16px; height: 64px; }
+  
+  /* Mobile par links ko dropdown ke liye hide karein ya scrollable banayein */
+  .nav-links {
+    display: none; /* Recommended: Use a mobile hamburger later */
+  }
+  
+  .user-info { display: none; } /* Mobile par sirf Avatar dikhao space bachane ke liye */
+  
+  .content-area { padding: 16px; }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
 
 

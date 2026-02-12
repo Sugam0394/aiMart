@@ -1,61 +1,56 @@
-/* FounderDashboard.css */
-
+/* --- Global Dashboard Wrapper --- */
 .founder-dashboard-wrapper {
+  display: flex; /* Sidebar aur Content ko side-by-side lane ke liye */
+  min-height: calc(100vh - 75px); /* Navbar ke niche ki bachi hui height */
+  background-color: #F8FAFC;
+  width: 100%;
+}
+
+/* --- Main Content Area --- */
+.dashboard-content {
+  flex-grow: 1; /* Ye content ko bachi hui saari width de dega */
+  padding: 40px;
+  overflow-y: auto; /* Sirf content area scroll hoga, sidebar fixed rahega */
+  background-color: #F8FAFC;
   display: flex;
-  min-height: calc(100vh - 70px); /* Top Nav ki height minus ki */
-  background-color: #f8fafc;
+  flex-direction: column;
 }
 
-.dashboard-main-area {
-  flex-grow: 1;
-  padding: 2.5rem;
-  overflow-y: auto;
-  max-width: 1600px;
-  margin: 0 auto;
+/* --- View Section (Inner Wrapper) --- */
+.view-section {
+  width: 100%;
+  max-width: 1200px; /* Bohot zyada wide screen par content bikhre na */
+  margin: 0 auto;    /* Center alignment for ultra-wide monitors */
+  animation: fadeInContent 0.4s ease-out;
 }
 
-.content-header {
-  margin-bottom: 2rem;
+/* --- Animations for View Switching --- */
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.content-header h1 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
+/* --- 📱 Responsive Adjustment (Constitution Rule 5) --- */
+@media (max-width: 1024px) {
+  .dashboard-content {
+    padding: 24px;
+  }
 }
 
-.content-header p {
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
-/* Section transition effect */
-.fade-in {
-  animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsiveness */
 @media (max-width: 768px) {
   .founder-dashboard-wrapper {
-    flex-direction: column;
+    flex-direction: column; /* Mobile par sidebar top/bottom chala jayega */
   }
-  
-  .dashboard-main-area {
-    padding: 1.5rem;
-  }
-}
 
-/* Card Styling (If your internal components use cards) */
-.view-section {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  padding: 20px;
+  .dashboard-content {
+    padding: 20px 16px;
+    padding-bottom: 80px; /* Space for Mobile Bottom Nav if applicable */
+  }
 } 
 

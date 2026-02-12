@@ -1,84 +1,101 @@
- 
-
+/* --- Dashboard Container --- */
 .approved-dashboard {
+  width: 100%;
   animation: fadeIn 0.4s ease-out;
 }
 
+/* --- Header Section (Rigid Layout) --- */
 .page-header-alt {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #f1f5f9;
-  padding-bottom: 1.5rem;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #E2E8F0;
+  padding-bottom: 20px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1E293B;
+  margin: 0;
 }
 
 .subtitle {
-  color: #64748b;
-  font-size: 0.9rem;
-  margin-top: 4px;
+  color: #64748B;
+  font-size: 14px;
+  margin: 4px 0 0 0;
 }
 
 .stat-pill {
-  background: #22c55e;
-  color: white;
+  background: #EEF2FF;
+  color: #4F46E5;
   padding: 6px 16px;
   border-radius: 50px;
-  font-size: 0.85rem;
   font-weight: 700;
+  font-size: 13px;
+  border: 1px solid #C7D2FE;
 }
 
+/* --- Grid System (Constitution Rule 5) --- */
 .approved-grid-modern {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  gap: 20px;
 }
 
+/* --- Verified Card (Constitution Rule 4) --- */
 .verified-card {
-  background: white;
+  background: #FFFFFF;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #E2E8F0;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .verified-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.1);
-  border-color: #22c55e;
+  border-color: #4F46E5;
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.08);
 }
 
 .card-top-accent {
   height: 4px;
-  background: linear-gradient(90deg, #22c55e, #10b981);
+  background: #4F46E5; /* Indigo Accent */
+  width: 100%;
 }
 
+/* --- Card Header --- */
 .verified-card-header {
-  padding: 1.5rem 1.5rem 1rem;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .verified-tool-name {
-  font-size: 1.15rem;
+  font-size: 17px;
   font-weight: 700;
-  color: #0f172a;
+  color: #1E293B;
+  margin: 0;
 }
 
 .trust-badge {
+  background: #D1FAE5;
+  color: #065F46;
   font-size: 10px;
   font-weight: 800;
-  color: #059669;
-  background: #d1fae5;
+  text-transform: uppercase;
   padding: 4px 8px;
   border-radius: 4px;
-  text-transform: uppercase;
 }
 
+/* --- Card Body --- */
 .verified-card-body {
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 20px 20px 20px;
+  flex: 1;
 }
 
 .data-row {
@@ -88,27 +105,29 @@
 .data-row label {
   display: block;
   font-size: 11px;
+  font-weight: 700;
+  color: #94A3B8;
   text-transform: uppercase;
-  color: #94a3b8;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .data-row span {
-  font-size: 0.9rem;
+  font-size: 14px;
   color: #334155;
   font-weight: 500;
   word-break: break-all;
 }
 
 .admin-tag {
-  color: #6366f1 !important;
+  color: #4F46E5 !important;
+  font-weight: 600 !important;
 }
 
+/* --- Card Footer --- */
 .verified-card-footer {
-  background: #f8fafc;
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #f1f5f9;
+  background: #F8FAFC;
+  padding: 16px 20px;
+  border-top: 1px solid #E2E8F0;
 }
 
 .approval-date {
@@ -118,32 +137,36 @@
 
 .approval-date small {
   font-size: 10px;
-  color: #94a3b8;
+  color: #94A3B8;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .approval-date span {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 13px;
   color: #475569;
+  font-weight: 600;
 }
 
-/* Loader Styling */
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem;
+/* --- Empty State --- */
+.empty-state-card {
+  padding: 60px;
+  text-align: center;
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 2px dashed #CBD5E1;
+  color: #64748B;
 }
 
-.custom-spinner {
-  width: 30px;
-  height: 30px;
-  border: 3px solid #e2e8f0;
-  border-top: 3px solid #22c55e;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-bottom: 1rem;
-}
-
-@keyframes spin { 100% { transform: rotate(360deg); } }
+/* --- Mobile Fixes --- */
+@media (max-width: 640px) {
+  .page-header-alt {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .approved-grid-modern {
+    grid-template-columns: 1fr;
+  }
+} 

@@ -1,37 +1,65 @@
+/* --- Container & Header --- */
 .founder-section {
-  max-width: 1000px;
-  margin: 0 auto;
+  width: 100%;
+  animation: slideUp 0.4s ease-out;
 }
 
 .section-header {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 25px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e293b;
 }
 
 .badge-count {
-  background: #fef3c7;
-  color: #d97706;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  background: #fef2f2;
+  color: #ef4444;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
   font-weight: 700;
+  border: 1px solid #fee2e2;
+}
+
+/* --- Empty Box --- */
+.empty-box {
+  background: white;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  border: 2px dashed #e2e8f0;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* --- Card Architecture --- */
+.tool-requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .modern-tool-card {
-  background: white;
-  border-radius: 16px;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
+  border-radius: 16px;
   padding: 24px;
-  margin-bottom: 20px;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .modern-tool-card:hover {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+/* --- Card Top: Brand & Category --- */
 .card-top {
   display: flex;
   justify-content: space-between;
@@ -55,34 +83,38 @@
 }
 
 .tool-meta-info h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
   margin: 0;
-  font-size: 1.25rem;
-  color: #0f172a;
 }
 
 .tool-tagline {
-  margin: 2px 0 0;
+  font-size: 14px;
   color: #64748b;
-  font-size: 0.9rem;
+  margin-top: 2px;
 }
 
 .category-pill {
-  background: #eff6ff;
-  color: #2563eb;
+  background: #f1f5f9;
+  color: #475569;
   padding: 4px 12px;
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
 }
 
+/* --- Card Mid: Content & Grid --- */
 .card-mid {
   border-top: 1px solid #f1f5f9;
-  padding-top: 20px;
+  border-bottom: 1px solid #f1f5f9;
+  padding: 20px 0;
+  margin-bottom: 20px;
 }
 
 .tool-desc {
-  font-size: 0.95rem;
+  font-size: 15px;
   color: #334155;
   line-height: 1.6;
   margin-bottom: 20px;
@@ -91,84 +123,102 @@
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 24px;
+  margin-bottom: 16px;
 }
 
 .info-item label {
   display: block;
   font-size: 11px;
+  font-weight: 700;
   color: #94a3b8;
   text-transform: uppercase;
   margin-bottom: 4px;
 }
 
 .info-item span, .info-item a {
-  font-size: 0.9rem;
-  color: #0f172a;
+  font-size: 14px;
+  color: #1e293b;
   font-weight: 500;
   text-decoration: none;
 }
 
-.info-item a:hover { color: #4f46e5; }
+.info-item a { color: #4f46e5; }
+.info-item a:hover { text-decoration: underline; }
 
 .tags-container {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 24px;
 }
 
 .intent-tag {
-  font-size: 0.8rem;
-  color: #475569;
-  background: #f1f5f9;
+  background: #eff6ff;
+  color: #3b82f6;
+  font-size: 12px;
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 50px;
+  font-weight: 600;
 }
 
+/* --- Card Actions (Decision Buttons) --- */
 .card-actions {
   display: flex;
+  justify-content: flex-end;
   gap: 12px;
 }
 
-.btn-solid-approve {
-  flex: 2;
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-solid-approve:hover:not(:disabled) { background: #4338ca; }
-
 .btn-outline-reject {
-  flex: 1;
   background: transparent;
+  border: 1.5px solid #fee2e2;
   color: #ef4444;
-  border: 1px solid #fecaca;
-  padding: 12px;
+  padding: 10px 20px;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.btn-outline-reject:hover:not(:disabled) { background: #fef2f2; }
+.btn-outline-reject:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.btn-solid-approve {
+  background: #4f46e5; /* Our Constitution Indigo */
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+}
+
+.btn-solid-approve:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3);
+}
 
 .btn-solid-approve:disabled, .btn-outline-reject:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* Spinner */
-.spinner-ring {
-  width: 30px; height: 30px;
-  border: 3px solid #e2e8f0; border-top-color: #4f46e5;
-  border-radius: 50%; animation: spin 0.8s linear infinite;
-  margin: 0 auto 15px;
+/* --- Mobile Fixes --- */
+@media (max-width: 640px) {
+  .card-top { flex-direction: column; gap: 12px; }
+  .info-grid { grid-template-columns: 1fr; gap: 12px; }
+  .card-actions { flex-direction: column-reverse; } /* Reject niche, Approve upar */
+  .card-actions button { width: 100%; }
 }
-@keyframes spin { 100% { transform: rotate(360deg); } } 
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+} 

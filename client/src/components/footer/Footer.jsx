@@ -23,7 +23,7 @@ function Footer() {
 
         {/* Founder Connect */}
         <div className="footer-links">
-          <h4>Founder</h4>
+          <h4>Team</h4>
           <ul>
             <li>
               <a href="https://github.com/Sugam0394" target="_blank" rel="noreferrer">

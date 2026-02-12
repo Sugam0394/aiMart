@@ -15,3 +15,29 @@
   box-sizing: border-box;
 } 
 
+@media (max-width: 640px) {
+  .nav-container {
+    padding: 0 12px;
+  }
+
+  /* Login/Register ko mobile par dikhane ke liye */
+  .nav-container ul {
+    display: flex !important; 
+    gap: 8px;
+  }
+
+  .nav-container h2 {
+    font-size: 1.2rem; /* Logo thoda chota kiya space ke liye */
+  }
+
+  .nav-container ul li a {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  /* Register button mobile size */
+  .nav-container ul li:last-child a {
+    padding: 6px 12px;
+  }
+}
+

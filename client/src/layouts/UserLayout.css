@@ -191,4 +191,37 @@
   to { opacity: 1; transform: translateY(0); }
 } 
 
+/* Mobile Fixes - Links wapas laane ke liye */
+@media (max-width: 768px) {
+  .global-navbar { 
+    padding: 0 12px; 
+    height: 64px; 
+  }
+  
+  .nav-left {
+    gap: 15px; /* Gap kam kiya taaki sab fit ho jaye */
+  }
+
+   
+  .nav-links {
+    display: flex; 
+    gap: 12px;
+    overflow-x: auto;  
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;  
+  }
+
+  .nav-links a {
+    font-size: 13px; 
+  }
+
+  .user-info { 
+    display: none;  
+  }
+}
+
 

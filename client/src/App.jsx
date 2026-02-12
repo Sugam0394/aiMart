@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, }from "react-router-dom";
 import { useSelector } from "react-redux";
  import { getAccessToken } from "./utils/token.js";
 
@@ -57,91 +57,80 @@ import AppInitializer from "./components/DataInit/AppInitializer.jsx";
 
 
 
+ 
 
 function App() {
- const { isInitialized } = useSelector((state) => state.auth);
- const token = getAccessToken();
+  const { isInitialized } = useSelector((state) => state.auth);
+  const token = getAccessToken();
 
+  // 1. Agar token hai aur humne abhi tak verify nahi kiya (Refresh case)
+  // To jab tak 'isInitialized' true nahi hota, loading dikhayein
+  if (token && !isInitialized) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold animate-pulse">aiMart v2</h2>
+          <p className="mt-2 text-gray-400">Authenticating...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-     <BrowserRouter>
-     <AppInitializer /> {/* Global data initialization component */}
-    <DataInitializer /> {/* Global data initialization component */}
+    <BrowserRouter>
+      {/* 2. Ye components background mein sync chalate rahenge */}
+      <AppInitializer /> 
+      <DataInitializer />
 
-     {token && !isInitialized ? (
-    <div className="loading-screen">
-      <h2>Authenticating...</h2>
-    </div>
-  ) : (
-  <Routes>
-
-    {/* 🌍 PUBLIC LAYOUT */}
-    <Route element={<PublicLayout />}>
-      <Route path="/" element={<Home />} />
-    </Route>
-
-    {/* 🔐 AUTH ONLY */}
-    <Route element={<AuthLayout />}>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-    </Route>
-
-    {/* 🔐 SMART HOME + EXPLORE (ALL LOGGED-IN ROLES) */}
-    <Route element={<ProtectedRoute allowedRoles={["user","toolOwner","founder"]} />}>
-      <Route element={<UserLayout />}>
-        <Route path="/home" element={<Home />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/saved" element={<SavedTools />} />
-        <Route path="/tools/:id" element={<AiArt />} />
-      </Route>
-    </Route>
-
-      <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-      <Route element={<UserLayout />}>
-        <Route path="/settings" element={<UserSettings />} />
-      </Route>
+      <Routes>
+        {/* 🌍 PUBLIC ROUTES */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
         </Route>
-    
 
+        {/* 🔐 AUTH ROUTES (Login/Register) */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
 
-       {/* 🔐 TOOL OWNER DASHBOARD ✅ FIX */}
- <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
-  <Route path="/toolowner" element={<ToolOwnerLayout />}>
+        {/* 🔐 COMMON PROTECTED ROUTES */}
+        <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
+          <Route element={<UserLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/saved" element={<SavedTools />} />
+            <Route path="/tools/:id" element={<AiArt />} />
+            <Route path="/settings" element={<UserSettings />} />
+          </Route>
+        </Route>
 
-    {/* DASHBOARD */}
-    <Route path="dashboard" element={<ToolOwnerDashboard />}>
-      <Route index element={<MyTool />} />
-      <Route path="create-tool" element={<CreateTool />} />
-      <Route path="edit-tool/:id" element={<EditTool />} />
-    </Route>
+        {/* 🔐 TOOL OWNER DASHBOARD */}
+        <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
+          <Route path="/toolowner" element={<ToolOwnerLayout />}>
+            <Route path="dashboard" element={<ToolOwnerDashboard />}>
+              <Route index element={<MyTool />} />
+              <Route path="create-tool" element={<CreateTool />} />
+              <Route path="edit-tool/:id" element={<EditTool />} />
+            </Route>
+            <Route path="settings" element={<ToolOwnerSettings />} />
+          </Route>
+        </Route>
 
-    {/* SETTINGS */}
-    <Route path="settings" element={<ToolOwnerSettings />} />
-
-  </Route>
-</Route>
-
-
-
-
-     
- {/* 🔐 FOUNDER DASHBOARD */}
-<Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
-  <Route element={<FounderLayout />}>
-    <Route path="/founder/dashboard" element={<FounderDashboard />}>
-      {/* Nested routes not needed now, sidebar state controls content */}
-    </Route>
-    <Route path="/founder/settings" element={<FounderSettings />} />
-  </Route>
-</Route>
-
-
-  </Routes>
-  )}
-      
-</BrowserRouter>
-
-  )
+        {/* 🔐 FOUNDER DASHBOARD */}
+        <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
+          <Route element={<FounderLayout />}>
+            <Route path="/founder/dashboard" element={<FounderDashboard />} />
+            <Route path="/founder/settings" element={<FounderSettings />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+
+
+export default App;
+
+ 

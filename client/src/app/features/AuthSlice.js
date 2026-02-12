@@ -1,140 +1,115 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/axios";
-import { setAccessToken } from "../../utils/token";
-import { clearAccessToken } from "../../utils/token";
+import { setAccessToken, clearAccessToken } from "../../utils/token";
+ 
+const savedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
 
-
-/**
- * 🔹 Register User
- */
-export const registerUser = createAsyncThunk(
-  "/register",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const res = await api.post("/register", formData);
-
-      // token save
-      setAccessToken(res.data.data.accessToken);
-
-      return res.data.data.user;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
-      );
-    }
-  }
-);
-export const loginUser = createAsyncThunk(
-  "/login",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const res = await api.post("/login", formData);
-
-      // token store
-      setAccessToken(res.data.data.accessToken);
-
-      return res.data.data.user;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Login failed"
-      );
-    }
-  }
-);
-
+ 
 export const syncUserRole = createAsyncThunk(
   "/sync-role",
   async (_, { rejectWithValue }) => {
     try {
       const res = await api.get("/me");
-      return res.data.user;
+      // Backend structure check: res.data.data.user
+      const userData = res.data.data?.user || res.data.user; 
+      
+      if (userData) {
+        localStorage.setItem("user", JSON.stringify(userData));
+        return userData;
+      }
+      return rejectWithValue("No user data");
     } catch (error) {
-        console.log(error)
+      console.error("Sync Error:", error);
       return rejectWithValue(null);
     }
   }
 );
 
+ 
+export const loginUser = createAsyncThunk("/login", async (formData, { rejectWithValue }) => {
+  try {
+    const res = await api.post("/login", formData);
+    setAccessToken(res.data.data.accessToken);
+    return res.data.data.user;
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.message || "Login failed");
+  }
+});
+
+export const registerUser = createAsyncThunk("/register", async (formData, { rejectWithValue }) => {
+  try {
+    const res = await api.post("/register", formData);
+    setAccessToken(res.data.data.accessToken);
+    return res.data.data.user;
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.message || "Registration failed");
+  }
+});
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
-    role: null,
+    user: savedUser,
+    role: savedUser ? savedUser.role : null,
     loading: false,
     error: null,
-    isInitialized: false, // New flag to track initialization
+    isInitialized: !!savedUser, // Agar user hai to true, warna initial check baki hai
   },
   reducers: {
     logout: (state) => {
       state.user = null;
       state.role = null;
       state.error = null;
-      state.isInitialized = true; // Reset initialization on logout
+      state.isInitialized = true;
       clearAccessToken();
       localStorage.removeItem("user");
-
     },
   },
   extraReducers: (builder) => {
     builder
-      // REGISTER
+   // ✅ 1. Sabse pehle addCase (Specific logic)
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
+      .addCase(syncUserRole.fulfilled, (state, action) => {
         state.user = action.payload;
         state.role = action.payload.role;
-        state.isInitialized = true; // Initialization complete
-      })
-      .addCase(registerUser.rejected, (state, action) => {
+        state.isInitialized = true;
         state.loading = false;
-        state.error = action.payload;
       })
-
- 
-       // LOGIN
-        .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-})
-       .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(syncUserRole.rejected, (state) => {
+        state.user = null;
+        state.role = null;
+        state.isInitialized = true;
         state.loading = false;
-       state.user = action.payload;
-       state.role = action.payload.role;
-       state.isInitialized = true;
-      // Local storage mein user info save karo (Token toh utils handle kar raha hai)
-       localStorage.setItem("user", JSON.stringify(action.payload));
-
-})
-      .addCase(loginUser.rejected, (state, action) => {
-       state.loading = false;
-      state.error = action.payload;
-})
-
- // ✅ ROLE AUTO SYNC (NEW — SAFE)
-    .addCase(syncUserRole.fulfilled, (state, action) => {
-  if (action.payload) {
-    state.user = action.payload;
-    state.role = action.payload.role;
-  }
-  state.isInitialized = true; // Initialization complete
-})
-    .addCase(syncUserRole.rejected, (state) => {
-      state.user = null;
-      state.role = null;
-      state.isInitialized = true; // 👈 Error aaya tab bhi checking khatam
-    });
-
-
-
-
-
-
+        localStorage.removeItem("user");
+      })
+      // ✅ 2. Phir addMatcher (Common success logic)
+      .addMatcher(
+        (action) => action.type.endsWith("/fulfilled") && (action.type.includes("login") || action.type.includes("register")),
+        (state, action) => {
+          state.loading = false;
+          state.user = action.payload;
+          state.role = action.payload.role;
+          state.isInitialized = true;
+          localStorage.setItem("user", JSON.stringify(action.payload));
+        }
+      )
+      // ✅ 3. Common Error handling
+      .addMatcher(
+        (action) => action.type.endsWith("/rejected") && !action.type.includes("sync-role"),
+        (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        }
+      );
   },
 });
 
 export const { logout } = authSlice.actions;
-export default authSlice.reducer;
+export default authSlice.reducer; 

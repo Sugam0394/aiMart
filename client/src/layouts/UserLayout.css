@@ -1,47 +1,50 @@
-/* --- Core Layout --- */
+/* --- 🏗️ Layout Constitution (Rule 1 & 3) --- */
 .layout-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
   background-color: #f8fafc;
-  overflow-x: hidden; /* Brahmastra against Vanshika's scroll issue */
+  overflow-x: hidden; /* Brahmastra against horizontal scroll */
 }
 
-/* --- Global Navbar (Sticky & Glass) --- */
+/* --- 🧭 Global Navbar (Rigid & Responsive) --- */
 .global-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 72px;
-  padding: 0 24px;
-  background: rgba(255, 255, 255, 0.95);
+  padding: 0 4%;
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 2000;
   border-bottom: 1px solid #e2e8f0;
   box-sizing: border-box;
+  gap: 15px;
 }
 
-/* --- Left Side (Logo & Nav) --- */
+/* --- ⬅️ Left Side (Logo & Nav Links) --- */
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 32px;
-  flex-shrink: 1; /* Logo ko squeeze hone se bachaega */
+  gap: 28px;
+  flex-shrink: 1;
+  min-width: 0; /* Prevents container from breaking */
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #4f46e5;
+  color: #4f46e5; /* Primary Indigo */
   cursor: pointer;
-  user-select: none;
   white-space: nowrap;
 }
 
-.logo span { color: #1e293b; }
+.logo span {
+  color: #1e293b;
+}
 
 .nav-links {
   display: flex;
@@ -54,34 +57,41 @@
   color: #64748b;
   font-size: 14px;
   font-weight: 600;
-  transition: color 0.2s;
+  transition: all 0.2s;
   white-space: nowrap;
 }
 
-.nav-links a.active { color: #4f46e5; }
+.nav-links a:hover, 
+.nav-links a.active {
+  color: #4f46e5;
+}
 
-/* --- Right Side (Profile Section) --- */
+.nav-heart {
+  margin-right: 4px;
+}
+
+/* --- ➡️ Right Side (Profile Zone) --- */
 .nav-right {
   display: flex;
   align-items: center;
-  flex-shrink: 0; /* Profile section hamesha pura dikhega */
+  flex-shrink: 0; /* Profile section stays rigid */
 }
 
-.user-profile-section {
-  position: relative;
-  cursor: pointer;
-}
-
-.profile-trigger {
+.user-profile-trigger {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 6px 12px;
   border-radius: 50px;
+  cursor: pointer;
   transition: background 0.2s;
+  border: 1px solid transparent;
 }
 
-.profile-trigger:hover { background: #f1f5f9; }
+.user-profile-trigger:hover {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+}
 
 .user-info {
   display: flex;
@@ -95,24 +105,25 @@
   color: #1e293b;
   max-width: 120px;
   overflow: hidden;
-  text-overflow: ellipsis; /* Name lamba ho toh '...' ho jaye */
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .user-role-badge {
   font-size: 10px;
-  text-transform: uppercase;
   background: #e0e7ff;
   color: #4338ca;
-  padding: 2px 8px;
+  padding: 1px 8px;
   border-radius: 4px;
   font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .nav-avatar {
   width: 38px;
   height: 38px;
+  min-width: 38px; /* Force size to stay circular */
   border-radius: 50%;
   background: #4f46e5;
   color: white;
@@ -125,213 +136,70 @@
   overflow: hidden;
 }
 
-.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-/* --- Dropdown Menu --- */
-.nav-dropdown {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  width: 200px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  border: 1px solid #e2e8f0;
-  padding: 8px;
-  animation: slideDown 0.2s ease-out;
-}
-
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  font-size: 14px;
-  color: #475569;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.dropdown-item:hover { background: #f8fafc; color: #4f46e5; }
-.dropdown-item.logout { color: #ef4444; }
-.dropdown-item.logout:hover { background: #fef2f2; }
-
-.dropdown-divider {
-  height: 1px;
-  background: #f1f5f9;
-  margin: 6px 0;
-}
-
-/* --- Content Area --- */
-.content-area {
-  flex: 1;
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 24px;
-  box-sizing: border-box;
-}
-
-/* --- Mobile Fixes (Constitution Rule 5) --- */
-@media (max-width: 768px) {
-  .global-navbar { padding: 0 16px; height: 64px; }
-  
-  /* Mobile par links ko dropdown ke liye hide karein ya scrollable banayein */
-  .nav-links {
-    display: none; /* Recommended: Use a mobile hamburger later */
-  }
-  
-  .user-info { display: none; } /* Mobile par sirf Avatar dikhao space bachane ke liye */
-  
-  .content-area { padding: 16px; }
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-} 
-
-/* Mobile Fixes - Links wapas laane ke liye */
-@media (max-width: 768px) {
-  .global-navbar { 
-    padding: 0 12px; 
-    height: 64px; 
-  }
-  
-  .nav-left {
-    gap: 15px; /* Gap kam kiya taaki sab fit ho jaye */
-  }
-
-   
-  .nav-links {
-    display: flex; 
-    gap: 12px;
-    overflow-x: auto;  
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .nav-links::-webkit-scrollbar {
-    display: none;  
-  }
-
-  .nav-links a {
-    font-size: 13px; 
-  }
-
-  .user-info { 
-    display: none;  
-  }
-}
-
-.layout-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
-  overflow-x: hidden; /* Brahmastra Fix */
-}
-
-.global-navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 70px;
-  padding: 0 5%;
-  background: #ffffff;
-  border-bottom: 1px solid #f1f5f9;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 15px;
-}
-
-/* 📱 Mobile Link Fix: Agar space kam ho toh ye hide nahi honge, scroll honge */
-@media (max-width: 640px) {
-  .nav-links {
-    gap: 10px;
-  }
-  .nav-links a {
-    font-size: 13px;
-  }
-  .user-info {
-    display: none; /* Mobile par sirf avatar dikhao space ke liye */
-  }
-}
-
-.nav-links a {
-  text-decoration: none !important;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.nav-links a.active {
-  color: #4f46e5;
-}
-
-/* Profile Trigger (No Dropdown anymore) */
-.user-profile-trigger {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 50px;
-  transition: background 0.2s;
-}
-
-.user-profile-trigger:hover {
-  background: #f8fafc;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.user-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.user-role-badge {
-  font-size: 10px;
-  background: #e0e7ff;
-  color: #4338ca;
-  padding: 1px 6px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-.nav-avatar {
-  width: 35px;
-  height: 35px;
-  background: #4f46e5;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  overflow: hidden;
-}
-
 .nav-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
+/* --- 📺 Content Area --- */
+.content-area {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* --- 📱 MOBILE CONSTITUTION (Rule 5) --- */
+@media (max-width: 768px) {
+  .global-navbar {
+    padding: 0 12px;
+    height: 64px;
+  }
+
+  .nav-left {
+    gap: 12px;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .nav-links {
+    gap: 10px;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+  }
+
+  /* CRITICAL: Screenshot overlap fix */
+  .user-name {
+    display: none; /* Sugam Singh hide hoga, space bachane ke liye */
+  }
+
+  .user-info {
+    margin-right: -4px;
+  }
+
+  .nav-heart {
+    display: none; /* Icon hide, only text remains */
+  }
+
+  .nav-avatar {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+}
+
+/* Extra tight screens fix */
+@media (max-width: 400px) {
+  .nav-links a:nth-child(3) {
+    display: none; /* "Saved" hides on very small screens to save logo/explore */
+  }
+} 
 
 

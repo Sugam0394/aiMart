@@ -7,8 +7,16 @@ function UserLayout() {
   const { user, role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  // 🎯 FOUNDER RULE: Click anywhere on profile to go to Dashboard/Settings
-  const handleProfileNavigation = () => {
+  const handleProfileNavigation = (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // Prevents any other element from stealing the click
+
+    // Mobile/Production Debugging
+    if (!role) {
+      navigate("/login");
+      return;
+    }
+
     if (role === "user") navigate("/settings");
     else if (role === "toolOwner") navigate("/toolowner/dashboard");
     else if (role === "founder") navigate("/founder/dashboard");
@@ -35,6 +43,7 @@ function UserLayout() {
             <div 
               className="user-profile-trigger" 
               onClick={handleProfileNavigation}
+              onTouchStart={(e) => e.stopPropagation()} // Better mobile response
               title="View Account"
             >
               <div className="user-info">

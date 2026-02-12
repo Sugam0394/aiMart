@@ -1,26 +1,44 @@
-import React, { useEffect, useState } from 'react'
-import api from '../../../api/axios'
-import toast from 'react-hot-toast'
-import '../css/ApprovedToolFormRequest.css'
+import React, { useEffect, useState, useCallback } from 'react';
+import api from '../../../api/axios';
+import toast from 'react-hot-toast';
+import '../css/ApprovedToolFormRequest.css';
 
 function ApprovedToolFormRequest() {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchApprovedTools = async () => {
+  // 🛡️ Safe Fetch: Callback use kiya hai memory leaks rokne ke liye
+  const fetchApprovedTools = useCallback(async () => {
     try {
+      setLoading(true);
       const res = await api.get("/approvedTool");
-      setTools(res.data.data);
+      
+      // Laptop vs Mobile data structure safety
+      if (res.data && res.data.data) {
+        setTools(res.data.data);
+      } else {
+        setTools([]);
+      }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to load approved tools");
+      console.error("Fetch Error Detail:", err);
+      const errorMsg = err.response?.data?.message || "Server connection failed";
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchApprovedTools();
-  }, []);
+  }, [fetchApprovedTools]);
+
+  // 🖼️ Image Error Handler: Prevents 404 infinite loops
+  const handleImageError = (e) => {
+    const fallback = "/default-logo.png";
+    if (e.target.src !== window.location.origin + fallback) {
+      e.target.src = fallback;
+    }
+  };
 
   if (loading) return (
     <div className="status-loading">
@@ -53,7 +71,8 @@ function ApprovedToolFormRequest() {
                   src={tool.logo || "/default-logo.png"}
                   alt={tool.name}
                   className="mini-logo"
-                  onError={(e) => { e.target.src = "/default-logo.png"; }}
+                  loading="lazy"
+                  onError={handleImageError}
                 />
                 <div className="header-text">
                   <h3>{tool.name}</h3>
@@ -62,7 +81,7 @@ function ApprovedToolFormRequest() {
               </div>
 
               <div className="card-body-main">
-                <p className="tool-tag">{tool.tagline}</p>
+                <p className="tool-tag">{tool.tagline || "No tagline available"}</p>
                 
                 <div className="meta-grid">
                   <div className="meta-box">
@@ -76,17 +95,26 @@ function ApprovedToolFormRequest() {
                 </div>
 
                 <div className="intent-pills">
-                  {tool.intentTags?.map((tag, i) => (
-                    <span key={i} className="pill">#{tag}</span>
-                  ))}
+                  {tool.intentTags?.length > 0 ? (
+                    tool.intentTags.map((tag, i) => (
+                      <span key={i} className="pill">#{tag}</span>
+                    ))
+                  ) : (
+                    <span className="pill-empty">No tags</span>
+                  )}
                 </div>
               </div>
 
               <div className="card-footer-main">
                 <div className="date-info">
-                  Published: {new Date(tool.updatedAt).toLocaleDateString()}
+                  Published: {tool.updatedAt ? new Date(tool.updatedAt).toLocaleDateString() : "N/A"}
                 </div>
-                <a href={tool.url} target="_blank" rel="noreferrer" className="view-link">
+                <a 
+                  href={tool.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="view-link"
+                >
                   Visit Tool ↗
                 </a>
               </div>
@@ -95,7 +123,7 @@ function ApprovedToolFormRequest() {
         </div>
       )}
     </div> 
-  )
+  );
 }
 
 export default ApprovedToolFormRequest; 

@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, }from "react-router-dom";
 import { useSelector } from "react-redux";
  import { getAccessToken } from "./utils/token.js";
+ import "./App.css"
+ 
 
 //layout
  import PublicLayout from "./layouts/PublicLayout";

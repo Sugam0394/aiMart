@@ -1,154 +1,125 @@
- /* --- Global Variables (Phase 1 Root) --- */
+/* AI-Mart UI Constitution V2 
+   Goal: Zero Wobble, Mobile-First, Rigid Layout
+*/
+
+/* --- GLOBAL RESET (The "Rigid" Shield) --- */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden; /* Screen ko left-right hilne se block karta hai */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit; /* Padding/Border width ko calculate hone se rokta hai */
+}
 
 :root {
-
   --primary-indigo: #4f46e5;
-
   --bg-light: #fdfdfd;
-
-  --section-gap: 60px;
-
+  --section-gap: 40px; /* Mobile-friendly gap */
 }
 
-
-
+/* --- LAYOUT WRAPPER --- */
 .home-container {
-
   background: var(--bg-light);
-
   min-height: 100vh;
-
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
-
-
 
 .home-page {
-
-  max-width: 1440px;
-
-  margin: 0 auto;
-
-  padding: 0 20px 80px 20px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: var(--section-gap);
-
-}
-
-
-
-/* --- Phase 2: Horizontal Engine --- */
-
-.horizontal-scroll-section {
-
   width: 100%;
-
-  overflow-x: auto;
-
-  padding-bottom: 20px;
-
-  scrollbar-width: none; /* Firefox */
-
-  scroll-snap-type: x mandatory; /* Premium Snapping */
-
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px 80px 16px; /* 16px consistent mobile padding */
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
 }
 
-
+/* --- PHASE 2: HORIZONTAL ENGINE (Isolated Scroll) --- */
+.horizontal-scroll-section {
+  width: 100%;
+  overflow-x: auto; /* Sirf section scroll hoga, screen nahi */
+  -webkit-overflow-scrolling: touch; 
+  padding-bottom: 20px;
+  scrollbar-width: none;
+  display: block; /* Section must be block to contain flex child */
+}
 
 .horizontal-scroll-section::-webkit-scrollbar {
-
-  display: none; /* Chrome/Safari */
-
+  display: none;
 }
-
-
 
 .horizontal-scroll-section > div {
-
   display: flex !important;
-
   flex-direction: row !important;
-
-  gap: 20px;
-
+  gap: 16px;
   flex-wrap: nowrap !important;
-
+  width: max-content; /* Content ke hisaab se extend hoga bina parent ko hilaye */
+  padding-right: 16px; /* Extra space for last card */
 }
 
-
-
-/* --- Phase 3: Image Shield (The 70/30 Rule) --- */
-
-/* Targetting all tool images globally to ensure 16:9 ratio */
-
+/* --- PHASE 3: IMAGE SHIELD --- */
 .home-page .tool-card-image img {
-
   width: 100%;
-
-  height: 100%;
-
+  height: auto;
   aspect-ratio: 16/9;
-
   object-fit: cover !important;
-
-  border-radius: 12px 12px 0 0;
-
+  border-radius: 10px 10px 0 0; /* As per Constitution Rule 4 */
 }
 
-
-
-/* --- Phase 4: Sticky & Reveal --- */
-
+/* --- PHASE 4: STICKY & GLASS BAR --- */
 .filter-sticky-bar {
-
- 
-
-  top: -1px; /* Slightly offset to avoid gaps */
-
+  position: sticky;
+  top: 0; 
   z-index: 1000;
-
-   background: rgba(255, 255, 255, 0.85) !important; /* Semi-transparent */
-  backdrop-filter: blur(10px); /* Glass effect */
-
-  padding: 15px 0;
-
-  margin: 0 -20px; /* Full width edge-to-edge look */
-
-  padding: 15px 20px;
-
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin: 0 -16px; /* Edge-to-edge look fix */
+  padding: 15px 16px;
   border-bottom: 1px solid #e2e8f0;
-
   transition: all 0.3s ease;
-
 }
 
-
-
-/* Section reveal fix (Animation ready but visible by default) */
-
+/* --- PHASE 5: SECTION REVEAL --- */
 .section-wrapper {
-
-  opacity: 1; /* Changed from 0 to 1 */
-
-  transform: translateY(0); /* Default position */
-
+  opacity: 1;
+  transform: translateY(0);
   transition: all 0.6s ease-out;
-
+  width: 100%; /* Rigid structure */
 }
-
-
 
 .search-container-fixed {
-
   max-width: 800px;
-
   margin: 0 auto;
-
   width: 100%;
+}
 
+/* --- CARD SYSTEM (Rule 4) --- */
+.tool-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  min-width: 280px; /* Mobile rigid width */
+  max-width: 320px;
+  flex-shrink: 0; /* Card squeeze nahi hoga */
+  transition: 0.2s ease;
+}
+
+/* --- DESKTOP ADJUSTMENTS --- */
+@media (min-width: 1024px) {
+  :root {
+    --section-gap: 60px;
+  }
+  .home-page {
+    padding: 0 40px 100px 40px;
+  }
 } 
  
 

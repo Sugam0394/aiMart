@@ -1,0 +1,69 @@
+/* =========================
+   Rising Tools Container
+========================= */
+.usecase-row-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 16px; /* Optimized gap for horizontal density */
+  padding: 10px 24px 30px; /* Padding for cards and bottom shadow */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; /* Premium snap effect */
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar IE */
+  -webkit-overflow-scrolling: touch; /* Smooth touch scroll for iOS */
+  box-sizing: border-box;
+}
+
+/* Hide scrollbar for Chrome/Safari */
+.usecase-row-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================
+   ToolCard Wrapper Alignment
+========================= */
+/* ToolCard component ke width ko yahan se control karenge */
+.usecase-row-container .tool-card {
+  flex: 0 0 180px; /* Desktop width: Ek screen par zyada tools */
+  scroll-snap-align: start;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.usecase-row-container .tool-card:hover {
+  transform: translateY(-5px);
+}
+
+/* =========================
+   Skeleton Loading State
+========================= */
+.skeleton-active {
+  overflow: hidden; /* Loading ke waqt scroll na ho */
+}
+
+.tool-card-skeleton {
+  flex: 0 0 180px;
+  animation: pulse 1.5s infinite ease-in-out;
+  border: 1px solid #f1f5f9;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* =========================
+   Mobile Optimization
+========================= */
+@media (max-width: 768px) {
+  .usecase-row-container {
+    padding: 10px 16px 25px; /* Mobile par padding thodi kam */
+    gap: 12px;
+  }
+
+  .usecase-row-container .tool-card,
+  .tool-card-skeleton {
+    flex: 0 0 160px; /* Mobile par 2.5 cards density */
+  }
+}

@@ -2,7 +2,7 @@ import express from 'express'
  
 
  import { getToolById } from '../controllers/tool/toolController.js';
- import { getTrendingTools , searchToolsController , getToolsByUseCaseController } from '../controllers/tool/toolController.js';
+ import { getTrendingTools , getRecommendedTools, searchToolsController , getToolsByUseCaseController , getRisingTools } from '../controllers/tool/toolController.js';
 
  
 
@@ -23,6 +23,10 @@ router.get("/trending", getTrendingTools );
 router.get("/search", searchToolsController );
 
 router.get("/useCased/:useCaseKey", getToolsByUseCaseController );
+
+router.get('/risingTools' , getRisingTools )
+
+router.get('/recommend' , getRecommendedTools )
 
 
 export default router

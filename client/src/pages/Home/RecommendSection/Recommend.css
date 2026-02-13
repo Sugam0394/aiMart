@@ -1,0 +1,74 @@
+/* =========================
+   Recommended Scroll Container
+========================= */
+.usecase-row-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 16px; 
+  padding: 15px 24px 35px; /* Bottom padding thodi zyada shadow visibility ke liye */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+.usecase-row-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+/* =========================
+   Personalized ToolCard Style
+========================= */
+.usecase-row-container .tool-card {
+  flex: 0 0 180px; /* Standard density for discovery */
+  scroll-snap-align: start;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle "Just for You" feel on hover */
+.usecase-row-container .tool-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  z-index: 10;
+}
+
+/* =========================
+   Skeleton Placeholder
+========================= */
+.loading-skeleton-row {
+  display: flex;
+  gap: 16px;
+  padding: 15px 24px;
+  overflow: hidden;
+}
+
+.skeleton-card {
+  flex: 0 0 180px;
+  height: 240px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loadingShimmer 1.5s infinite;
+  border-radius: 16px;
+}
+
+@keyframes loadingShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* =========================
+   Mobile Optimization
+========================= */
+@media (max-width: 768px) {
+  .usecase-row-container {
+    padding: 10px 16px 25px;
+    gap: 12px;
+  }
+
+  .usecase-row-container .tool-card,
+  .skeleton-card {
+    flex: 0 0 160px; /* 2.5 cards visible on mobile */
+  }
+}

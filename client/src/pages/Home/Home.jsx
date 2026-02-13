@@ -19,6 +19,8 @@ import GreetingSection from "./GreetingSection/GreetingSection";
 import TrendingForYouSection from "./TrendingSection/TrendingForYou";
 import SearchSection from "./SearchSection/SearchSection";
 import UseCaseSection from "./useCasedSection/UseCasedSection";
+import RisingToolsSection from "./RisingTool/RisingToolSection";
+import RecommendedSection from "./RecommendSection/RecommendSection";
 
 
 
@@ -32,6 +34,7 @@ import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
   function Home() {
   const { user } = useSelector((state) => state.auth);
   const isAuthenticated = !!user;
+  const [isPersonalized, setIsPersonalized] = useState(false);
 
   // useMemo use karenge taaki RANDOM sirf PEHLI BAAR (Mount) par chale
   // Baad mein user switcher se badle toh wahi rahe
@@ -92,6 +95,22 @@ import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
             </SectionWrapper>
           )}
         </div>
+
+       
+             <SectionWrapper 
+                 title="🚀 Rising Tools" 
+                    subtitle="New and featured AI tools gaining momentum"
+                             >
+                      <RisingToolsSection />
+                      </SectionWrapper>
+
+                <SectionWrapper 
+      title={isPersonalized ? "🎯 Based on Your Interests" : "🌟 Handpicked For You"} 
+      subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
+    >
+      <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
+    </SectionWrapper>      
+
       </main>
     </div>
   );

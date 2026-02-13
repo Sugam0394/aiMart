@@ -185,4 +185,95 @@ export const searchToolsController = async (req, res) => {
   }
 };
 
+
+
+
+// Section - 4  Rising Tools
+export const getRisingTools = async (req, res) => {
+  try {
+    const fifteenDaysAgo = new Date();
+    fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+
+    // Primary search: Featured, Popular, or New
+    let tools = await Tool.find({
+      status: "live",
+      $or: [
+        { isFeatured: true },
+        { isPopular: true },
+        { createdAt: { $gte: fifteenDaysAgo } }
+      ]
+    })
+    .sort({ createdAt: -1 })
+    .limit(10);
+
+    // Fallback: Agar tools kam hain toh latest tools se fill karo
+    if (tools.length < 4) {
+      const fallback = await Tool.find({ 
+        status: "live", 
+        _id: { $nin: tools.map(t => t._id) } 
+      })
+      .sort({ createdAt: -1 })
+      .limit(8 - tools.length);
+      
+      tools = [...tools, ...fallback];
+    }
+
+    res.status(200).json({ success: true, data: tools });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+
+// Section - 5 recommend Tools
+export const getRecommendedTools = async (req, res) => {
+  try {
+    // Frontend se tags aayenge query params mein: ?tags=study,writing
+    const { tags } = req.query;
+    let query = { status: "live" };
+    let sortOption = { isFeatured: -1, avgRating: -1 };
+
+    // Case 1: Agar User ke paas Interests (tags) hain
+    if (tags && tags.length > 0) {
+      const tagsArray = tags.split(",");
+      
+      query.$or = [
+        { intentTags: { $in: tagsArray } },
+        { primaryCategory: { $in: tagsArray } },
+        { useCases: { $in: tagsArray } }
+      ];
+    } 
+
+    // Execute Query
+    let recommended = await Tool.find(query)
+      .sort(sortOption)
+      .limit(10)
+      .select("name tagline logo avgRating pricingType slug useCases");
+
+    // Case 2: Smart Fallback (Agar results 4 se kam hain)
+    // Hum global popular tools add kar denge taaki UI bhara rahe
+    if (recommended.length < 4) {
+      const idsToSkip = recommended.map(t => t._id);
+      const fallbackTools = await Tool.find({ 
+        status: "live", 
+        _id: { $nin: idsToSkip } 
+      })
+      .sort({ avgRating: -1 })
+      .limit(8 - recommended.length);
+
+      recommended = [...recommended, ...fallbackTools];
+    }
+
+    res.status(200).json({
+      success: true,
+      count: recommended.length,
+      data: recommended,
+      basedOnInterests: !!tags // Frontend ko batane ke liye ki ye personalized hai
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
  

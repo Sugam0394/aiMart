@@ -12,7 +12,7 @@
 /* 🎯 Compact Tool Card */
 .tool-card {
   flex: 0 0 160px; /* Fixed width: Ek baar mein zyada cards dikhenge */
-  width: 160px;
+  width: 180px;
   background: white;
   border-radius: 12px;
   border: 1px solid #f1f5f9;

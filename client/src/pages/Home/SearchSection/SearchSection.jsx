@@ -120,11 +120,14 @@ const SearchSection = () => {
         )}
 
         {/* Results Grid */}
-        <div className="search-tools-row">
-  {sortedTools.map(tool => (
-    <ToolCard key={tool._id} tool={tool} />
-  ))}
-</div>
+     {/* Results Grid - Only show if term exists and results found */}
+{term && sortedTools.length > 0 && (
+  <div className="search-tools-row">
+    {sortedTools.map(tool => (
+      <ToolCard key={tool._id} tool={tool} />
+    ))}
+  </div>
+)}
 
       </div>
     </section>

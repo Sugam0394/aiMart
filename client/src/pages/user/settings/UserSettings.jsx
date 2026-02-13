@@ -40,9 +40,7 @@ function UserSettings() {
             </button>
           )}
         </div>
-        <div className="sidebar-footer">
-          <LogoutButton />
-        </div>
+        
       </aside>
 
       <main className="settings-view">
@@ -57,6 +55,9 @@ function UserSettings() {
               <label>EMAIL</label>
               <p>{profile?.email || "N/A"}</p>
             </div>
+             <div className="sidebar-footer">
+          <LogoutButton />
+        </div>
           </div>
         ) : (
           <ApplyToolOwner />

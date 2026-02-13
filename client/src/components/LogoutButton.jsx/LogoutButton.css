@@ -1,17 +1,19 @@
-.logout-button {
-  width: 100%; /* Sidebar width cover kare */
-  padding: 10px 20px;
-  background-color: #EF4444;
-  color: rgb(241, 99, 99);
-  font-weight: 700;
+ .logout-button {
+  width: 100%; /* Pura space le */
+  max-width: 200px; /* Mobile par limit rakhein */
+  padding: 12px;
+  background-color: #ff4d4d; /* Bright red */
+  color: white !important; /* Force white text */
+  font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  text-align: center;
+  transition: 0.3s;
 }
 
 .logout-button:hover {
-  background-color: #DC2626;
+  background-color: #e60000;
 }
 
 @media (max-width: 768px) {

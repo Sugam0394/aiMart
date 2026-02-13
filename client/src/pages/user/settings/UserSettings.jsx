@@ -30,28 +30,29 @@ function UserSettings() {
     <div className="settings-layout">
       {/* 🟢 Sidebar */}
       <aside className="settings-sidebar">
-        <div className="sidebar-nav-links">
-          <button 
-            className={activeTab === "profile" ? "active" : ""} 
-            onClick={() => setActiveTab("profile")}
-          >
-            👤 My Account
-          </button>
-          
-          {profile?.role === "user" && (
-            <button 
-              className={activeTab === "apply" ? "active apply-tab" : "apply-tab"} 
-              onClick={() => setActiveTab("apply")}
-            >
-              🚀 Creator Program
-            </button>
-          )}
-        </div>
+  <div className="sidebar-nav-links">
+    <button 
+      className={activeTab === "profile" ? "active" : ""} 
+      onClick={() => setActiveTab("profile")}
+    >
+      👤 My Account
+    </button>
+    
+    {profile?.role === "user" && (
+      <button 
+        className={activeTab === "apply" ? "active apply-tab" : "apply-tab"} 
+        onClick={() => setActiveTab("apply")}
+      >
+        🚀 Creator Program
+      </button>
+    )}
+  </div>
 
-        <div className="sidebar-footer">
-           <LogoutButton />
-        </div>
-      </aside>
+  {/* Logout button wrapper */}
+  <div className="sidebar-footer">
+     <LogoutButton />
+  </div>
+</aside>
 
       {/* 🔵 Content Area */}
       <main className="settings-view">

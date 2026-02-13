@@ -1,87 +1,60 @@
-/* --- Base Layout --- */
+/* Container settings */
 .settings-layout {
   display: flex;
+  min-height: 80vh;
   max-width: 1000px;
   margin: 20px auto;
   background: #fff;
-  min-height: 80vh;
 }
 
-/* Sidebar Styling */
 .settings-sidebar {
-  width: 240px;
+  width: 250px;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border-right: 1px solid #eee;
-  background: #fcfcfc;
+  border-right: 1px solid #f0f0f0;
+  justify-content: space-between; /* Desktop par logout ko niche dhakelega */
 }
 
 .sidebar-nav-links {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  flex-grow: 1;
+  gap: 12px;
 }
 
-.settings-sidebar button {
-  padding: 12px;
-  text-align: left;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-weight: 600;
-  border-radius: 6px;
-}
-
-.settings-sidebar button.active {
-  background: #4f46e5;
-  color: #fff;
-}
-
-.sidebar-footer {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-}
-
-/* View Area */
-.settings-view {
-  flex: 1;
-  padding: 30px;
-}
-
-/* --- 📱 MOBILE FIX (No more hidden button) --- */
+/* --- 📱 MOBILE SPECIFIC (Isse Logout Button mast dikhega) --- */
 @media (max-width: 768px) {
   .settings-layout {
-    flex-direction: column;
-    margin: 0;
+    flex-direction: column; /* Sab kuch ek ke niche ek */
+    margin: 10px;
   }
 
   .settings-sidebar {
     width: 100%;
-    flex-direction: column; /* Mobile par list hi rakhte hain vertical, safe rahega */
     border-right: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid #f8f8f8;
     padding: 15px;
+    gap: 20px; /* Tabs aur Logout ke beech gap */
   }
 
   .sidebar-nav-links {
-    flex-direction: row; /* Sirf tabs side-by-side */
+    flex-direction: row; /* Tabs side-by-side rahenge */
     overflow-x: auto;
-    margin-bottom: 15px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
   }
 
   .sidebar-nav-links button {
+    flex: 1;
     white-space: nowrap;
+    font-size: 13px;
+    padding: 10px;
   }
 
   .sidebar-footer {
-    margin-top: 10px;
-    padding-top: 10px;
     border-top: 1px solid #eee;
+    padding-top: 15px;
+    width: 100%;
     display: flex;
-    justify-content: center; /* Logout button center mein */
+    justify-content: center; /* Logout button center mein bada dikhega */
   }
 } 

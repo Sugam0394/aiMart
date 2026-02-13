@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useState , useMemo } from "react";
+import "./Home.css"
 
 // moment 
 import useCaseMeta from "../../../../server/src/moment/useCaseMeta";

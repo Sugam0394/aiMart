@@ -1,24 +1,105 @@
+/* =========================
+   Wrapper
+========================= */
+
+.usecase-section-wrapper {
+  width: 100%;
+}
+
+/* =========================
+   Horizontal Row (Main Engine)
+========================= */
+
 .usecase-row-container {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
-  gap: 20px;
+  gap: 22px;
+
   width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding-bottom: 14px;
+
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: none;
 }
+
+.usecase-row-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ToolCard sizing consistency */
+.usecase-row-container .tool-card {
+  flex: 0 0 270px;
+  scroll-snap-align: start;
+}
+
+/* =========================
+   Skeleton State
+========================= */
+
+.skeleton-active {
+  min-height: 200px;
+}
+
+.tool-card-skeleton {
+  flex: 0 0 270px;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 25%,
+    #e2e8f0 37%,
+    #f1f5f9 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0 }
+  100% { background-position: -100% 0 }
+}
+
+/* =========================
+   Error State
+========================= */
 
 .error-text {
   color: #ef4444;
-  padding: 20px;
-  font-size: 0.9rem;
+  padding: 20px 0;
+  font-size: 0.95rem;
 }
 
-/* Jab loading ho toh container ki height maintain rakho */
-.skeleton-row {
-  height: var(--card-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-} 
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 1024px) {
+  .usecase-row-container {
+    gap: 18px;
+  }
+
+  .usecase-row-container .tool-card,
+  .tool-card-skeleton {
+    flex: 0 0 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .usecase-row-container {
+    gap: 14px;
+  }
+
+  .usecase-row-container .tool-card,
+  .tool-card-skeleton {
+    flex: 0 0 210px;
+  }
+}
+ 
 
 

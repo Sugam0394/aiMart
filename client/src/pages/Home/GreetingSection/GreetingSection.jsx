@@ -1,34 +1,33 @@
- import React from 'react'
- import './GreetingSection.css'
- 
- function GreetingSection( { isAuthenticated , user}) {
+import React from "react";
+import "./GreetingSection.css";
 
+function GreetingSection({ isAuthenticated, user }) {
 
-   const getTimeGreeting = () => {
+  const getTimeContext = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 17) return "Good Afternoon";
-    if (hour < 21) return "Good Evening";
-    return "Good Night";
+    if (hour < 12) return "Let's build something great today";
+    if (hour < 17) return "Ready to make progress?";
+    if (hour < 21) return "Let’s finish strong";
+    return "Still creating? I like that";
   };
 
   const greetingTitle = isAuthenticated
-    ? `${getTimeGreeting()}, ${user?.name || "there"} 👋`
-    : "Welcome to AI-Mart";
+    ? `Hey ${user?.name || "there"}`
+    : "Discover the right AI tools";
 
   const greetingSubtitle = isAuthenticated
-    ? "What would you like to work on today?"
-    : "Find the right AI tools for your real work.";
+    ? getTimeContext()
+    : "Built to help you ship faster and smarter.";
 
-
-   return (
-         <section className="greeting-section">
+  return (
+    <section className="greeting-section">
       <div className="greeting-card">
         <h1 className="greeting-title">{greetingTitle}</h1>
         <p className="greeting-subtitle">{greetingSubtitle}</p>
       </div>
     </section>
-   )
- }
+  );
+}
+
+export default GreetingSection;
  
- export default GreetingSection

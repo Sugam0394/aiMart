@@ -1,31 +1,22 @@
-/* ----------------------
-   LOGOUT BUTTON
------------------------- */
 .logout-button {
-  padding: 0.5rem 1.2rem;
-  background-color: #EF4444; /* Red for logout action */
+  width: 100%; /* Sidebar width cover kare */
+  padding: 10px 20px;
+  background-color: #EF4444;
   color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-size: 14px;
 }
 
 .logout-button:hover {
-  background-color: #DC2626; /* Darker red on hover */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background-color: #DC2626;
 }
 
-.logout-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.logout-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4); /* subtle focus ring */
-}
+@media (max-width: 768px) {
+  .logout-button {
+    width: auto; /* Mobile par jitna text hai utna hi bada */
+    min-width: 150px;
+  }
+} 

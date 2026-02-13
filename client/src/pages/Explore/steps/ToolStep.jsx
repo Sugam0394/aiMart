@@ -1,4 +1,3 @@
-// ToolStep.js
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { submitExploreStepThunk } from '../../../app/exploreFeatures/exploreThunks';
@@ -72,7 +71,7 @@ function ToolStep() {
   return (
     <div className="tool-step-premium">
       <div className="selection-header">
-        <h2>Choose tools to add to your workspace</h2>
+        <h2>Choose tools for your workspace</h2>
         <span className="selection-counter">
           {selectedTools.length} selected
         </span>
@@ -89,11 +88,12 @@ function ToolStep() {
               <span className="group-count">{group.data.length} tools</span>
             </div>
             
-            <div className="tools-grid">
+            {/* Horizontal Scroll Wrapper Added Here */}
+            <div className="horizontal-scroll-container">
               {group.data.map((tool) => (
                 <div 
                   key={tool._id} 
-                  className={`tool-card-wrapper ${selectedTools.includes(tool._id) ? 'selected' : ''}`}
+                  className={`horizontal-tool-item ${selectedTools.includes(tool._id) ? 'selected' : ''}`}
                   onClick={() => handleToolToggle(tool._id)}
                 >
                   {group.id === 'bestMatch' && (

@@ -25,7 +25,7 @@
 .group-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* Better for long titles */
+  align-items: flex-start;
 }
 
 .group-title {
@@ -41,31 +41,40 @@
   line-height: 1.4;
 }
 
-/* --- TOOLS GRID & CARDS --- */
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+/* --- HORIZONTAL SCROLL LOGIC --- */
+.horizontal-scroll-container {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 10px 5px 20px 5px; /* Added padding for shadow/selection checkmark */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
 }
 
-.tool-card-wrapper {
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.horizontal-tool-item {
+  flex: 0 0 300px; /* Fixed width for horizontal items */
   position: relative;
   cursor: pointer;
-  border-radius: 16px; /* Match ToolCard border-radius */
+  border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 3px solid transparent; /* Thick border for selection */
+  border: 3px solid transparent;
 }
 
-.tool-card-wrapper.selected {
+.horizontal-tool-item.selected {
   border-color: #4F46E5;
-  transform: scale(0.98); /* Slight press effect when selected */
+  transform: scale(0.98);
 }
 
 /* --- BADGES & OVERLAYS --- */
 .match-badge {
   position: absolute;
   top: 12px;
-  left: 12px; /* Moved to left to avoid clashing with heart btn if any */
+  left: 12px;
   background: #4F46E5;
   color: white;
   padding: 4px 10px;
@@ -77,11 +86,11 @@
 
 .selection-checkmark {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -8px;
+  right: -8px;
   width: 28px;
   height: 28px;
-  background: #10B981; /* Green for checkmark */
+  background: #10B981;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -96,51 +105,54 @@
 /* --- FOOTER ACTIONS --- */
 .action-footer {
   position: sticky;
-  bottom: -20px; /* Offset for padding */
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  padding: 1rem 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 1.5rem 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Skip left, Continue right */
   align-items: center;
   gap: 1rem;
-  border-top: 1px solid #E2E8F0;
-  margin-top: 3rem;
-  z-index: 100;
+  border-top: 1px solid #E5E7EB;
+  margin-top: 2rem;
+  width: 100%;
 }
 
-/* --- MOBILE SPECIFIC FIXES --- */
+.skip-btn {
+  background: transparent;
+  border: none;
+  color: #6B7280;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.75rem 0; /* Aligned to left edge */
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.skip-btn:hover {
+  color: #111827;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.primary-action-btn {
+  background: #4F46E5;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* --- MOBILE SPECIFIC --- */
 @media (max-width: 640px) {
-  .tool-step-premium {
-    gap: 2rem;
+  .horizontal-tool-item {
+    flex: 0 0 270px; /* Slightly smaller for mobile screens */
   }
-
-  .tools-grid {
-    grid-template-columns: 1fr; /* Single column on mobile is better for ToolCards */
-    gap: 16px;
-  }
-
-  .selection-header h2 {
-    font-size: 1rem;
-    max-width: 70%;
-  }
-
+  
   .action-footer {
-    flex-direction: column-reverse; /* Primary btn stays on top of skip */
-    padding: 1rem;
-    bottom: 0;
-    margin: 0 -15px; /* Bleed to edges of screen */
-  }
-
-  .primary-action-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .skip-btn {
-    width: 100%;
-    text-align: center;
-    font-size: 0.9rem;
+    padding: 1rem 0;
   }
 } 
  

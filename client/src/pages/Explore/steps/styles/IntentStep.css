@@ -9,27 +9,27 @@
 
 .input-label {
   display: block;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #6B7280;
-  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.5rem;
 }
 
 /* --- PREMIUM INPUT WRAPPER --- */
 .glass-input-wrapper {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   background: #FFFFFF;
-  border: 2px solid #E5E7EB;
-  border-radius: 12px;
-  padding: 0.5rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  border: 2px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 6px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-input-wrapper:focus-within {
   border-color: #4F46E5;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
 }
 
 .premium-input {
@@ -37,13 +37,10 @@
   border: none;
   outline: none;
   font-size: 1rem;
-  padding: 0.5rem 0.75rem;
-  color: #111827;
-  font-family: 'Inter', sans-serif;
-}
-
-.premium-input::placeholder {
-  color: #9CA3AF;
+  padding: 10px 12px;
+  color: #1e293b;
+  width: 100%; /* Important for small screens */
+  min-width: 0; /* Prevents flex items from overflowing */
 }
 
 /* --- CONTINUE BUTTON --- */
@@ -51,25 +48,12 @@
   background: #4F46E5;
   color: white;
   border: none;
-  padding: 0.6rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.continue-btn:hover:not(:disabled) {
-  background: #4338CA;
-  transform: translateX(2px);
-}
-
-.continue-btn:disabled {
-  background: #E5E7EB;
-  cursor: not-allowed;
-  color: #9CA3AF;
+  white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
 /* --- SUGGESTION CHIPS --- */
@@ -80,30 +64,60 @@
 }
 
 .suggestion-hint {
-  font-size: 0.8rem;
-  color: #9CA3AF;
-  font-weight: 500;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .suggestion-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .chip {
-  background: #F3F4F6;
-  border: 1px solid #E5E7EB;
-  color: #374151;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 6px 14px;
+  border-radius: 100px;
   font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .chip:hover {
-  background: #EEF2FF;
-  border-color: #C7D2FE;
-  color: #4F46E5;
+  background: #e0e7ff;
+  border-color: #c7d2fe;
+  color: #4338ca;
+}
+
+/* ================================
+   MOBILE FIXES (Critical)
+   ================================ */
+@media (max-width: 480px) {
+  .glass-input-wrapper {
+    flex-direction: column; /* Input aur Button ko upar-niche kiya */
+    padding: 10px;
+    gap: 10px;
+    border-radius: 16px;
+  }
+
+  .premium-input {
+    padding: 5px;
+    text-align: center;
+  }
+
+  .continue-btn {
+    width: 100%; /* Mobile par full width button better hai */
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .suggestion-chips {
+    justify-content: center; /* Chips center mein better lagte hain mobile par */
+  }
 } 

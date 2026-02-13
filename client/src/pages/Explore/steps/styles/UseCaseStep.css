@@ -8,118 +8,93 @@
 }
 
 .usecase-step h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 0.5rem;
+  font-size: 1.1rem; /* Slightly smaller for better fit */
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
 }
 
 /* --- GRID LAYOUT --- */
 .usecase-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
   margin-bottom: 1rem;
 }
 
-/* --- SELECTION OPTION CARD (Assuming these styles for SelectionOption) --- */
-.selection-option {
+/* --- SELECTION OPTION CARD --- */
+.selection-option, .usecase-btn {
   background: white;
-  border: 2px solid #E5E7EB;
-  border-radius: 12px;
-  padding: 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1rem; /* Balanced padding */
   text-align: center;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
-  color: #374151;
+  font-weight: 600;
+  color: #475569;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px; /* Minimum height for consistency */
 }
 
-.selection-option:hover {
-  border-color: #C7D2FE;
-  background: #F9FAFB;
+.selection-option:hover, .usecase-btn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
   transform: translateY(-2px);
 }
 
-.selection-option.selected {
-  border-color: #4F46E5;
-  background: #EEF2FF;
-  color: #4F46E5;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+.selection-option.selected, .usecase-btn.active {
+  border-color: #4f46e5;
+  background: #f5f3ff;
+  color: #4f46e5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
 }
 
 /* --- ACTION BUTTON --- */
 .primary-action-btn {
   align-self: flex-start;
-  background: #4F46E5;
+  background: #4f46e5;
   color: white;
   border: none;
-  padding: 0.8rem 1.75rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
 }
 
-.primary-action-btn:hover:not(:disabled) {
-  background: #4338CA;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 10px -1px rgba(79, 70, 229, 0.3);
-}
-
-.primary-action-btn:disabled {
-  background: #D1D5DB;
-  color: #9CA3AF;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* --- EMPTY STATE --- */
-.no-data-state {
-  padding: 3rem;
-  text-align: center;
-  background: #F9FAFB;
-  border: 2px dashed #E5E7EB;
-  border-radius: 12px;
-}
-
-.no-data-state .icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  display: block;
-}
-
+/* --- MOBILE SPECIFIC FIXES --- */
 @media (max-width: 640px) {
   .usecase-grid {
-    grid-template-columns: 1fr 1fr; /* 2 columns on mobile */
+    grid-template-columns: 1fr 1fr; /* Exact 2 columns */
+    gap: 10px;
   }
+  
+  .usecase-step h2 {
+    font-size: 1rem;
+    text-align: center; /* Center heading on mobile */
+  }
+
+  .selection-option, .usecase-btn {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    min-height: 70px;
+  }
+
+  .primary-action-btn {
+    width: 100%; /* Full width button for thumbs */
+    align-self: center;
+    text-align: center;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 } 
-
-/* Add this to UseCaseStep.css or SelectionOption.css */
-.usecase-btn {
-  background: white;
-  border: 2px solid #E5E7EB;
-  border-radius: 12px;
-  padding: 1.25rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  text-align: center;
-}
-
-.usecase-btn:hover {
-  border-color: #C7D2FE;
-  background: #F9FAFB;
-  transform: translateY(-2px);
-}
-
-.usecase-btn.active {
-  border-color: #4F46E5;
-  background: #EEF2FF;
-  color: #4F46E5;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
-}

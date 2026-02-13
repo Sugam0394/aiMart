@@ -15,21 +15,6 @@
   padding-bottom: 1rem;
 }
 
-.selection-header h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-.selection-counter {
-  background: #EEF2FF;
-  color: #4F46E5;
-  padding: 4px 12px;
-  border-radius: 99px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
 /* --- GROUP STYLING --- */
 .tool-group-wrapper {
   display: flex;
@@ -40,114 +25,122 @@
 .group-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start; /* Better for long titles */
 }
 
 .group-title {
   font-size: 1.1rem;
-  color: #111827;
-  margin-bottom: 0.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 4px;
 }
 
 .group-subtitle {
   font-size: 0.85rem;
-  color: #6B7280;
-}
-
-.group-count {
-  font-size: 0.8rem;
-  color: #9CA3AF;
-  font-weight: 500;
+  color: #64748b;
+  line-height: 1.4;
 }
 
 /* --- TOOLS GRID & CARDS --- */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 20px;
 }
 
 .tool-card-wrapper {
   position: relative;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: 16px; /* Match ToolCard border-radius */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid transparent;
-}
-
-.tool-card-wrapper:hover {
-  transform: translateY(-5px);
+  border: 3px solid transparent; /* Thick border for selection */
 }
 
 .tool-card-wrapper.selected {
   border-color: #4F46E5;
-  background: #F5F7FF;
-  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.1);
+  transform: scale(0.98); /* Slight press effect when selected */
 }
 
 /* --- BADGES & OVERLAYS --- */
 .match-badge {
   position: absolute;
-  top: -10px;
-  right: 10px;
-  background: linear-gradient(135deg, #4F46E5, #818CF8);
+  top: 12px;
+  left: 12px; /* Moved to left to avoid clashing with heart btn if any */
+  background: #4F46E5;
   color: white;
   padding: 4px 10px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.7rem;
-  font-weight: 700;
-  z-index: 10;
-  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+  font-weight: 800;
+  z-index: 20;
 }
 
 .selection-checkmark {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 24px;
-  height: 24px;
-  background: #4F46E5;
+  top: -10px;
+  right: -10px;
+  width: 28px;
+  height: 28px;
+  background: #10B981; /* Green for checkmark */
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  z-index: 10;
-  border: 2px solid white;
+  font-size: 14px;
+  z-index: 21;
+  border: 3px solid white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 /* --- FOOTER ACTIONS --- */
 .action-footer {
   position: sticky;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  padding: 1.5rem 0;
+  bottom: -20px; /* Offset for padding */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  padding: 1rem 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   gap: 1rem;
-  border-top: 1px solid #E5E7EB;
-  margin-top: 2rem;
+  border-top: 1px solid #E2E8F0;
+  margin-top: 3rem;
+  z-index: 100;
 }
 
-.skip-btn {
-  background: transparent;
-  border: none;
-  color: #6B7280;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0.75rem 1.5rem;
-}
-
-.skip-btn:hover {
-  color: #111827;
-  text-decoration: underline;
-}
-
+/* --- MOBILE SPECIFIC FIXES --- */
 @media (max-width: 640px) {
+  .tool-step-premium {
+    gap: 2rem;
+  }
+
   .tools-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column on mobile is better for ToolCards */
+    gap: 16px;
+  }
+
+  .selection-header h2 {
+    font-size: 1rem;
+    max-width: 70%;
+  }
+
+  .action-footer {
+    flex-direction: column-reverse; /* Primary btn stays on top of skip */
+    padding: 1rem;
+    bottom: 0;
+    margin: 0 -15px; /* Bleed to edges of screen */
+  }
+
+  .primary-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .skip-btn {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
   }
 } 
  

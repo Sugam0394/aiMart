@@ -1,0 +1,57 @@
+.usecase-btn {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.25rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover State */
+.usecase-btn:hover:not(.active) {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  transform: translateY(-2px);
+}
+
+/* 🎯 Active / Selected State */
+.usecase-btn.active {
+  border-color: #4f46e5;
+  background: #f5f3ff;
+  color: #4f46e5;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+/* 📱 Tap Feedback (Important for Mobile) */
+.usecase-btn:active {
+  transform: scale(0.95); /* Button dabne ka feel dega */
+}
+
+/* Optional: Selected state par chota sa dot ya indicator */
+.usecase-btn.active::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background: #4f46e5;
+  border-radius: 50%;
+}
+
+@media (max-width: 640px) {
+  .usecase-btn {
+    padding: 1rem 0.75rem;
+    font-size: 0.85rem;
+    min-height: 65px;
+  }
+}

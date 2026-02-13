@@ -1,3 +1,5 @@
+import './SelectionOption.css'
+
 function SelectionOption({ label, isSelected, onClick }) {
   return (
     <button

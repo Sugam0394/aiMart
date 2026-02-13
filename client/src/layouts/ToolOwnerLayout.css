@@ -121,6 +121,75 @@
   box-shadow: 0 0 10px #22c55e;
 }
 
+/* ... (Tumhara saara purana CSS yahan tak same rahega) ... */
+
+/* 📱 MOBILE FIXES - Specific for UI/UX */
+
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block; /* Sirf mobile par dikhega */
+  }
+
+  .owner-sidebar {
+    left: -260px; /* Hide sidebar by default */
+    transition: 0.3s ease-in-out;
+    z-index: 1000;
+  }
+
+  .owner-sidebar.open {
+    left: 0; /* Slide in mobile sidebar */
+  }
+
+  .owner-content-wrapper {
+    margin-left: 0; /* No margin on mobile */
+    width: 100%;
+  }
+
+  .owner-top-bar {
+    padding: 0 20px 0 60px; /* Space for hamburger icon */
+    height: 60px;
+  }
+
+  .owner-top-bar h3 {
+    font-size: 15px; /* Chota font mobile ke liye */
+  }
+
+  .owner-page-content {
+    padding: 20px 15px; /* Minimal padding for better content space */
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  .owner-badge {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+
 
 
 

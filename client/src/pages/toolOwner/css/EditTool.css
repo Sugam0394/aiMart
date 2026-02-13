@@ -1,43 +1,9 @@
- /* Edit Specific Polishing */
-.update-theme {
-  background: #0f172a !important; /* Darker Slate for Edit */
-  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2) !important;
-}
-
-.update-theme:hover {
-  background: #1e293b !important;
-}
-
-.cancel-btn {
-  width: 100%;
-  margin-top: 12px;
-  padding: 14px;
-  background: transparent;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.cancel-btn:hover {
-  background: #f1f5f9;
-  color: #334155;
-}
-
-/* Ensure the logo preview looks sharp in Edit mode */
-.logo-upload-zone.has-file {
-  border-style: solid;
-  border-color: #e2e8f0;
-  background: #ffffff;
-}
-
-/* Container Wrapper */
+/* Container & Header */
 .create-tool-wrapper {
   max-width: 1100px;
   margin: 0 auto;
-  animation: fadeIn 0.4s ease-in-out;
+  padding: 0 15px;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .form-header {
@@ -45,16 +11,13 @@
 }
 
 .form-header h2 {
-  font-size: 28px;
+  font-size: clamp(22px, 5vw, 28px);
   color: #0f172a;
   font-weight: 800;
+  letter-spacing: -0.025em;
 }
 
-.form-header p {
-  color: #64748b;
-}
-
-/* The Main Grid */
+/* 🎯 The Main Grid (Desktop: 2 Col, Mobile: 1 Col) */
 .form-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -65,46 +28,48 @@
 /* Card Styling */
 .section-card {
   background: #ffffff;
-  padding: 25px;
-  border-radius: 16px;
+  padding: 24px;
+  border-radius: 18px;
   border: 1px solid #e2e8f0;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 .section-card h3 {
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   color: #4f46e5;
   margin-bottom: 20px;
   border-left: 4px solid #4f46e5;
   padding-left: 12px;
+  font-weight: 700;
 }
 
-/* Inputs & Labels */
+/* Input Fields */
 .input-box {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .input-box label {
   display: block;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #334155;
-  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 8px;
 }
 
 .input-box input, 
 .input-box textarea, 
 .input-box select {
   width: 100%;
-  padding: 12px 14px;
+  padding: 13px 16px;
   border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #f8fafc;
   font-size: 14px;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
+  color: #1e293b;
 }
 
 .input-box input:focus, 
@@ -115,84 +80,89 @@
   box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
-.input-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+/* 📍 Edit Specific: Dark Theme for Update Button */
+.update-theme {
+  background: #0f172a !important; 
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2) !important;
 }
 
-/* Logo Upload Area */
-.logo-upload-zone {
-  border: 2px dashed #cbd5e1;
+.update-theme:hover {
+  background: #1e293b !important;
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 15px;
+  background: #fff;
+  color: #64748b;
+  border: 1.5px solid #e2e8f0;
   border-radius: 12px;
-  padding: 20px;
-  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
-.logo-upload-zone:hover {
-  border-color: #4f46e5;
-  background: #f5f3ff;
+.cancel-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
 }
 
-.preview-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+/* Visual Identity / Logo */
+.logo-upload-zone.has-file {
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
 }
 
 .preview-container img {
-  width: 80px;
-  height: 80px;
-  border-radius: 12px;
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 1px solid #f1f5f9;
 }
 
 .change-hint {
   font-size: 12px;
   color: #4f46e5;
-  font-weight: 600;
-}
-
-.upload-placeholder .icon {
-  font-size: 32px;
-  display: block;
-  margin-bottom: 8px;
-}
-
-/* Submit Button */
-.submit-btn {
-  width: 100%;
-  padding: 16px;
-  background: #4f46e5;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
   font-weight: 700;
+  margin-top: 10px;
   cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
 }
 
-.submit-btn:hover {
-  background: #4338ca;
-  transform: translateY(-2px);
-}
+/* 📱 Mobile UX Overrides */
+@media (max-width: 850px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 
-.hint-box {
-  font-size: 12px;
-  color: #6366f1;
-  margin-top: 5px;
-  background: #eef2ff;
-  padding: 6px 10px;
-  border-radius: 6px;
+  .section-card {
+    padding: 20px;
+  }
+
+  .input-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .form-actions {
+    position: sticky; /* Mobile par buttons hamesha dikhenge */
+    bottom: 0;
+    background: #f8fafc;
+    padding: 15px 0;
+    z-index: 10;
+  }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
+} 
+ 

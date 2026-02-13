@@ -41,6 +41,109 @@
     padding-right: 15px;
   }
 } 
+
+/* Container adjustments */
+.tools-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 16px; /* Gap thoda kam kiya */
+  padding: 10px 15px 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; /* Scroll snap add kiya premium feel ke liye */
+}
+
+/* 🎯 Compact Tool Card */
+.tool-card {
+  flex: 0 0 160px; /* Fixed width: Ek baar mein zyada cards dikhenge */
+  width: 160px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  scroll-snap-align: start;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Image/Gradient Section - Reduced Height */
+.tool-card-image {
+  position: relative;
+  width: 100%;
+  height: 120px; /* Height fix kar di taaki card lamba na dikhe */
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.tool-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Image ko box mein fit karega */
+}
+
+/* Footer Section - Compact Typography */
+.tool-card-footer {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tool-name {
+  font-size: 0.9rem; /* Chota font size */
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Bada naam "..." ho jayega */
+}
+
+.tool-category-mini {
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.pricing-tag {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+.tool-view {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+/* Heart Button Size Reduction */
+.card-heart-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 14px;
+  cursor: pointer;
+}
  
 
 

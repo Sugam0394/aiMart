@@ -1,157 +1,104 @@
-/* --- BASE STYLES (Tumhara original logic) --- */
+/* Container adjustments */
+.tools-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 16px; /* Gap thoda kam kiya */
+  padding: 10px 15px 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; /* Scroll snap add kiya premium feel ke liye */
+}
+
+/* 🎯 Compact Tool Card */
 .tool-card {
-  flex: 0 0 280px; 
-  width: 280px;
-  height: 380px; 
-  display: flex;
-  flex-direction: column;
+  flex: 0 0 160px; /* Fixed width: Ek baar mein zyada cards dikhenge */
+  width: 160px;
   background: white;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
   overflow: hidden;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  position: relative;
+  transition: transform 0.2s ease;
+  scroll-snap-align: start;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-.tool-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-}
-
+/* Image/Gradient Section - Reduced Height */
 .tool-card-image {
-  height: 240px; 
-  width: 100%;
-  background: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
   position: relative;
+  width: 100%;
+  height: 120px; /* Height fix kar di taaki card lamba na dikhe */
+  background: #f8fafc;
+  overflow: hidden;
 }
 
 .tool-card-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Image ko box mein fit karega */
 }
 
-/* --- FOOTER & TEXT --- */
+/* Footer Section - Compact Typography */
 .tool-card-footer {
-  flex: 1;
-  padding: 16px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Space maintain karne ke liye */
-  border-top: 1px solid #f1f5f9;
+  gap: 4px;
 }
 
 .tool-name {
-  margin: 8px 0;
-  font-size: 1.1rem;
+  font-size: 0.9rem; /* Chota font size */
   font-weight: 700;
-  color: #0f172a;
-}
-
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  color: #1e293b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Bada naam "..." ho jayega */
 }
 
 .tool-category-mini {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.7rem;
   color: #64748b;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .footer-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  margin-top: 4px;
 }
 
 .pricing-tag {
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 6px;
-  text-transform: capitalize;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  font-weight: 600;
 }
 
-.pricing-tag.free { background: #dcfce7; color: #166534; }
-.pricing-tag.freemium { background: #dbeafe; color: #1e40af; }
-.pricing-tag.paid { background: #fef3c7; color: #92400e; }
+.tool-view {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4f46e5;
+}
 
-/* --- HEART BUTTON --- */
+/* Heart Button Size Reduction */
 .card-heart-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   background: white;
-  border: none;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 14px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  z-index: 5;
-}
-
-/* --- GRADIENT PLACEHOLDER --- */
-.tool-gradient-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.tool-initial {
-  font-size: 64px;
-  font-weight: 800;
-  color: white;
-}
-
-/* ================================
-   MOBILE RESPONSIVE FIX (Important)
-   ================================ */
-
-/* Tablets ke liye */
-@media (max-width: 768px) {
-  .tool-card {
-    flex: 0 0 calc(50% - 20px); /* Ek line mein 2 cards */
-    width: auto !important; /* Fixed width override */
-    height: 350px !important;
-  }
-  .tool-card-image {
-    height: 200px !important;
-  }
-}
-
-/* Phones ke liye */
-@media (max-width: 480px) {
-  .tool-card {
-    flex: 0 0 100% !important; /* Ek line mein 1 card */
-    width: 100% !important;
-    max-width: 320px; /* Card zyada wide na ho jaye */
-    margin: 0 auto;
-    height: 360px !important;
-  }
-  
-  .tool-name {
-    font-size: 1rem;
-  }
-  
-  .tool-initial {
-    font-size: 48px;
-  }
 } 
  
  

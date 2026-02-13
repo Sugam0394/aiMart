@@ -839,6 +839,96 @@
   }
 } 
 
+/* Sidebar Sticky Logic Improvement */
+.tool-sidebar-sticky {
+  position: relative;
+  height: 100%; /* Important for sticky to work */
+}
+
+.action-card {
+  position: sticky;
+  top: 100px; /* Navbar ke niche jagah chhodne ke liye */
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+/* 🎯 Rating Bars Animation */
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5 0%, #06b6d4 100%); /* Blue to Cyan Gradient */
+  border-radius: 12px;
+  transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy feel */
+  position: relative;
+}
+
+/* Expert Score Circle/Box */
+.overall-score {
+  background: #0f172a;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* 📱 Mobile Experience Optimization */
+@media (max-width: 768px) {
+  .container-70-30 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tool-sidebar-sticky {
+    order: -1; /* Sidebar (CTA) ko mobile pe sabse upar le aaye */
+    margin-bottom: 20px;
+  }
+
+  .action-card {
+    position: relative;
+    top: 0;
+    padding: 24px;
+    border-radius: 16px;
+  }
+
+  .hero-logo-image,
+  .hero-logo-gradient {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+  }
+
+  .hero-layout {
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .hero-badges {
+    justify-content: center;
+  }
+
+  .hero-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+}
+
+/* 🏷️ Tag Hover Effects */
+.tag-pill {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  color: #6366f1;
+  font-weight: 700;
+}
+
+.tag-pill:hover {
+  background: #6366f1;
+  color: #fff;
+  border-color: #6366f1;
+  transform: scale(1.05);
+}
+
 
 
  

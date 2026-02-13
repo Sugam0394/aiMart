@@ -38,7 +38,7 @@
 .heart-icon {
   color: #ef4444;
   display: inline-block;
-  animation: pulse 2s infinite; /* Dhadkan wali animation */
+  
 }
 
 @keyframes pulse {

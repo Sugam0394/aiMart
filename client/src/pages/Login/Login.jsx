@@ -1,53 +1,90 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { loginUser } from '../../app/features/AuthSlice'
-import { useNavigate, Link } from 'react-router-dom' // Link add kiya
-import toast from 'react-hot-toast'
-import "./Login.css"
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../app/features/AuthSlice";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import "./Login.css";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, role, loading, error } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
+  // Handle input change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  // Handle form submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
-  };
 
-  useEffect(() => {
-    if (loading) { toast.loading("Logging in...", { id: "login" }); return; }
-    if (error) { toast.error(error, { id: "login" }); return; }
-    if (user && role) {
-      toast.success("Login successful 🚀", { id: "login" });
-      const paths = { user: "/explore", toolOwner: "/toolowner/dashboard", founder: "/founder/dashboard" };
-      navigate(paths[role] || "/", { replace: true });
+    const toastId = toast.loading("Logging in...");
+
+    try {
+      const user = await dispatch(loginUser(formData)).unwrap();
+
+      toast.success("Login successful 🚀", { id: toastId });
+
+      const paths = {
+        user: "/explore",
+        toolOwner: "/toolowner/dashboard",
+        founder: "/founder/dashboard",
+      };
+
+      navigate(paths[user.role] || "/", { replace: true });
+
+    } catch (err) {
+      toast.error(err || "Login failed", { id: toastId });
     }
-  }, [loading, user, role, error, navigate]);
+  };
 
   return (
-    <div className='login-container'>
-      <div className='login-box'>
+    <div className="login-container">
+      <div className="login-box">
         <h2>Welcome Back</h2>
         <p className="auth-subtitle">Login to manage your AI tools</p>
 
         <form onSubmit={handleSubmit}>
-          <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-          <input name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+
           <button type="submit" disabled={loading}>
             {loading ? "Verifying..." : "Login"}
           </button>
         </form>
 
-        <div className="auth-divider"><span>OR</span></div>
+        <div className="auth-divider">
+          <span>OR</span>
+        </div>
 
-        <button className="google-btn-fake" onClick={() => toast("Google Login coming soon! 🚀")}>
+        <button
+          className="google-btn-fake"
+          onClick={() => toast("Google Login coming soon! 🚀")}
+        >
           Continue with Google
         </button>
 
@@ -56,7 +93,8 @@ function Login() {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login 
+export default Login;
+ 

@@ -53,8 +53,9 @@ const authSlice = createSlice({
     role: savedUser ? savedUser.role : null,
     loading: false,
     error: null,
-    isInitialized: !!savedUser, // Agar user hai to true, warna initial check baki hai
+    isInitialized: savedUser ? true : false,
   },
+
   reducers: {
     logout: (state) => {
       state.user = null;
@@ -63,6 +64,10 @@ const authSlice = createSlice({
       state.isInitialized = true;
       clearAccessToken();
       localStorage.removeItem("user");
+    },
+     
+    setInitialized: (state) => {
+      state.isInitialized = true;
     },
   },
   extraReducers: (builder) => {
@@ -111,5 +116,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout , setInitialized  } = authSlice.actions;
 export default authSlice.reducer; 

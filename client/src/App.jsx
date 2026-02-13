@@ -50,8 +50,7 @@ import { useSelector } from "react-redux";
  
  
 
-// Data Initializer
-import DataInitializer from "./components/DataInit/DataInitializer.jsx";
+// Data Initializer 
 import AppInitializer from "./components/DataInit/AppInitializer.jsx";
 
 
@@ -64,9 +63,7 @@ import AppInitializer from "./components/DataInit/AppInitializer.jsx";
 function App() {
   const { isInitialized } = useSelector((state) => state.auth);
   const token = getAccessToken();
-
-  // 1. Agar token hai aur humne abhi tak verify nahi kiya (Refresh case)
-  // To jab tak 'isInitialized' true nahi hota, loading dikhayein
+ 
   if (token && !isInitialized) {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
@@ -82,7 +79,7 @@ function App() {
     <BrowserRouter>
       {/* 2. Ye components background mein sync chalate rahenge */}
       <AppInitializer /> 
-      <DataInitializer />
+   
 
       <Routes>
         {/* 🌍 PUBLIC ROUTES */}

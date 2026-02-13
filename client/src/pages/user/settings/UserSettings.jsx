@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getMyProfile } from "../../../api/toolOwner/setting.api";
-import LogoutButton from "../../../components/LogoutButton.jsx/Logout";
+ // import LogoutButton from "../../../components/LogoutButton/LogoutButton"; // Fix path if needed
 import ApplyToolOwner from "../../toolOwner/dashboard/ApplyToolOwner"; 
 import "../css/UserSettings.css";
+import LogoutButton from "../../../components/LogoutButton.jsx/Logout";
 
 function UserSettings() {
   const [profile, setProfile] = useState(null);
@@ -13,10 +14,10 @@ function UserSettings() {
     const fetchProfile = async () => {
       try {
         const res = await getMyProfile();
-        // Backend 'res.data' bhej raha hai ya 'res' khud data hai, ye check kar lena
-        setProfile(res.data || res); 
+        // Check if response has .user or .data based on your backend
+        setProfile(res?.data || res?.user || res); 
       } catch (err) {
-        console.error("Settings load failed", err);
+        console.error("Profile fetch error", err);
       } finally {
         setLoading(false);
       }
@@ -24,63 +25,41 @@ function UserSettings() {
     fetchProfile();
   }, []);
 
-  if (loading) return <div className="loader">Loading Profile...</div>;
+  if (loading) return <div className="loader">Loading...</div>;
 
   return (
     <div className="settings-layout">
-      {/* 🟢 Sidebar */}
       <aside className="settings-sidebar">
         <div className="sidebar-nav-links">
-          <button 
-            className={activeTab === "profile" ? "active" : ""} 
-            onClick={() => setActiveTab("profile")}
-          >
+          <button className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
             👤 My Account
           </button>
-          
           {profile?.role === "user" && (
-            <button 
-              className={activeTab === "apply" ? "active apply-tab" : "apply-tab"} 
-              onClick={() => setActiveTab("apply")}
-            >
+            <button className={activeTab === "apply" ? "active" : ""} onClick={() => setActiveTab("apply")}>
               🚀 Creator Program
             </button>
           )}
         </div>
-
         <div className="sidebar-footer">
-           <LogoutButton />
+          <LogoutButton />
         </div>
       </aside>
 
-      {/* 🔵 Content Area */}
       <main className="settings-view">
         {activeTab === "profile" ? (
-          <div className="tab-content anim-fade">
-            <header className="view-header">
-              <h2>Profile Settings</h2>
-              <p>Your personal identity on AI-Mart</p>
-            </header>
-            
-            <section className="profile-details-card">
-              <div className="data-row">
-                <label>Name</label>
-                <p>{profile?.name || "N/A"}</p>
-              </div>
-              <div className="data-row">
-                <label>Email</label>
-                <p>{profile?.email || "N/A"}</p>
-              </div>
-              <div className="data-row">
-                <label>Account Role</label>
-                <p style={{textTransform: 'capitalize'}}>{profile?.role}</p>
-              </div>
-            </section>
+          <div className="profile-details">
+            <h2>Profile Settings</h2>
+            <div className="data-box">
+              <label>NAME</label>
+              <p>{profile?.name || "N/A"}</p>
+            </div>
+            <div className="data-box">
+              <label>EMAIL</label>
+              <p>{profile?.email || "N/A"}</p>
+            </div>
           </div>
         ) : (
-          <div className="tab-content anim-fade">
-             <ApplyToolOwner />
-          </div>
+          <ApplyToolOwner />
         )}
       </main>
     </div>
@@ -88,3 +67,4 @@ function UserSettings() {
 }
 
 export default UserSettings; 
+ 

@@ -30,10 +30,20 @@ function ToolSection() {
   if (!loading && tools.length === 0) return <p className="empty-text">No tools found</p>;
 
   return (
-    <div className="tool-section">
-      <h2>Popular Tools</h2>
+     <div className="tool-section">
+    <h2>Popular Tools</h2>
+    
+    {loading ? (
+      <div className="tool-section-loading">
+        <div className="spinner"></div> {/* Spinner add kar sakte ho */}
+        <p>Loading your tools...</p>
+      </div>
+    ) : tools.length === 0 ? (
+      <p className="empty-text">No tools found</p>
+    ) : (
       <ToolGrid tools={tools} />
-    </div>
+    )}
+  </div>
 
   )
 }

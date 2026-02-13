@@ -1,26 +1,44 @@
- .tools-container {
+.tools-container {
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: nowrap !important;
+  flex-wrap: nowrap !important; /* Horizontal scroll ke liye */
   gap: 24px;
-  padding: 10px 0;
-  align-items: stretch; /* Saare cards ko barabar height dega */
+  padding: 10px 5px 25px; /* Bottom padding scrollbar ke liye */
+  align-items: stretch;
+  overflow-x: auto; /* Mobile/Desktop horizontal scroll enable kiya */
+  scrollbar-width: none; /* Firefox ke liye scrollbar chhupaya */
+  -ms-overflow-style: none; /* IE ke liye */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* Mobile touch smooth karega */
+}
+
+/* Chrome/Safari ke liye scrollbar chhupana (optional) */
+.tools-container::-webkit-scrollbar {
+  display: none;
 }
 
 .tools-empty-state {
-  padding: 40px;
+  padding: 60px 20px;
   text-align: center;
   width: 100%;
-  color: var(--text-muted);
+  color: #64748b;
   background: #f8fafc;
-  border-radius: 12px;
-  border: 1px dashed #e2e8f0;
+  border-radius: 20px;
+  border: 2px dashed #e2e8f0;
+  margin: 20px 0;
 }
 
-/* Mobile adjustments */
+.empty-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* 📱 Mobile Specific Fix */
 @media (max-width: 768px) {
   .tools-container {
-    gap: 12px;
+    gap: 16px;
+    padding-left: 15px; /* Screen ke edge se thoda gap */
+    padding-right: 15px;
   }
 } 
  

@@ -1,46 +1,61 @@
- 
 /* ===== TOOL SECTION ===== */
 .tool-section {
-  padding: 40px 20px;              /* section padding top-bottom + sides */
-  background-color: #f9f9f9;       /* subtle background to separate section */
-  max-width: 1200px;               /* center content width */
-  margin: 0 auto;                  /* center the section */
-  border-radius: 8px;              /* optional rounded corners */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.03); /* subtle shadow for depth */
+  padding: 60px 20px;
+  background-color: #ffffff; /* Modern clean look */
+  max-width: 1400px; /* Thoda wide rakha hai modern monitor ke liye */
+  margin: 0 auto;
+  position: relative;
 }
 
 /* Section heading */
 .tool-section h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #111;
-  margin-bottom: 24px;
-  text-align: center;
+  font-size: clamp(22px, 5vw, 32px); /* Responsive font size */
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 30px;
+  text-align: left; /* SaaS standard usually left-aligned heading pasand karta hai */
+  letter-spacing: -0.5px;
 }
 
-/* Loader text */
-.tool-section-loading {
-  text-align: center;
-  font-size: 18px;
-  color: #555;
-  margin: 50px 0;
-}
-
-/* Empty state text */
+/* Loader & Empty states */
+.tool-section-loading,
 .empty-text {
   text-align: center;
-  font-size: 18px;
-  color: #777;
-  margin: 50px 0;
-  font-weight: 500;
+  font-size: 16px;
+  color: #64748b;
+  padding: 80px 20px;
+  background: #f8fafc;
+  border-radius: 20px;
+  margin: 20px;
 }
 
-/* Optional: subtle bottom border to separate sections */
-.tool-section::after {
+/* Custom Decoration (Optional but cool) */
+.tool-section h2::after {
   content: "";
   display: block;
-  width: 100%;
-  height: 1px;
-  background-color: #e0e0e0;
-  margin-top: 40px;
+  width: 50px;
+  height: 4px;
+  background: #4f46e5;
+  margin-top: 8px;
+  border-radius: 2px;
 }
+
+/* ================================
+   MOBILE ADJUSTMENTS
+   ================================ */
+@media (max-width: 768px) {
+  .tool-section {
+    padding: 40px 15px; /* Side padding kam kar di cards ke liye */
+    background-color: #fff; /* Mobile par clean white best hai */
+  }
+
+  .tool-section h2 {
+    margin-bottom: 20px;
+    padding-left: 5px; /* Align with cards start */
+  }
+
+  /* Section separation line ko mobile par ignore kar sakte hain */
+  .tool-section::after {
+    display: none;
+  }
+} 

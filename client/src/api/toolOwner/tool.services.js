@@ -40,6 +40,25 @@ export const getRisingTools = async () => {
   }
 };
 
+ 
+
+// section  Naya Recommended Tools logic
+export const getRecommendedTools = async () => {
+  try {
+    const interests = JSON.parse(localStorage.getItem("user_interests") || "[]");
+    const tagsParam = interests.length > 0 ? `?tags=${interests.join(",")}` : "";
+    
+    const res = await api.get(`/recommend${tagsParam}`);
+    return {
+      tools: res.data?.data || [],
+      basedOnInterests: res.data?.basedOnInterests || false
+    };
+  } catch (err) {
+    console.error("Error in recommended tools service:", err);
+    throw err;
+  }
+};
+
 
  
 

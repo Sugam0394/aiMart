@@ -7,10 +7,14 @@ const app = express();
 
  app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-live-frontend-url.com"], 
+    origin: [
+      "http://localhost:5173",
+      "https://ai-mart-frontend.vercel.app"
+    ],
     credentials: true,
   })
 );
+
 
 
 

@@ -58,6 +58,16 @@ export const getRecommendedTools = async () => {
     throw err;
   }
 };
+
+
+
+export const toolApi = {
+  // Smart Solver call using global instance
+  getQuickSolution: (slug) => api.get(`/quick-solution?action=${slug}`),
+
+  // Yahan baki calls bhi future mein add kar sakte ho
+  // getAllTools: () => api.get('/tools'),
+};
  
  
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"; // Direct axios import
+import { toolApi } from "../../../api/toolOwner/tool.services";
 import ToolCard from "../../aiArt/components/ToolCard";
 import "./SmartSolver.css";
 
@@ -18,28 +18,19 @@ const SmartSolverSection = () => {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(false);
 
- 
-
   const fetchSolution = async (slug) => {
     setActiveAction(slug);
     setLoading(true);
     try {
+      // Ab humara global api instance automatically token aur baseURL handle karega
+      const response = await toolApi.getQuickSolution(slug);
       
-      const response = await axios.get(`/api/quick-solution?action=${slug}`);
-      
-      console.log("Response Data:", response.data);
+      // Axios response structure match karo (response.data backend ka hai)
       setTools(response.data?.data || []);
       
     } catch (err) {
-      console.error("Solver Error:", err);
-      // Agar upar wala fail ho toh bina '/tools' ke try karo (Fallback)
-      try {
-          const retryRes = await axios.get(`/api/quick-solution?action=${slug}`);
-          setTools(retryRes.data?.data || []);
-      } catch (retryErr) {
-          console.error("Retry also failed:", retryErr);
-          setTools([]);
-      }
+      console.error("Solver Error caught in component:", err);
+      setTools([]);
     } finally {
       setLoading(false);
     }

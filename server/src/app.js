@@ -7,7 +7,7 @@ const app = express();
 
  app.use(
   cors({
-    origin: true, // Ye dynamically request bhejnewale URL ko allow kar dega
+    origin: ["http://localhost:5173", "https://your-live-frontend-url.com"], 
     credentials: true,
   })
 );

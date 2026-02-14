@@ -1,0 +1,72 @@
+/* ===============================
+   DESIGN TOKENS (Single Source of Truth)
+================================= */
+
+:root {
+  /* ===== CARD DIMENSIONS ===== */
+  --card-width-desktop: 280px;
+  --card-width-tablet: 240px;
+  --card-width-mobile: 180px;
+  
+  --card-height-desktop: 340px;
+  --card-height-tablet: 300px;
+  --card-height-mobile: 260px;
+  
+  /* Image height inside card */
+  --card-image-height-desktop: 180px;
+  --card-image-height-tablet: 140px;
+  --card-image-height-mobile: 120px;
+  
+  /* ===== SPACING SYSTEM ===== */
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 48px;
+  --spacing-4xl: 60px;
+  
+  /* Section gaps */
+  --section-gap-desktop: 50px;
+  --section-gap-tablet: 48px;
+  --section-gap-mobile: 36px;
+  
+  /* Horizontal scroll card gap */
+  --card-gap-desktop: 20px;
+  --card-gap-tablet: 16px;
+  --card-gap-mobile: 12px;
+  
+  /* ===== PAGE PADDING ===== */
+  --page-padding-desktop: 40px;
+  --page-padding-tablet: 28px;
+  --page-padding-mobile: 18px;
+  --page-padding-small: 14px;
+  
+  /* ===== TYPOGRAPHY ===== */
+  --font-size-section-title-desktop: 1.8rem;
+  --font-size-section-title-tablet: 1.5rem;
+  --font-size-section-title-mobile: 1.3rem;
+  
+  --font-size-card-title-desktop: 1rem;
+  --font-size-card-title-tablet: 0.95rem;
+  --font-size-card-title-mobile: 0.9rem;
+  
+  /* ===== COLORS ===== */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
+  
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  
+  /* ===== BREAKPOINTS (for reference) ===== */
+  /* Desktop: 1024px+ */
+  /* Tablet: 768px - 1023px */
+  /* Mobile: 481px - 767px */
+  /* Small: 0px - 480px */
+}

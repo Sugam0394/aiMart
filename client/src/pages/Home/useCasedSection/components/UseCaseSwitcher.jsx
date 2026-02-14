@@ -7,7 +7,7 @@ const useCases = [
   { key: "create-content", label: "Create Content" },
   { key: "grow-business", label: "Grow Business" },
   { key: "design-faster", label: "Design Faster" },
-  { key: "build-career", label: "Build Career" },
+ /* { key: "build-career", label: "Build Career" }, */
   { key: "automate-work", label: "Automate Work" },
 ];
 

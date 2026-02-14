@@ -1,13 +1,17 @@
+/* ===============================
+   GREETING SECTION - OPTIMIZED
+================================= */
+
 .greeting-section {
   width: 100%;
-  padding: 50px 0;
+  padding: var(--spacing-4xl) 0;
 }
 
 .greeting-card {
   width: 100%;
   background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
   padding: 70px 60px;
-  border-radius: 28px;
+  border-radius: var(--radius-xl);
   color: white;
   position: relative;
   overflow: hidden;
@@ -24,13 +28,16 @@
   height: 260px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 50%;
+  pointer-events: none;
 }
 
 .greeting-title {
   font-size: 3rem;
   font-weight: 800;
   letter-spacing: -1px;
-  margin-bottom: 16px;
+  margin: 0 0 var(--spacing-md) 0;
+  position: relative;
+  z-index: 1;
 }
 
 .greeting-subtitle {
@@ -38,10 +45,20 @@
   opacity: 0.9;
   font-weight: 400;
   max-width: 600px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  line-height: 1.6;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
+/* ===============================
+   TABLET (768px - 1023px)
+================================= */
+@media (max-width: 1023px) {
+  .greeting-section {
+    padding: var(--spacing-3xl) 0;
+  }
+
   .greeting-card {
     padding: 60px 40px;
   }
@@ -49,23 +66,58 @@
   .greeting-title {
     font-size: 2.4rem;
   }
+
+  .greeting-subtitle {
+    font-size: 1.1rem;
+  }
 }
 
-/* Mobile */
-@media (max-width: 768px) {
+/* ===============================
+   MOBILE (481px - 767px)
+================================= */
+@media (max-width: 767px) {
+  .greeting-section {
+    padding: var(--spacing-2xl) 0;
+  }
+
   .greeting-card {
     padding: 40px 24px;
-    border-radius: 20px;
+    border-radius: var(--radius-md);
   }
 
   .greeting-title {
     font-size: 1.8rem;
+    letter-spacing: -0.5px;
   }
 
   .greeting-subtitle {
     font-size: 1rem;
   }
+
+  .greeting-card::after {
+    width: 180px;
+    height: 180px;
+    top: -60px;
+    right: -60px;
+  }
 }
+
+/* ===============================
+   SMALL MOBILE (0px - 480px)
+================================= */
+@media (max-width: 480px) {
+  .greeting-card {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+  }
+
+  .greeting-title {
+    font-size: 1.6rem;
+  }
+
+  .greeting-subtitle {
+    font-size: 0.95rem;
+  }
+} 
  
  
 

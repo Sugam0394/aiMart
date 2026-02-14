@@ -1,118 +1,154 @@
 /* ===============================
-   SECTION WRAPPER (FULL WIDTH)
+   SECTION WRAPPER
 ================================= */
 
 .section-wrapper {
   width: 100%;
-  margin-bottom: var(--section-gap, 60px);
-  transition: all 0.4s ease;
+  transition: var(--transition-base);
 }
 
-/* Remove max-width constraint completely */
 .section-container {
   width: 100%;
-  padding: 0 40px; /* Inner breathing space */
   box-sizing: border-box;
 }
 
 /* ===============================
-   HEADER
+   SECTION HEADER
 ================================= */
 
 .section-header {
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-xl);
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
 }
 
+.header-text {
+  flex: 1;
+}
+
 .section-title {
-  font-size: 1.8rem;
+  font-size: var(--font-size-section-title-desktop);
   font-weight: 800;
-  color: var(--text-main, #111);
+  color: var(--color-text-primary);
   letter-spacing: -0.5px;
-  margin: 0;
+  margin: 0 0 var(--spacing-xs) 0;
+  line-height: 1.2;
 }
 
 .section-subtitle {
-  color: var(--text-muted, #666);
-  margin-top: 6px;
-  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 /* ===============================
-   HORIZONTAL SCROLL ENGINE
-   (Netflix / Spotify Style)
+   CONTENT VIEWPORT
 ================================= */
 
 .section-content-viewport {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 20px;
-  overflow-x: auto !important;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 20px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  width: 100%;
+  position: relative;
 }
 
-.section-content-viewport::-webkit-scrollbar {
-  display: none;
-}
-
-/* Prevent children shrinking */
+/* If children need horizontal scroll, they handle it themselves */
 .section-content-viewport > * {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
+  width: 100%;
 }
 
 /* ===============================
-   OPTIONAL SOFT VARIANT
+   VARIANT: SOFT (Optional)
 ================================= */
 
 .section-soft {
-  background-color: var(--bg-light, #f8f9fb);
-  padding: 60px 0;
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-4xl) 0;
+  margin-left: calc(-1 * var(--page-padding-desktop));
+  margin-right: calc(-1 * var(--page-padding-desktop));
+}
+
+.section-soft .section-container {
+  padding: 0 var(--page-padding-desktop);
 }
 
 /* ===============================
-   MOBILE OPTIMIZATION
+   TABLET (768px - 1023px)
 ================================= */
 
-@media (max-width: 1024px) {
-  .section-container {
-    padding: 0 28px;
+@media (max-width: 1023px) {
+  .section-header {
+    margin-bottom: var(--spacing-lg);
   }
-}
-
-@media (max-width: 768px) {
-  .section-container {
-    padding: 0 18px;
-  }
-
+  
   .section-title {
-    font-size: 1.4rem;
+    font-size: var(--font-size-section-title-tablet);
   }
-
+  
   .section-subtitle {
-    font-size: 0.9rem;
+    font-size: 14px;
   }
-
-  .section-content-viewport {
-    gap: 14px;
-    padding-bottom: 16px;
+  
+  .section-soft {
+    margin-left: calc(-1 * var(--page-padding-tablet));
+    margin-right: calc(-1 * var(--page-padding-tablet));
+    padding: var(--spacing-3xl) 0;
+  }
+  
+  .section-soft .section-container {
+    padding: 0 var(--page-padding-tablet);
   }
 }
+
+/* ===============================
+   MOBILE (481px - 767px)
+================================= */
+
+@media (max-width: 767px) {
+  .section-header {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .section-title {
+    font-size: var(--font-size-section-title-mobile);
+  }
+  
+  .section-subtitle {
+    font-size: 13px;
+  }
+  
+  .section-soft {
+    margin-left: calc(-1 * var(--page-padding-mobile));
+    margin-right: calc(-1 * var(--page-padding-mobile));
+    padding: var(--spacing-2xl) 0;
+  }
+  
+  .section-soft .section-container {
+    padding: 0 var(--page-padding-mobile);
+  }
+}
+
+/* ===============================
+   SMALL MOBILE (0px - 480px)
+================================= */
 
 @media (max-width: 480px) {
-  .section-container {
-    padding: 0 14px;
-  }
-
   .section-title {
     font-size: 1.2rem;
   }
-}
+  
+  .section-subtitle {
+    font-size: 12px;
+  }
+  
+  .section-soft {
+    margin-left: calc(-1 * var(--page-padding-small));
+    margin-right: calc(-1 * var(--page-padding-small));
+  }
+  
+  .section-soft .section-container {
+    padding: 0 var(--page-padding-small);
+  }
+} 
  
  

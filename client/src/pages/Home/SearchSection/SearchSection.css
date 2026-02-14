@@ -1,49 +1,59 @@
-/* =========================
-   Search Section Wrapper
-========================= */
+/* ===============================
+   SEARCH SECTION - OPTIMIZED
+================================= */
+
 .search-section-wrapper {
   width: 100%;
-  padding: 40px 0;
-  background: transparent; /* Piche ka background Home jaisa rehne do */
+  padding: var(--spacing-4xl) 0;
+  background: transparent;
 }
 
 .search-section-container {
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: var(--spacing-lg);
 }
 
-/* =========================
-   Search Controls (Centered)
-========================= */
+/* ===============================
+   SEARCH CONTROLS (Centered Input)
+================================= */
+
 .search-controls {
   position: relative;
   width: 100%;
-  max-width: 650px; /* Only input stays centered */
+  max-width: 650px;
   margin: 0 auto;
-  padding: 0 20px; /* Space from edges on mobile */
+  padding: 0 var(--spacing-lg);
   box-sizing: border-box;
 }
 
 .search-icon {
   position: absolute;
-  left: 35px; /* Adjust based on padding */
+  left: 35px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.1rem;
   opacity: 0.5;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .search-controls input {
   width: 100%;
   height: 58px;
   padding: 0 50px 0 60px;
-  border-radius: 20px; /* Thoda zyada rounded for modern feel */
-  border: 2px solid #e2e8f0;
-  background: #ffffff;
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--color-border);
+  background: var(--color-bg-primary);
   font-size: 1.05rem;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition-base);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+.search-controls input::placeholder {
+  color: var(--color-text-muted);
 }
 
 .search-controls input:focus {
@@ -52,103 +62,245 @@
   transform: translateY(-2px);
 }
 
-/* =========================
-   Suggestions & Meta
-========================= */
-.search-count, .search-status {
+/* Clear Button */
+.clear-search-btn {
+  position: absolute;
+  right: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+  z-index: 2;
+}
+
+.clear-search-btn:hover {
+  background: var(--color-text-secondary);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* ===============================
+   STATUS & COUNT
+================================= */
+
+.search-count,
+.search-status {
   text-align: center;
-  margin-top: 15px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
+
+.search-status.error {
+  color: #ef4444;
+}
+
+/* ===============================
+   SUGGESTIONS PILLS
+================================= */
 
 .search-suggestions {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
+  gap: var(--spacing-xs);
   flex-wrap: wrap;
-  padding: 0 20px;
+  padding: 0 var(--spacing-lg);
 }
 
 .suggestion-pill {
   padding: 6px 14px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 99px;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
-  color: #475569;
+  transition: var(--transition-fast);
+  color: var(--color-text-secondary);
+  user-select: none;
 }
 
-.suggestion-pill:hover, .suggestion-pill.active {
+.suggestion-pill:hover,
+.suggestion-pill.active {
   background: #4f46e5;
   border-color: #4f46e5;
-  color: #ffffff;
+  color: white;
+  transform: translateY(-2px);
 }
 
-/* =========================
-   Results Row (The Netflix/Spotify Scroll)
-========================= */
+/* ===============================
+   RESULTS ROW (Horizontal Scroll)
+================================= */
+
 .search-tools-row {
   display: flex;
-  gap: 16px; /* Optimized gap */
+  gap: var(--card-gap-desktop);
   width: 100%;
-  margin-top: 35px;
-  padding: 10px 24px 30px; /* Matches Home/Explore padding */
+  margin-top: var(--spacing-2xl);
+  padding: var(--spacing-sm) var(--spacing-xl) var(--spacing-2xl);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none; /* Hide scrollbar Firefox */
-  box-sizing: border-box;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .search-tools-row::-webkit-scrollbar {
-  display: none; /* Hide scrollbar Chrome/Safari */
+  display: none;
 }
 
-/* ToolCard Sizing to match Horizontal Density */
+/* Use design system card sizes */
 .search-tools-row .tool-card {
-  flex: 0 0 180px; /* Small tiles for better discovery */
+  flex: 0 0 var(--card-width-desktop);
   scroll-snap-align: start;
 }
 
-/* =========================
-   Empty State
-========================= */
+/* ===============================
+   EMPTY STATE
+================================= */
+
 .empty-state {
   text-align: center;
-  padding: 40px 20px;
+  padding: var(--spacing-4xl) var(--spacing-lg);
+}
+
+.empty-text {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-md) 0;
 }
 
 .empty-reset-btn {
-  margin-top: 15px;
-  padding: 10px 24px;
-  background: #0f172a;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  background: var(--color-text-primary);
   color: white;
-  border-radius: 12px;
+  border: none;
+  border-radius: var(--radius-md);
   font-weight: 600;
   cursor: pointer;
+  transition: var(--transition-fast);
 }
 
-/* =========================
-   Responsive Fixes
-========================= */
-@media (max-width: 768px) {
-  .search-tools-row .tool-card {
-    flex: 0 0 160px; /* Mobile par density aur badhao */
-  }
-  
-  .search-controls input {
-    height: 52px;
-    font-size: 0.95rem;
+.empty-reset-btn:hover {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===============================
+   TABLET (768px - 1023px)
+================================= */
+
+@media (max-width: 1023px) {
+  .search-section-wrapper {
+    padding: var(--spacing-3xl) 0;
   }
 
   .search-tools-row {
-    padding-left: 16px;
-    padding-right: 16px;
+    gap: var(--card-gap-tablet);
+    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-xl);
+  }
+
+  .search-tools-row .tool-card {
+    flex: 0 0 var(--card-width-tablet);
+  }
+
+  .search-controls input {
+    height: 54px;
+    font-size: 1rem;
+  }
+}
+
+/* ===============================
+   MOBILE (481px - 767px)
+================================= */
+
+@media (max-width: 767px) {
+  .search-section-wrapper {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .search-controls {
+    padding: 0 var(--spacing-md);
+  }
+
+  .search-controls input {
+    height: 52px;
+    font-size: 0.95rem;
+    padding: 0 45px 0 55px;
+  }
+
+  .search-icon {
+    left: 28px;
+    font-size: 1rem;
+  }
+
+  .clear-search-btn {
+    right: 28px;
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  .search-tools-row {
+    gap: var(--card-gap-mobile);
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-xl);
+  }
+
+  .search-tools-row .tool-card {
+    flex: 0 0 var(--card-width-mobile);
+  }
+
+  .search-suggestions {
+    padding: 0 var(--spacing-md);
+  }
+
+  .suggestion-pill {
+    font-size: 0.75rem;
+    padding: 5px 12px;
+  }
+}
+
+/* ===============================
+   SMALL MOBILE (0px - 480px)
+================================= */
+
+@media (max-width: 480px) {
+  .search-controls input {
+    height: 48px;
+    font-size: 0.9rem;
+    border-radius: var(--radius-md);
+  }
+
+  .search-icon {
+    left: 24px;
+  }
+
+  .clear-search-btn {
+    right: 24px;
+  }
+
+  .search-tools-row {
+    padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-lg);
+    gap: 10px;
+  }
+
+  .search-tools-row .tool-card {
+    flex: 0 0 160px;
+  }
+
+  .empty-state {
+    padding: var(--spacing-2xl) var(--spacing-md);
   }
 } 
  

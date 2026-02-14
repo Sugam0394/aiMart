@@ -1,18 +1,20 @@
 /* ===============================
-   HOME PAGE FULL WIDTH
+   HOME PAGE CONTAINER
 ================================= */
 
 .home-container {
   width: 100%;
+  min-height: 100vh;
+  background: var(--color-bg-secondary);
 }
 
 .home-page {
   width: 100%;
-  padding: 0 40px 60px 40px; /* breathing space */
+  padding: 0 var(--page-padding-desktop) var(--spacing-4xl);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: var(--section-gap-desktop);
 }
 
 /* ===============================
@@ -22,36 +24,52 @@
 .home-hero-container {
   width: 100%;
   position: relative;
+  margin-bottom: var(--spacing-3xl);
 }
 
-/* Search overlay centered but page full width */
 .search-overlay-box {
   width: 100%;
   max-width: 650px;
   margin: -30px auto 0 auto;
   z-index: 10;
+  position: relative;
 }
 
 /* ===============================
-   HORIZONTAL SCROLL ENGINE
+   SECTIONS STACK
+================================= */
+
+.sections-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap-desktop);
+  width: 100%;
+}
+
+/* ===============================
+   HORIZONTAL SCROLL SYSTEM
 ================================= */
 
 .horizontal-scroll-section {
   width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding: 10px 0;
+  scroll-behavior: smooth;
+  padding: var(--spacing-md) 0;
 }
 
 .horizontal-scroll-section::-webkit-scrollbar {
   display: none;
 }
 
-.horizontal-scroll-section > div {
+/* Universal wrapper for all scrollable content */
+.horizontal-scroll-section > div,
+.horizontal-scroll-section > * {
   display: flex !important;
   flex-direction: row !important;
-  gap: 20px;
+  gap: var(--card-gap-desktop);
   flex-wrap: nowrap !important;
   width: max-content;
 }
@@ -63,85 +81,137 @@
 .filter-sticky-bar {
   position: sticky;
   top: 0;
-  z-index: 60;
-
-  background: rgba(255, 255, 255, 0.85);
+  z-index: var(--z-sticky);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-
-  margin-left: -40px;
-  margin-right: -40px;
-  padding: 14px 40px;
-
-  border-bottom: 1px solid #e5e7eb;
+  
+  /* Full-bleed effect */
+  margin-left: calc(-1 * var(--page-padding-desktop));
+  margin-right: calc(-1 * var(--page-padding-desktop));
+  padding: var(--spacing-md) var(--page-padding-desktop);
+  
+  border-bottom: 1px solid var(--color-border-light);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .filter-inner-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--spacing-md);
   overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-inner-content::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 /* ===============================
-   SECTIONS STACK
+   TABLET (768px - 1023px)
 ================================= */
 
-.sections-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-  width: 100%;
-}
-
-/* ===============================
-   MOBILE RESPONSIVE
-================================= */
-
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .home-page {
-    padding: 0 28px 50px 28px;
+    padding: 0 var(--page-padding-tablet) var(--spacing-3xl);
+    gap: var(--section-gap-tablet);
   }
-
+  
+  .sections-stack {
+    gap: var(--section-gap-tablet);
+  }
+  
+  .horizontal-scroll-section > div,
+  .horizontal-scroll-section > * {
+    gap: var(--card-gap-tablet);
+  }
+  
   .filter-sticky-bar {
-    margin-left: -28px;
-    margin-right: -28px;
-    padding: 12px 28px;
+    margin-left: calc(-1 * var(--page-padding-tablet));
+    margin-right: calc(-1 * var(--page-padding-tablet));
+    padding: var(--spacing-sm) var(--page-padding-tablet);
   }
-}
-
-@media (max-width: 768px) {
-  .home-page {
-    padding: 0 18px 40px 18px;
-    gap: 40px;
-  }
-
-  .horizontal-scroll-section > div {
-    gap: 14px;
-  }
-
-  .filter-sticky-bar {
-    margin-left: -18px;
-    margin-right: -18px;
-    padding: 12px 18px;
-  }
-
+  
   .search-overlay-box {
-    margin-top: -20px;
+    max-width: 550px;
+    margin-top: -24px;
   }
 }
+
+/* ===============================
+   MOBILE (481px - 767px)
+================================= */
+
+@media (max-width: 767px) {
+  .home-page {
+    padding: 0 var(--page-padding-mobile) var(--spacing-2xl);
+    gap: var(--section-gap-mobile);
+  }
+  
+  .sections-stack {
+    gap: var(--section-gap-mobile);
+  }
+  
+  .horizontal-scroll-section {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .horizontal-scroll-section > div,
+  .horizontal-scroll-section > * {
+    gap: var(--card-gap-mobile);
+  }
+  
+  .filter-sticky-bar {
+    margin-left: calc(-1 * var(--page-padding-mobile));
+    margin-right: calc(-1 * var(--page-padding-mobile));
+    padding: var(--spacing-sm) var(--page-padding-mobile);
+  }
+  
+  .search-overlay-box {
+    max-width: 100%;
+    margin-top: -20px;
+    padding: 0 var(--spacing-sm);
+  }
+}
+
+/* ===============================
+   SMALL MOBILE (0px - 480px)
+================================= */
 
 @media (max-width: 480px) {
   .home-page {
-    padding: 0 14px 30px 14px;
+    padding: 0 var(--page-padding-small) var(--spacing-xl);
+    gap: var(--spacing-2xl);
   }
-
+  
+  .sections-stack {
+    gap: var(--spacing-2xl);
+  }
+  
+  .horizontal-scroll-section > div,
+  .horizontal-scroll-section > * {
+    gap: 10px;
+  }
+  
   .filter-sticky-bar {
-    margin-left: -14px;
-    margin-right: -14px;
-    padding: 10px 14px;
+    margin-left: calc(-1 * var(--page-padding-small));
+    margin-right: calc(-1 * var(--page-padding-small));
+    padding: var(--spacing-xs) var(--page-padding-small);
   }
-}
+  
+  .filter-label {
+    font-size: 12px;
+  }
+} 
  
  
 

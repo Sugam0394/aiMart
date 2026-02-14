@@ -4,7 +4,17 @@ import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/userModel.js";
 import jwt from 'jsonwebtoken'
 
-
+ 
+const getCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    path: '/'
+  };
+};
 
 const generateToken = asyncHandler(async(req , res) => {
 
@@ -41,28 +51,20 @@ const generateToken = asyncHandler(async(req , res) => {
   await user.save({ validateBeforeSave: false });
 
 
-    
+    // ✅ Use dynamic cookie options
+    const cookieOptions = getCookieOptions();
 
-    const options = {
-        httpOnly : true,
-        secure : true,          // localhost ke liye false
-        sameSite: "none",
-    };
+    res.cookie("accessToken", accessToken, {
+      ...cookieOptions,
+      maxAge: 15 * 60 * 1000, // 15 min
+    });
 
+    res.cookie("refreshToken", newRefreshToken, {
+      ...cookieOptions,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
- res.cookie("accessToken", accessToken, {
-  httpOnly: true,
-  secure: true, // localhost
-  sameSite: "none",
-  maxAge: 15 * 60 * 1000, // 15 min
-});
-
-res.cookie("refreshToken", newRefreshToken, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-});
+ 
 
 
 

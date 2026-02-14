@@ -3,6 +3,23 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from '../models/userModel.js'
 
+
+
+ 
+const getCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  return {
+    httpOnly: true,
+    secure: isProduction,  // TRUE on Render, FALSE on localhost
+    sameSite: isProduction ? 'none' : 'lax',  // CRITICAL for cross-origin
+    path: '/'
+  };
+};
+
+
+
+
 const registerUser = asyncHandler(async(req , res) => {
     const { name , email , password} = req.body;
 
@@ -40,19 +57,18 @@ user.refreshToken = refreshToken;
   await user.save({ validateBeforeSave: false });
 
 
- res.cookie("refreshToken", refreshToken, {
-  httpOnly: true,
-  secure: false,          // localhost ke liye false
-  sameSite: "lax",
-  maxAge: 15 * 60 * 1000, // 15min
-});
+  // ✅ Use dynamic cookie options
+    const cookieOptions = getCookieOptions();
 
- res.cookie("accessToken", accessToken, {
-  httpOnly: true,
-  secure: false, // localhost
-  sameSite: "lax",
-  maxAge: 15 * 60 * 1000, // 15 min
-});
+    res.cookie("refreshToken", refreshToken, {
+      ...cookieOptions,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    res.cookie("accessToken", accessToken, {
+      ...cookieOptions,
+      maxAge: 15 * 60 * 1000, // 15 min
+    });
 
 
  
@@ -134,19 +150,18 @@ const loginUser = asyncHandler(async(req , res) => {
   await user.save({ validateBeforeSave: false });
 
 
-  res.cookie("refreshToken", refreshToken, {
-  httpOnly: true,
-  secure: false,          // ❗ localhost
-  sameSite: "lax",
-  maxAge: 15 * 60 * 1000, // 15min
-});
+ 
+  const cookieOptions = getCookieOptions();
 
-res.cookie("accessToken", accessToken, {
-  httpOnly: true,
-  secure: false, // localhost
-  sameSite: "lax",
-  maxAge: 15 * 60 * 1000, // 15 min
-});
+  res.cookie("refreshToken", refreshToken, {
+    ...cookieOptions,
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
+
+  res.cookie("accessToken", accessToken, {
+    ...cookieOptions,
+    maxAge: 15 * 60 * 1000, // 15 min
+  });
 
 
 return res.status(200).json(
@@ -181,17 +196,11 @@ await User.findByIdAndUpdate(
     { new: true }
   );
 
-  res.clearCookie("accessToken", {
-  httpOnly: true,
-  secure: false,
-  sameSite: "lax",
-});
+ // ✅ Use dynamic cookie options for clearing
+  const cookieOptions = getCookieOptions();
 
- res.clearCookie("refreshToken", {
-  httpOnly: true,
-  secure: false,
-  sameSite: "lax",
-});
+  res.clearCookie("accessToken", cookieOptions);
+  res.clearCookie("refreshToken", cookieOptions);
 
 
 

@@ -6,14 +6,16 @@ import cookieParser from 'cookie-parser'
 const app = express();
 
  app.use(
+
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://ai-mart-frontend.vercel.app"
-    ],
+
+    origin: true, // Ye dynamically request bhejnewale URL ko allow kar dega
+
     credentials: true,
+
   })
-);
+
+); 
 
 
 

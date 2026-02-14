@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { getRisingTools } from "../../../api/toolOwner/tool.services";
 import "./RisingTools.css";
-import ToolCard from '../../aiArt/components/ToolCard'
+import ToolCard from '../../aiArt/components/ToolCard';
 
 const RisingToolsSection = () => {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRising = async () => {
+    const loadTools = async () => {
       try {
-        const res = await axios.get("/api/risingTools");
-        setTools(res.data.data || []);
+        const data = await getRisingTools();
+        setTools(data);
       } catch (err) {
-        console.error("Rising Tools fetch error:", err);
+        console.log('err', err)
+        // Error handling service mein ho rahi hai
       } finally {
         setLoading(false);
       }
     };
-    fetchRising();
+    loadTools();
   }, []);
 
   if (loading) {
     return (
       <div className="usecase-row-container skeleton-active">
         {[1, 2, 3, 4].map((n) => (
-          <div key={n} className="tool-card-skeleton" style={{ width: '280px', height: '180px', background: '#f0f0f0', borderRadius: '12px' }}></div>
+          <div key={n} className="tool-card-skeleton"></div>
         ))}
       </div>
     );

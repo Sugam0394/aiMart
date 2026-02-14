@@ -7,7 +7,6 @@ export const createTool = (toolData) => {
 
 
  // ya jaha se token wala axios hai
-
  export const getMyTools = () => {
    return api.get("/myTool"); 
   };
@@ -27,6 +26,18 @@ export const updateTool = (id, data) => {
 // DELETE tool
 export const deleteTool = (id) => {
   return api.delete(`/deleteTool/${id}`);
+};
+
+
+// section Rising Tools
+export const getRisingTools = async () => {
+  try {
+    const res = await api.get("/risingTools"); // Instance mein agar baseURL hai toh '/api' ki zarurat nahi hogi
+    return res.data.data || [];
+  } catch (err) {
+    console.error("Error fetching rising tools:", err);
+    throw err;
+  }
 };
 
 

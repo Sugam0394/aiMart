@@ -4,13 +4,12 @@ import { setAccessToken, clearAccessToken } from "../../utils/token";
  
 const savedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
 
- 
+// Sync User Role
 export const syncUserRole = createAsyncThunk(
-  "/sync-role",
+  "auth/sync-role",
   async (_, { rejectWithValue }) => {
     try {
       const res = await api.get("/me");
-      // Backend structure check: res.data.data.user
       const userData = res.data.data?.user || res.data.user; 
       
       if (userData) {
@@ -25,26 +24,33 @@ export const syncUserRole = createAsyncThunk(
   }
 );
 
- 
-export const loginUser = createAsyncThunk("/login", async (formData, { rejectWithValue }) => {
-  try {
-    const res = await api.post("/login", formData);
-    setAccessToken(res.data.data.accessToken);
-    return res.data.data.user;
-  } catch (error) {
-    return rejectWithValue(error.response?.data?.message || "Login failed");
+// Login User
+export const loginUser = createAsyncThunk(
+  "auth/login", 
+  async (formData, { rejectWithValue }) => {
+    try {
+      const res = await api.post("/login", formData);
+      setAccessToken(res.data.data.accessToken);
+      return res.data.data.user;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
   }
-});
+);
 
-export const registerUser = createAsyncThunk("/register", async (formData, { rejectWithValue }) => {
-  try {
-    const res = await api.post("/register", formData);
-    setAccessToken(res.data.data.accessToken);
-    return res.data.data.user;
-  } catch (error) {
-    return rejectWithValue(error.response?.data?.message || "Registration failed");
+// Register User
+export const registerUser = createAsyncThunk(
+  "auth/register", 
+  async (formData, { rejectWithValue }) => {
+    try {
+      const res = await api.post("/register", formData);
+      setAccessToken(res.data.data.accessToken);
+      return res.data.data.user;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Registration failed");
+    }
   }
-});
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -70,9 +76,9 @@ const authSlice = createSlice({
       state.isInitialized = true;
     },
   },
+
   extraReducers: (builder) => {
     builder
-   // ✅ 1. Sabse pehle addCase (Specific logic)
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -94,7 +100,6 @@ const authSlice = createSlice({
         state.loading = false;
         localStorage.removeItem("user");
       })
-      // ✅ 2. Phir addMatcher (Common success logic)
       .addMatcher(
         (action) => action.type.endsWith("/fulfilled") && (action.type.includes("login") || action.type.includes("register")),
         (state, action) => {
@@ -105,7 +110,6 @@ const authSlice = createSlice({
           localStorage.setItem("user", JSON.stringify(action.payload));
         }
       )
-      // ✅ 3. Common Error handling
       .addMatcher(
         (action) => action.type.endsWith("/rejected") && !action.type.includes("sync-role"),
         (state, action) => {
@@ -116,5 +120,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout , setInitialized  } = authSlice.actions;
+export const { logout, setInitialized } = authSlice.actions;
 export default authSlice.reducer; 

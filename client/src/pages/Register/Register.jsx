@@ -9,8 +9,12 @@ function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, loading, error } = useSelector((state) => state.auth);
-
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  
+  const [formData, setFormData] = useState({ 
+    name: "", 
+    email: "", 
+    password: "" 
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,12 +26,27 @@ function Register() {
   };
 
   useEffect(() => {
-    if (loading) { toast.loading("Creating account...", { id: "register" }); }
-    if (!loading && user && !error) {
-      toast.success("Account created! Please log in.", { id: "register" });
-      navigate("/login");
+    if (loading) { 
+      toast.loading("Creating account...", { id: "register" }); 
     }
-    if (!loading && error) { toast.error(error, { id: "register" }); }
+
+    // ✅ CHANGED: Navigate to dashboard instead of login
+    if (!loading && user && !error) {
+      toast.success("Welcome to aiMart! 🎉", { id: "register" });
+      
+      // Navigate based on role
+      if (user.role === 'founder') {
+        navigate("/founder/dashboard");
+      } else if (user.role === 'toolOwner') {
+        navigate("/toolowner/dashboard");
+      } else {
+        navigate("/explore");  // Regular user
+      }
+    }
+
+    if (!loading && error) { 
+      toast.error(error, { id: "register" }); 
+    }
   }, [loading, user, error, navigate]);
 
   return (
@@ -35,16 +54,37 @@ function Register() {
       <div className='register-box'>
         <h2>Create Account</h2>
         <p className="auth-subtitle">Join the AI-Mart community</p>
-
+        
         <form onSubmit={handleSubmit}>
-          <input name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
-          <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-          <input name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+          <input 
+            name="name" 
+            placeholder="Full Name" 
+            value={formData.name} 
+            onChange={handleChange} 
+            required 
+          />
+          <input 
+            name="email" 
+            type="email"
+            placeholder="Email" 
+            value={formData.email} 
+            onChange={handleChange} 
+            required 
+          />
+          <input 
+            name="password" 
+            type="password" 
+            placeholder="Password (min 6 characters)" 
+            value={formData.password} 
+            onChange={handleChange} 
+            minLength={6}
+            required 
+          />
           <button type="submit" disabled={loading}>
             {loading ? "Joining..." : "Register"}
           </button>
         </form>
-
+        
         <p className="auth-switch-text">
           Already have an account? <Link to="/login">Login here</Link>
         </p>

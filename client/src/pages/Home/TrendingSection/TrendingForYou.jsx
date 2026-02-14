@@ -16,10 +16,6 @@ const ErrorState = ({ message, onRetry }) => (
   </div>
 );
 
- 
- 
-
-
 
  const TrendingForYouSection = () => {
   const { tools, loading, error } = useTrendingForYou();
@@ -48,8 +44,6 @@ const ErrorState = ({ message, onRetry }) => (
     </div>
   );
 };
-
-
 
 
 export default TrendingForYouSection;

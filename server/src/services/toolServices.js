@@ -5,37 +5,31 @@
 
 
  // section - 1: Get Trending Tools Service
-export const getTrendingToolsService = async ({ intent, category }) => {
+ export const getTrendingToolsService = async ({ intent, category }) => {
   const { primaryCategories, intentTags } = resolveTrendingMoment({ intent, category });
 
   const query = { status: "live" };
-
-  // ✅ Better: Combine conditions smartly
   const matchConditions = [];
 
+  // Filter logic
   if (primaryCategories?.length > 0) {
-    matchConditions.push(
-      { primaryCategory: { $in: primaryCategories } },
-      { categories: { $elemMatch: { $in: primaryCategories } } }
-    );
+    matchConditions.push({ primaryCategory: { $in: primaryCategories } });
+    matchConditions.push({ categories: { $elemMatch: { $in: primaryCategories } } });
   }
 
   if (intentTags?.length > 0) {
-    matchConditions.push(
-      { intentTags: { $elemMatch: { $in: intentTags } } }
-    );
+    matchConditions.push({ intentTags: { $elemMatch: { $in: intentTags } } });
   }
 
+  // ✅ FIX: Agar filters hain toh $or lagao, varna default live tools dikhao
   if (matchConditions.length > 0) {
     query.$or = matchConditions;
   }
 
-  // ✅ Use aggregation for better performance
-  const tools = await Tool.aggregate([
+  let tools = await Tool.aggregate([
     { $match: query },
     {
       $addFields: {
-        // ✅ Priority scoring
         score: {
           $add: [
             { $cond: [{ $eq: ["$isFeatured", true] }, 10, 0] },
@@ -46,30 +40,28 @@ export const getTrendingToolsService = async ({ intent, category }) => {
       }
     },
     { $sort: { score: -1, createdAt: -1 } },
-    { $limit: 12 }, // ✅ Show more options
+    { $limit: 12 },
     {
       $project: {
-        name: 1,
-        tagline: 1,
-        logo: 1,
-        slug: 1,
-        primaryCategory: 1,
-        intentTags: 1,
-        pricingType: 1,
-        avgRating: 1,
-        isPopular: 1,
-        isFeatured: 1
+        name: 1, tagline: 1, logo: 1, slug: 1, 
+        primaryCategory: 1, pricingType: 1, avgRating: 1
       }
     }
   ]);
+
+  // 🔥 FALLBACK LOGIC: Agar filters se 0 result aaye, toh overall trending uthao
+  if (tools.length === 0) {
+    tools = await Tool.find({ status: "live" })
+      .sort({ isFeatured: -1, isPopular: -1, avgRating: -1 })
+      .limit(8)
+      .select("name tagline logo slug primaryCategory pricingType avgRating");
+  }
 
   return tools;
 };
 
 
 
-
- 
  // section - 2: Search Tools Service
 export const searchToolsService = async (term, category) => {
   let query = { status: 'live' };

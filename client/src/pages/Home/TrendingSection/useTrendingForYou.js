@@ -2,44 +2,33 @@
 import { useSelector } from "react-redux";
 import api from "../../../api/axios";
 
-const useTrendingForYou = () => {
-  // ✅ Redux slice se detected intents
-  const { detectedIntents = [] } = useSelector((state) => state.moment || {});
 
-  // ✅ Local state
+ const useTrendingForYou = () => {
+  const { detectedIntents = [] } = useSelector((state) => state.moment || {});
   const [tools, setTools] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Default loading true rakho
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Agar detectedIntents empty → fetch mat karo
-    if (!detectedIntents || detectedIntents.length === 0) {
-      setTools([]);
-      setLoading(false);
-      return;
-    }
-
     const fetchTrendingTools = async () => {
       setLoading(true);
       setError(null);
-
       try {
-        const intentQuery = detectedIntents.join(",");
-        const response = await api.get("/trending", {
-          params: { intent: intentQuery },
-        });
-
+        // ✅ Intents ho toh query bhejo, varna empty bhejo (Backend fallback handle kar lega)
+        const params = detectedIntents.length > 0 ? { intent: detectedIntents.join(",") } : {};
+        
+        const response = await api.get("/trending", { params });
         setTools(response.data.data || []);
       } catch (err) {
-        console.error("Error fetching trending tools:", err);
-        setError("Failed to load trending tools. Please try again.");
+        
+        setError("Failed to load trending tools." , err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchTrendingTools();
-  }, [detectedIntents]);
+  }, [detectedIntents]); // Jab intent update ho, tab re-fetch ho
 
   return { tools, loading, error };
 };

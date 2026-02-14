@@ -1,15 +1,10 @@
 import React from "react";
  import useTrendingForYou from "./useTrendingForYou";
- import ToolGrid from "../../aiArt/components/ToolGrid";
+ import ToolCard from "../../aiArt/components/ToolCard";
  
  import './TrendingForYou.css'
 
-
- const EmptyState = () => (
-  <div className="trending-empty">
-    <p>No trending tools found for your current intent.</p>
-  </div>
-);
+ 
 
  
 const ErrorState = ({ message, onRetry }) => (
@@ -22,38 +17,39 @@ const ErrorState = ({ message, onRetry }) => (
 );
 
  
-const SkeletonCard = () => (
-  <div className="skeleton-card"></div>
-);
+ 
 
 
 
-
-const TrendingForYouSection = () => {
-    const { tools, loading, error } = useTrendingForYou();
-
-  const handleRetry = () => {
-    // Future-proof: if hook supports refetch, call here
-    window.location.reload(); // simple fallback for now
-  };
+ const TrendingForYouSection = () => {
+  const { tools, loading, error } = useTrendingForYou();
 
   if (loading) {
     return (
-      <div className="skeleton-grid">
-        {Array(6)
-          .fill(0)
-          .map((_, i) => (
-            <SkeletonCard key={i} />
-          ))}
+      <div className="usecase-row-container skeleton-active">
+        {[1, 2, 3, 4].map((_, i) => (
+          <div key={i} className="tool-card-skeleton" />
+        ))}
       </div>
     );
   }
 
-  if (error) return <ErrorState message={error} onRetry={handleRetry} />;
+  if (error) return <ErrorState message={error} />;
   
-  if (!tools || tools.length === 0) return <EmptyState />;
+  // ✅ Empty state ki jagah hum null return karenge ya global trending dikhayenge
+  // Kyuki humne backend fallback add kiya hai, ye khali nahi aayega.
+  if (!tools || tools.length === 0) return null;
 
-  return <ToolGrid tools={tools} />;
+  return (
+    <div className="usecase-row-container">
+      {tools.map((tool) => (
+        <ToolCard key={tool._id} tool={tool} />
+      ))}
+    </div>
+  );
 };
+
+
+
 
 export default TrendingForYouSection;

@@ -13,6 +13,7 @@ const allowedOrigins = [
   "https://ai-mart-frontend.vercel.app",
   "https://ai-mart-frontend-git-main-sugam-singhs-projects.vercel.app",
   "http://localhost:5173",
+  "http://localhost:3000",
   /\.vercel\.app$/  // Allow all Vercel preview URLs
 ];
 

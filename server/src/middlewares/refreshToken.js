@@ -52,15 +52,15 @@ const generateToken = asyncHandler(async(req , res) => {
 
  res.cookie("accessToken", accessToken, {
   httpOnly: true,
-  secure: false, // localhost
-  sameSite: "lax",
+  secure: true, // localhost
+  sameSite: "none",
   maxAge: 15 * 60 * 1000, // 15 min
 });
 
 res.cookie("refreshToken", newRefreshToken, {
   httpOnly: true,
-  secure: false,
-  sameSite: "lax",
+  secure: true,
+  sameSite: "none",
   maxAge: 7 * 24 * 60 * 60 * 1000,
 });
 

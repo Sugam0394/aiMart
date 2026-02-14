@@ -21,6 +21,7 @@ import SearchSection from "./SearchSection/SearchSection";
 import UseCaseSection from "./useCasedSection/UseCasedSection";
 import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
+import SmartSolverSection from "./SmartSolver/SmartSolverSection";
 
 
 
@@ -109,7 +110,14 @@ import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
       subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
     >
       <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
-    </SectionWrapper>      
+    </SectionWrapper> 
+
+    
+
+ 
+         <SectionWrapper title="🧠 Smart Problem Solver" subtitle="Direct solutions for your daily tasks">
+           <SmartSolverSection />
+             </SectionWrapper>
 
       </main>
     </div>

@@ -51,7 +51,7 @@ import { useSelector } from "react-redux";
  
 
 // Data Initializer 
-import AppInitializer from "./components/DataInit/AppInitializer.jsx";
+import AppInitializer from './components/DataInit/AppInitializer.jsx'
 
 
 

@@ -7,15 +7,34 @@
 .usecase-switcher {
   display: flex;
   gap: var(--spacing-sm, 0.75rem);
+  
+  /* ✅ CRITICAL: Enable scroll */
   overflow-x: auto;
-  padding: 6px 0;
+  overflow-y: hidden;
+  
+  /* ✅ CRITICAL: Smooth touch */
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
   scroll-behavior: smooth;
+  
+  padding: 6px 0;
+  
+  /* ✅ Desktop scrollbar (thin) */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
+/* Custom scrollbar for webkit */
 .usecase-switcher::-webkit-scrollbar {
-  display: none;
+  height: 4px;
+}
+
+.usecase-switcher::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.usecase-switcher::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
 }
 
 /* ===============================
@@ -36,7 +55,7 @@
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  flex-shrink: 0;
+  flex-shrink: 0; /* ✅ CRITICAL: Don't compress */
   user-select: none;
 }
 
@@ -122,6 +141,12 @@
 @media (max-width: 767px) {
   .usecase-switcher {
     gap: 0.5rem;
+    /* ✅ Hide scrollbar on mobile */
+    scrollbar-width: none;
+  }
+  
+  .usecase-switcher::-webkit-scrollbar {
+    display: none;
   }
 
   .pill {
@@ -140,6 +165,10 @@
 ================================= */
 
 @media (max-width: 480px) {
+  .usecase-switcher {
+    gap: 0.4rem;
+  }
+
   .pill {
     padding: 7px 16px;
     font-size: 0.8rem;

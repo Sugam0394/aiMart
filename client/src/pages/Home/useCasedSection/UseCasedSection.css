@@ -1,9 +1,13 @@
+/* components/useCasedSection/UseCasedSection.css */
+
 /* =========================
    Wrapper
 ========================= */
 
 .usecase-section-wrapper {
   width: 100%;
+  min-height: 280px;
+  overflow: visible; /* ✅ CRITICAL: Allow child overflow */
 }
 
 /* =========================
@@ -15,27 +19,43 @@
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   gap: 22px;
-
   width: 100%;
-
+  
+  /* ✅ CRITICAL: Enable scroll */
   overflow-x: auto;
   overflow-y: hidden;
-
-  padding-bottom: 14px;
-
-  scroll-snap-type: x mandatory;
+  
+  /* ✅ CRITICAL: Smooth touch scroll */
   -webkit-overflow-scrolling: touch;
-
-  scrollbar-width: none;
+  scroll-behavior: smooth;
+  
+  padding-bottom: 14px;
+  
+  /* ✅ Snap scroll (optional) */
+  scroll-snap-type: x mandatory;
+  
+  /* ✅ Desktop scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
+/* Custom scrollbar for webkit browsers */
 .usecase-row-container::-webkit-scrollbar {
-  display: none;
+  height: 6px;
+}
+
+.usecase-row-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.usecase-row-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
 }
 
 /* ToolCard sizing consistency */
 .usecase-row-container .tool-card {
-  flex: 0 0 270px;
+  flex: 0 0 var(--card-width-desktop, 270px);
   scroll-snap-align: start;
 }
 
@@ -44,11 +64,12 @@
 ========================= */
 
 .skeleton-active {
-  min-height: 200px;
+  min-height: 280px;
 }
 
 .tool-card-skeleton {
-  flex: 0 0 270px;
+  flex: 0 0 var(--card-width-desktop, 270px);
+  height: var(--card-height-desktop, 260px);
   border-radius: 14px;
   background: linear-gradient(
     90deg,
@@ -61,45 +82,141 @@
 }
 
 @keyframes shimmer {
-  0% { background-position: 100% 0 }
-  100% { background-position: -100% 0 }
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
 /* =========================
    Error State
 ========================= */
 
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  min-height: 280px;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
 .error-text {
   color: #ef4444;
-  padding: 20px 0;
   font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.retry-btn {
+  padding: 0.75rem 1.5rem;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retry-btn:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
 }
 
 /* =========================
-   Responsive
+   Empty State
 ========================= */
 
-@media (max-width: 1024px) {
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  min-height: 280px;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-text {
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* =========================
+   TABLET (768px - 1023px)
+========================= */
+
+@media (max-width: 1023px) {
   .usecase-row-container {
     gap: 18px;
   }
 
   .usecase-row-container .tool-card,
   .tool-card-skeleton {
-    flex: 0 0 240px;
+    flex: 0 0 var(--card-width-tablet, 240px);
   }
 }
 
-@media (max-width: 768px) {
+/* =========================
+   MOBILE (481px - 767px)
+========================= */
+
+@media (max-width: 767px) {
   .usecase-row-container {
     gap: 14px;
+    padding-bottom: 12px;
+    /* ✅ Hide scrollbar on mobile */
+    scrollbar-width: none;
+  }
+  
+  .usecase-row-container::-webkit-scrollbar {
+    display: none;
   }
 
   .usecase-row-container .tool-card,
   .tool-card-skeleton {
-    flex: 0 0 210px;
+    flex: 0 0 var(--card-width-mobile, 210px);
+  }
+  
+  .error-state,
+  .empty-state {
+    padding: 2rem 1rem;
+    min-height: 240px;
   }
 }
+
+/* =========================
+   SMALL MOBILE (0px - 480px)
+========================= */
+
+@media (max-width: 480px) {
+  .usecase-row-container {
+    gap: 12px;
+  }
+
+  .usecase-row-container .tool-card,
+  .tool-card-skeleton {
+    flex: 0 0 180px;
+    height: auto;
+  }
+  
+  .error-icon,
+  .empty-icon {
+    font-size: 2.5rem;
+  }
+} 
  
 
 

@@ -1,54 +1,51 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useState , useMemo } from "react";
-import "./Home.css"
-
-// moment 
-import useCaseMeta from "../../../../server/src/moment/useCaseMeta";
-import "./Home.css";
 
 
-
-// Layout
-import SectionWrapper from "../../layouts/section/SectionWrapper";
-
-
-
-// Sections
 import GreetingSection from "./GreetingSection/GreetingSection";
 import TrendingForYouSection from "./TrendingSection/TrendingForYou";
 import SearchSection from "./SearchSection/SearchSection";
+ 
+import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
 import UseCaseSection from "./useCasedSection/UseCasedSection";
 import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
 import SmartSolverSection from "./SmartSolver/SmartSolverSection";
+import SectionWrapper from "../../layouts/section/SectionWrapper";
 
 
 
-// components
-import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
+import "./Home.css";
 
- 
-
-
-
-  function Home() {
+function Home() {
   const { user } = useSelector((state) => state.auth);
+  const { availableUseCases } = useSelector((state) => state.moment);
+  
   const isAuthenticated = !!user;
   const [isPersonalized, setIsPersonalized] = useState(false);
+  const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
-  // useMemo use karenge taaki RANDOM sirf PEHLI BAAR (Mount) par chale
-  // Baad mein user switcher se badle toh wahi rahe
-  const initialRandomKey = useMemo(() => {
-    const keys = Object.keys(useCaseMeta);
-    return keys[Math.floor(Math.random() * keys.length)];
-  }, []);
+ 
+  const currentUseCaseKey = useMemo(() => {
+ 
+    if (activeUseCaseKey) return activeUseCaseKey;
 
-  const [activeUseCaseKey, setActiveUseCaseKey] = useState(initialRandomKey);
-  const activeMeta = useCaseMeta[activeUseCaseKey];
+    
+    if (availableUseCases && availableUseCases.length > 0) {
+      
+    return availableUseCases[0].key;
+    }
+
+    return "";
+  }, [availableUseCases, activeUseCaseKey]);
+
+  // 2. Metadata nikalne ke liye hum "currentUseCaseKey" ka use karenge
+  const activeMeta = availableUseCases.find(
+    (uc) => uc.key === currentUseCaseKey
+  );
 
   return (
-    <div className="home-container">
+   <div className="home-container">
       <main className="home-page">
         {/* HERO SECTION */}
         <div className="home-hero-container">
@@ -58,70 +55,72 @@ import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
           </div>
         </div>
 
-
-
-
-
-
         <div className="sections-stack">
           {/* TRENDING */}
-          <SectionWrapper title="Trending For You" subtitle="Trending for you today!">
-            <div className="horizontal-scroll-section">
-              <TrendingForYouSection />
-            </div>
-          </SectionWrapper>
-
-
-
+         
 
           {/* STICKY FILTER BAR */}
           <div className="filter-sticky-bar">
             <div className="filter-inner-content">
-              <span className="filter-label"> Filters</span>
+              <span className="filter-label">Filters</span>
               <UseCaseSwitcher 
-                activeUseCase={activeUseCaseKey} 
+                activeUseCase={currentUseCaseKey} 
                 onChange={setActiveUseCaseKey} 
               />
             </div>
-          </div>  
+          </div>
 
-          
-
-          {/* DYNAMIC SECTION (Random on refresh, but stable on click) */}
+          {/* DYNAMIC USE CASE SECTION */}
           {activeMeta && (
-            <SectionWrapper title={activeMeta.title} subtitle={activeMeta.subtitle}>
+            <SectionWrapper 
+              title={activeMeta.label} 
+              subtitle={`${activeMeta.toolCount} AI tools available`}
+            >
               <div className="horizontal-scroll-section">
-                <UseCaseSection useCaseKey={activeUseCaseKey} />
+                {/* Yahan bhi currentUseCaseKey pass karein */}
+                <UseCaseSection useCaseKey={currentUseCaseKey} />
               </div>
             </SectionWrapper>
           )}
+
+            <SectionWrapper 
+            title="Trending For You" 
+            subtitle="Trending for you today!"
+          >
+            <div className="horizontal-scroll-section">
+              <TrendingForYouSection />
+            </div>
+          </SectionWrapper>
         </div>
 
-       
-             <SectionWrapper 
-                 title="🚀 Rising Tools" 
-                    subtitle="New and featured AI tools gaining momentum"
-                             >
-                      <RisingToolsSection />
-                      </SectionWrapper>
+        {/* RISING TOOLS */}
+        <SectionWrapper 
+          title="🚀 Rising Tools" 
+          subtitle="New and featured AI tools gaining momentum"
+        >
+          <RisingToolsSection />
+        </SectionWrapper>
 
-                <SectionWrapper 
-      title={isPersonalized ? "🎯 Based on Your Interests" : "🌟 Handpicked For You"} 
-      subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
-    >
-      <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
-    </SectionWrapper> 
+        {/* RECOMMENDED */}
+        <SectionWrapper 
+          title={isPersonalized ? "🎯 Based on Your Interests" : "🌟 Handpicked For You"} 
+          subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
+        >
+          <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
+        </SectionWrapper>
 
-    
-
- 
-         <SectionWrapper title="🧠 Smart Problem Solver" subtitle="Direct solutions for your daily tasks">
-           <SmartSolverSection />
-             </SectionWrapper>
-
+        {/* SMART SOLVER */}
+        <SectionWrapper 
+          title="🧠 Smart Problem Solver" 
+          subtitle="Direct solutions for your daily tasks"
+        >
+          <SmartSolverSection />
+        </SectionWrapper>
       </main>
     </div>
+      
+    
   );
 }
 
-export default Home;
+export default Home; 

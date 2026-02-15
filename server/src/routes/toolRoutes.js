@@ -2,7 +2,7 @@ import express from 'express'
  
 
  import { getToolById } from '../controllers/tool/toolController.js';
- import { getTrendingTools , getQuickSolution, getRecommendedTools, searchToolsController , getToolsByUseCaseController , getRisingTools } from '../controllers/tool/toolController.js';
+ import { getTrendingTools , getToolsByUseCaseController, getAvailableUseCases , getQuickSolution, getRecommendedTools, searchToolsController , getRisingTools } from '../controllers/tool/toolController.js';
 
  
 
@@ -21,8 +21,12 @@ router.get("/tools/:id",getToolById );
 router.get("/trending", getTrendingTools );
 
 router.get("/search", searchToolsController );
+ 
+// Get All use cases for switcher
+router.get('/use-cases' , getAvailableUseCases)
 
-router.get("/useCased/:useCaseKey", getToolsByUseCaseController );
+// Get Tools by specific use case
+router.get('/use-case/:useCaseKey' , getToolsByUseCaseController)
 
 router.get('/risingTools' , getRisingTools )
 

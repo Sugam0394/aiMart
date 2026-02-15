@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "seed": "node src/data/seed.js "
+    "dev": "nodemon src/index.js"
     
   },
   "author": "Sugam singh",

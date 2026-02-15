@@ -1,10 +1,12 @@
+/* components/UseCaseSwitcher/UseCaseSwitcher.css */
+
 /* ===============================
    USE CASE SWITCHER - OPTIMIZED
 ================================= */
 
 .usecase-switcher {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-sm, 0.75rem);
   overflow-x: auto;
   padding: 6px 0;
   -webkit-overflow-scrolling: touch;
@@ -21,16 +23,19 @@
 ================================= */
 
 .pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   white-space: nowrap;
   padding: 10px 22px;
-  border-radius: var(--radius-full);
-  border: 1.5px solid var(--color-border);
-  background: var(--color-bg-primary);
-  color: var(--color-text-secondary);
+  border-radius: 24px;
+  border: 1.5px solid #e5e7eb;
+  background: white;
+  color: #6b7280;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: var(--transition-base);
+  transition: all 0.2s ease;
   flex-shrink: 0;
   user-select: none;
 }
@@ -51,6 +56,55 @@
 }
 
 /* ===============================
+   TOOL COUNT BADGE
+================================= */
+
+.tool-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.pill.active .tool-count {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===============================
+   SKELETON LOADING STATE
+================================= */
+
+.pill.skeleton {
+  width: 120px;
+  height: 40px;
+  background: #f3f4f6;
+  border: none;
+  cursor: default;
+  pointer-events: none;
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #f3f4f6 0%,
+    #e5e7eb 50%,
+    #f3f4f6 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ===============================
    TABLET (768px - 1023px)
 ================================= */
 
@@ -67,12 +121,17 @@
 
 @media (max-width: 767px) {
   .usecase-switcher {
-    gap: var(--spacing-xs);
+    gap: 0.5rem;
   }
 
   .pill {
     padding: 8px 18px;
     font-size: 0.85rem;
+  }
+  
+  .tool-count {
+    padding: 0.1rem 0.4rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -85,6 +144,10 @@
     padding: 7px 16px;
     font-size: 0.8rem;
     border-width: 1px;
+  }
+  
+  .tool-count {
+    display: none; /* Hide count on very small screens */
   }
 } 
  

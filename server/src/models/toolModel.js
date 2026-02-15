@@ -1,5 +1,5 @@
+// models/toolModel.js
 import mongoose from "mongoose";
-import { deriveUseCasesFromTool } from "../moment/useCase.services.js";
 
 const toolSchema = new mongoose.Schema(
   {
@@ -26,98 +26,89 @@ const toolSchema = new mongoose.Schema(
       match: [/^https?:\/\/.+/, "Please enter a valid URL"],
     },
 
-     logo: {
-  type: String,
-  trim: true,
-  default: "", // alow save
-},
-
+    logo: {
+      type: String,
+      trim: true,
+      default: "",
+    },
 
     // =========================
-    // 2️⃣ Moment / Discovery Layer (MOST IMPORTANT)
+    // 2️⃣ Moment / Discovery Layer
     // =========================
     primaryCategory: {
-      type: String, // study | content | business
+      type: String,
       required: true,
       index: true,
     },
 
     categories: {
-      type: [String], // multiple allowed
+      type: [String],
       index: true,
     },
 
-   intentTags: {
-  type: [String],
-  required: true,
-  validate: [(val) => val.length > 0, "At least one intent tag is required"],
-  index: true,
-},
+    intentTags: {
+      type: [String],
+      required: true,
+      validate: [(val) => val.length > 0, "At least one intent tag is required"],
+      index: true,
+    },
 
-// =========================
-// 🔥 Use-Case Mapping Layer (HOME DISCOVERY)
-// =========================
-useCases: {
-  type: [String], 
-  index: true,
-  
-  // example: ["grow-business", "design-faster"]
-},
-
-
+    // =========================
+    // 🔥 Use-Case Mapping Layer (HOME DISCOVERY)
+    // =========================
+    useCases: {
+      type: [String], 
+      index: true,
+      default: []
+      // ✅ NO pre-save hook needed
+      // Direct import from JSON or manual entry
+    },
 
     outputTypes: {
-      type: [String], // notes, image, video, pdf
+      type: [String],
       index: true,
     },
 
-   
-  
     // =========================
     // 3️⃣ Tool Nature / Usage
     // =========================
     toolType: {
-      type: String, // ai | utility | service
+      type: String,
       required: true,
       index: true,
     },
 
     usageMode: {
-      type: String, // online | api | download
+      type: String,
       default: "online",
     },
 
     pricingType: {
-      type: String, // free | freemium | paid
+      type: String,
       default: "free",
       index: true,
     },
-    // Add these inside toolSchema
-slug: {
-  type: String,
-  unique: true,
-  lowercase: true,
-  trim: true,
-  index: true // SEO and Fast lookup
-},
 
-avgRating: {
-  type: Number,
-  default: 0,
-  min: 0,
-  max: 5
-},
+    // SEO & Ratings
+    slug: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      index: true
+    },
 
-totalReviews: {
-  type: Number,
-  default: 0
-},
-  
+    avgRating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5
+    },
 
-   
-
-
-
+    totalReviews: {
+      type: Number,
+      default: 0
+    },
 
     // 🔹 Moderation
     status: {
@@ -127,7 +118,7 @@ totalReviews: {
       index: true,
     },
 
-    // 🔹 Growth Flags (Founder controlled)
+    // 🔹 Growth Flags
     isPopular: {
       type: Boolean,
       default: false,
@@ -145,7 +136,7 @@ totalReviews: {
       default: null,
     },
 
-  // =========================
+    // =========================
     // 6️⃣ ToolCart (Future-proof)
     // =========================
     isCartEligible: {
@@ -153,30 +144,27 @@ totalReviews: {
       default: true,
     },
 
-
     moderation: {
-  reviewedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    default: null,
-  },
-  reviewedAt: {
-    type: Date,
-    default: null,
-  },
-  note: {
-    type: String,
-    default: "",
-  },
-},
-
-
+      reviewedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: null,
+      },
+      reviewedAt: {
+        type: Date,
+        default: null,
+      },
+      note: {
+        type: String,
+        default: "",
+      },
+    },
 
     // 🔹 Ownership
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-     required: true, // MUST be toolOwner (controller enforce karega)
+      required: true,
       index: true,
     },
 
@@ -190,28 +178,7 @@ totalReviews: {
   { timestamps: true }
 );
 
- toolSchema.pre("save", function (next) {
-  if (
-    this.isModified("intentTags") ||
-    this.isModified("primaryCategory") ||
-    this.isModified("categories") ||
-    this.isModified("outputTypes")
-  ) {
-    this.useCases = deriveUseCasesFromTool({
-      intentTags: this.intentTags,
-      primaryCategory: this.primaryCategory,
-      categories: this.categories,
-      outputTypes: this.outputTypes,
-    });
-  }
-  next();
-});
-
-
  
-// =========================
-// Indexes for fast queries
-// =========================
 toolSchema.index({ primaryCategory: 1, intentTags: 1 });
 toolSchema.index({ isFeatured: 1, status: 1 });
 toolSchema.index({ isPopular: 1, toolType: 1 });
@@ -221,4 +188,4 @@ toolSchema.index({ isFeatured: 1, isPopular: 1, createdAt: -1 });
 toolSchema.index({ intentTags: 1, primaryCategory: 1, status: 1 });
 
 const Tool = mongoose.model("Tool", toolSchema, 'tools');
-export default Tool;
+export default Tool; 

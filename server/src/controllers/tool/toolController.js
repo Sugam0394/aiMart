@@ -2,12 +2,26 @@
 import Tool from "../../models/toolModel.js";
 import Review from "../../models/reviewModel.js";
 import { getTrendingToolsService , searchToolsService , getToolsByUseCase } from "../../services/toolServices.js";
-import useCaseMeta from "../../moment/useCaseMeta.js";
 import User from "../../models/userModel.js";
+import ApiError from "../../utils/ApiError.js";
+import asyncHandler from "../../utils/asyncHandler.js";
+import ApiResponse from "../../utils/ApiResponse.js";
+ 
 
-// Frontend ko AI-ART page ke liye clean, trusted tool data dena —
-// sirf 1 tool, 1 curated review, slug ke basis pe.
-// Controller
+ // Helper: Convert "blog-writing" → "Blog Writing"
+ const humanizeUseCase = (key) => {
+  // 1. Check agar key exist karti hai
+  if (!key || typeof key !== 'string') return "";
+
+  return key
+    .split('-')
+    .filter(word => word.length > 0) // Extra dashes handle karne ke liye
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
+
+ // get Tool By Id
  export const getToolById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -147,43 +161,116 @@ export const searchToolsController = async (req, res) => {
 
 
 
+ 
+
+//  Section - 3: Get All Available Use Cases
+export const getAvailableUseCases = asyncHandler(async (req, res) => {
+  try {
+    const useCases = await Tool.aggregate([
+      // Step 1: Only live tools
+      { $match: { status: "live" } },
+      
+      // Step 2: Unwind useCases array (expand each use case into separate doc)
+      { $unwind: "$useCases" },
+      
+      // Step 3: Group by use case key and count tools
+      {
+        $group: {
+          _id: "$useCases",
+          count: { $sum: 1 },
+          sampleTools: { 
+            $push: { 
+              name: "$name", 
+              logo: "$logo",
+              slug: "$slug"
+            } 
+          }
+        }
+      },
+      
+      // Step 4: Filter - only use cases with at least 3 tools
+      { $match: { count: { $gte: 1 } } },
+      
+      // Step 5: Format output
+      {
+        $project: {
+          _id: 0,
+          key: "$_id",
+          label: { $literal: "" }, // We'll add this in JS
+          toolCount: "$count",
+          preview: { $slice: ["$sampleTools", 3] } // First 3 tools as preview
+        }
+      },
+      
+      // Step 6: Sort by tool count (most popular first)
+      { $sort: { toolCount: -1 } },
+      
+      // Step 7: Limit to top 20 use cases
+      { $limit: 20 }
+    ]);
+
+    // Add humanized labels
+    const formattedUseCases = useCases.map(uc => ({
+      ...uc,
+      label: humanizeUseCase(uc.key)
+    }));
+
+    return res.status(200).json(
+      new ApiResponse(
+        200, 
+        { useCases: formattedUseCases }, 
+        "Use cases fetched successfully"
+      )
+    );
+
+  } catch (error) {
+    console.error("❌ Get Use Cases Error:", error);
+   throw new ApiError(500, error.message || "Failed to fetch use cases");
+  }
+});
 
 
-// Section-3: Use-Case Controller  
- export const getToolsByUseCaseController = async (req, res) => {
+// =======================================
+// Section 3: Get TOOLS by Specific Use Case
+// ========================================
+export const getToolsByUseCaseController = asyncHandler(async (req, res) => {
   try {
     const { useCaseKey } = req.params;
 
-    // 🔍 Normalize (safety)
+    // Normalize
     const normalizedKey = useCaseKey?.toLowerCase().trim();
 
-    // ✅ Validation
-    if (!normalizedKey || !useCaseMeta[normalizedKey]) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid use-case key",
-      });
+    // Validation
+    if (!normalizedKey) {
+      throw new ApiError(400, "Invalid use-case key");
     }
 
-    // 🔥 Service call
+    // Service call
     const tools = await getToolsByUseCase(normalizedKey);
 
-    return res.status(200).json({
-      success: true,
-      meta: useCaseMeta[normalizedKey],
-      count: tools.length,
-      tools,
-    });
+    // Response with metadata
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          useCase: {
+            key: normalizedKey,
+            label: humanizeUseCase(normalizedKey)
+          },
+          count: tools.length,
+          tools
+        },
+        "Tools fetched successfully"
+      )
+    );
 
   } catch (error) {
     console.error(`❌ Use-case Error [${req.params.useCaseKey}]:`, error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Failed to fetch tools by use-case",
-    });
+    throw new ApiError(500, "Failed to fetch tools by use-case");
   }
-};
+});
+
+ 
 
 
 

@@ -105,6 +105,9 @@ export const searchToolsService = async (term, category) => {
  // section - 3: Get Tools By Use-Case Service
  // services/toolService.js
  export const getToolsByUseCase = async (useCaseKey) => {
+
+if (!useCaseKey) return [];
+
   const normalizedKey = useCaseKey.toLowerCase().trim();
 
   const tools = await Tool.find({

@@ -6,67 +6,31 @@ import cookieParser from 'cookie-parser'
 const app = express();
 
   
-
- 
-
-const allowedOrigins = [
-  "https://ai-mart-frontend.vercel.app",
-  "https://ai-mart-frontend-git-main-sugam-singhs-projects.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:3000",
-  /\.vercel\.app$/  // Allow all Vercel preview URLs
+ const allowedOrigins = [
+ process.env.CLIENT_URL,
+  "http://localhost:5173"                // Local Vite URL
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (mobile apps, Postman, etc.)
-      if (!origin) return callback(null, true);
-      
-      // Check if origin is allowed
-      if (allowedOrigins.some(allowed => {
-        if (allowed instanceof RegExp) {
-          return allowed.test(origin);
-        }
-        return allowed === origin;
-      })) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    exposedHeaders: ['Set-Cookie'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-  })
-);
+app.use(cors({
+  origin: function (origin, callback) {
+    // Postman ya bina origin wali calls allow karne ke liye
+    if (!origin) return callback(null, true);
 
-// CRITICAL: Handle preflight requests
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  
-  if (allowedOrigins.some(allowed => {
-    if (allowed instanceof RegExp) {
-      return allowed.test(origin);
+    const isVercel = /\.vercel\.app$/.test(origin);
+    if (allowedOrigins.includes(origin) || isVercel) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS blocked this request!'));
     }
-    return allowed === origin;
-  })) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  
-  res.header('Access-Control-Allow-Credentials', 'true');
-  
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,PATCH,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-    return res.sendStatus(204);
-  }
-  
-  next();
-});
+  },
+  credentials: true
+}));
+
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(cookieParser());
+ 
+ 
 
 app.use(express.json({limit: "20kb"}))
 app.use(express.urlencoded({extended: true, limit: "20kb"}))

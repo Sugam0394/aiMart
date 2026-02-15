@@ -1,38 +1,28 @@
 // app/features/MomentSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from 'axios'
+import { toolService } from "../../api/toolOwner/tool.services";
+ 
 
-// ========================================
-// NEW: Fetch Available Use Cases (for switcher)
-// ========================================
+ 
 export const fetchAvailableUseCases = createAsyncThunk(
   "moment/fetchAvailableUseCases",
   async (_, { rejectWithValue }) => {
-    // MomentSlice.js mein line 10 ke paas add karein
- 
     try {
       console.log("🔍 Fetching available use cases...");
-      const res = await axios.get('/api/use-cases');
-      console.log("✅ Use cases fetched:", res.data);
-      return res.data.data.useCases; // Array of use cases
+      const res = await toolService.getAvailableUseCases(); // Service call
+      return res.data.data.useCases; 
     } catch (err) {
-      console.error("❌ Error fetching use cases:", err);
-      return rejectWithValue("Failed to load use cases");
+      return rejectWithValue(err.response?.data?.message || "Failed to load use cases");
     }
   }
 );
-
-// ========================================
-// EXISTING: Fetch Tools by Use Case (for section)
-// ========================================
+ 
 export const fetchToolsByUseCase = createAsyncThunk(
   "moment/fetchToolsByUseCase",
   async (useCaseKey, { rejectWithValue }) => {
     try {
       console.log("🔍 Fetching tools for use case:", useCaseKey);
-      // ✅ FIXED: Correct endpoint
-      const res = await axios.get(`/api/use-case/${useCaseKey}`);
-      console.log("✅ Tools fetched:", res.data);
+      const res = await toolService.getToolsByUseCase(useCaseKey); // Service call
       
       return {
         useCase: useCaseKey,
@@ -41,15 +31,12 @@ export const fetchToolsByUseCase = createAsyncThunk(
         count: res.data.data.count,
       };
     } catch (err) {
-      console.error("❌ Error fetching use case tools:", err);
-      return rejectWithValue("Failed to load use case tools");
+      return rejectWithValue(err.response?.data?.message || "Failed to load tools");
     }
   }
 );
 
-// ========================================
-// Initial State
-// ========================================
+ 
 const initialState = {
   // Agenda + Discovery
   agenda: [],
@@ -71,9 +58,7 @@ const initialState = {
   useCaseSections: {},
 };
 
-// ========================================
-// Slice
-// ========================================
+ 
 const momentSlice = createSlice({
   name: "moment",
   initialState,
@@ -176,10 +161,7 @@ const momentSlice = createSlice({
       });
   },
 });
-
-// ========================================
-// Export
-// ========================================
+ 
 export const {
   setAgenda,
   setDetectedIntents,

@@ -69,6 +69,18 @@ export const toolApi = {
   // getAllTools: () => api.get('/tools'),
 };
  
+
+export const toolService = {
+  // Use cases ki list (switcher ke liye)
+  getAvailableUseCases: () => api.get('/use-cases'),
+
+  // Specific use case ke tools
+  getToolsByUseCase: (key) => api.get(`/use-case/${key}`),
+
+ 
+ 
+};
+ 
  
 
  

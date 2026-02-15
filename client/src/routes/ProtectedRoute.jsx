@@ -1,35 +1,32 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux';
- import UseRoleSync from '../components/toolOwner/UseRoleSync';
+ 
  
  
 
-function ProtectedRoute( { allowedRoles}) {
- 
-  const { user, role, loading } = useSelector((state) => state.auth);
-      
- // ⏳ Auth loading
-  if (loading) return null; // or loader
+ // ProtectedRoute.jsx
+function ProtectedRoute({ allowedRoles }) {
+  const { user, role, loading, isInitialized } = useSelector((state) => state.auth);
 
-  
-  // ❌ Not logged in
+  // 1. Agar abhi initialized hi nahi hua toh wait karo (No blank screen)
+  if (!isInitialized && loading) {
+    return <div className="loading-screen">Loading...</div>; // Ya skeleton
+  }
+
+  // 2. Not logged in
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // ❌ Role not allowed
-  if (allowedRoles && !allowedRoles.includes(role)) {
-    return <Navigate to="/home" replace />;
+  // 3. Check role from user object as fallback
+  const currentRole = role || user.role;
+
+  if (allowedRoles && !allowedRoles.includes(currentRole)) {
+    // Agar galat jagah aa gaya hai user
+    return <Navigate to="/" replace />;
   }
 
-
- 
-
- 
-
-
-  // 3. Access granted
-  return  <Outlet />
+  return <Outlet />;
 }
 
 export default ProtectedRoute

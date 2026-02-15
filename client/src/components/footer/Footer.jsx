@@ -26,11 +26,6 @@ function Footer() {
           <h4>Team</h4>
           <ul>
             <li>
-              <a href="https://github.com/Sugam0394" target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-            </li>
-            <li>
               {/* FIXED: https:// add kiya hai taaki external link sahi chale */}
               <a href="https://www.linkedin.com/in/sugam-singh-2693a6386" target="_blank" rel="noreferrer">
                 LinkedIn

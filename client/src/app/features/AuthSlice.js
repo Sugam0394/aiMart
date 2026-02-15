@@ -79,6 +79,7 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+    // PENDING
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -87,11 +88,13 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+      // SYNC ROLE
       .addCase(syncUserRole.fulfilled, (state, action) => {
         state.user = action.payload;
         state.role = action.payload.role;
         state.isInitialized = true;
         state.loading = false;
+        state.error = null
       })
       .addCase(syncUserRole.rejected, (state) => {
         state.user = null;
@@ -100,6 +103,8 @@ const authSlice = createSlice({
         state.loading = false;
         localStorage.removeItem("user");
       })
+       
+
       .addMatcher(
         (action) => action.type.endsWith("/fulfilled") && (action.type.includes("login") || action.type.includes("register")),
         (state, action) => {
@@ -107,6 +112,7 @@ const authSlice = createSlice({
           state.user = action.payload;
           state.role = action.payload.role;
           state.isInitialized = true;
+          state.error = null
           localStorage.setItem("user", JSON.stringify(action.payload));
         }
       )

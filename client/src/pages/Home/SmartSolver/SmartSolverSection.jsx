@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toolApi } from "../../../api/toolOwner/tool.services";
 import ToolCard from "../../aiArt/components/ToolCard";
 import "./SmartSolver.css";
+import ToolCardSkeleton from "../../aiArt/components/ToolCardSkeleton";
 
 const SOLVER_OPTIONS = [
   { id: 1, label: "📝 Study Help", slug: "study-better" },
@@ -57,9 +58,9 @@ const SmartSolverSection = () => {
 
       <div className="solver-results-area">
         {loading ? (
-          <div className="solver-loader">
-             <div className="spinner"></div>
-             <p>Finding expert tools...</p>
+          <div className="usecase-row-container">
+            {/* Spinner ki jagah 3 Skeletons (kyuki aap 3 tools dikhate ho) */}
+            {[1, 2, 3].map((n) => <ToolCardSkeleton key={n} />)}
           </div>
         ) : tools.length > 0 ? (
           <div className="usecase-row-container">

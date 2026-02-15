@@ -68,7 +68,7 @@ function App() {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
         <div className="text-center">
-          <h2 className="text-2xl font-bold animate-pulse">aiMart v2</h2>
+          <h2 className="text-2xl font-bold animate-pulse">aiMart </h2>
           <p className="mt-2 text-gray-400">Authenticating...</p>
         </div>
       </div>

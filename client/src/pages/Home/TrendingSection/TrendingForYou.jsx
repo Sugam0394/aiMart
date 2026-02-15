@@ -1,6 +1,7 @@
 import React from "react";
  import useTrendingForYou from "./useTrendingForYou";
  import ToolCard from "../../aiArt/components/ToolCard";
+ import ToolCardSkeleton from "../../aiArt/components/ToolCardSkeleton";
  
  import './TrendingForYou.css'
 
@@ -24,7 +25,7 @@ const ErrorState = ({ message, onRetry }) => (
     return (
       <div className="usecase-row-container skeleton-active">
         {[1, 2, 3, 4].map((_, i) => (
-          <div key={i} className="tool-card-skeleton" />
+          <ToolCardSkeleton key={i} />
         ))}
       </div>
     );

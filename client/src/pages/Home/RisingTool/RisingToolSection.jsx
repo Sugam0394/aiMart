@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getRisingTools } from "../../../api/toolOwner/tool.services";
 import "./RisingTools.css";
 import ToolCard from '../../aiArt/components/ToolCard';
+import ToolCardSkeleton from "../../aiArt/components/ToolCardSkeleton";
 
 const RisingToolsSection = () => {
   const [tools, setTools] = useState([]);
@@ -26,7 +27,7 @@ const RisingToolsSection = () => {
     return (
       <div className="usecase-row-container skeleton-active">
         {[1, 2, 3, 4].map((n) => (
-          <div key={n} className="tool-card-skeleton"></div>
+           <ToolCardSkeleton key={n} />
         ))}
       </div>
     );

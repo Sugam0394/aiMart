@@ -3,21 +3,22 @@
   padding: 4rem 16px 2rem 16px;
   border-top: 1px solid #F1F5F9;
   margin-top: auto;
-  width: 100%;
+  width: 100%; /* ✅ Already hai */
+  align-self: stretch; /* ✅ ADD THIS - overrides parent's center alignment */
 }
 
 .footer-top {
   max-width: 1200px;
   margin: 0 auto 3rem auto;
   display: grid;
-  grid-template-columns: 1fr; /* Mobile: Single column stack */
+  grid-template-columns: 1fr;
   gap: 2.5rem;
 }
 
 /* Tablet & Desktop Layout */
 @media (min-width: 768px) {
   .footer-top {
-    grid-template-columns: 2fr 1fr 1fr 1fr; /* Brand gets more space */
+    grid-template-columns: 2fr 1fr 1fr 1fr;
   }
 }
 
@@ -51,7 +52,6 @@
   margin-bottom: 0.8rem;
 }
 
-/* Removing underlines from footer links too */
 .footer-links li a {
   color: #6B7280;
   text-decoration: none !important;
@@ -61,7 +61,7 @@
 
 .footer-links li a:hover {
   color: #4F46E5;
-  padding-left: 4px; /* Subtle interaction */
+  padding-left: 4px;
 }
 
 .footer-bottom {
@@ -72,9 +72,8 @@
   padding-top: 2rem;
   color: #9CA3AF;
   font-size: 0.85rem;
-} 
+}
 
-/* Logo Consistency as per your rule */
 .footer-logo {
   color: #4F46E5 !important;
   font-weight: 800;
@@ -83,25 +82,14 @@
   margin-bottom: 1rem;
 }
 
-.footer-links li a {
-  text-decoration: none !important; /* No underlines in footer too */
-  color: #6B7280;
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-}
-
-.footer-links li a:hover {
-  color: #4F46E5;
-}
-
 /* Mobile Stack Rule */
 @media (max-width: 640px) {
   .footer-top {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    text-align: left; /* Mobile par left alignment clean lagti hai */
+    text-align: left;
   }
-}
+} 
  
 

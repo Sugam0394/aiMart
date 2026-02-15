@@ -339,6 +339,55 @@
     gap: var(--card-gap-mobile);
   }
 } 
+
+
+
+
+
+/* Skeleton Base Styles */
+.skeleton-card {
+  pointer-events: none; /* User click na kar paye loading ke waqt */
+}
+
+.skeleton-shimmer {
+  background: #f6f7f8;
+  background-image: linear-gradient(
+    90deg, 
+    #f6f7f8 0%, 
+    #edeef1 20%, 
+    #f6f7f8 40%, 
+    #f6f7f8 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 800px 100%; 
+  display: inline-block;
+  position: relative;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: -468px 0; }
+  100% { background-position: 468px 0; }
+}
+
+/* Specific Skeleton Elements */
+.skeleton-image {
+  height: 100%;
+  width: 100%;
+  background: #e2e8f0;
+}
+
+.skeleton-text {
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-badge { width: 50px; height: 14px; }
+.skeleton-title { width: 80%; height: 20px; margin-top: 10px; }
+.skeleton-price { width: 40px; }
+.skeleton-link { width: 60px; }
  
  
 

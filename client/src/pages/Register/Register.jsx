@@ -25,29 +25,24 @@ function Register() {
     dispatch(registerUser(formData));
   };
 
-  useEffect(() => {
-    if (loading) { 
-      toast.loading("Creating account...", { id: "register" }); 
-    }
+   // Register.jsx mein update karo
+ useEffect(() => {
+  if (loading) {
+    toast.loading("Creating account...", { id: "register" });
+  }
 
-    // ✅ CHANGED: Navigate to dashboard instead of login
-    if (!loading && user && !error) {
-      toast.success("Welcome to aiMart! 🎉", { id: "register" });
-      
-      // Navigate based on role
-      if (user.role === 'founder') {
-        navigate("/founder/dashboard");
-      } else if (user.role === 'toolOwner') {
-        navigate("/toolowner/dashboard");
-      } else {
-        navigate("/explore");  // Regular user
-      }
-    }
+  if (!loading && user && !error) {
+    toast.success("Welcome to aiMart! 🎉", { id: "register" });
 
-    if (!loading && error) { 
-      toast.error(error, { id: "register" }); 
-    }
-  }, [loading, user, error, navigate]);
+    // Since default role is user
+    navigate("/explore", { replace: true });
+  }
+
+  if (!loading && error) {
+    toast.error(error, { id: "register" });
+  }
+}, [loading, user, error, navigate]);
+
 
   return (
     <div className='register-container'>

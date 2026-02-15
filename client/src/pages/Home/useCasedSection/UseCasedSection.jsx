@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchToolsByUseCase } from "../../../app/features/MomentSlice";
 import ToolCard from "../../aiArt/components/ToolCard";
 import './UseCasedSection.css';
+import ToolCardSkeleton from "../../aiArt/components/ToolCardSkeleton";
+
+
 
 function UseCaseSection({ useCaseKey }) {
   const dispatch = useDispatch();
@@ -27,7 +30,7 @@ function UseCaseSection({ useCaseKey }) {
     return (
       <div className="usecase-row-container skeleton-active">
         {[1, 2, 3, 4].map((n) => (
-          <div key={n} className="tool-card-skeleton" style={{ width: '280px', height: '180px', background: '#f0f0f0', borderRadius: '12px' }}></div>
+           <ToolCardSkeleton key={n} />
         ))}
       </div>
     );

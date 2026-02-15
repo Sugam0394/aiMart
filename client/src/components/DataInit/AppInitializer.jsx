@@ -1,20 +1,22 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"; // useSelector add kiya
+// AppInitializer.jsx - FINAL FIXED VERSION
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { syncUserRole, setInitialized, logout } from "../../app/features/AuthSlice";
 import { fetchSavedTools } from "../../app/features/SavedSlice";
 import { getAccessToken } from "../../utils/token";
 
 const AppInitializer = () => {
   const dispatch = useDispatch();
-  
-  // ✅ Problem Solve: user ko state se nikaalo
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth); // ✅ isInitialized hata diya
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
+    if (hasInitialized.current) return;
+
     const token = getAccessToken();
 
     if (token && !user) {
-      // Case 1: Token hai par state khali hai (e.g. Refresh ya Fresh Login)
+      hasInitialized.current = true;
       dispatch(syncUserRole())
         .unwrap()
         .then(() => {
@@ -24,16 +26,15 @@ const AppInitializer = () => {
           dispatch(logout());
         });
     } else if (token && user) {
-      // Case 2: Token bhi hai aur user state mein bhi hai (e.g. Just Registered/Logged in)
+      hasInitialized.current = true;
       dispatch(setInitialized());
       dispatch(fetchSavedTools());
     } else {
-      // Case 3: Token nahi hai
+      hasInitialized.current = true;
       dispatch(setInitialized());
     }
-    
-    // dependency array mein user aur dispatch zaruri hain
-  }, [dispatch, user]); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]); // ✅ user deliberately exclude kiya to prevent loop
 
   return null;
 };

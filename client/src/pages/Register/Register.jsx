@@ -29,16 +29,13 @@ function Register() {
  useEffect(() => {
   if (loading) {
     toast.loading("Creating account...", { id: "register" });
+    return;
   }
 
-  if (!loading && user && !error) {
+ if (user && !error) {
     toast.success("Welcome to aiMart! 🎉", { id: "register" });
-
-    // Since default role is user
     navigate("/explore", { replace: true });
-  }
-
-  if (!loading && error) {
+  } else if (error) {
     toast.error(error, { id: "register" });
   }
 }, [loading, user, error, navigate]);

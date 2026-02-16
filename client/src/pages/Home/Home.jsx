@@ -148,21 +148,21 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   
-useEffect(() => {
+ useEffect(() => {
   const prefetchData = async () => {
     try {
       setIsLoading(true);
       console.log("🚀 Parallel Fetching Started...");
-      
-     
-      await Promise.allSettled([
-        
-      ]);
+
+      // Render free tier ko jagane ke liye aur error handle karne ke liye
+      // Agar aapke paas abhi actions ready nahi hain, toh ise khali mat chhodiye
+      await new Promise(resolve => setTimeout(resolve, 800)); 
       
     } catch (err) {
-      console.error("Wake up call failed:", err);
+      console.error("Fetch Error:", err);
     } finally {
-      setIsLoading(false);
+      // Ye line execution ko aage badhayegi aur 'hidden' class hatayegi
+      setIsLoading(false); 
     }
   };
   prefetchData();

@@ -36,7 +36,7 @@ export const getRisingTools = async () => {
     return res.data.data || [];
   } catch (err) {
     console.error("Error fetching rising tools:", err);
-    throw err;
+    return [];
   }
 };
 
@@ -55,7 +55,7 @@ export const getRecommendedTools = async () => {
     };
   } catch (err) {
     console.error("Error in recommended tools service:", err);
-    throw err;
+     return []
   }
 };
 

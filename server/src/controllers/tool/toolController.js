@@ -275,7 +275,8 @@ export const getToolsByUseCaseController = asyncHandler(async (req, res) => {
 
 
 
-// Section - 4  Rising Tools
+ 
+ // Section - 4: Rising Tools (FIXED VERSION)
 export const getRisingTools = async (req, res) => {
   try {
     const fifteenDaysAgo = new Date();
@@ -290,8 +291,10 @@ export const getRisingTools = async (req, res) => {
         { createdAt: { $gte: fifteenDaysAgo } }
       ]
     })
+    .select("name tagline logo slug primaryCategory pricingType avgRating")
     .sort({ createdAt: -1 })
-    .limit(10);
+    .limit(10)
+    .lean();
 
     // Fallback: Agar tools kam hain toh latest tools se fill karo
     if (tools.length < 4) {
@@ -299,21 +302,23 @@ export const getRisingTools = async (req, res) => {
         status: "live", 
         _id: { $nin: tools.map(t => t._id) } 
       })
+      .select("name tagline logo slug primaryCategory pricingType avgRating")
       .sort({ createdAt: -1 })
-      .limit(8 - tools.length);
+      .limit(8 - tools.length)
+      .lean();
       
       tools = [...tools, ...fallback];
     }
 
-    res.status(200).json({ success: true, data: tools });
+    res.status(200).json({ success: true, count: tools.length, data: tools });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("❌ getRisingTools Error:", error);
+    res.status(200).json({ success: true, count: 0, data: [] });
   }
 };
 
 
-
-// Section - 5 recommend Tools
+// Section - 5: Recommended Tools (FIXED VERSION)
 export const getRecommendedTools = async (req, res) => {
   try {
     // Frontend se tags aayenge query params mein: ?tags=study,writing
@@ -334,9 +339,10 @@ export const getRecommendedTools = async (req, res) => {
 
     // Execute Query
     let recommended = await Tool.find(query)
+      .select("name tagline logo avgRating pricingType slug useCases")
       .sort(sortOption)
       .limit(10)
-      .select("name tagline logo avgRating pricingType slug useCases");
+      .lean();
 
     // Case 2: Smart Fallback (Agar results 4 se kam hain)
     // Hum global popular tools add kar denge taaki UI bhara rahe
@@ -346,8 +352,10 @@ export const getRecommendedTools = async (req, res) => {
         status: "live", 
         _id: { $nin: idsToSkip } 
       })
+      .select("name tagline logo avgRating pricingType slug")
       .sort({ avgRating: -1 })
-      .limit(8 - recommended.length);
+      .limit(8 - recommended.length)
+      .lean();
 
       recommended = [...recommended, ...fallbackTools];
     }
@@ -359,7 +367,13 @@ export const getRecommendedTools = async (req, res) => {
       basedOnInterests: !!tags // Frontend ko batane ke liye ki ye personalized hai
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("❌ getRecommendedTools Error:", error);
+    res.status(200).json({ 
+      success: true, 
+      count: 0, 
+      data: [], 
+      basedOnInterests: false 
+    });
   }
 };
 

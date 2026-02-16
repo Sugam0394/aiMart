@@ -7,7 +7,10 @@ import "./ToolCard.css";
 function ToolCard({ tool }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  // States for Image Handling
   const [imageError, setImageError] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const isSaved = useSelector((state) => 
     state.saved.savedIds.includes(tool._id)
@@ -40,7 +43,7 @@ function ToolCard({ tool }) {
     <div className="tool-card" onClick={() => navigate(`/tools/${tool._id}`)}>
       <div className="tool-card-image">
         {shouldShowFallback ? (
-          // ✅ Gradient fallback with first letter
+          // ✅ Case 1: Logo hai hi nahi ya Error aa gaya
           <div 
             className="tool-gradient-placeholder"
             style={{ background: getGradient() }}
@@ -54,18 +57,47 @@ function ToolCard({ tool }) {
             </span>
           </div>
         ) : (
-          <img 
-            src={tool.logo} 
-            alt={tool.name}
-            loading="lazy"
-            onError={() => setImageError(true)}
-          />
+          // ✅ Case 2: Logo load ho raha hai
+          <>
+            {/* Jab tak image load nahi hoti, placeholder dikhega */}
+            {!isLoaded && (
+              <div 
+                className="tool-gradient-placeholder absolute-fill" 
+                style={{ 
+                    background: getGradient(), 
+                    position: 'absolute', 
+                    inset: 0,
+                    zIndex: 1 
+                }}
+              >
+                <span className="tool-initial" style={{ fontSize: '32px' }}>
+                   {tool.name?.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+
+            <img 
+              src={tool.logo} 
+              alt={tool.name}
+              loading="lazy"
+              onLoad={() => setIsLoaded(true)}
+              onError={() => setImageError(true)}
+              style={{ 
+                opacity: isLoaded ? 1 : 0, 
+                transition: "opacity 0.4s ease-in-out",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover"
+              }}
+            />
+          </>
         )}
         
         <button 
           className={`card-heart-btn ${isSaved ? "active" : ""}`} 
           onClick={handleHeartClick}
           aria-label={isSaved ? "Unsave Tool" : "Save Tool"}
+          style={{ zIndex: 10 }} // Taaki button hamesha upar rahe
         >
           {isSaved ? "❤️" : "🤍"}
         </button>

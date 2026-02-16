@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
-    
   },
   "author": "Sugam singh",
   "license": "ISC",
@@ -25,6 +24,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.1",
     "multer": "^2.0.2",
-    "nanoid": "^5.1.6"
+    "nanoid": "^5.1.6",
+    "node-cache": "^5.1.2"
   }
 }

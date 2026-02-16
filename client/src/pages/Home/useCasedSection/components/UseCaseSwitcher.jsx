@@ -1,4 +1,3 @@
-// components/UseCaseSwitcher/UseCaseSwitcher.jsx
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAvailableUseCases } from "../../../../app/features/MomentSlice";
@@ -7,19 +6,16 @@ import "./UseCaseSwitcher.css";
 function UseCaseSwitcher({ activeUseCase, onChange }) {
   const dispatch = useDispatch();
   
-  // Redux state
   const { availableUseCases, useCasesStatus } = useSelector(
     (state) => state.moment
   );
 
-  // Fetch use cases on mount
   useEffect(() => {
     if (useCasesStatus === "idle") {
       dispatch(fetchAvailableUseCases());
     }
   }, [dispatch, useCasesStatus]);
 
-  // Loading skeleton
   if (useCasesStatus === "loading") {
     return (
       <div className="usecase-switcher">
@@ -30,9 +26,7 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
     );
   }
 
-  // Error state (fallback to hardcoded)
   if (useCasesStatus === "failed" || availableUseCases.length === 0) {
-    console.warn("⚠️ Using fallback use cases");
     const fallbackUseCases = [
       { key: "blog-writing", label: "Blog Writing" },
       { key: "coding-help", label: "Coding Help" },
@@ -55,7 +49,6 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
     );
   }
 
-  // Success state (dynamic from API)
   return (
     <div className="usecase-switcher">
       {availableUseCases.map((item) => (
@@ -65,10 +58,7 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
           onClick={() => onChange(item.key)}
           title={`${item.toolCount} tools available`}
         >
-          {item.label}
-          {item.toolCount && (
-            <span className="tool-count">{item.toolCount}</span>
-          )}
+          {item.label} {/* ✅ Label wapas aa gaya, number nahi aayega */}
         </button>
       ))}
     </div>

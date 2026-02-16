@@ -189,7 +189,7 @@ export const getAvailableUseCases = asyncHandler(async (req, res) => {
       },
       
       // Step 4: Filter - only use cases with at least 3 tools
-      { $match: { count: { $gte: 1 } } },
+      { $match: { count: { $gte: 3 } } },
       
       // Step 5: Format output
       {
@@ -206,7 +206,7 @@ export const getAvailableUseCases = asyncHandler(async (req, res) => {
       { $sort: { toolCount: -1 } },
       
       // Step 7: Limit to top 20 use cases
-      { $limit: 20 }
+      { $limit: 25 }
     ]);
 
     // Add humanized labels

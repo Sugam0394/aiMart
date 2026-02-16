@@ -147,23 +147,26 @@ function Home() {
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ STEP 4: Parallel API Trigger
-  // Isse components ke andar ki API calls ek saath shuru ho jayengi
-  useEffect(() => {
-    const prefetchData = async () => {
-      try {
-        setIsLoading(true);
-        // Agar aap Redux use kar rahe hain toh yahan Promise.all mein actions daal sakte hain
-        // Isse components ke render hone se pehle hi data fetch hona shuru ho jayega
-        console.log("🚀 Parallel Fetching Started...");
+  
+useEffect(() => {
+  const prefetchData = async () => {
+    try {
+      setIsLoading(true);
+      console.log("🚀 Parallel Fetching Started...");
+      
+     
+      await Promise.allSettled([
         
-        // Example: await Promise.all([dispatch(getTrending()), dispatch(getRising())]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    prefetchData();
-  }, [dispatch]);
+      ]);
+      
+    } catch (err) {
+      console.error("Wake up call failed:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  prefetchData();
+}, [dispatch]);
 
   const currentUseCaseKey = useMemo(() => {
     if (activeUseCaseKey) return activeUseCaseKey;

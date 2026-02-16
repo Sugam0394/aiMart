@@ -18,14 +18,22 @@ function UseCaseSection({ useCaseKey }) {
   const tools = section?.tools || [];
   const status = section?.status;
 
-  useEffect(() => {
-    // Agar data pehle se nahi hai, ya status idle hai, tabhi fetch karo
-    if (!section || status === "idle") {
+ 
+ useEffect(() => {
+  
+    if (!useCaseKey) return;
+
+  
+    const shouldFetch = !section || section.status === "idle";
+
+    if (shouldFetch) {
       dispatch(fetchToolsByUseCase(useCaseKey));
     }
-  }, [useCaseKey, section, status, dispatch]);
+    
+    
+  }, [useCaseKey, section, dispatch]);
 
-  // 1. Loading State (Skeletons yahan fit honge)
+ 
   if (status === "loading") {
     return (
       <div className="usecase-row-container skeleton-active">

@@ -42,10 +42,9 @@ function Home() {
     return "";
   }, [availableUseCases, activeUseCaseKey]);
 
-  // 2. Metadata nikalne ke liye hum "currentUseCaseKey" ka use karenge
-  const activeMeta = availableUseCases.find(
-    (uc) => uc.key === currentUseCaseKey
-  );
+  // Home.jsx mein ye line change karein
+const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) || 
+                   { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
 
   return (
    <div className="home-container">

@@ -189,7 +189,7 @@ export const getAvailableUseCases = asyncHandler(async (req, res) => {
       },
       
       // Step 4: Filter - only use cases with at least 3 tools
-      { $match: { count: { $gte: 3 } } },
+      { $match: { count: { $gte: 1 } } },
       
       // Step 5: Format output
       {
@@ -272,10 +272,6 @@ export const getToolsByUseCaseController = asyncHandler(async (req, res) => {
 
  
 
-
-
-
- 
  // Section - 4: Rising Tools (FIXED VERSION)
 export const getRisingTools = async (req, res) => {
   try {

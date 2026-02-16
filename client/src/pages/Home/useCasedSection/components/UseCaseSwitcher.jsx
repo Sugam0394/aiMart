@@ -38,7 +38,6 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
 
   return (
     <div className="usecase-container">
-      <p className="filters-title"></p>
       <div className="usecase-switcher">
         {data.map((item) => (
           <button

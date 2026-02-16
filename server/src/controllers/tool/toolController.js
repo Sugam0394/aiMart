@@ -363,32 +363,6 @@ export const getRecommendedTools = async (req, res) => {
   }
 };
 
-// Section 6 getQuick solution
-
-export const getQuickSolution = async (req, res) => {
-  try {
-    const { action } = req.query;  
-
-    if (!action) {
-      return res.status(400).json({ success: false, message: "Action slug is required" });
-    }
-
-    // Hum un tools ko dhund rahe hain jinke 'useCases' array mein ye action slug ho
-    const tools = await Tool.find({
-      status: "live",
-      useCases: { $in: [action] } 
-    })
-    .sort({ isPopular: -1, avgRating: -1 }) // Top tools pehle
-    .limit(3) // Sirf top 3, comparison ke liye best hai
-    .select("name tagline logo avgRating pricingType slug useCases");
-
-    res.status(200).json({
-      success: true,
-      data: tools
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+  
 
  

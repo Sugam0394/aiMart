@@ -179,5 +179,81 @@
     display: none; /* Hide count on very small screens */
   }
 } 
+
+/* ===============================
+   USE CASE SWITCHER - WRAPPED GRID
+================================= */
+
+.usecase-switcher {
+  display: flex;
+  /* ✅ Change: Horizontal scroll ki jagah wrap use kiya */
+  flex-wrap: wrap; 
+  gap: 12px;
+  padding: 10px 0;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* ===============================
+   PILLS (Filter Buttons)
+================================= */
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  padding: 8px 18px; /* Slightly more compact */
+  border-radius: 99px; /* Fully rounded */
+  border: 1.5px solid #e5e7eb;
+  background: white;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+/* Hover Effect: Halka sa lift aur color change */
+.pill:hover {
+  border-color: #4f46e5;
+  color: #4f46e5;
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.pill.active {
+  background: #4f46e5;
+  color: white;
+  border-color: #4f46e5;
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   MOBILE RESPONSIVENESS
+================================= */
+
+@media (max-width: 767px) {
+  .usecase-switcher {
+    /* Mobile par gap thoda kam */
+    gap: 8px;
+    justify-content: flex-start;
+  }
+
+  .pill {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    border-width: 1px;
+  }
+  
+  /* Tool count agar mobile par chota dikhana ho */
+  .tool-count {
+    font-size: 0.65rem;
+    padding: 1px 4px;
+  }
+}
  
 

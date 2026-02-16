@@ -10,7 +10,8 @@ import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
 import UseCaseSection from "./useCasedSection/UseCasedSection";
 import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
-import SmartSolverSection from "./SmartSolver/SmartSolverSection";
+ 
+// Layout
 import SectionWrapper from "../../layouts/section/SectionWrapper";
 
 
@@ -109,13 +110,6 @@ function Home() {
           <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
         </SectionWrapper>
 
-        {/* SMART SOLVER */}
-        <SectionWrapper 
-          title="🧠 Smart Problem Solver" 
-          subtitle="Direct solutions for your daily tasks"
-        >
-          <SmartSolverSection />
-        </SectionWrapper>
       </main>
     </div>
       

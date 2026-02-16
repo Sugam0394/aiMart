@@ -1,113 +1,88 @@
-/* ===============================
-   USE CASE SWITCHER - MODERN GRID
-================================= */
-
-.usecase-switcher {
-  display: flex;
-  flex-wrap: wrap; /* Pills automatically niche shift hongi */
-  gap: 12px;
-  padding: 10px 0;
-  justify-content: flex-start;
+/* Container padding to prevent edge touching on mobile */
+.usecase-container {
+  padding: 15px;
   width: 100%;
 }
 
-/* ===============================
-   PILLS (The Filter Buttons)
-================================= */
+.filters-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
 
+/* Base Switcher Logic */
+.usecase-switcher {
+  display: flex;
+  flex-wrap: wrap; /* Auto niche shift logic */
+  gap: 12px;
+  justify-content: flex-start;
+  transition: all 0.3s ease;
+}
+
+/* PILLS Styling */
 .pill {
   display: flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
   padding: 10px 22px;
-  border-radius: 99px; /* Capsule Shape */
-  border: 1.5px solid #e2e8f0; /* Soft Border */
+  border-radius: 99px; /* Capsule */
+  border: 1.5px solid #e2e8f0;
   background: #ffffff;
-  color: #475569; /* Slate Color */
+  color: #475569;
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  user-select: none;
   outline: none;
 }
 
-/* Hover State: Halka sa lift aur Indigo border */
+/* Hover & Active States */
 .pill:hover {
   border-color: #4f46e5;
   color: #4f46e5;
-  background: #f8fafc;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Active State: Indigo Background */
 .pill.active {
   background: #4f46e5;
-  color: #ffffff;
+  color: #ffffff !important;
   border-color: #4f46e5;
   box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
   transform: translateY(-2px);
 }
 
-/* Focus State: For Accessibility */
-.pill:focus-visible {
-  ring: 2px solid #4f46e5;
-  ring-offset: 2px;
-}
-
-/* ===============================
-   SKELETON LOADING (Shimmer)
-================================= */
-
+/* SKELETON & SHIMMER */
 .pill.skeleton {
-  width: 110px;
+  width: 100px;
   height: 40px;
   background: #f1f5f9;
   border: none;
-  cursor: default;
   pointer-events: none;
-  position: relative;
-  overflow: hidden;
 }
 
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    #f1f5f9 0%,
-    #e2e8f0 50%,
-    #f1f5f9 100%
-  );
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
   background-size: 200% 100%;
-  animation: shimmer-effect 1.5s ease-in-out infinite;
+  animation: shimmer-effect 1.5s infinite linear;
 }
 
 @keyframes shimmer-effect {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
 }
 
 /* ===============================
-   RESPONSIVE DESIGN (Mobile)
+   MOBILE OPTIMIZATION
 ================================= */
 
-/* Tablets (upto 1024px) */
-@media (max-width: 1024px) {
-  .pill {
-    padding: 9px 20px;
-    font-size: 0.85rem;
-  }
-}
-
-/* Mobile Devices (upto 768px) */
 @media (max-width: 768px) {
   .usecase-switcher {
-    gap: 8px; /* Thoda tight gap mobile ke liye */
+    gap: 8px; /* Tight gap for small screens */
+    justify-content: center; /* Mobile pe balanced look ke liye center */
   }
 
   .pill {
@@ -115,12 +90,17 @@
     font-size: 0.8rem;
     border-width: 1.2px;
   }
+  
+  .filters-title {
+    text-align: center;
+  }
 }
 
-/* Very Small Devices (upto 480px) */
-@media (max-width: 480px) {
-  .usecase-switcher {
-    justify-content: center; /* Chote mobile pe center zyada achha lagta hai */
+/* Extra small devices (iPhone SE etc) */
+@media (max-width: 380px) {
+  .pill {
+    padding: 6px 12px;
+    font-size: 0.75rem;
   }
 } 
  

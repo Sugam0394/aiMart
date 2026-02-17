@@ -76,64 +76,65 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      {/* 2. Ye components background mein sync chalate rahenge */}
-      <AppInitializer /> 
-   
+  <BrowserRouter>
+    {/* Background sync chalta rahega */}
+    <AppInitializer /> 
 
-      <Routes>
-      {/* 🌍 PUBLIC ROUTES */}
-       <Route 
-      path="/" 
-      element={
-        // Agar logged in hai, toh redirect karo. Agar nahi, toh Home dikhao.
-        isInitialized && user ? (
-          <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
-        ) : (
-          <Home />
-        )
-      } 
-    />
-    
+    <Routes>
+      {/* 🌍 1. PUBLIC ROUTES (Landing Page with Navbar) */}
+      <Route element={<PublicLayout />}>
+        <Route 
+          path="/" 
+          element={
+            // Agar logged in hai, toh redirect. Nahi toh Home dikhao.
+            isInitialized && user ? (
+              <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
+            ) : (
+              <Home />
+            )
+          } 
+        />
+      </Route>
 
-        {/* 🔐 AUTH ROUTES (Login/Register) */}
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+      {/* 🔐 2. AUTH ROUTES (Login/Register) */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+
+      {/* 🔐 3. COMMON PROTECTED ROUTES */}
+      <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
+        <Route element={<UserLayout />}>
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/saved" element={<SavedTools />} />
+          <Route path="/tools/:id" element={<AiArt />} />
+          <Route path="/settings" element={<UserSettings />} />
         </Route>
+      </Route>
 
-        {/* 🔐 COMMON PROTECTED ROUTES */}
-        <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
-          <Route element={<UserLayout />}>
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/saved" element={<SavedTools />} />
-            <Route path="/tools/:id" element={<AiArt />} />
-            <Route path="/settings" element={<UserSettings />} />
+      {/* 🔐 4. TOOL OWNER DASHBOARD */}
+      <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
+        <Route path="/toolowner" element={<ToolOwnerLayout />}>
+          <Route path="dashboard" element={<ToolOwnerDashboard />}>
+            <Route index element={<MyTool />} />
+            <Route path="create-tool" element={<CreateTool />} />
+            <Route path="edit-tool/:id" element={<EditTool />} />
           </Route>
+          <Route path="settings" element={<ToolOwnerSettings />} />
         </Route>
+      </Route>
 
-        {/* 🔐 TOOL OWNER DASHBOARD */}
-        <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
-          <Route path="/toolowner" element={<ToolOwnerLayout />}>
-            <Route path="dashboard" element={<ToolOwnerDashboard />}>
-              <Route index element={<MyTool />} />
-              <Route path="create-tool" element={<CreateTool />} />
-              <Route path="edit-tool/:id" element={<EditTool />} />
-            </Route>
-            <Route path="settings" element={<ToolOwnerSettings />} />
-          </Route>
+      {/* 🔐 5. FOUNDER DASHBOARD */}
+      <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
+        <Route element={<FounderLayout />}>
+          <Route path="/founder/dashboard" element={<FounderDashboard />} />
+          <Route path="/founder/settings" element={<FounderSettings />} />
         </Route>
-
-        {/* 🔐 FOUNDER DASHBOARD */}
-        <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
-          <Route element={<FounderLayout />}>
-            <Route path="/founder/dashboard" element={<FounderDashboard />} />
-            <Route path="/founder/settings" element={<FounderSettings />} />
-          </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
+      </Route>
+      
+    </Routes> {/* ✅ Sirf ek baar band hoga yahan */}
+  </BrowserRouter>
+);
 }
 
 

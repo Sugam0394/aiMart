@@ -10,19 +10,29 @@ const userSchema = new mongoose.Schema({
       required: true,
       trim: true,
     }, 
+     email: {
+    type: String,
+    required: true, // 👈 Ye HAMESHA true rahega
+    unique: true,
+    lowercase: true,
+  },
 
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
+  password: {
+    type: String,
+    required: function() {
+      // 💡 Pro Logic: Agar user Google se nahi aaya, tabhi password required hai
+      return !this.googleId; 
     },
+    select: false,
+  },
 
-    password: {
-      type: String,
-      required: true,
-      select: false, // password kabhi normal query me na aaye
-    },
+  googleId: {
+    type: String,
+    required: false, // Sirf Google users ke liye hoga
+    unique: true,
+    sparse: true, // Taaki normal users ko null ki wajah se unique error na aaye
+  },
+  
 
     profilePicture: {
       type: String,
@@ -69,10 +79,15 @@ const userSchema = new mongoose.Schema({
 
 
  
-userSchema.pre('save', async function () {
-  if (!this.isModified('password')) return;
+ userSchema.pre('save', async function (next) {
+  if (!this.isModified('password') || !this.password) return next();
 
-  this.password = await bcrypt.hash(this.password, 10);
+  try {
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 userSchema.methods.comparePassword = async function (enteredPassword) {

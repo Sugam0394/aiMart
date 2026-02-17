@@ -5,7 +5,7 @@
  // exploreApi.js mein
 export const startExplore = async () => {
   const response = await api.post("/start", {
-    userId: "697f937de449c3744dc355d6", // Valid ObjectId string
+   // userId: "697f937de449c3744dc355d6", // Valid ObjectId string
   });
   return response.data;
 };

@@ -1,11 +1,71 @@
+import { OAuth2Client } from 'google-auth-library'; 
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from '../models/userModel.js'
-
+ 
 
 
  
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+ export const googleLogin = asyncHandler(async (req, res) => {
+    const { idToken } = req.body;
+
+    if (!idToken) throw new ApiError(400, "Google ID Token is required");
+
+    const ticket = await client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { name, email, picture, sub: googleId } = ticket.getPayload();
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+        user = await User.create({
+            name,
+            email,
+            profilePicture: picture,
+            googleId,
+            role: 'user',
+            isEmailVerified: true 
+        });
+    } else if (!user.googleId) {
+        user.googleId = googleId;
+        user.profilePicture = user.profilePicture || picture;
+        await user.save();
+    }
+
+    // 🔥 CORRECTED: Model methods use karo taaki consistency rahe
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    const cookieOptions = getCookieOptions();
+
+    // 🍪 SET COOKIES (Missing tha pehle)
+    res.cookie("refreshToken", refreshToken, {
+        ...cookieOptions,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.cookie("accessToken", accessToken, {
+        ...cookieOptions,
+        maxAge: 15 * 60 * 1000,
+    });
+
+    return res.status(200).json(
+        new ApiResponse(200, { 
+            user: { id: user._id, name: user.name, email: user.email, role: user.role, profilePicture: user.profilePicture }, 
+            accessToken 
+        }, "Google Login Successful")
+    );
+});
+
 const getCookieOptions = () => {
   const isProduction = process.env.NODE_ENV === 'production';
   

@@ -85,7 +85,7 @@ function App() {
       {/* 🌍 1. PUBLIC ROUTES (Landing Page with Navbar) */}
       <Route element={<PublicLayout />}>
         <Route 
-          path="/" 
+          path="/home" 
           element={
             // Agar logged in hai, toh redirect. Nahi toh Home dikhao.
             isInitialized && user ? (

@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import './Navbar.css'
 
 function Navbar() {
   const { user } = useSelector((state) => state.auth);

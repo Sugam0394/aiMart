@@ -96,6 +96,7 @@ function App() {
         {/* 🔐 3. COMMON PROTECTED ROUTES (User) */}
         <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
           <Route element={<UserLayout />}>
+          <Route path="home" element={<Home />} />
             <Route path="explore" element={<Explore />} />
             <Route path="saved" element={<SavedTools />} />
             <Route path="tools/:id" element={<AiArt />} />

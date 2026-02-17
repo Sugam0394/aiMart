@@ -76,66 +76,72 @@ function App() {
     );
   }
 
-  return (
-  <BrowserRouter>
-    {/* Background sync chalta rahega */}
-    <AppInitializer /> 
+   return (
+    <BrowserRouter>
+      {/* Background sync components */}
+      <AppInitializer /> 
 
-    <Routes>
-      {/* 🌍 1. PUBLIC ROUTES (Landing Page with Navbar) */}
-      <Route element={<PublicLayout />}>
-        <Route 
-          path="/home" 
-          element={
-            // Agar logged in hai, toh redirect. Nahi toh Home dikhao.
-            isInitialized && user ? (
-              <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
-            ) : (
-              <Home />
-            )
-          } 
-        />
-      </Route>
-
-      {/* 🔐 2. AUTH ROUTES (Login/Register) */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Route>
-
-      {/* 🔐 3. COMMON PROTECTED ROUTES */}
-      <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
-        <Route element={<UserLayout />}>
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/saved" element={<SavedTools />} />
-          <Route path="/tools/:id" element={<AiArt />} />
-          <Route path="/settings" element={<UserSettings />} />
+      <Routes> {/* 👈 Opening Tag yahan zaroori hai */}
+        
+        {/* 🌍 1. PUBLIC ROUTES (Landing Page) */}
+        <Route element={<PublicLayout />}>
+          <Route 
+            index 
+            element={
+              isInitialized && user ? (
+                <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
+              ) : (
+                <Home />
+              )
+            } 
+          />
         </Route>
-      </Route>
 
-      {/* 🔐 4. TOOL OWNER DASHBOARD */}
-      <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
-        <Route path="/toolowner" element={<ToolOwnerLayout />}>
-          <Route path="dashboard" element={<ToolOwnerDashboard />}>
-            <Route index element={<MyTool />} />
-            <Route path="create-tool" element={<CreateTool />} />
-            <Route path="edit-tool/:id" element={<EditTool />} />
+        {/* 🔐 2. AUTH ROUTES (Login/Register) */}
+        <Route element={<AuthLayout />}>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Route>
+
+        {/* 🔐 3. COMMON PROTECTED ROUTES (User) */}
+        <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
+          <Route element={<UserLayout />}>
+            {/* Note: Nested routes mein path bina "/" ke likhte hain */}
+            <Route path="home" element={<Navigate to="/explore" replace />} />
+            <Route path="explore" element={<Explore />} />
+            <Route path="saved" element={<SavedTools />} />
+            <Route path="tools/:id" element={<AiArt />} />
+            <Route path="settings" element={<UserSettings />} />
           </Route>
-          <Route path="settings" element={<ToolOwnerSettings />} />
         </Route>
-      </Route>
 
-      {/* 🔐 5. FOUNDER DASHBOARD */}
-      <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
-        <Route element={<FounderLayout />}>
-          <Route path="/founder/dashboard" element={<FounderDashboard />} />
-          <Route path="/founder/settings" element={<FounderSettings />} />
+        {/* 🔐 4. TOOL OWNER DASHBOARD */}
+        <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
+          <Route path="toolowner" element={<ToolOwnerLayout />}>
+            <Route path="dashboard" element={<ToolOwnerDashboard />}>
+              <Route index element={<MyTool />} />
+              <Route path="create-tool" element={<CreateTool />} />
+              <Route path="edit-tool/:id" element={<EditTool />} />
+            </Route>
+            <Route path="settings" element={<ToolOwnerSettings />} />
+          </Route>
         </Route>
-      </Route>
-      
-    </Routes> {/* ✅ Sirf ek baar band hoga yahan */}
-  </BrowserRouter>
-);
+
+        {/* 🔐 5. FOUNDER DASHBOARD */}
+        <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
+          <Route element={<FounderLayout />}>
+            <Route path="founder/dashboard" element={<FounderDashboard />} />
+            <Route path="founder/settings" element={<FounderSettings />} />
+          </Route>
+        </Route>
+
+        {/* 🛡️ CATCH-ALL: Koi bhi galat route ho toh wapas bhej do */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+
+      </Routes>
+    </BrowserRouter>
+  );
+ 
 }
 
 

@@ -1,30 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import "./Navbar.css"
+import { useSelector } from 'react-redux';
 
 function Navbar() {
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <nav className='nav-container'>
-      {/* Logo Wrapper */}
       <div className="nav-logo-wrapper">
         <Link to="/" style={{ textDecoration: 'none' }}>
           <h2 className="nav-logo-text">AI-Mart</h2>
         </Link>
       </div>
 
-      {/* Navigation Links */}
       <ul className="nav-links">
-        <li>
-          <Link to="/login" style={{ textDecoration: 'none' }}>Login</Link>
-        </li>
-        <li>
-          <Link to="/register" style={{ textDecoration: 'none' }} className="register-btn">
-            Register
-          </Link>
-        </li>
+        {user ? (
+          // Agar user logged in hai
+          <li>
+            <Link to="/explore" className="dashboard-btn">Go to App 🚀</Link>
+          </li>
+        ) : (
+          // Agar user logged out hai (Logout ke baad yahi dikhega)
+          <>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/register" className="register-btn">Register</Link></li>
+          </>
+        )}
       </ul>
     </nav>
-  )
-}
+  );
+} 
 
-export default Navbar 
+export default Navbar

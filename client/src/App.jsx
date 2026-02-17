@@ -83,22 +83,18 @@ function App() {
 
       <Routes>
       {/* 🌍 PUBLIC ROUTES */}
-     // App.jsx ke andar Routes section
-    <Route 
-  path="/" 
-  element={
-    // Agar loading chal rahi hai toh wait karo
-    !isInitialized ? (
-       <div className="loading">Loading...</div> 
-    ) : (isInitialized && user) ? ( 
-      // Agar logged in hai tabhi redirect karo
-      <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
-    ) : (
-      // Agar user NULL hai (Logout ke baad), toh Landing page dikhao
-      <PublicLayout><Home /></PublicLayout>
-    )
-  } 
-/>
+       <Route 
+      path="/" 
+      element={
+        // Agar logged in hai, toh redirect karo. Agar nahi, toh Home dikhao.
+        isInitialized && user ? (
+          <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
+        ) : (
+          <Home />
+        )
+      } 
+    />
+    
 
         {/* 🔐 AUTH ROUTES (Login/Register) */}
         <Route element={<AuthLayout />}>
@@ -109,7 +105,6 @@ function App() {
         {/* 🔐 COMMON PROTECTED ROUTES */}
         <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
           <Route element={<UserLayout />}>
-            <Route path="/home" element={<Home />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/saved" element={<SavedTools />} />
             <Route path="/tools/:id" element={<AiArt />} />

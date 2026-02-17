@@ -84,14 +84,17 @@ function App() {
       <Routes>
       {/* 🌍 PUBLIC ROUTES */}
      // App.jsx ke andar Routes section
-<Route 
+    <Route 
   path="/" 
   element={
+    // Agar loading chal rahi hai toh wait karo
     !isInitialized ? (
-       <div>Loading...</div> 
-    ) : user ? (
+       <div className="loading">Loading...</div> 
+    ) : (isInitialized && user) ? ( 
+      // Agar logged in hai tabhi redirect karo
       <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
     ) : (
+      // Agar user NULL hai (Logout ke baad), toh Landing page dikhao
       <PublicLayout><Home /></PublicLayout>
     )
   } 

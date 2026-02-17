@@ -9,8 +9,9 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate('/');
+    dispatch(logout()); 
+    // Replace: true se browser history clean rehti hai
+    navigate('/', { replace: true }); 
   };
 
   return (

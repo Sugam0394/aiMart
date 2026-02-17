@@ -82,13 +82,15 @@ function App() {
    
 
       <Routes>
-        {/* 🌍 PUBLIC ROUTES */}
-        
+      {/* 🌍 PUBLIC ROUTES */}
+     // App.jsx ke andar Routes section
 <Route 
   path="/" 
   element={
-    user ? (
-      <Navigate to={user.role === "user" ? "/explore" : "/toolowner/dashboard"} replace />
+    !isInitialized ? (
+       <div>Loading...</div> 
+    ) : user ? (
+      <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
     ) : (
       <PublicLayout><Home /></PublicLayout>
     )

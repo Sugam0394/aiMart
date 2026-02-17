@@ -62,7 +62,7 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
  
 
 function App() {
-  const { isInitialized , user } = useSelector((state) => state.auth);
+  const { isInitialized  } = useSelector((state) => state.auth);
   const token = getAccessToken();
  
   if (token && !isInitialized) {
@@ -76,25 +76,15 @@ function App() {
     );
   }
 
-   return (
+ return (
     <BrowserRouter>
       {/* Background sync components */}
       <AppInitializer /> 
 
-      <Routes> {/* 👈 Opening Tag yahan zaroori hai */}
-        
-        {/* 🌍 1. PUBLIC ROUTES (Landing Page) */}
+      <Routes>
+        {/* 🌍 1. PUBLIC ROUTES - Sabke liye accessible (Home hamesha khulega) */}
         <Route element={<PublicLayout />}>
-          <Route 
-            index 
-            element={
-              isInitialized && user ? (
-                <Navigate to={user.role === "toolOwner" ? "/toolowner/dashboard" : "/explore"} replace />
-              ) : (
-                <Home />
-              )
-            } 
-          />
+          <Route index element={<Home />} />
         </Route>
 
         {/* 🔐 2. AUTH ROUTES (Login/Register) */}
@@ -106,12 +96,12 @@ function App() {
         {/* 🔐 3. COMMON PROTECTED ROUTES (User) */}
         <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
           <Route element={<UserLayout />}>
-            {/* Note: Nested routes mein path bina "/" ke likhte hain */}
-            <Route path="home" element={<Navigate to="/explore" replace />} />
             <Route path="explore" element={<Explore />} />
             <Route path="saved" element={<SavedTools />} />
             <Route path="tools/:id" element={<AiArt />} />
             <Route path="settings" element={<UserSettings />} />
+            {/* Fallback for old /home links */}
+            <Route path="home" element={<Navigate to="/explore" replace />} />
           </Route>
         </Route>
 
@@ -135,9 +125,8 @@ function App() {
           </Route>
         </Route>
 
-        {/* 🛡️ CATCH-ALL: Koi bhi galat route ho toh wapas bhej do */}
+        {/* 🛡️ CATCH-ALL: Koi bhi galat URL ho toh Landing Page bhej do */}
         <Route path="*" element={<Navigate to="/" replace />} />
-
       </Routes>
     </BrowserRouter>
   );

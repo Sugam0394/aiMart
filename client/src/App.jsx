@@ -61,7 +61,7 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
  
 
 function App() {
-  const { isInitialized } = useSelector((state) => state.auth);
+  const { isInitialized , user } = useSelector((state) => state.auth);
   const token = getAccessToken();
  
   if (token && !isInitialized) {
@@ -83,9 +83,17 @@ function App() {
 
       <Routes>
         {/* 🌍 PUBLIC ROUTES */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-        </Route>
+        
+<Route 
+  path="/" 
+  element={
+    user ? (
+      <Navigate to={user.role === "user" ? "/explore" : "/toolowner/dashboard"} replace />
+    ) : (
+      <PublicLayout><Home /></PublicLayout>
+    )
+  } 
+/>
 
         {/* 🔐 AUTH ROUTES (Login/Register) */}
         <Route element={<AuthLayout />}>

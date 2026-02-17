@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { registerUser } from '../../app/features/AuthSlice'
+import { registerUser } from '../../app/features/authSlice'
 import { useNavigate, Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import "./Register.css"
+import GoogleAuthButton from '../../components/GoogleAuthButton/AuthButton'
 
 function Register() {
   const dispatch = useDispatch();
@@ -76,6 +77,14 @@ function Register() {
             {loading ? "Joining..." : "Register"}
           </button>
         </form>
+
+
+        {/* 💡 Sugam, yahan Google Signup add kar dena chahiye for better UX */}
+        <div className="auth-divider">
+          <span>OR</span>
+        </div>
+        
+        <GoogleAuthButton />
         
         <p className="auth-switch-text">
           Already have an account? <Link to="/login">Login here</Link>

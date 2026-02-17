@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../app/features/AuthSlice";
+import { loginUser } from "../../app/features/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import "./Login.css";
+import GoogleAuthButton from "../../components/GoogleAuthButton/AuthButton";
 
 function Login() {
   const dispatch = useDispatch();
@@ -81,12 +82,10 @@ function Login() {
           <span>OR</span>
         </div>
 
-        <button
-          className="google-btn-fake"
-          onClick={() => toast("Google Login coming soon! 🚀")}
-        >
-          Continue with Google
-        </button>
+        {/* 2. Fake button hatakar Asli Google Login yahan chipka diya */}
+        <div className="google-btn-container">
+           <GoogleAuthButton />
+        </div>
 
         <p className="auth-switch-text">
           Don't have an account? <Link to="/register">Register here</Link>

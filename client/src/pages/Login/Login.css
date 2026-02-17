@@ -162,5 +162,11 @@ button[type="submit"]:disabled {
   text-decoration: none !important;
 }
 
+.google-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
  
 

@@ -1,19 +1,19 @@
 import React from 'react'
- 
-import App from './App.jsx'
 import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
 import { Provider } from 'react-redux'
 import store from './app/store.js'
 import { Toaster } from 'react-hot-toast'
+import { GoogleOAuthProvider } from '@react-oauth/google' // Google Provider add kiya
 import './styles/design-tokens.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>  
-  <>  
-
-    <App />
-    <Toaster position="top-right" reverseOrder={false} />   
-     </>
-    </Provider>
-  
-)
+  <React.StrictMode>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <Provider store={store}>
+        <App />
+        <Toaster position="top-right" reverseOrder={false} />
+      </Provider>
+    </GoogleOAuthProvider>
+  </React.StrictMode>
+) 

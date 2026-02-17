@@ -24,6 +24,25 @@ export const syncUserRole = createAsyncThunk(
   }
 );
 
+// Google Login Thunk
+export const googleLogin = createAsyncThunk(
+  "auth/google-login",
+  async (idToken, { rejectWithValue }) => {
+    try {
+      // API call tumhare centralized axios instance se
+      const res = await api.post("/google-login", { idToken });
+      
+      // Token save karo (res.data.data.accessToken check karna tumhare response ke hisaab se)
+      setAccessToken(res.data.data.accessToken);
+      
+      // Ye payload automatic niche Matcher mein jayega
+      return res.data.data.user;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Google Login failed");
+    }
+  }
+);
+
 // Login User
 export const loginUser = createAsyncThunk(
   "auth/login", 

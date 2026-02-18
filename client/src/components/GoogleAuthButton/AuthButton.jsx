@@ -50,7 +50,7 @@ const GoogleAuthButton = () => {
       <GoogleLogin
         onSuccess={handleGoogleSuccess}
         onError={handleGoogleError}
-        useOneTap // ✨ Feature: Popup for returning users
+      
         theme="filled_black" // Dark theme ke liye perfect
         shape="pill"
         size="large"
@@ -66,4 +66,4 @@ const GoogleAuthButton = () => {
   );
 };
 
-export default GoogleAuthButton; 
+export default GoogleAuthButton;  

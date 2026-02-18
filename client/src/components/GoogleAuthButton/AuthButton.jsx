@@ -3,7 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { googleLogin } from '../../app/features/authSlice';
+ import { googleLogin } from '../../app/features/AuthSlice';
 
 const GoogleAuthButton = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);

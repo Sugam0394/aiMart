@@ -11,23 +11,19 @@
   display: flex;
   flex-direction: column;
   /* Force everything to start from left */
-  align-items: flex-start; 
+ 
 }
 
 /* ==========================================
    FOOTER TOP SECTION
    ========================================== */
-.footer-top {
+ .footer-top {
   width: 100%;
   max-width: 1200px;
-  /* No 'auto' margin to prevent centering */
-  margin: 0 0 var(--spacing-2xl, 3rem) 0; 
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl, 2.5rem);
-  /* Absolute Left Alignment */
-  text-align: left; 
+  margin: 0 auto var(--spacing-2xl, 3rem);
+  padding: 0;
 }
+
 
 /* Tablet & Desktop Layout */
 @media (min-width: 768px) {
@@ -106,7 +102,7 @@
 .footer-bottom {
   width: 100%;
   max-width: 1200px;
-  margin: 0; 
+  margin: 0 auto; 
   text-align: left; 
   border-top: 1px solid var(--color-border-light, #F1F5F9);
   padding-top: var(--spacing-xl, 2rem);

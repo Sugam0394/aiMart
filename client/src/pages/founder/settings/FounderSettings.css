@@ -1,149 +1,226 @@
-/* =========================
-   Founder Settings Page
-   ========================= */
-
-.settings-page {
-  min-height: calc(100vh - 80px);
-  background: #f3f4f6;
+/* =========================================================
+   1. CORE LAYOUT
+   ========================================================= */
+.founder-theme {
+  --founder-gold: #d97706; /* Amber-600 */
+  --founder-gold-light: #fffbeb;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 3rem 1rem;
-}
-
-/* Main Card */
-.settings-card {
-  width: 100%;
-  max-width: 520px;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 2rem 2.5rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-}
-
-/* Title */
-.settings-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #4f46e5;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-/* =========================
-   Profile Card
-   ========================= */
-
-.profile-card {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  background: #f9fafb;
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-/* Avatar */
-.avatar {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: #eef2ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  min-height: 85vh;
+  margin: 40px auto;
+  max-width: 1100px;
+  border-radius: 24px;
+  border: 1px solid var(--color-border);
   overflow: hidden;
-  flex-shrink: 0;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.avatar span {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #4f46e5;
-}
-
-/* Profile Info */
-.profile-info {
+/* =========================================================
+   2. SIDEBAR
+   ========================================================= */
+.settings-sidebar {
+  width: 280px;
+  background: var(--color-bg-secondary);
+  border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  padding: 40px 24px;
 }
 
-.profile-info p {
+.admin-crown {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.admin-crown::after {
+  content: '👑';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+}
+
+.sidebar-avatar, .owner-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 22px;
+  object-fit: cover;
+  border: 3px solid var(--color-bg-primary);
+}
+
+.owner-placeholder {
+  background: var(--founder-gold);
+  color: white;
   display: flex;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  color: #111827;
-}
-
-.profile-info strong {
-  min-width: 70px;
-  font-weight: 500;
-  color: #6b7280;
-}
-
-.profile-info span {
-  font-weight: 500;
-}
-
-/* Role Badge */
-.badge {
-  background: #eef2ff;
-  color: #4f46e5;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-/* =========================
-   Logout Section
-   ========================= */
-
-.logout-wrap {
-  margin-top: 1.5rem;
-  display: flex;
+  align-items: center;
   justify-content: center;
+  font-size: 32px;
+  font-weight: 800;
 }
 
-/* =========================
-   Loading / Error States
-   ========================= */
-
-.settings-state {
-  margin-top: 4rem;
-  text-align: center;
-  font-size: 1rem;
-  color: #6b7280;
+.founder-role {
+  background: var(--founder-gold-light);
+  color: var(--founder-gold);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 8px;
+  text-transform: uppercase;
 }
 
-.settings-state.error {
-  color: #dc2626;
+[data-theme="dark"] .founder-role {
+  background: rgba(217, 119, 6, 0.15);
 }
 
-/* =========================
-   Responsive
-   ========================= */
-
-@media (max-width: 640px) {
-  .settings-card {
-    padding: 1.8rem 1.5rem;
-  }
-
-  .profile-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .profile-info p {
-    justify-content: center;
-  }
+.sidebar-nav-links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
 }
+
+.sidebar-nav-links button {
+  padding: 14px 18px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 14px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-nav-links button.active {
+  background: var(--founder-gold);
+  color: white;
+  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25);
+}
+
+/* =========================================================
+   3. CONTENT AREA
+   ========================================================= */
+.settings-view {
+  flex: 1;
+  padding: 50px;
+  background: var(--color-bg-primary);
+}
+
+.owner-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.admin-pill {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #ffedd5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+[data-theme="dark"] .admin-pill {
+  background: rgba(194, 65, 12, 0.1);
+  color: #fb923c;
+  border-color: rgba(194, 65, 12, 0.2);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #f97316;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.value-box {
+  padding: 18px;
+  background: var(--color-bg-secondary);
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.founder-badge-text {
+  color: var(--founder-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   4. APPEARANCE SECTION
+   ========================================================= */
+.theme-toggle-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  background: var(--color-bg-secondary);
+  border-radius: 24px;
+  border: 1px solid var(--color-border);
+}
+
+.toggle-switch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #cbd5e1;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px; width: 22px;
+  left: 4px; bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--founder-gold);
+}
+
+input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+/* Animations */
+.animate-fade {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+} 

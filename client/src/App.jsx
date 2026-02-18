@@ -70,13 +70,15 @@ function App() {
   const token = getAccessToken();
 
 
-  useEffect(() => {
-  // HTML tag par attribute set karega
-  document.documentElement.setAttribute(
-    "data-theme", isDark ? "dark" : "light"
-  );
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-}, [isDark]);
+ useEffect(() => {
+    if (isDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
 
  
   if (token && !isInitialized) {
@@ -115,7 +117,7 @@ function App() {
             <Route path="explore" element={<Explore />} />
             <Route path="saved" element={<SavedTools />} />
             <Route path="tools/:id" element={<AiArt />} />
-            // App.jsx ke andar Routes section mein:
+            
 <Route 
   path="/settings" 
   element={<UserSettings isDark={isDark} setIsDark={setIsDark} />} 
@@ -133,7 +135,8 @@ function App() {
               <Route path="create-tool" element={<CreateTool />} />
               <Route path="edit-tool/:id" element={<EditTool />} />
             </Route>
-            <Route path="settings" element={<ToolOwnerSettings />} />
+             {/* App.jsx ke andar ToolOwner section mein sirf ye line replace karo */}
+<Route path="settings" element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />} />
           </Route>
         </Route>
 
@@ -141,7 +144,8 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
           <Route element={<FounderLayout />}>
             <Route path="founder/dashboard" element={<FounderDashboard />} />
-            <Route path="founder/settings" element={<FounderSettings />} />
+           {/* App.jsx ke andar Founder section mein sirf ye line replace karo */}
+         <Route path="founder/settings" element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />} />
           </Route>
         </Route>
 

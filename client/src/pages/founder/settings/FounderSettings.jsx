@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
- import { getMyProfile } from "../../../api/toolOwner/setting.api";
- import LogoutButton from "../../../components/LogoutButton/Logout";
+import { getMyProfile } from "../../../api/toolOwner/setting.api";
+import LogoutButton from "../../../components/LogoutButton/Logout";
 import "./FounderSettings.css";
 
-function FounderSettings() {
+function FounderSettings({ isDark, setIsDark }) {
   const [profile, setProfile] = useState(null);
+  const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -19,40 +20,99 @@ function FounderSettings() {
         setLoading(false);
       }
     };
-
     fetchProfile();
   }, []);
 
-  if (loading) return <p className="settings-state">Loading...</p>;
-  if (error) return <p className="settings-state error">{error}</p>;
+  if (loading) return <div className="settings-loader"><div className="spinner"></div></div>;
+  if (error) return <div className="settings-error">{error}</div>;
 
   return (
-    <section className="settings-page">
-      <div className="settings-card">
-        <h2 className="settings-title">Founder Account</h2>
-
-        <div className="profile-card">
-          <div className="avatar">
+    <div className="settings-layout founder-theme">
+      {/* SIDEBAR */}
+      <aside className="settings-sidebar">
+        <div className="sidebar-user-section">
+          <div className="avatar-wrapper admin-crown">
             {profile.profilePicture ? (
-              <img src={profile.profilePicture} alt="profile" />
+              <img src={profile.profilePicture} alt="Founder" className="sidebar-avatar" />
             ) : (
-              <span>{profile.name?.charAt(0)}</span>
+              <div className="owner-placeholder">{profile.name?.charAt(0)}</div>
             )}
           </div>
-
-          <div className="profile-info">
-            <p><strong>Name</strong><span>{profile.name}</span></p>
-            <p><strong>Email</strong><span>{profile.email}</span></p>
-            <p><strong>Role</strong><span className="badge">{profile.role}</span></p>
+          <div className="user-info-text">
+            <h4>{profile.name}</h4>
+            <span className="role-badge founder-role">Founder & CEO</span>
           </div>
         </div>
 
-        <div className="logout-wrap">
+        <nav className="sidebar-nav-links">
+          <button className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
+            👑 Admin Profile
+          </button>
+          <button className={activeTab === "appearance" ? "active" : ""} onClick={() => setActiveTab("appearance")}>
+            🌙 Appearance
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
           <LogoutButton redirectTo="/login" />
         </div>
-      </div>
-    </section>
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <main className="settings-view">
+        {activeTab === "profile" && (
+          <div className="profile-details animate-fade">
+            <header className="owner-header">
+              <div>
+                <h1>Founder Settings</h1>
+                <p>Full administrative control over aiMart ecosystem.</p>
+              </div>
+              <div className="status-pill admin-pill">
+                <span className="dot"></span> System Admin
+              </div>
+            </header>
+
+            <section className="info-grid">
+              <div className="info-item">
+                <label>Founder Name</label>
+                <div className="value-box">{profile.name}</div>
+              </div>
+              <div className="info-item">
+                <label>Admin Email</label>
+                <div className="value-box muted">{profile.email}</div>
+              </div>
+              <div className="info-item">
+                <label>Platform Role</label>
+                <div className="value-box">
+                  <span className="founder-badge-text">{profile.role}</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {activeTab === "appearance" && (
+          <div className="appearance-section animate-fade">
+            <h2>Appearance</h2>
+            <p className="section-desc">Customize the system-wide theme interface.</p>
+            <div className="theme-toggle-card">
+              <div className="theme-info">
+                <span>{isDark ? "🌙 Dark Mode Active" : "☀️ Light Mode Active"}</span>
+              </div>
+              <label className="toggle-switch">
+                <input 
+                  type="checkbox" 
+                  checked={isDark} 
+                  onChange={() => setIsDark(!isDark)} 
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
 
-export default FounderSettings;
+export default FounderSettings; 

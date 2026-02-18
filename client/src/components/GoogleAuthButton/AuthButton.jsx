@@ -3,7 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
- import { googleLogin } from '../../app/features/AuthSlice';
+import { googleLogin } from '../../app/features/AuthSlice';
 
 const GoogleAuthButton = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -13,15 +13,12 @@ const GoogleAuthButton = () => {
   const handleGoogleSuccess = async (response) => {
     setIsLoggingIn(true);
     try {
-      // 1. Dispatching the Google Login Thunk (Jo humne authSlice mein banaya)
       const resultAction = await dispatch(googleLogin(response.credential));
       
-      // 2. Checking if the action was successful
       if (googleLogin.fulfilled.match(resultAction)) {
         const user = resultAction.payload;
         toast.success(`Welcome back, ${user.name}! 🚀`);
 
-        // 3. Role-based Redirection
         if (user.role === "toolOwner") {
           navigate("/toolowner/dashboard");
         } else if (user.role === "founder") {
@@ -30,7 +27,6 @@ const GoogleAuthButton = () => {
           navigate("/explore");
         }
       } else {
-        // Redux thunk ka error handle karega
         toast.error(resultAction.payload || "Google Authentication failed");
       }
     } catch (error) {
@@ -46,19 +42,21 @@ const GoogleAuthButton = () => {
   };
 
   return (
-    <div className={`w-full transition-all duration-300 ${isLoggingIn ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-      <GoogleLogin
-        onSuccess={handleGoogleSuccess}
-        onError={handleGoogleError}
-      
-        theme="filled_black" // Dark theme ke liye perfect
-        shape="pill"
-        size="large"
-        width="250" // Container ki puri width
-      />
+    <div className="google-btn-wrapper">
+      <div className={`google-btn-inner ${isLoggingIn ? 'processing' : ''}`}>
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleError}
+          theme="outline" // ✅ White background ke liye
+          shape="rectangular" // ✅ Professional look ke liye
+          size="large"
+          width="100%" // Container ki width lega
+          text="continue_with"
+        />
+      </div>
       
       {isLoggingIn && (
-        <p className="text-[10px] text-center mt-2 text-gray-500 animate-pulse tracking-wider uppercase">
+        <p className="verifying-text">
           Verifying your account...
         </p>
       )}
@@ -66,4 +64,4 @@ const GoogleAuthButton = () => {
   );
 };
 
-export default GoogleAuthButton;  
+export default GoogleAuthButton; 

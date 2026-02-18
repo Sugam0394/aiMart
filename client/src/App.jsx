@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
  import { getAccessToken } from "./utils/token.js";
  import { Link } from "react-router-dom";
  import "./App.css"
+ import { useState, useEffect } from 'react';
  
 
 //layout
@@ -62,8 +63,21 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
  
 
 function App() {
+  const [isDark, setIsDark] = useState(
+  localStorage.getItem("theme") === "dark"
+);
   const { isInitialized  } = useSelector((state) => state.auth);
   const token = getAccessToken();
+
+
+  useEffect(() => {
+  // HTML tag par attribute set karega
+  document.documentElement.setAttribute(
+    "data-theme", isDark ? "dark" : "light"
+  );
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}, [isDark]);
+
  
   if (token && !isInitialized) {
     return (
@@ -101,7 +115,11 @@ function App() {
             <Route path="explore" element={<Explore />} />
             <Route path="saved" element={<SavedTools />} />
             <Route path="tools/:id" element={<AiArt />} />
-            <Route path="settings" element={<UserSettings />} />
+            // App.jsx ke andar Routes section mein:
+<Route 
+  path="/settings" 
+  element={<UserSettings isDark={isDark} setIsDark={setIsDark} />} 
+/>
             {/* Fallback for old /home links */}
             <Route path="home" element={<Navigate to="/explore" replace />} />
           </Route>

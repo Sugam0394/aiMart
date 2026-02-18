@@ -70,3 +70,31 @@
   /* Mobile: 481px - 767px */
   /* Small: 0px - 480px */
 }
+
+/* LIGHT MODE (Already existing properties ko retain karte hue) */
+:root {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  
+  /* Role Colors */
+  --role-user: #4f46e5;
+  --role-user-bg: #eef2ff;
+  --role-owner: #059669;
+  --role-owner-bg: #ecfdf5;
+  --role-founder: #d97706;
+  --role-founder-bg: #fffbeb;
+}
+
+/* DARK MODE — New Addition */
+[data-theme="dark"] {
+  --color-bg-primary: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-border: #334155;
+  --color-border-light: #1e293b;
+}

@@ -79,13 +79,14 @@ const userSchema = new mongoose.Schema({
 
 
 
-userSchema.pre('save', async function () {
-  if (!this.password) return;
+ userSchema.pre('save', async function () {
+  if (!this.password) return; // no password, skip
 
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 10);
   }
 });
+
 
 
 userSchema.methods.comparePassword = async function (enteredPassword) {

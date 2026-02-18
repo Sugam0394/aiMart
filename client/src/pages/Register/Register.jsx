@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { registerUser } from '../../app/features/authSlice'
+import { registerUser } from '../../app/features/AuthSlice'
 import { useNavigate, Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import "./Register.css"

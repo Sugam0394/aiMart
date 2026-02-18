@@ -116,6 +116,23 @@
     text-align: left;
   }
 } 
+
+
+/* 🔥 FORCE LEFT ALIGN ON MOBILE */
+@media (max-width: 767px) {
+  .footer,
+  .footer-top,
+  .footer-bottom,
+  .footer-brand,
+  .footer-links,
+  .footer-links ul,
+  .footer-links li,
+  .footer-logo,
+  .footer-brand p {
+    text-align: left !important;
+  }
+}
+
    
  
 

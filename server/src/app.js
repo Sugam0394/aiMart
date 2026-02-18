@@ -11,7 +11,7 @@ const app = express();
   "http://localhost:5173"                // Local Vite URL
 ];
 
-app.use(cors({
+ app.use(cors({
   origin: function (origin, callback) {
     // Postman ya bina origin wali calls allow karne ke liye
     if (!origin) return callback(null, true);
@@ -25,6 +25,13 @@ app.use(cors({
   },
   credentials: true
 }));
+
+// ✅ NEW: Google OAuth postMessage fix (Ye lines add ki hain)
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "unsafe-none");
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+  next();
+});
 
  
 

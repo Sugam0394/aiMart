@@ -8,7 +8,7 @@ import User from '../models/userModel.js'
 
  
 
- const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+ const client = new OAuth2Client(process.env.VITE_GOOGLE_CLIENT_ID);
 
 
 
@@ -25,7 +25,7 @@ import User from '../models/userModel.js'
   try {
     ticket = await client.verifyIdToken({
       idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: process.env.VITE_GOOGLE_CLIENT_ID,
     });
     console.log("✅ ID Token verified:", ticket.getPayload());
   } catch (err) {

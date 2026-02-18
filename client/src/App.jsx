@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
  import AiArt from "./pages/aiArt/AiArt.jsx";
  import SavedTools from "./components/SavedTools/SavedTools.jsx";
 
-
+ 
 
  // user Pages
  import Explore from "./pages/Explore/Explore.jsx";
@@ -85,6 +85,7 @@ function App() {
         {/* 🌍 1. PUBLIC ROUTES - Sabke liye accessible (Home hamesha khulega) */}
         <Route element={<PublicLayout />}>
           <Route index element={<Home />} />
+       
         </Route>
 
         {/* 🔐 2. AUTH ROUTES (Login/Register) */}

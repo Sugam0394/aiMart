@@ -1,4 +1,4 @@
-import { OAuth2Client } from 'google-auth-library'; 
+ import { OAuth2Client } from "google-auth-library";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
@@ -8,63 +8,97 @@ import User from '../models/userModel.js'
 
  
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+
+
  export const googleLogin = asyncHandler(async (req, res) => {
-    const { idToken } = req.body;
+  const { idToken } = req.body;
+  console.log("🔥 Received idToken at backend:", idToken);
 
-    if (!idToken) throw new ApiError(400, "Google ID Token is required");
+  if (!idToken) {
+    console.log("❌ No idToken sent!");
+    throw new ApiError(400, "Google ID Token is required");
+  }
 
-    const ticket = await client.verifyIdToken({
-        idToken,
-        audience: process.env.GOOGLE_CLIENT_ID,
+  let ticket;
+  try {
+    ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
+    console.log("✅ ID Token verified:", ticket.getPayload());
+  } catch (err) {
+    console.error("❌ Google verifyIdToken failed:", err);
+    throw new ApiError(400, "Invalid Google ID Token");
+  }
 
-    const { name, email, picture, sub: googleId } = ticket.getPayload();
+  const payload = ticket.getPayload();
+  const { name, email, picture, sub: googleId } = payload;
 
-    let user = await User.findOne({ email });
+  let user;
+  try {
+    user = await User.findOne({ email });
+    console.log("🔍 Found user in DB:", user);
 
     if (!user) {
-        user = await User.create({
-            name,
-            email,
-            profilePicture: picture,
-            googleId,
-            role: 'user',
-            isEmailVerified: true 
-        });
+      user = await User.create({
+        name,
+        email,
+        profilePicture: picture,
+        googleId,
+        isEmailVerified: true,
+      });
+      console.log("✅ New user created:", user);
     } else if (!user.googleId) {
-        user.googleId = googleId;
-        user.profilePicture = user.profilePicture || picture;
-        await user.save();
+      user.googleId = googleId;
+      await user.save({ validateBeforeSave: false });
+      console.log("✅ Updated existing user with googleId");
     }
+  } catch (err) {
+    console.error("❌ User DB operation failed:", err);
+    throw new ApiError(500, "Database error during Google login");
+  }
 
-    // 🔥 CORRECTED: Model methods use karo taaki consistency rahe
+  try {
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
-
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
 
-    const cookieOptions = getCookieOptions();
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    };
 
-    // 🍪 SET COOKIES (Missing tha pehle)
-    res.cookie("refreshToken", refreshToken, {
-        ...cookieOptions,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    res.cookie("accessToken", accessToken, {
-        ...cookieOptions,
-        maxAge: 15 * 60 * 1000,
-    });
+    res.cookie("accessToken", accessToken, cookieOptions);
+    res.cookie("refreshToken", refreshToken, cookieOptions);
 
     return res.status(200).json(
-        new ApiResponse(200, { 
-            user: { id: user._id, name: user.name, email: user.email, role: user.role, profilePicture: user.profilePicture }, 
-            accessToken 
-        }, "Google Login Successful")
+      new ApiResponse(
+        200,
+        {
+          user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            profilePicture: user.profilePicture,
+          },
+          accessToken,
+        },
+        "Google Login Successful"
+      )
     );
+  } catch (err) {
+    console.error("❌ Token generation or cookie setting failed:", err);
+    throw new ApiError(500, "Server error after Google login");
+  }
 });
+
+
+
 
 const getCookieOptions = () => {
   const isProduction = process.env.NODE_ENV === 'production';

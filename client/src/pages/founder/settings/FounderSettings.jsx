@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
  import { getMyProfile } from "../../../api/toolOwner/setting.api";
- import LogoutButton from "../../../components/LogoutButton.jsx/Logout";
+ import LogoutButton from "../../../components/LogoutButton/Logout";
 import "./FounderSettings.css";
 
 function FounderSettings() {

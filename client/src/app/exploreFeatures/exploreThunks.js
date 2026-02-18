@@ -1,55 +1,88 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { exploreFailure , exploreStart , exploreSuccess } from "./exploreSlice";
+import { startExplore , submitExploreStep , completeExplore } from "../../api/explore/exploreApi";
 
-// NOTE: actual API functions baad me inject honge
-// Abhi hum sirf Redux async flow lock kar rahe hain
+ 
+ 
 
- import { startExplore , submitExploreStep , completeExplore } from "../../api/explore/exploreApi";
+ 
 
 // 1️⃣ Start Explore Session
-export const startExploreThunk = createAsyncThunk(
+ 
+ export const startExploreThunk = createAsyncThunk(
   "explore/start",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
-      dispatch(exploreStart());
-      const response = await startExplore();
+      const state = getState();
+
+    
+
+      // 1️⃣ Safely extract user
+      const user = state.auth?.user;
+
+      if (!user) {
       
-      // ✅ Axios already unwraps to response.data
-      const { data } = response; // Backend ka main object
-      
-      if (!data?.sessionId || !data?.currentStep) {
-        throw new Error("Invalid response structure");
+        return rejectWithValue("User login required");
       }
 
-      dispatch(exploreSuccess({
-        sessionId: data.sessionId,
-        step: data.currentStep,
-        payload: {}, // Intent step has no payload initially
-      }));
+      // 2️⃣ Handle all possible ID formats (Mongo + normalized + custom)
+      const userId =
+        user._id ||
+        user.id ||
+        user.userId;
+
       
-      return data;
+
+      if (!userId) {
+       
+        return rejectWithValue("User login required");
+      }
+
+      // 3️⃣ Call backend
+      const response = await startExplore(userId);
+
+     
+
+      // 4️⃣ Backend structure: { success: true, data: {...} }
+      const data = response?.data;
+
+       
+
+      if (!data || !data.sessionId) {
+       
+        return rejectWithValue("Backend did not return sessionId");
+      }
+
+  
+
+      return data; // { sessionId, currentStep }
+
     } catch (error) {
-      const message = error?.response?.data?.message || error.message || "Session failed";
-      dispatch(exploreFailure(message));
-      return rejectWithValue(message);
+      console.error("💥 START EXPLORE ERROR:", error);
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to start session"
+      );
     }
   }
 );
 
 
- // exploreThunks.js
+
+// 2️⃣ Submit Explore Step
 export const submitExploreStepThunk = createAsyncThunk(
   "explore/submitStep",
   async ({ sessionId, currentStep, stepData }, { dispatch, rejectWithValue }) => {
     try {
+      // Step submission ke liye hum manually exploreStart call kar sakte hain loading ke liye
       dispatch(exploreStart());
 
-      const response = await submitExploreStep({ sessionId, currentStep, stepData });
-      const { data } = response; // { nextStep, payload }
+    const rawResponse = await submitExploreStep({ sessionId, currentStep, stepData });
 
-      // 🔥 Track what user selected
-      let lastSelection = null;
+    const response = rawResponse?.data; // 👈 IMPORTANT
+
       
+      // Tracking selection logic
+      let lastSelection = null;
       if (currentStep === "INTENT") {
         lastSelection = { type: "intent", value: stepData.intent };
       } else if (currentStep === "USE_CASE") {
@@ -58,16 +91,17 @@ export const submitExploreStepThunk = createAsyncThunk(
         lastSelection = { type: "tools", value: stepData.toolIds };
       }
 
+      // Manual dispatch for success to handle the complex selections logic in your slice
       dispatch(
         exploreSuccess({
           sessionId,
-          step: data.nextStep,
-          payload: data.payload,
-          lastSelection, // ✅ Now properly tracked
+          step: response.nextStep,
+          payload: response.payload,
+          lastSelection,
         })
       );
       
-      return data;
+      return response;
     } catch (error) {
       const message = error?.response?.data?.message || "Step failed";
       dispatch(exploreFailure(message));

@@ -1,28 +1,47 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { submitExploreStepThunk } from '../../../app/exploreFeatures/exploreThunks';
-import { selectExploreSessionId } from '../../../app/exploreFeatures/exploreSelectors';
+import { startExploreThunk, submitExploreStepThunk } from '../../../app/exploreFeatures/exploreThunks';
+import { selectExploreSessionId, selectExploreLoading } from '../../../app/exploreFeatures/exploreSelectors';
 import "./styles/IntentStep.css";
 
 function IntentStep() {
   const dispatch = useDispatch();
   const sessionId = useSelector(selectExploreSessionId);
+  const isLoading = useSelector(selectExploreLoading);
   const [intent, setIntent] = useState("");
 
-  // Suggestions for better UX
-  const suggestions = [
-    "Build a SaaS", "Study for exams", "Grow my business", "Design a Portfolio"
-  ];
+  const suggestions = ["Build a SaaS", "Study for exams", "Grow my business", "Design a Portfolio"];
 
-  const handleSubmit = () => {
-    if (!intent.trim()) return;
-    dispatch(
-      submitExploreStepThunk({
-        sessionId,
+  const handleSubmit = async () => {
+    if (!intent.trim() || isLoading) return;
+
+    try {
+      let currentSessionId = sessionId;
+
+      // AGAR SESSION NAHI HAI, TOH PEHLE START KARO (Just like before, but dynamic)
+      if (!currentSessionId) {
+        console.log("Starting session first...");
+        const resultAction = await dispatch(startExploreThunk());
+        
+        // Thunk se nayi ID nikaalo
+        if (startExploreThunk.fulfilled.match(resultAction)) {
+          currentSessionId = resultAction.payload.sessionId;
+        } else {
+          alert("Failed to start session. Please try again.");
+          return;
+        }
+      }
+
+      // AB STEP SUBMIT KARO
+      dispatch(submitExploreStepThunk({
+        sessionId: currentSessionId,
         currentStep: "INTENT",
         stepData: { intent },
-      })
-    );
+      }));
+
+    } catch (err) {
+      console.error("Flow Error:", err);
+    }
   };
 
   return (
@@ -41,24 +60,16 @@ function IntentStep() {
           <button 
             className="continue-btn" 
             onClick={handleSubmit} 
-            disabled={!intent.trim()}
+            disabled={!intent.trim() || isLoading}
           >
-            Go →
+            {isLoading ? "..." : "Go →"}
           </button>
         </div>
       </div>
-
       <div className="suggestions-container">
-        <span className="suggestion-hint">Popular goals:</span>
         <div className="suggestion-chips">
           {suggestions.map((s) => (
-            <button 
-              key={s} 
-              className="chip" 
-              onClick={() => setIntent(s)}
-            >
-              {s}
-            </button>
+            <button key={s} className="chip" onClick={() => setIntent(s)}>{s}</button>
           ))}
         </div>
       </div>

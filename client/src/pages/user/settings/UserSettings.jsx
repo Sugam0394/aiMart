@@ -3,7 +3,7 @@ import { getMyProfile } from "../../../api/toolOwner/setting.api";
  // import LogoutButton from "../../../components/LogoutButton/LogoutButton"; // Fix path if needed
 import ApplyToolOwner from "../../toolOwner/dashboard/ApplyToolOwner"; 
 import "../css/UserSettings.css";
-import LogoutButton from "../../../components/LogoutButton.jsx/Logout";
+import LogoutButton from "../../../components/LogoutButton/Logout";
 
 function UserSettings() {
   const [profile, setProfile] = useState(null);

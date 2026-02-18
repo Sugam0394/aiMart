@@ -1,15 +1,16 @@
- import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { startExploreThunk, submitExploreStepThunk } from "./exploreThunks";
 
 const initialState = {
   exploreSessionId: null,
   currentStep: null,
-  // 🔥 NEW: Har step ki final choice yahan save hogi summary dikhane ke liye
+  // Har step ki final choice yahan save hogi summary dikhane ke liye
   selections: {
     intent: "",
     useCase: "",
     tools: []
   },
-  stepPayload: null, // Backend se aane wale options (e.g. use-case list ya tools list)
+  stepPayload: null, // Backend se aane wale options
   useCasePayload: null, // Preserved for Edit back-navigation
   loading: false,
   error: null,
@@ -33,19 +34,19 @@ const exploreSlice = createSlice({
       if (step === "USE_CASE") state.useCasePayload = payload;
       state.loading = false;
 
-      // 🔥 Sync selections: Jo user ne abhi choose kiya, use save kar lo
+      // Sync selections: Jo user ne abhi choose kiya, use save kar lo
       if (lastSelection) {
-        const { type, value } = lastSelection; // e.g. {type: 'intent', value: 'Study'}
+        const { type, value } = lastSelection;
         state.selections[type] = value;
       }
     },
 
-    // 🔥 NEW: Back to Edit Action
+    // Back to Edit Action
     jumpToStep(state, action) {
       const targetStep = action.payload; // "INTENT" or "USE_CASE"
       state.currentStep = targetStep;
       
-      // Clear downstream data (Peeche jaane par aage ka data reset karna zaruri hai)
+      // Peeche jaane par aage ka data reset karna zaruri hai
       if (targetStep === "INTENT") {
         state.selections.useCase = "";
         state.selections.tools = [];
@@ -65,6 +66,39 @@ const exploreSlice = createSlice({
       return initialState;
     },
   },
+  
+  // 🔥 IMPORTANT: Thunks ke result ko handle karne ke liye
+  extraReducers: (builder) => {
+    builder
+      // Handle Start Explore Thunk
+      .addCase(startExploreThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(startExploreThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        // Thunk se jo return data hai wo yahan action.payload mein milega
+        state.exploreSessionId = action.payload.sessionId;
+        state.currentStep = action.payload.currentStep || "INTENT";
+        state.stepPayload = action.payload.payload || null;
+      })
+      .addCase(startExploreThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Jo rejectWithValue se bheja tha
+      })
+      
+      // Handle Submit Step Thunk (Optional: Agar manual success nahi kar rahe)
+      .addCase(submitExploreStepThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(submitExploreStepThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(submitExploreStepThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 export const {
@@ -75,4 +109,4 @@ export const {
   jumpToStep
 } = exploreSlice.actions;
 
-export default exploreSlice.reducer;
+export default exploreSlice.reducer; 

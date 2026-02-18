@@ -122,13 +122,13 @@ function ToolStep() {
           Skip for now
         </button>
         
-        <button
+    {  /*  <button
           className="primary-action-btn"
           onClick={handleContinue}
           disabled={selectedTools.length === 0}
         >
           Continue with {selectedTools.length} tool{selectedTools.length !== 1 ? 's' : ''} →
-        </button>
+        </button> */ }
       </div>
     </div>
   );

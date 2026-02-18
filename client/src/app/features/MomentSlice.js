@@ -8,7 +8,6 @@ export const fetchAvailableUseCases = createAsyncThunk(
   "moment/fetchAvailableUseCases",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("🔍 Fetching available use cases...");
       const res = await toolService.getAvailableUseCases(); // Service call
       return res.data.data.useCases; 
     } catch (err) {
@@ -21,7 +20,7 @@ export const fetchToolsByUseCase = createAsyncThunk(
   "moment/fetchToolsByUseCase",
   async (useCaseKey, { rejectWithValue }) => {
     try {
-      console.log("🔍 Fetching tools for use case:", useCaseKey);
+       
       const res = await toolService.getToolsByUseCase(useCaseKey); // Service call
       
       return {

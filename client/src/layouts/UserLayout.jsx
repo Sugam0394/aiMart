@@ -9,17 +9,25 @@ function UserLayout() {
 
   const handleProfileNavigation = (e) => {
     e.preventDefault();
-    e.stopPropagation(); // Prevents any other element from stealing the click
+    e.stopPropagation(); 
 
-    // Mobile/Production Debugging
-    if (!role) {
+    // FIX: Redux ke 'role' ke saath user object ke role ko bhi check karte hain
+    // Isse session restore (1-2 hours baad) wala bug theek ho jayega
+    const currentRole = user?.role || role;
+
+    if (!currentRole) {
       navigate("/login");
       return;
     }
 
-    if (role === "user") navigate("/settings");
-    else if (role === "toolOwner") navigate("/toolowner/dashboard");
-    else if (role === "founder") navigate("/founder/dashboard");
+    // Role-based navigation logic
+    if (currentRole === "user") {
+      navigate("/settings");
+    } else if (currentRole === "toolOwner") {
+      navigate("/toolowner/dashboard");
+    } else if (currentRole === "founder") {
+      navigate("/founder/dashboard");
+    }
   };
 
   return (
@@ -43,12 +51,13 @@ function UserLayout() {
             <div 
               className="user-profile-trigger" 
               onClick={handleProfileNavigation}
-              onTouchStart={(e) => e.stopPropagation()} // Better mobile response
+              onTouchStart={(e) => e.stopPropagation()} 
               title="View Account"
             >
               <div className="user-info">
                 <span className="user-name">{user.name || "Account"}</span>
-                <span className="user-role-badge">{role}</span>
+                {/* Yahan bhi fallback role lagaya hai display ke liye */}
+                <span className="user-role-badge">{user.role || role}</span>
               </div>
               <div className="nav-avatar">
                 {user.profilePicture ? (

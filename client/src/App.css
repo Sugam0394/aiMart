@@ -1,48 +1,12 @@
 /* ===============================================================
-   DESIGN TOKENS (Single Source of Truth - All Dimensions Ke Saath)
+   DESIGN TOKENS (Single Source of Truth)
    =============================================================== */
 :root {
-  /* 1. CARD DIMENSIONS (Bina badle) */
-  --card-width-desktop: 280px;
-  --card-width-tablet: 240px;
-  --card-width-mobile: 180px;
-  
-  --card-height-desktop: 340px;
-  --card-height-tablet: 300px;
-  --card-height-mobile: 260px;
-  
-  --card-image-height-desktop: 180px;
-  --card-image-height-tablet: 140px;
-  --card-image-height-mobile: 120px;
+  --card-width-desktop: 280px; --card-width-tablet: 240px; --card-width-mobile: 180px;
+  --card-height-desktop: 340px; --card-height-tablet: 300px; --card-height-mobile: 260px;
+  --spacing-md: 16px; --spacing-lg: 20px;
 
-  /* 2. SPACING SYSTEM (Wahi purana) */
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 20px;
-  --spacing-xl: 24px;
-  --spacing-2xl: 32px;
-  --spacing-3xl: 48px;
-  --spacing-4xl: 60px;
-
-  /* 3. SECTION & PAGE PADDING */
-  --section-gap-desktop: 50px;
-  --section-gap-tablet: 48px;
-  --section-gap-mobile: 36px;
-  
-  --card-gap-desktop: 20px;
-  --card-gap-tablet: 16px;
-  --card-gap-mobile: 12px;
-
-  --page-padding-desktop: 40px;
-  --page-padding-tablet: 28px;
-  --page-padding-mobile: 18px;
-
-  /* 4. TYPOGRAPHY */
-  --font-size-section-title-desktop: 1.8rem;
-  --font-size-card-title-desktop: 1rem;
-
-  /* 5. LIGHT MODE COLORS (As per your request) */
+  /* LIGHT MODE */
   --bg-main: #F3F4F6;
   --bg-card: #FFFFFF;
   --text-main: #111827;
@@ -51,37 +15,27 @@
   --nav-bg: rgba(255, 255, 255, 0.9);
   --primary-btn: #4F46E5;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-  /* Role Colors */
-  --role-user: #4f46e5;
-  --role-owner: #059669;
-  --role-founder: #d97706;
 }
 
-/* 6. DARK MODE (Premium Deep Look - Browser Jaisa) */
+/* DARK MODE - Premium AI-Mart Look */
 [data-theme="dark"] {
   --bg-main: #020617;   /* Deepest Blue-Black */
-  --bg-card: #0f172a;   /* Lighter Navy for Cards */
+  --bg-card: #0f172a;   /* Cards Background */
   --bg-tertiary: #1e293b;
-  
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  
   --border-color: #1e293b;
   --nav-bg: rgba(2, 6, 23, 0.85); 
-  
   --primary-btn: #6366f1; 
   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 }
 
- /* ===============================================================
-   GLOBAL STYLES (Sirf Body ko Force kiya hai)
+/* ===============================================================
+   ULTIMATE DARK MODE OVERRIDE (Har white div ko target kiya hai)
    =============================================================== */
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -89,40 +43,68 @@ html, body {
   width: 100%;
   max-width: 100vw;
   overflow-x: hidden;
-  /* FORCE UPDATE: Isse poori screen dark hogi */
-  background-color: var(--bg-main) !important; 
+  background-color: var(--bg-main) !important;
   color: var(--text-main) !important;
   font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
-.home-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
-  /* Force background here too because layouts often wrap everything */
+/* Force Dark Backgrounds on Every Layout Component */
+[data-theme="dark"] .layout-wrapper,
+[data-theme="dark"] .home-container,
+[data-theme="dark"] .explore-container,
+[data-theme="dark"] .dashboard-container,
+[data-theme="dark"] .settings-container,
+[data-theme="dark"] .content-area,
+[data-theme="dark"] main {
   background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
 }
 
-/* Card System */
-.tool-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-  transition: transform 0.2s ease, background-color 0.3s ease;
-  overflow: hidden;
-  flex-shrink: 0;
+/* Navbar & Sidebar Override (Fix for white edges) */
+[data-theme="dark"] .global-navbar,
+[data-theme="dark"] .founder-sidebar,
+[data-theme="dark"] .sidebar-wrapper,
+[data-theme="dark"] header,
+[data-theme="dark"] nav {
+  background-color: var(--nav-bg) !important;
+  border-color: var(--border-color) !important;
+  backdrop-filter: blur(10px);
 }
 
-/* Buttons */
+/* Card & Section Overrides (Jo images mein white the) */
+[data-theme="dark"] .tool-card,
+[data-theme="dark"] .goal-card,
+[data-theme="dark"] .category-filter-bar,
+[data-theme="dark"] .inventory-section,
+[data-theme="dark"] .login-box,
+[data-theme="dark"] .form-container {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+
+/* Form Inputs Fix */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background-color: var(--bg-tertiary) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Links & Text Fix */
+[data-theme="dark"] .nav-links a {
+  color: var(--text-muted) !important;
+}
+[data-theme="dark"] .nav-links a.active {
+  color: var(--text-main) !important;
+}
+
+/* Button Fix */
 .primary-btn {
-  background: var(--primary-btn);
+  background-color: var(--primary-btn);
   color: white;
-  padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
   border: none;
-  cursor: pointer;
-}
+} 

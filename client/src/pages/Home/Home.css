@@ -1,55 +1,50 @@
-/* ===============================
-   HOME PAGE CONTAINER
-================================= */
+ /* ===================================
+   AI-MART — HOME PAGE
+   File: src/pages/Home/Home.css
+   Constitution: V2 Mobile-First
+=================================== */
 
+/* ── Page Container ── */
 .home-container {
   width: 100%;
   min-height: 100vh;
-  background: var(--color-bg-secondary);
+  background: #F3F4F6;
+  overflow-x: hidden;
 }
 
+/* ── Page Content ── */
 .home-page {
   width: 100%;
-  padding: 0 var(--page-padding-desktop) var(--spacing-4xl);
+  padding: 0 16px 48px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: var(--section-gap-desktop);
+  gap: 32px;
 }
 
-/* ===============================
-   HERO SECTION
-================================= */
-
+/* ── Hero (Greeting + Search) ── */
 .home-hero-container {
   width: 100%;
   position: relative;
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: 8px;
 }
 
 .search-overlay-box {
   width: 100%;
-  max-width: 650px;
-  margin: -30px auto 0 auto;
-  z-index: 10;
+  margin: -20px auto 0;
   position: relative;
+  z-index: 10;
 }
 
-/* ===============================
-   SECTIONS STACK
-================================= */
-
+/* ── Sections Stack ── */
 .sections-stack {
   display: flex;
   flex-direction: column;
-  gap: var(--section-gap-desktop);
+  gap: 32px;
   width: 100%;
 }
 
-/* ===============================
-   HORIZONTAL SCROLL SYSTEM
-================================= */
-
+/* ── Horizontal Scroll System ── */
 .horizontal-scroll-section {
   width: 100%;
   overflow-x: auto;
@@ -57,48 +52,40 @@
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  padding: var(--spacing-md) 0;
+  padding: 12px 0 16px;
 }
 
 .horizontal-scroll-section::-webkit-scrollbar {
   display: none;
 }
 
-/* Universal wrapper for all scrollable content */
-.horizontal-scroll-section > div,
 .horizontal-scroll-section > * {
   display: flex !important;
   flex-direction: row !important;
-  gap: var(--card-gap-desktop);
+  gap: 12px;
   flex-wrap: nowrap !important;
   width: max-content;
 }
 
-/* ===============================
-   STICKY FILTER BAR
-================================= */
-
+/* ── Sticky Filter Bar ── */
 .filter-sticky-bar {
   position: sticky;
-  top: 0;
-  z-index: var(--z-sticky);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  
-  /* Full-bleed effect */
-  margin-left: calc(-1 * var(--page-padding-desktop));
-  margin-right: calc(-1 * var(--page-padding-desktop));
-  padding: var(--spacing-md) var(--page-padding-desktop);
-  
-  border-bottom: 1px solid var(--color-border-light);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  top: 64px; /* matches navbar height */
+  z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-left: -16px;
+  margin-right: -16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #E5E7EB;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .filter-inner-content {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 12px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -108,110 +95,66 @@
 }
 
 .filter-label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--color-text-secondary);
+  color: #9CA3AF;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   white-space: nowrap;
 }
 
-/* ===============================
-   TABLET (768px - 1023px)
-================================= */
+/* ── Loading ── */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6B7280;
+}
 
-@media (max-width: 1023px) {
+/* ── TABLET (640px+) ── */
+@media (min-width: 640px) {
   .home-page {
-    padding: 0 var(--page-padding-tablet) var(--spacing-3xl);
-    gap: var(--section-gap-tablet);
+    padding: 0 24px 56px;
+    gap: 40px;
   }
-  
-  .sections-stack {
-    gap: var(--section-gap-tablet);
-  }
-  
-  .horizontal-scroll-section > div,
-  .horizontal-scroll-section > * {
-    gap: var(--card-gap-tablet);
-  }
-  
-  .filter-sticky-bar {
-    margin-left: calc(-1 * var(--page-padding-tablet));
-    margin-right: calc(-1 * var(--page-padding-tablet));
-    padding: var(--spacing-sm) var(--page-padding-tablet);
-  }
-  
   .search-overlay-box {
-    max-width: 550px;
+    max-width: 560px;
     margin-top: -24px;
   }
+  .horizontal-scroll-section > * {
+    gap: 16px;
+  }
+  .filter-sticky-bar {
+    top: 68px;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding: 12px 24px;
+  }
 }
 
-/* ===============================
-   MOBILE (481px - 767px)
-================================= */
-
-@media (max-width: 767px) {
+/* ── DESKTOP (1024px+) ── */
+@media (min-width: 1024px) {
   .home-page {
-    padding: 0 var(--page-padding-mobile) var(--spacing-2xl);
-    gap: var(--section-gap-mobile);
+    padding: 0 40px 64px;
+    gap: 48px;
   }
-  
-  .sections-stack {
-    gap: var(--section-gap-mobile);
-  }
-  
-  .horizontal-scroll-section {
-    padding: var(--spacing-sm) 0;
-  }
-  
-  .horizontal-scroll-section > div,
-  .horizontal-scroll-section > * {
-    gap: var(--card-gap-mobile);
-  }
-  
-  .filter-sticky-bar {
-    margin-left: calc(-1 * var(--page-padding-mobile));
-    margin-right: calc(-1 * var(--page-padding-mobile));
-    padding: var(--spacing-sm) var(--page-padding-mobile);
-  }
-  
   .search-overlay-box {
-    max-width: 100%;
-    margin-top: -20px;
-    padding: 0 var(--spacing-sm);
+    max-width: 650px;
+    margin-top: -30px;
+  }
+  .horizontal-scroll-section > * {
+    gap: 20px;
+  }
+  .filter-sticky-bar {
+    top: 72px;
+    margin-left: -40px;
+    margin-right: -40px;
+    padding: 12px 40px;
   }
 }
-
-/* ===============================
-   SMALL MOBILE (0px - 480px)
-================================= */
-
-@media (max-width: 480px) {
-  .home-page {
-    padding: 0 var(--page-padding-small) var(--spacing-xl);
-    gap: var(--spacing-2xl);
-  }
-  
-  .sections-stack {
-    gap: var(--spacing-2xl);
-  }
-  
-  .horizontal-scroll-section > div,
-  .horizontal-scroll-section > * {
-    gap: 10px;
-  }
-  
-  .filter-sticky-bar {
-    margin-left: calc(-1 * var(--page-padding-small));
-    margin-right: calc(-1 * var(--page-padding-small));
-    padding: var(--spacing-xs) var(--page-padding-small);
-  }
-  
-  .filter-label {
-    font-size: 12px;
-  }
-} 
  
  
 

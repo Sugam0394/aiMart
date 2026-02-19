@@ -1,125 +1,117 @@
-/* --- Global Layout --- */
+ /* ===================================
+   AI-MART — USER LAYOUT
+   Constitution: V2 Mobile-First System
+=================================== */
+
+/* ── Layout Wrapper ── */
 .layout-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  background-color: #f8fafc;
+  background-color: #F3F4F6;
   overflow-x: hidden;
 }
 
+/* ── Navbar ── */
 .global-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 72px;
-  padding: 0 5%;
+  height: 64px;
+  padding: 0 16px;
   background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #E5E7EB;
   position: sticky;
   top: 0;
-  z-index: 2500; /* Super High Z-index */
+  z-index: 1000;
+  box-sizing: border-box;
 }
 
-/* --- Navigation --- */
+/* ── Logo ── */
+.logo {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #4F46E5;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.logo span { color: #1E293B; }
+
+/* ── Nav Left ── */
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #4f46e5;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.logo span { color: #1e293b; }
-
+/* ── Nav Links (hide on mobile) ── */
 .nav-links {
-  display: flex;
-  gap: 18px;
+  display: none;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links a {
-  text-decoration: none !important;
-  color: #64748b;
+  text-decoration: none;
+  color: #6B7280;
   font-size: 14px;
   font-weight: 600;
-  transition: 0.2s;
+  transition: color 0.2s;
 }
 
-.nav-links a.active { color: #4f46e5; }
+.nav-links a:hover,
+.nav-links a.active {
+  color: #4F46E5;
+}
 
-/* --- Profile Trigger (CRITICAL FIX) --- */
+/* ── Nav Right ── */
 .nav-right {
   display: flex;
   align-items: center;
+  gap: 8px;
   position: relative;
-  z-index: 3000;
+  z-index: 1001;
 }
 
+/* ── Avatar / Profile Trigger ── */
 .user-profile-trigger {
   display: flex;
   align-items: center;
-  gap: 10px;
-  cursor: pointer !important;
-  padding: 6px 10px;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 8px;
   border-radius: 50px;
+  border: 1px solid transparent;
   background: transparent;
   transition: all 0.2s;
-  pointer-events: auto !important; /* Forces clickability */
-  border: 1px solid transparent;
+  min-height: 44px;
 }
 
 .user-profile-trigger:hover {
-  background: #f1f5f9;
-  border-color: #e2e8f0;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.user-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1e293b;
-  max-width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.user-role-badge {
-  font-size: 9px;
-  background: #e0e7ff;
-  color: #4338ca;
-  padding: 1px 6px;
-  border-radius: 4px;
-  text-transform: uppercase;
-  font-weight: 800;
+  background: #F1F5F9;
+  border-color: #E2E8F0;
 }
 
 .nav-avatar {
   width: 36px;
   height: 36px;
   min-width: 36px;
-  background: #4f46e5;
-  color: white;
+  background: #4F46E5;
+  color: #ffffff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 14px;
-  border: 2px solid #fff;
+  border: 2px solid #ffffff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  pointer-events: none; /* Icon won't steal click from parent */
+  overflow: hidden;
 }
 
 .nav-avatar img {
@@ -129,44 +121,117 @@
   border-radius: 50%;
 }
 
-/* --- Content Area --- */
+.user-info {
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1E293B;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-role-badge {
+  font-size: 9px;
+  background: #E0E7FF;
+  color: #4338CA;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+/* ── Content Area ── */
 .content-area {
   flex: 1;
-  padding: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
   width: 100%;
+  padding: 16px;
   box-sizing: border-box;
 }
 
-/* --- 📱 MOBILE OPTIMIZATION --- */
-@media (max-width: 768px) {
+/* ── Mobile Nav Bottom Bar ── */
+.mobile-bottom-nav {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #ffffff;
+  border-top: 1px solid #E5E7EB;
+  z-index: 999;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 8px;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.06);
+}
+
+.mobile-bottom-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  color: #9CA3AF;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 44px;
+  min-height: 44px;
+  transition: color 0.2s;
+}
+
+.mobile-bottom-nav a.active {
+  color: #4F46E5;
+}
+
+.mobile-bottom-nav a span.icon {
+  font-size: 20px;
+}
+
+/* Content area padding for bottom nav on mobile */
+.content-area {
+  padding-bottom: 76px;
+}
+
+/* ── TABLET (640px+) ── */
+@media (min-width: 640px) {
   .global-navbar {
-    padding: 0 15px;
-    height: 64px;
+    height: 68px;
+    padding: 0 24px;
   }
-
-  /* User Name hide kiya space ke liye */
   .user-info {
-    display: none !important;
+    display: flex;
   }
-
-  .nav-heart {
+  .content-area {
+    padding: 24px;
+    padding-bottom: 24px;
+  }
+  .mobile-bottom-nav {
     display: none;
   }
+}
 
+/* ── DESKTOP (1024px+) ── */
+@media (min-width: 1024px) {
+  .global-navbar {
+    height: 72px;
+    padding: 0 40px;
+  }
   .nav-links {
-    gap: 12px;
+    display: flex;
   }
-
-  .nav-links a {
-    font-size: 13px;
+  .content-area {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 40px;
   }
-
-  .user-profile-trigger {
-    padding: 0;
-    gap: 0;
-  }
-} 
+}
 
 

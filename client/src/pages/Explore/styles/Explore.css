@@ -1,61 +1,110 @@
-/* AI-Mart Explore Page Styles */
-
-.explore-layout {
-  min-height: 100vh; /* Full viewport height */
-  background-color: #F8FAFC; /* Slightly cleaner neutral than F3F4F6 */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* Flow starts from top */
-  padding: 40px 20px;
-  overflow-x: hidden;
-}
+ /* ===================================
+   AI-MART — EXPLORE PAGE
+   File: src/pages/Explore/styles/Explore.css
+   Constitution: V2 Mobile-First
+=================================== */
 
 .explore-container {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  /* Soft entrance animation */
-  animation: exploreReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 100vh;
+  background: #F3F4F6;
 }
 
-@keyframes exploreReveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* ── Header Section ── */
+.explore-header {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.explore-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.explore-subtitle {
+  font-size: 1rem;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+/* ── Grid System ── */
+.explore-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile: 1 Column */
+  gap: 16px;
+  width: 100%;
+}
+
+/* ── Categories Row ── */
+.categories-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 20px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.categories-row::-webkit-scrollbar {
+  display: none;
+}
+
+.category-pill {
+  padding: 8px 18px;
+  background: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4B5563;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-pill:hover {
+  border-color: #4F46E5;
+  color: #4F46E5;
+}
+
+.category-pill.active {
+  background: #4F46E5;
+  border-color: #4F46E5;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(79,70,229,0.2);
+}
+
+/* ── TABLET (640px+) ── */
+@media (min-width: 640px) {
+  .explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .explore-title {
+    font-size: 2.25rem;
   }
 }
 
-/* 📱 Responsive Adjustments */
-@media (max-width: 768px) {
-  .explore-layout {
-    padding: 20px 15px;
-    background-color: #FFFFFF; /* Mobile par clean white backgrounds better lagte hain */
+/* ── DESKTOP (1024px+) ── */
+@media (min-width: 1024px) {
+  .explore-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
-  
-  .explore-container {
-    max-width: 100%;
-    margin-top: 10px;
+  .explore-header {
+    margin-bottom: 40px;
   }
 }
 
-/* Scrollbar customization for Explore Page */
-.explore-layout::-webkit-scrollbar {
-  width: 6px;
+/* ── LARGE DESKTOP (1280px+) ── */
+@media (min-width: 1280px) {
+  .explore-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
-
-.explore-layout::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.explore-layout::-webkit-scrollbar-thumb {
-  background: #E2E8F0;
-  border-radius: 10px;
-} 
 
 
 

@@ -1,44 +1,37 @@
+ /* ===================================
+   AI-MART — PUBLIC LAYOUT
+   Constitution: V2 Mobile-First System
+=================================== */
+
+/* ── Wrapper ── */
 .app-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden; /* Brahmastra to stop wobble */
- 
+  background-color: #F3F4F6;
+  overflow-x: hidden;
 }
 
+/* ── Main Content ── */
 .app-main {
   flex: 1;
   width: 100%;
-  max-width: 1200px; /* Standard content width */
-  margin: 0 auto;
-  padding: 0 16px;
   box-sizing: border-box;
-} 
+}
 
-@media (max-width: 640px) {
-  .nav-container {
-    padding: 0 12px;
+/* ── Mobile Base ── */
+@media (min-width: 640px) {
+  .app-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
   }
+}
 
-  /* Login/Register ko mobile par dikhane ke liye */
-  .nav-container ul {
-    display: flex !important; 
-    gap: 8px;
-  }
-
-  .nav-container h2 {
-    font-size: 1.2rem; /* Logo thoda chota kiya space ke liye */
-  }
-
-  .nav-container ul li a {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-
-  /* Register button mobile size */
-  .nav-container ul li:last-child a {
-    padding: 6px 12px;
+@media (min-width: 1024px) {
+  .app-main {
+    padding: 0 40px;
   }
 }
 

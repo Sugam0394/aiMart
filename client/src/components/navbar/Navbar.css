@@ -1,40 +1,48 @@
+ /* ===================================
+   AI-MART — PUBLIC NAVBAR
+   File: src/components/navbar/Navbar.css
+=================================== */
+
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
+  height: 64px;
   padding: 0 16px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #F1F5F9;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-/* Sabhi Links ke liye global reset */
-.nav-container a, 
-.nav-container a:hover, 
-.nav-container a:visited, 
+/* ── Link Reset ── */
+.nav-container a,
+.nav-container a:hover,
+.nav-container a:visited,
 .nav-container a:active {
-  text-decoration: none !important; /* Underline ka khatma */
+  text-decoration: none;
   outline: none;
 }
 
+/* ── Logo ── */
 .nav-logo-text {
-  color: #4f46e5;
+  color: #4F46E5;
   font-weight: 800;
   font-size: 1.4rem;
   letter-spacing: -0.5px;
   margin: 0;
-  text-decoration: none !important;
-  display: inline-block; /* Layout stability */
 }
 
+/* ── Nav Links (right side) ── */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -44,31 +52,64 @@
   font-size: 14px;
   font-weight: 600;
   color: #475569;
-  text-decoration: none !important;
-}
-
-/* Register Button - AI-Mart Constitution Rule 8 */
-.register-btn {
-  background: #4f46e5 !important;
-  color: white !important;
-  padding: 8px 18px !important;
-  border-radius: 8px !important;
-  transition: all 0.3s ease;
+  padding: 8px 12px;
+  min-height: 44px;
   display: flex;
   align-items: center;
-  justify-content: center;
+}
+
+/* ── Register (Primary) Button ── */
+.register-btn {
+  background: #4F46E5 !important;
+  color: #ffffff !important;
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .register-btn:hover {
-  background: #4338ca !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  background: #4338CA !important;
+  box-shadow: 0 4px 12px rgba(79,70,229,0.25);
   transform: translateY(-1px);
 }
 
-@media (min-width: 768px) {
-  .nav-container { height: 80px; padding: 0 5%; }
-  .nav-container .nav-logo-text { font-size: 1.6rem; }
-  .nav-links { gap: 24px; }
+/* ── Dashboard Button ── */
+.dashboard-btn {
+  background: #4F46E5;
+  color: #ffffff !important;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dashboard-btn:hover {
+  background: #4338CA;
+  box-shadow: 0 4px 12px rgba(79,70,229,0.25);
+  transform: translateY(-1px);
+}
+
+/* ── TABLET (640px+) ── */
+@media (min-width: 640px) {
+  .nav-container {
+    height: 72px;
+    padding: 0 5%;
+  }
+  .nav-logo-text {
+    font-size: 1.6rem;
+  }
+  .nav-links {
+    gap: 16px;
+  }
 }
 
 

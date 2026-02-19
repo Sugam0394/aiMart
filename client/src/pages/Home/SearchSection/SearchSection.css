@@ -1,10 +1,10 @@
-/* ===============================
-   SEARCH SECTION - OPTIMIZED
-================================= */
+ /* ===================================
+   AI-MART — SEARCH SECTION
+   File: SearchSection/SearchSection.css
+=================================== */
 
 .search-section-wrapper {
   width: 100%;
-  padding: var(--spacing-4xl) 0;
   background: transparent;
 }
 
@@ -12,296 +12,197 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: 16px;
 }
 
-/* ===============================
-   SEARCH CONTROLS (Centered Input)
-================================= */
-
+/* ── Input Wrapper ── */
 .search-controls {
   position: relative;
   width: 100%;
-  max-width: 650px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-lg);
-  box-sizing: border-box;
 }
 
 .search-icon {
   position: absolute;
-  left: 35px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.1rem;
-  opacity: 0.5;
+  font-size: 18px;
+  opacity: 0.45;
   pointer-events: none;
   z-index: 2;
 }
 
 .search-controls input {
   width: 100%;
-  height: 58px;
-  padding: 0 50px 0 60px;
-  border-radius: var(--radius-xl);
-  border: 2px solid var(--color-border);
-  background: var(--color-bg-primary);
-  font-size: 1.05rem;
-  transition: var(--transition-base);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  height: 52px;
+  padding: 0 48px 0 48px;
+  border-radius: 12px;
+  border: 2px solid #E5E7EB;
+  background: #ffffff;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  color: #111827;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   outline: none;
 }
 
 .search-controls input::placeholder {
-  color: var(--color-text-muted);
+  color: #9CA3AF;
 }
 
 .search-controls input:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15);
-  transform: translateY(-2px);
+  border-color: #4F46E5;
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.12), 0 4px 16px rgba(79,70,229,0.1);
 }
 
-/* Clear Button */
+/* ── Clear Button ── */
 .clear-search-btn {
   position: absolute;
-  right: 35px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   width: 28px;
   height: 28px;
   border-radius: 50%;
   border: none;
-  background: var(--color-bg-tertiary);
-  color: var(--color-text-secondary);
+  background: #F3F4F6;
+  color: #6B7280;
   font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--transition-fast);
+  transition: all 0.15s;
   z-index: 2;
 }
 
 .clear-search-btn:hover {
-  background: var(--color-text-secondary);
-  color: white;
-  transform: translateY(-50%) scale(1.1);
+  background: #6B7280;
+  color: #ffffff;
 }
 
-/* ===============================
-   STATUS & COUNT
-================================= */
-
+/* ── Status Text ── */
 .search-count,
 .search-status {
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: #6B7280;
 }
 
-.search-status.error {
-  color: #ef4444;
-}
+.search-status.error { color: #EF4444; }
 
-/* ===============================
-   SUGGESTIONS PILLS
-================================= */
-
+/* ── Suggestion Pills ── */
 .search-suggestions {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-xs);
+  gap: 8px;
   flex-wrap: wrap;
-  padding: 0 var(--spacing-lg);
 }
 
 .suggestion-pill {
   padding: 6px 14px;
-  background: var(--color-bg-tertiary);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  font-size: 0.8rem;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-fast);
-  color: var(--color-text-secondary);
+  transition: all 0.15s;
+  color: #6B7280;
   user-select: none;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
 }
 
 .suggestion-pill:hover,
 .suggestion-pill.active {
-  background: #4f46e5;
-  border-color: #4f46e5;
-  color: white;
-  transform: translateY(-2px);
+  background: #4F46E5;
+  border-color: #4F46E5;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
-/* ===============================
-   RESULTS ROW (Horizontal Scroll)
-================================= */
-
+/* ── Results Row (Horizontal Scroll) ── */
 .search-tools-row {
   display: flex;
-  gap: var(--card-gap-desktop);
+  gap: 12px;
   width: 100%;
-  margin-top: var(--spacing-2xl);
-  padding: var(--spacing-sm) var(--spacing-xl) var(--spacing-2xl);
+  margin-top: 16px;
+  padding: 8px 0 20px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
 }
 
-.search-tools-row::-webkit-scrollbar {
-  display: none;
-}
+.search-tools-row::-webkit-scrollbar { display: none; }
 
-/* Use design system card sizes */
 .search-tools-row .tool-card {
-  flex: 0 0 var(--card-width-desktop);
+  flex: 0 0 260px;
   scroll-snap-align: start;
 }
 
-/* ===============================
-   EMPTY STATE
-================================= */
-
+/* ── Empty State ── */
 .empty-state {
   text-align: center;
-  padding: var(--spacing-4xl) var(--spacing-lg);
+  padding: 48px 16px;
 }
 
 .empty-text {
-  font-size: 1rem;
-  color: var(--color-text-secondary);
-  margin: 0 0 var(--spacing-md) 0;
+  font-size: 15px;
+  color: #6B7280;
+  margin: 0 0 16px;
 }
 
 .empty-reset-btn {
-  padding: var(--spacing-sm) var(--spacing-xl);
-  background: var(--color-text-primary);
-  color: white;
+  padding: 12px 24px;
+  background: #111827;
+  color: #ffffff;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.15s;
+  min-height: 44px;
 }
 
 .empty-reset-btn:hover {
-  background: #1e293b;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: #1E293B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* ===============================
-   TABLET (768px - 1023px)
-================================= */
-
-@media (max-width: 1023px) {
-  .search-section-wrapper {
-    padding: var(--spacing-3xl) 0;
-  }
-
-  .search-tools-row {
-    gap: var(--card-gap-tablet);
-    padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-xl);
-  }
-
-  .search-tools-row .tool-card {
-    flex: 0 0 var(--card-width-tablet);
-  }
-
+/* ── TABLET (640px+) ── */
+@media (min-width: 640px) {
   .search-controls input {
-    height: 54px;
-    font-size: 1rem;
+    height: 56px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+  .search-tools-row {
+    gap: 16px;
+  }
+  .search-tools-row .tool-card {
+    flex: 0 0 280px;
   }
 }
 
-/* ===============================
-   MOBILE (481px - 767px)
-================================= */
-
-@media (max-width: 767px) {
-  .search-section-wrapper {
-    padding: var(--spacing-2xl) 0;
-  }
-
-  .search-controls {
-    padding: 0 var(--spacing-md);
-  }
-
+/* ── DESKTOP (1024px+) ── */
+@media (min-width: 1024px) {
   .search-controls input {
-    height: 52px;
-    font-size: 0.95rem;
-    padding: 0 45px 0 55px;
+    height: 58px;
   }
-
-  .search-icon {
-    left: 28px;
-    font-size: 1rem;
-  }
-
-  .clear-search-btn {
-    right: 28px;
-    width: 26px;
-    height: 26px;
-    font-size: 12px;
-  }
-
   .search-tools-row {
-    gap: var(--card-gap-mobile);
-    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-xl);
+    gap: 20px;
   }
-
   .search-tools-row .tool-card {
-    flex: 0 0 var(--card-width-mobile);
-  }
-
-  .search-suggestions {
-    padding: 0 var(--spacing-md);
-  }
-
-  .suggestion-pill {
-    font-size: 0.75rem;
-    padding: 5px 12px;
+    flex: 0 0 300px;
   }
 }
-
-/* ===============================
-   SMALL MOBILE (0px - 480px)
-================================= */
-
-@media (max-width: 480px) {
-  .search-controls input {
-    height: 48px;
-    font-size: 0.9rem;
-    border-radius: var(--radius-md);
-  }
-
-  .search-icon {
-    left: 24px;
-  }
-
-  .clear-search-btn {
-    right: 24px;
-  }
-
-  .search-tools-row {
-    padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-lg);
-    gap: 10px;
-  }
-
-  .search-tools-row .tool-card {
-    flex: 0 0 160px;
-  }
-
-  .empty-state {
-    padding: var(--spacing-2xl) var(--spacing-md);
-  }
-} 
  
   

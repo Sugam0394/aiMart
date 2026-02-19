@@ -1,27 +1,31 @@
+ /* ===================================
+   AI-MART — AUTH LAYOUT
+   Constitution: V2 Mobile-First System
+=================================== */
+
 .auth-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  background-color: #F3F4F6; /* Light gray background as per Rule 2 */
+  background-color: #F3F4F6;
   overflow-x: hidden;
 }
 
 .auth-content {
   flex: 1;
   display: flex;
-  align-items: center; /* Vertically center the login/reg form */
+  align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Mobile check: Agar form bada ho jaye toh padding maintain rahe */
+/* ── Mobile: keyboard space ── */
 @media (max-width: 640px) {
   .auth-content {
-    padding: 16px;
-    align-items: flex-start; /* Mobile par top se start ho taaki keyboard space mile */
-    padding-top: 40px;
+    align-items: flex-start;
+    padding-top: 32px;
   }
 }

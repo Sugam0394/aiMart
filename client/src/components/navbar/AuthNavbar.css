@@ -1,16 +1,21 @@
+ /* ===================================
+   AI-MART — AUTH NAVBAR
+   File: src/components/navbar/AuthNavbar.css
+=================================== */
+
 .auth-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
-  padding: 0 5%;
+  height: 64px;
+  padding: 0 16px;
   background: #ffffff;
   border-bottom: 1px solid #E5E7EB;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Logo Consistency */
+/* ── Logo ── */
 .auth-navbar .logo h2 {
   color: #4F46E5;
   font-weight: 800;
@@ -19,37 +24,36 @@
   margin: 0;
 }
 
+/* ── Right Side Links ── */
 .auth-navbar .nav-links {
   display: flex;
   list-style: none;
-  gap: 20px;
+  gap: 16px;
   margin: 0;
   padding: 0;
 }
 
 .auth-navbar .nav-links li a {
-  text-decoration: none !important; /* No Underlines */
+  text-decoration: none;
   font-size: 14px;
   font-weight: 600;
-  color: #6B7280; /* Gray secondary text */
-  transition: color 0.2s ease;
+  color: #6B7280;
+  transition: color 0.2s;
+  padding: 8px 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .auth-navbar .nav-links li a:hover {
   color: #4F46E5;
 }
 
-/* Mobile Specific (Rule 7) */
-@media (max-width: 480px) {
+@media (min-width: 640px) {
   .auth-navbar {
-    padding: 0 16px;
+    padding: 0 5%;
+    height: 70px;
   }
-  .auth-navbar .nav-links {
-    gap: 12px;
-  }
-  .auth-navbar .nav-links li a {
-    font-size: 13px;
-  }
-} 
+}
  
 

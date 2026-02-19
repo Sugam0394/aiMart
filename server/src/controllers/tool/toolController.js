@@ -1,11 +1,58 @@
 
 import Tool from "../../models/toolModel.js";
-import Review from "../../models/reviewModel.js";
 import { getTrendingToolsService , searchToolsService , getToolsByUseCase } from "../../services/toolServices.js";
 import User from "../../models/userModel.js";
 import ApiError from "../../utils/ApiError.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import ApiResponse from "../../utils/ApiResponse.js";
+ 
+
+
+// ✅ New Unified Home Data Controller (Fix 2)
+export const getHomeData = asyncHandler(async (req, res) => {
+  const { tags } = req.query;
+
+  // ⚡ Parallel execution: Ek sath 4 queries hit hongi
+  const [useCases, trending, rising, recommended] = await Promise.all([
+    // 1. Use Cases logic (existing aggregation)
+    Tool.aggregate([
+      { $match: { status: "live" } },
+      { $unwind: "$useCases" },
+      { $group: { _id: "$useCases", count: { $sum: 1 } } },
+      { $project: { _id: 0, key: "$_id", toolCount: "$count" } },
+      { $sort: { toolCount: -1 } },
+      { $limit: 20 }
+    ]),
+
+    // 2. Trending (Optimized service call jo humne theek ki thi)
+    getTrendingToolsService({}), 
+
+    // 3. Rising Tools logic
+    Tool.find({ status: "live" })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .select("name tagline logo slug primaryCategory pricingType avgRating")
+      .lean(),
+
+    // 4. Recommended logic
+    Tool.find({ status: "live" })
+      .sort({ avgRating: -1 })
+      .limit(10)
+      .select("name tagline logo avgRating pricingType slug")
+      .lean()
+  ]);
+
+  // Response format consistent rakhein
+  return res.status(200).json(
+    new ApiResponse(200, {
+      useCases,
+      trending,
+      rising,
+      recommended
+    }, "Home data fetched successfully")
+  );
+});
+
  
 
  // Helper: Convert "blog-writing" → "Blog Writing"
@@ -19,7 +66,6 @@ import ApiResponse from "../../utils/ApiResponse.js";
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
 };
-
 
  // get Tool By Id
  export const getToolById = async (req, res) => {

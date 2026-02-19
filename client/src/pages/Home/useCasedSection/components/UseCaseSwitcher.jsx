@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAvailableUseCases } from "../../../../app/features/MomentSlice";
 import "./UseCaseSwitcher.css";
@@ -12,16 +12,18 @@ const fallbackUseCases = [
 
 function UseCaseSwitcher({ activeUseCase, onChange }) {
   const dispatch = useDispatch();
-  const { availableUseCases, useCasesStatus } = useSelector((state) => state.moment);
+  // Hum homeStatus bhi check karenge taaki agar Home.jsx ne data fetch kar liya ho toh dobara call na ho
+  const { availableUseCases, useCasesStatus, homeStatus } = useSelector((state) => state.moment);
 
   useEffect(() => {
-    if (useCasesStatus === "idle") {
+    // Optimization: Agar homeData load ho gaya hai ya useCases loading mein hain toh skip karo
+    if (useCasesStatus === "idle" && homeStatus !== "loading" && homeStatus !== "succeeded") {
       dispatch(fetchAvailableUseCases());
     }
-  }, [dispatch, useCasesStatus]);
+  }, [dispatch, useCasesStatus, homeStatus]);
 
   // Loading State
-  if (useCasesStatus === "loading") {
+  if (useCasesStatus === "loading" || (homeStatus === "loading" && availableUseCases.length === 0)) {
     return (
       <div className="usecase-switcher">
         {[...Array(8)].map((_, i) => (
@@ -31,7 +33,6 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
     );
   }
 
-  // Error or Empty State
   const data = (useCasesStatus === "failed" || !availableUseCases?.length) 
     ? fallbackUseCases 
     : availableUseCases;
@@ -42,6 +43,7 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
         {data.map((item) => (
           <button
             key={item.key}
+            type="button"
             className={`pill ${activeUseCase === item.key ? "active" : ""}`}
             onClick={() => onChange(item.key)}
             title={item.toolCount ? `${item.toolCount} tools available` : ""}
@@ -54,4 +56,4 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
   );
 }
 
-export default UseCaseSwitcher; 
+export default UseCaseSwitcher;

@@ -1,55 +1,56 @@
-   import React, { useState, useMemo } from "react";
-
-
-import { useSelector } from "react-redux";
-
+ import React, { useState, useMemo, useEffect } from "react"; 
+import { useSelector, useDispatch } from "react-redux";  
+import { fetchHomeData } from "../../app/features/MomentSlice";
 
 import GreetingSection from "./GreetingSection/GreetingSection";
 import TrendingForYouSection from "./TrendingSection/TrendingForYou";
 import SearchSection from "./SearchSection/SearchSection";
- 
 import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
 import UseCaseSection from "./useCasedSection/UseCasedSection";
 import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
- 
-// Layout
 import SectionWrapper from "../../layouts/section/SectionWrapper";
-
-
 
 import "./Home.css";
 
 function Home() {
+  const dispatch = useDispatch(); // 4. Dispatcher initialize kiya
   const { user } = useSelector((state) => state.auth);
-  const { availableUseCases } = useSelector((state) => state.moment);
+  const { availableUseCases, homeStatus } = useSelector((state) => state.moment); // 5. homeStatus nikala
   
   const isAuthenticated = !!user;
   const [isPersonalized, setIsPersonalized] = useState(false);
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
  
-  const currentUseCaseKey = useMemo(() => {
- 
-    if (activeUseCaseKey) return activeUseCaseKey;
-
-    
-    if (availableUseCases && availableUseCases.length > 0) {
-      
-    return availableUseCases[0].key;
+  useEffect(() => {
+   
+    if (homeStatus === "idle") {
+      const interests = JSON.parse(localStorage.getItem("user_interests") || "[]");
+      const tagsParam = interests.join(",");
+      dispatch(fetchHomeData(tagsParam));
     }
+  }, [dispatch, homeStatus]);
 
+  const currentUseCaseKey = useMemo(() => {
+    if (activeUseCaseKey) return activeUseCaseKey;
+    if (availableUseCases && availableUseCases.length > 0) {
+      return availableUseCases[0].key;
+    }
     return "";
   }, [availableUseCases, activeUseCaseKey]);
 
-  // Home.jsx mein ye line change karein
-const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) || 
-                   { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
+  const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) || 
+                     { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
+
+  // 7. Loading state handling (Optional but recommended)
+  if (homeStatus === "loading" && availableUseCases.length === 0) {
+    return <div className="loading-container">Loading aiMart...</div>;
+  }
 
   return (
-   <div className="home-container">
+    <div className="home-container">
       <main className="home-page">
-       
         <div className="home-hero-container">
           <GreetingSection isAuthenticated={isAuthenticated} user={user} />
           <div className="search-overlay-box">
@@ -58,10 +59,6 @@ const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) 
         </div>
 
         <div className="sections-stack">
-         
-         
-
-          
           <div className="filter-sticky-bar">
             <div className="filter-inner-content">
               <span className="filter-label">Filters</span>
@@ -72,20 +69,18 @@ const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) 
             </div>
           </div>
 
-        
           {activeMeta && (
             <SectionWrapper 
               title={activeMeta.label} 
               subtitle={`${activeMeta.toolCount} AI tools available`}
             >
               <div className="horizontal-scroll-section">
-              
                 <UseCaseSection useCaseKey={currentUseCaseKey} />
               </div>
             </SectionWrapper>
           )}
 
-            <SectionWrapper 
+          <SectionWrapper 
             title="Trending For You" 
             subtitle="Trending for you today!"
           >
@@ -95,7 +90,6 @@ const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) 
           </SectionWrapper>
         </div>
 
-        
         <SectionWrapper 
           title="🚀 Rising Tools" 
           subtitle="New and featured AI tools gaining momentum"
@@ -103,7 +97,6 @@ const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) 
           <RisingToolsSection />
         </SectionWrapper>
 
-       
         <SectionWrapper 
           title={isPersonalized ? "🎯 Based on Your Interests" : "🌟 Handpicked For You"} 
           subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
@@ -113,12 +106,10 @@ const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) 
 
       </main>
     </div>
-      
-    
   );
 }
 
-export default Home;  
+export default Home;
 
 
  

@@ -4,14 +4,33 @@
  
 
 
+
+
+
+
+
+
+
+
  // section - 1: Get Trending Tools Service
- export const getTrendingToolsService = async ({ intent, category }) => {
+export const getTrendingToolsService = async ({ intent, category }) => {
+  if (!intent && !category) {
+    console.log("⚡ Fast-track Trending Fetch (No Filters)");
+    return await Tool.find({ status: "live" })
+      .sort({ isFeatured: -1, isPopular: -1, avgRating: -1 })
+      .limit(12)
+      .select("name tagline logo slug primaryCategory pricingType avgRating")
+      .lean(); // .lean() overhead kam karta hai
+  }
+
+  // --- Baki aapka purana logic niche start hoga (Jab filters honge tabhi aggregate chalega) ---
+  
   const { primaryCategories, intentTags } = resolveTrendingMoment({ intent, category });
 
   const query = { status: "live" };
   const matchConditions = [];
 
-  // Filter logic
+  // Filter logic (Jaise aapka pehle tha...)
   if (primaryCategories?.length > 0) {
     matchConditions.push({ primaryCategory: { $in: primaryCategories } });
     matchConditions.push({ categories: { $elemMatch: { $in: primaryCategories } } });
@@ -21,11 +40,11 @@
     matchConditions.push({ intentTags: { $elemMatch: { $in: intentTags } } });
   }
 
-  // ✅ FIX: Agar filters hain toh $or lagao, varna default live tools dikhao
   if (matchConditions.length > 0) {
     query.$or = matchConditions;
   }
 
+  // Heavy Aggregation Pipeline (Ab sirf filtered cases mein chalega)
   let tools = await Tool.aggregate([
     { $match: query },
     {
@@ -49,7 +68,7 @@
     }
   ]);
 
-  // 🔥 FALLBACK LOGIC: Agar filters se 0 result aaye, toh overall trending uthao
+  // Fallback Logic (Same as yours)
   if (tools.length === 0) {
     tools = await Tool.find({ status: "live" })
       .sort({ isFeatured: -1, isPopular: -1, avgRating: -1 })

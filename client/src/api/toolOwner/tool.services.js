@@ -63,18 +63,23 @@ export const getRecommendedTools = async () => {
 
  
  
+// Moment Slice api 
 
 export const toolService = {
-  // Use cases ki list (switcher ke liye)
+ 
+  getHomeData: (tags) => {
+    const query = tags ? `?tags=${tags}` : "";
+    return api.get(`/home-data${query}`);
+  },
+
+ 
   getAvailableUseCases: () => api.get('/use-cases'),
 
-  // Specific use case ke tools
+ 
   getToolsByUseCase: (key) => api.get(`/use-case/${key}`),
-
- 
- 
+  
+   
 };
- 
  
 
  

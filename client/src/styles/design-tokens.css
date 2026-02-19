@@ -1,100 +1,67 @@
-/* ===============================
-   DESIGN TOKENS (Single Source of Truth)
-================================= */
+/* ===============================================================
+   DESIGN TOKENS (Sab kuch ek hi jagah - No Darr!)
+   =============================================================== */
 
 :root {
-  /* ===== CARD DIMENSIONS ===== */
+  /* 1. SARE DIMENSIONS (Jo tumhare pehle code mein the) */
   --card-width-desktop: 280px;
   --card-width-tablet: 240px;
   --card-width-mobile: 180px;
-  
   --card-height-desktop: 340px;
   --card-height-tablet: 300px;
   --card-height-mobile: 260px;
   
-  /* Image height inside card */
   --card-image-height-desktop: 180px;
   --card-image-height-tablet: 140px;
   --card-image-height-mobile: 120px;
-  
-  /* ===== SPACING SYSTEM ===== */
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 20px;
-  --spacing-xl: 24px;
-  --spacing-2xl: 32px;
-  --spacing-3xl: 48px;
-  --spacing-4xl: 60px;
-  
-  /* Section gaps */
-  --section-gap-desktop: 50px;
-  --section-gap-tablet: 48px;
-  --section-gap-mobile: 36px;
-  
-  /* Horizontal scroll card gap */
-  --card-gap-desktop: 20px;
-  --card-gap-tablet: 16px;
-  --card-gap-mobile: 12px;
-  
-  /* ===== PAGE PADDING ===== */
-  --page-padding-desktop: 40px;
-  --page-padding-tablet: 28px;
-  --page-padding-mobile: 18px;
-  --page-padding-small: 14px;
-  
-  /* ===== TYPOGRAPHY ===== */
-  --font-size-section-title-desktop: 1.8rem;
-  --font-size-section-title-tablet: 1.5rem;
-  --font-size-section-title-mobile: 1.3rem;
-  
-  --font-size-card-title-desktop: 1rem;
-  --font-size-card-title-tablet: 0.95rem;
-  --font-size-card-title-mobile: 0.9rem;
-  
-  /* ===== COLORS ===== */
+
+  --spacing-xs: 8px; --spacing-sm: 12px; --spacing-md: 16px;
+  --spacing-lg: 20px; --spacing-xl: 24px; --spacing-2xl: 32px;
+  --spacing-3xl: 48px; --spacing-4xl: 60px;
+
+  --radius-lg: 12px;
+
+  /* 2. LIGHT MODE COLORS (Clean & Standard) */
+  --bg-main: #F3F4F6;            /* Body background */
+  --bg-card: #ffffff;           /* Card background */
   --color-text-primary: #0f172a;
   --color-text-secondary: #64748b;
-  --color-text-muted: #94a3b8;
-  
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f8fafc;
-  --color-bg-tertiary: #f1f5f9;
-  
   --color-border: #e2e8f0;
   --color-border-light: #f1f5f9;
   
-  /* ===== BREAKPOINTS (for reference) ===== */
-  /* Desktop: 1024px+ */
-  /* Tablet: 768px - 1023px */
-  /* Mobile: 481px - 767px */
-  /* Small: 0px - 480px */
-}
-
-/* LIGHT MODE (Already existing properties ko retain karte hue) */
-:root {
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f8fafc;
-  --color-text-primary: #0f172a;
-  --color-text-secondary: #64748b;
-  --color-border: #e2e8f0;
-  
   /* Role Colors */
   --role-user: #4f46e5;
-  --role-user-bg: #eef2ff;
   --role-owner: #059669;
-  --role-owner-bg: #ecfdf5;
   --role-founder: #d97706;
-  --role-founder-bg: #fffbeb;
 }
 
-/* DARK MODE — New Addition */
+/* 3. DARK MODE (Naya Premium Look - Browser Jaisa) */
+ /* 3. DARK MODE (Naya Premium Look - Browser Jaisa) */
 [data-theme="dark"] {
-  --color-bg-primary: #0f172a;
-  --color-bg-secondary: #1e293b;
-  --color-bg-tertiary: #334155;
-  --color-text-primary: #f1f5f9;
-  --color-text-secondary: #94a3b8;
-  --color-border: #334155;
-  --color-border-light: #1e293b;
+  --bg-main: #020617;           /* Deep Dark Blue-Black (Body) */
+  --bg-card: #0f172a;           /* Lighter Dark (Cards) */
+  --bg-tertiary: #1e293b;
+  
+  --text-main: #f8fafc;         /* Updated to match your color variable */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  
+  --border-color: #1e293b;
+  --color-border: #1e293b;
+  --color-border-light: #334155;
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --primary-btn: #6366f1;
 }
+
+/* 4. BASE STYLES (Apply variables to HTML) */
+html, body {
+  background-color: var(--bg-main);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tool-card {
+  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow);
+} 

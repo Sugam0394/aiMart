@@ -70,15 +70,19 @@ function App() {
   const token = getAccessToken();
 
 
- useEffect(() => {
-    if (isDark) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
+ 
+useEffect(() => {
+  const root = document.documentElement;
+  if (isDark) {
+    root.setAttribute('data-theme', 'dark');
+    root.style.colorScheme = 'dark'; // Ye line browser ke scrollbars ko bhi dark kar degi
+    localStorage.setItem('theme', 'dark');
+  } else {
+    root.setAttribute('data-theme', 'light');
+    root.style.colorScheme = 'light';
+    localStorage.setItem('theme', 'light');
+  }
+}, [isDark]);
 
  
   if (token && !isInitialized) {
@@ -116,7 +120,7 @@ function App() {
           <Route path="home" element={<Home />} />
             <Route path="explore" element={<Explore />} />
             <Route path="saved" element={<SavedTools />} />
-          { /*  <Route path="tools/:id" element={<AiArt />} />  */}
+            <Route path="tools/:id" element={<AiArt />} />  
             
 <Route 
   path="/settings" 

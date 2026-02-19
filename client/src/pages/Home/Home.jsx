@@ -11,20 +11,60 @@ import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
 import SectionWrapper from "../../layouts/section/SectionWrapper";
 
-import "./Home.css";
+ 
+import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
+import "./Home.css";  
+
+ 
+function HomeSkeleton() {
+  return (
+    <div className="home-container">
+      <main className="home-page">
+
+        {/* Greeting Card Skeleton */}
+        <div className="home-hero-container">
+          <div className="skeleton-greeting skeleton-shimmer"></div>
+          <div className="skeleton-search skeleton-shimmer"></div>
+        </div>
+
+        {/* Filter Pills Skeleton */}
+        <div className="skeleton-filter-bar">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="skeleton-pill skeleton-shimmer"></div>
+          ))}
+        </div>
+
+        {/* Cards Row 1 Skeleton */}
+        <div className="skeleton-section">
+          <div className="skeleton-section-title skeleton-shimmer"></div>
+          <div className="skeleton-cards-row">
+            {[1, 2, 3, 4].map(i => <ToolCardSkeleton key={i} />)}
+          </div>
+        </div>
+
+        {/* Cards Row 2 Skeleton */}
+        <div className="skeleton-section">
+          <div className="skeleton-section-title skeleton-shimmer"></div>
+          <div className="skeleton-cards-row">
+            {[1, 2, 3, 4].map(i => <ToolCardSkeleton key={i} />)}
+          </div>
+        </div>
+
+      </main>
+    </div>
+  );
+}
 
 function Home() {
-  const dispatch = useDispatch(); // 4. Dispatcher initialize kiya
+  const dispatch = useDispatch(); 
   const { user } = useSelector((state) => state.auth);
-  const { availableUseCases, homeStatus } = useSelector((state) => state.moment); // 5. homeStatus nikala
+  const { availableUseCases, homeStatus } = useSelector((state) => state.moment); 
   
   const isAuthenticated = !!user;
   const [isPersonalized, setIsPersonalized] = useState(false);
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
- 
   useEffect(() => {
-   
     if (homeStatus === "idle") {
       const interests = JSON.parse(localStorage.getItem("user_interests") || "[]");
       const tagsParam = interests.join(",");
@@ -41,11 +81,11 @@ function Home() {
   }, [availableUseCases, activeUseCaseKey]);
 
   const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) || 
-                     { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
+                       { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
 
-  // 7. Loading state handling (Optional but recommended)
+ 
   if (homeStatus === "loading" && availableUseCases.length === 0) {
-    return <div className="loading-container">Loading aiMart...</div>;
+    return <HomeSkeleton />;
   }
 
   return (

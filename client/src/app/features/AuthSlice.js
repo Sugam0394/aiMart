@@ -103,7 +103,7 @@ const authSlice = createSlice({
       clearAccessToken();
       localStorage.removeItem("user");
     },
-     
+    
     setInitialized: (state) => {
       state.isInitialized = true;
     },
@@ -111,7 +111,7 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-    // PENDING
+      // PENDING
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -120,23 +120,35 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      // SYNC ROLE
+      
+      // SYNC ROLE (Session Validation)
       .addCase(syncUserRole.fulfilled, (state, action) => {
         state.user = action.payload;
         state.role = action.payload.role;
         state.isInitialized = true;
         state.loading = false;
-        state.error = null
+        state.error = null;
       })
-      .addCase(syncUserRole.rejected, (state) => {
-        state.user = null;
-        state.role = null;
-        state.isInitialized = true;
-        state.loading = false;
-        localStorage.removeItem("user");
-      })
-       
+      
+      // ✅ FIX: Network error par session preserve karo 
+      .addCase(syncUserRole.rejected, (state, action) => {
+        const isNetworkError = !action.payload; // No payload usually means network/timeout error 
 
+        if (isNetworkError) {
+          // Server down ya internet issue: keep user logged in but stop loading 
+          state.isInitialized = true;
+          state.loading = false;
+        } else {
+          // Actual Auth Failure (401 Unauthorized): clear everything 
+          state.user = null;
+          state.role = null;
+          state.isInitialized = true;
+          state.loading = false;
+          localStorage.removeItem('user');
+        }
+      })
+
+      // AUTH SUCCESS MATCHERS (Login/Register)
       .addMatcher(
         (action) => action.type.endsWith("/fulfilled") && (action.type.includes("login") || action.type.includes("register")),
         (state, action) => {
@@ -144,12 +156,14 @@ const authSlice = createSlice({
           state.user = action.payload;
           state.role = action.payload.role;
           state.isInitialized = true;
-          state.error = null
+          state.error = null;
           localStorage.setItem("user", JSON.stringify(action.payload));
         }
       )
+      
+      // ERROR MATCHERS
       .addMatcher(
-        (action) => action.type.endsWith("/rejected") && !action.type.includes("sync-role"),
+        (action) => action.type.endsWith("/rejected") && !action.type.includes("syncUserRole"),
         (state, action) => {
           state.loading = false;
           state.error = action.payload;
@@ -157,6 +171,7 @@ const authSlice = createSlice({
       );
   },
 });
+
 
 export const { logout, setInitialized } = authSlice.actions;
 export default authSlice.reducer; 

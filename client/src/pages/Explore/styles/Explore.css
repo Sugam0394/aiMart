@@ -1,109 +1,49 @@
- /* ===================================
+ /* =========================================
    AI-MART — EXPLORE PAGE
-   File: src/pages/Explore/styles/Explore.css
-   Constitution: V2 Mobile-First
-=================================== */
+   Constitution V2: Mobile-First, #F3F4F6 BG
+   ========================================= */
+
+/* ── Base (Mobile First) ── */
+.explore-layout {
+  min-height: 100vh;
+  background-color: #F3F4F6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 16px 48px;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
 
 .explore-container {
   width: 100%;
-  min-height: 100vh;
-  background: #F3F4F6;
+  max-width: 900px;
+  margin: 0 auto;
+  animation: exploreReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── Header Section ── */
-.explore-header {
-  margin-bottom: 32px;
-  text-align: left;
+@keyframes exploreReveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.explore-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #111827;
-  letter-spacing: -0.5px;
-  margin-bottom: 8px;
+/* ── Scrollbar ── */
+.explore-layout::-webkit-scrollbar { width: 6px; }
+.explore-layout::-webkit-scrollbar-track { background: transparent; }
+.explore-layout::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 10px;
 }
 
-.explore-subtitle {
-  font-size: 1rem;
-  color: #6B7280;
-  font-weight: 500;
-}
-
-/* ── Grid System ── */
-.explore-grid {
-  display: grid;
-  grid-template-columns: 1fr; /* Mobile: 1 Column */
-  gap: 16px;
-  width: 100%;
-}
-
-/* ── Categories Row ── */
-.categories-row {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 4px 2px 20px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.categories-row::-webkit-scrollbar {
-  display: none;
-}
-
-.category-pill {
-  padding: 8px 18px;
-  background: #ffffff;
-  border: 1px solid #E5E7EB;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #4B5563;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.category-pill:hover {
-  border-color: #4F46E5;
-  color: #4F46E5;
-}
-
-.category-pill.active {
-  background: #4F46E5;
-  border-color: #4F46E5;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(79,70,229,0.2);
-}
-
-/* ── TABLET (640px+) ── */
+/* ── Tablet (640px+) ── */
 @media (min-width: 640px) {
-  .explore-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-  .explore-title {
-    font-size: 2.25rem;
-  }
+  .explore-layout { padding: 28px 24px 64px; }
 }
 
-/* ── DESKTOP (1024px+) ── */
+/* ── Desktop (1024px+) ── */
 @media (min-width: 1024px) {
-  .explore-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .explore-header {
-    margin-bottom: 40px;
-  }
-}
-
-/* ── LARGE DESKTOP (1280px+) ── */
-@media (min-width: 1280px) {
-  .explore-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  .explore-layout { padding: 40px 40px 80px; }
 }
 
 

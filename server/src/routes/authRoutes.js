@@ -2,8 +2,8 @@ import { Router } from 'express'
 import { loginUser, logoutUser,  registerUser, getMe , googleLogin } from '../controllers/authController.js'
 import verifyJWT from '../middlewares/auth.js'
 import generateToken from '../middlewares/refreshToken.js'
- import { getProfile , updateProfile } from '../controllers/authController.js'
-
+ import { getProfile } from '../controllers/authController.js'
+import { updateProfile } from '../controllers/authController.js'
 const router = Router()
 
 router.route("/register").post(registerUser)

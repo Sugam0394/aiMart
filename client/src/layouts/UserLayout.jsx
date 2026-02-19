@@ -41,7 +41,7 @@ function UserLayout() {
             <NavLink to="/home">Home</NavLink>
             <NavLink to="/explore">Explore</NavLink>
             <NavLink to="/saved" className="nav-saved-link">
-              <span className="nav-heart">❤️</span> Saved
+              <span className="nav-heart"></span> Saved
             </NavLink>
           </div>
         </div>

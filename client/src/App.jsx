@@ -101,7 +101,7 @@ function App() {
         {/* 🌍 1. PUBLIC ROUTES - Sabke liye accessible (Home hamesha khulega) */}
         <Route element={<PublicLayout />}>
           <Route index element={<Home />} />
-       
+           <Route path="tools/:id" element={<AiArt />} />
         </Route>
 
         {/* 🔐 2. AUTH ROUTES (Login/Register) */}
@@ -116,14 +116,14 @@ function App() {
           <Route path="home" element={<Home />} />
             <Route path="explore" element={<Explore />} />
             <Route path="saved" element={<SavedTools />} />
-            <Route path="tools/:id" element={<AiArt />} />
+          { /*  <Route path="tools/:id" element={<AiArt />} />  */}
             
 <Route 
   path="/settings" 
   element={<UserSettings isDark={isDark} setIsDark={setIsDark} />} 
 />
             {/* Fallback for old /home links */}
-            <Route path="home" element={<Navigate to="/explore" replace />} />
+         {/*   <Route path="home" element={<Navigate to="/explore" replace />} /> */}
           </Route>
         </Route>
 

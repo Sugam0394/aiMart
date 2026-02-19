@@ -1,8 +1,11 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function ProtectedRoute({ allowedRoles }) {
+ 
   const { user, loading, isInitialized } = useSelector((state) => state.auth);
+  const location = useLocation();  
+
  
   if (!isInitialized || loading) {
     return (
@@ -11,18 +14,22 @@ function ProtectedRoute({ allowedRoles }) {
       </div>
     );
   }
- 
+
+  
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
  
   const currentRole = user.role;
+
  
   if (allowedRoles && !allowedRoles.includes(currentRole)) {
+   
     const defaultPath = currentRole === "user" ? "/explore" : "/toolowner/dashboard";
     return <Navigate to={defaultPath} replace />;
   }
+
  
   return <Outlet />;
 }

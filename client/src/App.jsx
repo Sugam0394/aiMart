@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
  import { Link } from "react-router-dom";
  import "./App.css"
  import { useState, useEffect } from 'react';
+ import './styles/mobile-optimization.css'; // Mobile-specific styles
  
 
 //layout
@@ -61,107 +62,92 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
 
 
  
-
-function App() {
-  const [isDark, setIsDark] = useState(
-  localStorage.getItem("theme") === "dark"
-);
-  const { isInitialized  } = useSelector((state) => state.auth);
+ function App() {
+  const [isDark, setIsDark] = useState(localStorage.getItem("theme") === "dark");
+  const { isInitialized } = useSelector((state) => state.auth);
   const token = getAccessToken();
 
+  // Theme Logic
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDark) {
+      root.setAttribute('data-theme', 'dark');
+      root.style.colorScheme = 'dark';
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.setAttribute('data-theme', 'light');
+      root.style.colorScheme = 'light';
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
 
- 
-useEffect(() => {
-  const root = document.documentElement;
-  if (isDark) {
-    root.setAttribute('data-theme', 'dark');
-    root.style.colorScheme = 'dark'; // Ye line browser ke scrollbars ko bhi dark kar degi
-    localStorage.setItem('theme', 'dark');
-  } else {
-    root.setAttribute('data-theme', 'light');
-    root.style.colorScheme = 'light';
-    localStorage.setItem('theme', 'light');
-  }
-}, [isDark]);
-
- 
-  if (token && !isInitialized) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold animate-pulse">aiMart </h2>
-          <p className="mt-2 text-gray-400">Authenticating...</p>
-        </div>
-      </div>
-    );
-  }
-
- return (
+  return (
     <BrowserRouter>
-      {/* Background sync components */}
+      
       <AppInitializer /> 
-
-      <Routes>
-        {/* 🌍 1. PUBLIC ROUTES - Sabke liye accessible (Home hamesha khulega) */}
-        <Route element={<PublicLayout />}>
-          <Route index element={<Home />} />
-           <Route path="tools/:id" element={<AiArt />} />
-        </Route>
-
-        {/* 🔐 2. AUTH ROUTES (Login/Register) */}
-        <Route element={<AuthLayout />}>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-        </Route>
-
-        {/* 🔐 3. COMMON PROTECTED ROUTES (User) */}
-        <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
-          <Route element={<UserLayout />}>
-          <Route path="home" element={<Home />} />
-            <Route path="explore" element={<Explore />} />
-            <Route path="saved" element={<SavedTools />} />
-            <Route path="tools/:id" element={<AiArt />} />  
-            
-<Route 
-  path="/settings" 
-  element={<UserSettings isDark={isDark} setIsDark={setIsDark} />} 
-/>
-            {/* Fallback for old /home links */}
-         {/*   <Route path="home" element={<Navigate to="/explore" replace />} /> */}
+ 
+      {token && !isInitialized ? (
+        <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold animate-pulse">aiMart</h2>
+            <p className="mt-2 text-gray-400">Authenticating...</p>
+          </div>
+        </div>
+      ) : (
+        <Routes>
+          {/* 🌍 1. PUBLIC ROUTES */}
+          <Route element={<PublicLayout />}>
+            <Route index element={<Home />} />
+            <Route path="tools/:id" element={<AiArt />} />
           </Route>
-        </Route>
 
-        {/* 🔐 4. TOOL OWNER DASHBOARD */}
-        <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
-          <Route path="toolowner" element={<ToolOwnerLayout />}>
-            <Route path="dashboard" element={<ToolOwnerDashboard />}>
-              <Route index element={<MyTool />} />
-              <Route path="create-tool" element={<CreateTool />} />
-              <Route path="edit-tool/:id" element={<EditTool />} />
+          {/* 🔐 2. AUTH ROUTES */}
+          <Route element={<AuthLayout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
+
+          {/* 🔐 3. COMMON PROTECTED ROUTES */}
+          <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
+            <Route element={<UserLayout />}>
+              <Route path="home" element={<Home />} />
+              <Route path="explore" element={<Explore />} />
+              <Route path="saved" element={<SavedTools />} />
+              <Route path="tools/:id" element={<AiArt />} /> 
+              <Route 
+                path="settings" 
+                element={<UserSettings isDark={isDark} setIsDark={setIsDark} />} 
+              />
             </Route>
-             {/* App.jsx ke andar ToolOwner section mein sirf ye line replace karo */}
-<Route path="settings" element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />} />
           </Route>
-        </Route>
 
-        {/* 🔐 5. FOUNDER DASHBOARD */}
-        <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
-          <Route element={<FounderLayout />}>
-            <Route path="founder/dashboard" element={<FounderDashboard />} />
-           {/* App.jsx ke andar Founder section mein sirf ye line replace karo */}
-         <Route path="founder/settings" element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />} />
+          {/* 🔐 4. TOOL OWNER DASHBOARD */}
+          <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
+            <Route path="toolowner" element={<ToolOwnerLayout />}>
+              <Route path="dashboard" element={<ToolOwnerDashboard />}>
+                <Route index element={<MyTool />} />
+                <Route path="create-tool" element={<CreateTool />} />
+                <Route path="edit-tool/:id" element={<EditTool />} />
+              </Route>
+              <Route path="settings" element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* 🛡️ CATCH-ALL: Koi bhi galat URL ho toh Landing Page bhej do */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* 🔐 5. FOUNDER DASHBOARD */}
+          <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
+            <Route element={<FounderLayout />}>
+              <Route path="founder/dashboard" element={<FounderDashboard />} />
+              <Route path="founder/settings" element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />} />
+            </Route>
+          </Route>
+
+          {/* 🛡️ CATCH-ALL */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      )}
     </BrowserRouter>
   );
- 
 }
-
-
 
 export default App;
 

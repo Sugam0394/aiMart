@@ -11,11 +11,10 @@ import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
 import SectionWrapper from "../../layouts/section/SectionWrapper";
 
- 
 import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
 import "./Home.css";  
 
- 
+// ── HomeSkeleton Component ──────────────────────────────
 function HomeSkeleton() {
   return (
     <div className="home-container">
@@ -57,7 +56,8 @@ function HomeSkeleton() {
 
 function Home() {
   const dispatch = useDispatch(); 
-  const { user } = useSelector((state) => state.auth);
+  // ✅ FIX: isInitialized ko bhi yahan se nikaalo
+  const { user, isInitialized } = useSelector((state) => state.auth); 
   const { availableUseCases, homeStatus } = useSelector((state) => state.moment); 
   
   const isAuthenticated = !!user;
@@ -65,12 +65,14 @@ function Home() {
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
   useEffect(() => {
-    if (homeStatus === "idle") {
+    // ✅ FIX: "isInitialized" check add kiya taaki register page par toast error na aaye [cite: 142, 148]
+    if (isInitialized && homeStatus === "idle") { 
       const interests = JSON.parse(localStorage.getItem("user_interests") || "[]");
       const tagsParam = interests.join(",");
       dispatch(fetchHomeData(tagsParam));
     }
-  }, [dispatch, homeStatus]);
+  
+  }, [dispatch, homeStatus, isInitialized]); 
 
   const currentUseCaseKey = useMemo(() => {
     if (activeUseCaseKey) return activeUseCaseKey;
@@ -83,7 +85,7 @@ function Home() {
   const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) || 
                        { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
 
- 
+  
   if (homeStatus === "loading" && availableUseCases.length === 0) {
     return <HomeSkeleton />;
   }

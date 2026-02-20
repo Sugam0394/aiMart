@@ -1,0 +1,58 @@
+/* =========================================
+   AI-MART MOBILE OPTIMIZATION (GPU SMOOTH)
+   ========================================= */
+
+/* 1. GPU Acceleration — Sabhi animations ko smooth banata hai */
+.tool-card, 
+.sidebar, 
+.navbar, 
+.modal-content,
+[class*='animate'],
+[class*='transition'] {
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0); /* Force GPU Rendering */
+}
+
+/* 2. Mobile Specific Fixes */
+@media (max-width: 768px) {
+  
+  /* iOS Input Zoom Fix: 16px se niche hone par iPhone auto-zoom kar deta hai jo annoying hai */
+  input, 
+  select, 
+  textarea { 
+    font-size: 16px !important; 
+  }
+
+  /* 3. Touch Targets: Ungliyon se click karna aasaan banane ke liye (Min 44px) */
+  button, 
+  a, 
+  .clickable,
+  [role='button'] {
+    min-height: 44px; 
+    min-width: 44px;
+    touch-action: manipulation; /* Removes 300ms tap delay */
+  }
+
+  /* 4. Card Performance: Browser ko batata hai ki card ka content bahar nahi jayega */
+  .tool-card, 
+  [class*='card'] { 
+    contain: layout style; 
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 5. Dynamic Viewport Height: Mobile browser ke address bar se height fix karta hai */
+  .sidebar, 
+  .mobile-menu { 
+    height: 100dvh; 
+  }
+
+  /* 6. Scrolling Smoothness */
+  .horizontal-scroll-section,
+  .explore-layout {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}

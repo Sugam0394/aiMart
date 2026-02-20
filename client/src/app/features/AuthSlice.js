@@ -84,6 +84,8 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+ 
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -91,7 +93,9 @@ const authSlice = createSlice({
     role: savedUser ? savedUser.role : null,
     loading: false,
     error: null,
-    isInitialized: savedUser ? true : false,
+    // ✅ FIX: Agar savedUser hai toh initialization FALSE rakho.
+    // Jab tak server (syncUserRole) confirm na karde, tab tak 'false' rehna chahiye.
+    isInitialized: savedUser ? false : true, 
   },
 
   reducers: {
@@ -125,21 +129,22 @@ const authSlice = createSlice({
       .addCase(syncUserRole.fulfilled, (state, action) => {
         state.user = action.payload;
         state.role = action.payload.role;
-        state.isInitialized = true;
+        // ✅ Server ne user confirm kiya, ab app ready hai
+        state.isInitialized = true; 
         state.loading = false;
         state.error = null;
       })
       
       // ✅ FIX: Network error par session preserve karo 
       .addCase(syncUserRole.rejected, (state, action) => {
-        const isNetworkError = !action.payload; // No payload usually means network/timeout error 
+        const isNetworkError = !action.payload; 
 
         if (isNetworkError) {
-          // Server down ya internet issue: keep user logged in but stop loading 
+          // Server down ya internet issue: user ko logged in rakho, bas init true kardo
           state.isInitialized = true;
           state.loading = false;
         } else {
-          // Actual Auth Failure (401 Unauthorized): clear everything 
+          // Actual Auth Failure (401/Unauthorized): Clear session
           state.user = null;
           state.role = null;
           state.isInitialized = true;
@@ -171,7 +176,7 @@ const authSlice = createSlice({
       );
   },
 });
-
+ 
 
 export const { logout, setInitialized } = authSlice.actions;
 export default authSlice.reducer; 

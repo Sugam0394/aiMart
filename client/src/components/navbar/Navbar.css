@@ -1,5 +1,5 @@
  /* ===================================
-   AI-MART — PUBLIC NAVBAR
+   AI-MART — PUBLIC/LOGGED-IN NAVBAR
    File: src/components/navbar/Navbar.css
 =================================== */
 
@@ -9,106 +9,114 @@
   align-items: center;
   height: 64px;
   padding: 0 16px;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: #ffffff;
+  border-bottom: 1px solid #E5E7EB;
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid #F1F5F9;
   box-sizing: border-box;
   width: 100%;
-}
-
-/* ── Link Reset ── */
-.nav-container a,
-.nav-container a:hover,
-.nav-container a:visited,
-.nav-container a:active {
-  text-decoration: none;
-  outline: none;
 }
 
 /* ── Logo ── */
 .nav-logo-text {
   color: #4F46E5;
   font-weight: 800;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   letter-spacing: -0.5px;
   margin: 0;
 }
 
-/* ── Nav Links (right side) ── */
+/* ── Nav Links Container ── */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px; /* Mobile par kam gap */
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.nav-links li a {
-  font-size: 14px;
-  font-weight: 600;
-  color: #475569;
-  padding: 8px 12px;
-  min-height: 44px;
+.nav-links li {
   display: flex;
   align-items: center;
+  gap: 8px; /* Li ke andar buttons ka gap */
 }
 
-/* ── Register (Primary) Button ── */
+/* ── Links Style (Login Link) ── */
+.nav-links a {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4B5563;
+  transition: all 0.2s;
+}
+
+.nav-links a:hover {
+  color: #4F46E5;
+}
+
+/* ── Dashboard Buttons (Home, Explore, Saved) ── */
+.dashboard-btn {
+  padding: 8px 12px;
+  background: #F3F4F6; /* Light grey background */
+  color: #4B5563 !important;
+  border-radius: 8px;
+  font-size: 13px !important;
+  transition: all 0.2s ease;
+}
+
+.dashboard-btn:hover {
+  background: #EEF2FF;
+  color: #4F46E5 !important;
+}
+
+/* ── Register / Primary Button ── */
 .register-btn {
   background: #4F46E5 !important;
   color: #ffffff !important;
-  padding: 10px 20px !important;
+  padding: 10px 18px !important;
   border-radius: 8px !important;
   font-weight: 700 !important;
-  transition: all 0.2s ease;
-  min-height: 44px;
-  display: flex !important;
-  align-items: center !important;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
 }
 
 .register-btn:hover {
   background: #4338CA !important;
-  box-shadow: 0 4px 12px rgba(79,70,229,0.25);
   transform: translateY(-1px);
 }
 
-/* ── Dashboard Button ── */
-.dashboard-btn {
-  background: #4F46E5;
-  color: #ffffff !important;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.dashboard-btn:hover {
-  background: #4338CA;
-  box-shadow: 0 4px 12px rgba(79,70,229,0.25);
-  transform: translateY(-1px);
-}
-
-/* ── TABLET (640px+) ── */
+/* ── TABLET & DESKTOP (640px+) ── */
 @media (min-width: 640px) {
   .nav-container {
     height: 72px;
-    padding: 0 5%;
+    padding: 0 40px;
   }
+
   .nav-logo-text {
     font-size: 1.6rem;
   }
+
   .nav-links {
-    gap: 16px;
+    gap: 20px;
+  }
+
+  .dashboard-btn {
+    padding: 10px 16px;
+    font-size: 14px !important;
+  }
+}
+
+/* ── MOBILE SPECIFIC FIX ── */
+@media (max-width: 480px) {
+  .nav-logo-text {
+    font-size: 1.1rem;
+  }
+  
+  /* Agar mobile par text lamba ho raha ho toh */
+  .dashboard-btn {
+    padding: 6px 10px;
+    font-size: 12px !important;
   }
 }
 

@@ -17,7 +17,9 @@ function Navbar() {
         {user ? (
           // Agar user logged in hai
           <li>
-            <Link to="/explore" className="dashboard-btn">Go to App 🚀</Link>
+             <Link to="/home" className="dashboard-btn">Home</Link>
+            <Link to="/explore" className="dashboard-btn">Explore</Link>
+             <Link to="/save" className="dashboard-btn">Saved</Link>
           </li>
         ) : (
           // Agar user logged out hai (Logout ke baad yahi dikhega)

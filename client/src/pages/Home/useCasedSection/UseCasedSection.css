@@ -1,18 +1,47 @@
-/* components/useCasedSection/UseCasedSection.css */
-
-/* =========================
-   Wrapper
-========================= */
+ 
 
 .usecase-section-wrapper {
   width: 100%;
   min-height: 280px;
   overflow: visible; /* ✅ CRITICAL: Allow child overflow */
 }
+ 
 
-/* =========================
-   Horizontal Row (Main Engine)
-========================= */
+/* ✅ RENAMED: .section-scroll-row (Bug #6 fix) */
+.section-scroll-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 22px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-bottom: 14px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+/* Custom scrollbar */
+.section-scroll-row::-webkit-scrollbar { height: 6px; }
+.section-scroll-row::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* ✅ DARK MODE SUPPORT (Bug #3) */
+[data-theme="dark"] .section-scroll-row::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.section-scroll-row .tool-card {
+  flex: 0 0 var(--card-width-desktop, 270px);
+  scroll-snap-align: start;
+}
+
+ 
 
 .usecase-row-container {
   display: flex !important;

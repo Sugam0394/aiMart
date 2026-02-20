@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUser } from '../../app/features/AuthSlice'
 import { useNavigate, Link } from 'react-router-dom'
@@ -9,7 +9,7 @@ import GoogleAuthButton from '../../components/GoogleAuthButton/AuthButton'
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loading, error } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
   
   const [formData, setFormData] = useState({ 
     name: "", 
@@ -21,26 +21,19 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // ✅ FIX (Bug #4): Async handleSubmit pattern (No useEffect)
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(registerUser(formData));
+    const toastId = toast.loading("Creating account...");
+
+    try {
+      await dispatch(registerUser(formData)).unwrap();
+      toast.success("Welcome to aiMart! 🎉", { id: toastId });
+      navigate("/explore", { replace: true });
+    } catch (err) {
+      toast.error(err || "Registration failed", { id: toastId });
+    }
   };
-
-   // Register.jsx mein update karo
- useEffect(() => {
-  if (loading) {
-    toast.loading("Creating account...", { id: "register" });
-    return;
-  }
-
- if (user && !error) {
-    toast.success("Welcome to aiMart! 🎉", { id: "register" });
-    navigate("/explore", { replace: true });
-  } else if (error) {
-    toast.error(error, { id: "register" });
-  }
-}, [loading, user, error, navigate]);
-
 
   return (
     <div className='register-container'>
@@ -78,8 +71,6 @@ function Register() {
           </button>
         </form>
 
-
-        {/* 💡 Sugam, yahan Google Signup add kar dena chahiye for better UX */}
         <div className="auth-divider">
           <span>OR</span>
         </div>
@@ -94,4 +85,4 @@ function Register() {
   )
 }
 
-export default Register 
+export default Register;

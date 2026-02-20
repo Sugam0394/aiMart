@@ -20,7 +20,7 @@ function UserNavbar() {
     <Link to="/explore">Explore</Link>
   </li>
   <li>
-    <Link to="/user/dashboard">Dashboard</Link>
+    <Link to="/saved">Saved</Link>
   </li>
 </ul>
 

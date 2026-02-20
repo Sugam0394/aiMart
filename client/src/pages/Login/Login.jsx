@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../app/features/AuthSlice";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom"; // ✅ useLocation added
 import toast from "react-hot-toast";
 import "./Login.css";
 import GoogleAuthButton from "../../components/GoogleAuthButton/AuthButton";
@@ -9,14 +9,18 @@ import GoogleAuthButton from "../../components/GoogleAuthButton/AuthButton";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ Get redirection state
   const { loading } = useSelector((state) => state.auth);
+
+  // ✅ FIX (Bug #5): Original location check
+  // Agar user kisi specific page se aaya hai, toh wahi wapas bhejo
+  const from = location.state?.from?.pathname || "/explore";
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -24,24 +28,24 @@ function Login() {
     }));
   };
 
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const toastId = toast.loading("Logging in...");
 
     try {
       const user = await dispatch(loginUser(formData)).unwrap();
-
       toast.success("Login successful 🚀", { id: toastId });
 
-      const paths = {
-        user: "/explore",
-        toolOwner: "/toolowner/dashboard",
-        founder: "/founder/dashboard",
-      };
-
-      navigate(paths[user.role] || "/", { replace: true });
+      // Role-based logic lekin preference 'from' location ko
+      if (user.role === "user") {
+        navigate(from, { replace: true });
+      } else {
+        const dashboardPaths = {
+          toolOwner: "/toolowner/dashboard",
+          founder: "/founder/dashboard",
+        };
+        navigate(dashboardPaths[user.role] || "/", { replace: true });
+      }
 
     } catch (err) {
       toast.error(err || "Login failed", { id: toastId });
@@ -63,7 +67,6 @@ function Login() {
             onChange={handleChange}
             required
           />
-
           <input
             name="password"
             type="password"
@@ -72,7 +75,6 @@ function Login() {
             onChange={handleChange}
             required
           />
-
           <button type="submit" disabled={loading}>
             {loading ? "Verifying..." : "Login"}
           </button>
@@ -82,7 +84,6 @@ function Login() {
           <span>OR</span>
         </div>
 
-        {/* 2. Fake button hatakar Asli Google Login yahan chipka diya */}
         <div className="google-btn-container">
            <GoogleAuthButton />
         </div>

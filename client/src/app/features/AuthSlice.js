@@ -28,12 +28,12 @@ export const syncUserRole = createAsyncThunk(
  export const googleLogin = createAsyncThunk(
   "auth/google-login",
   async (idToken, { rejectWithValue }) => {
-    console.log("🔥 GoogleLogin Thunk called");
-    console.log("idToken received:", idToken);
+   
+ 
 
     try {
       const res = await api.post("/google-login", { idToken });
-      console.log("✅ Backend Response:", res.data);
+    
 
       const { user, accessToken } = res.data.data;
 

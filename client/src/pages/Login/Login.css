@@ -1,13 +1,47 @@
-/* Container jo content ko center mein rakhega */
-.login-container, .register-container {
-  width: 100%;
+ 
+.login-container form, .register-container form {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* The Auth Card (Constitution Rule 4) */
+ 
+.login-container input, .register-container input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: #111827;
+  transition: all 0.2s ease;
+  background: #F9FAFB;
+}
+
+.login-container input:focus, .register-container input:focus {
+  outline: none;
+  border-color: #4F46E5;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+ 
+.login-container button[type="submit"], 
+.register-container button[type="submit"] {
+  width: 100%;
+  background: #4F46E5;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+ 
 .login-box, .register-box {
   background: #ffffff;
   width: 100%;
@@ -19,7 +53,7 @@
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Headings */
+ 
 .login-box h2, .register-box h2 {
   color: #111827;
   font-size: 24px;

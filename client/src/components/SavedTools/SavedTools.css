@@ -1,80 +1,97 @@
  /* ===================================
-   AI-MART — SAVED TOOLS
-   File: src/components/SavedTools/SavedTools.css
-   Constitution: V2 Mobile-First
+   AI-MART — SAVED TOOLS (FIXED)
+   Bug #4: Class Mismatch Resolved
 =================================== */
 
-.saved-tools-container {
+.saved-page-wrapper {
   width: 100%;
-  padding: 8px 0;
+  min-height: 100vh;
+  background: #f8fafc; /* Light Gray background */
 }
 
-.saved-tools-header {
-  margin-bottom: 24px;
+/* ── Hero Section ── */
+.saved-hero {
+  background: white;
+  padding: 60px 20px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.saved-tools-header h2 {
-  font-size: 1.5rem;
+.hero-content h1 {
+  font-size: 2.5rem;
   font-weight: 800;
-  color: #111827;
-  letter-spacing: -0.5px;
+  color: #1e293b;
+  margin: 12px 0;
 }
 
-/* ── Grid System ── */
-.saved-tools-grid {
+.badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ── Grid System (Premium Grid) ── */
+.saved-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.premium-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Mobile: 1 Column */
-  gap: 16px;
-  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* Reveal Animation */
+.grid-item-reveal {
+  animation: slideUp 0.5s ease forwards;
 }
 
 /* ── Empty State ── */
-.no-saved-tools {
+.empty-workspace {
   text-align: center;
-  padding: 60px 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 2px dashed #E5E7EB;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 16px;
+  border: 2px dashed #cbd5e1;
+  max-width: 500px;
+  margin: 40px auto;
 }
 
-.no-saved-tools p {
-  color: #6B7280;
-  font-weight: 500;
-  margin-bottom: 16px;
+.glass-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
 }
 
-/* ── Common Button (Indigo) ── */
-.btn-browse {
-  background: #4F46E5;
-  color: #ffffff;
-  padding: 12px 24px;
+.saas-btn-primary {
+  background: #4f46e5;
+  color: white;
+  padding: 12px 32px;
   border-radius: 8px;
-  font-weight: 700;
   text-decoration: none;
+  font-weight: 700;
   display: inline-block;
-  transition: all 0.2s;
+  margin-top: 20px;
+  transition: all 0.3s ease;
 }
 
-.btn-browse:hover {
-  background: #4338CA;
-  transform: translateY(-1px);
+.saas-btn-primary:hover {
+  background: #4338ca;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
 }
 
-/* ── TABLET (640px+) ── */
-@media (min-width: 640px) {
-  .saved-tools-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
+/* ── Animations ── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── DESKTOP (1024px+) ── */
-@media (min-width: 1024px) {
-  .saved-tools-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .saved-tools-header h2 {
-    font-size: 1.85rem;
-  }
+/* ── Mobile Adjustments ── */
+@media (max-width: 640px) {
+  .hero-content h1 { font-size: 1.8rem; }
+  .premium-grid { grid-template-columns: 1fr; }
 }

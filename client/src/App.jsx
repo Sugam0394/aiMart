@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate }from "react-router-dom";
 import { useSelector } from "react-redux";
  import { getAccessToken } from "./utils/token.js";
- import { Link } from "react-router-dom";
  import "./App.css"
  import { useState, useEffect } from 'react';
  import './styles/mobile-optimization.css'; // Mobile-specific styles
@@ -89,8 +88,8 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
       {token && !isInitialized ? (
         <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
           <div className="text-center">
-            <h2 className="text-2xl font-bold animate-pulse">aiMart</h2>
-            <p className="mt-2 text-gray-400">Authenticating...</p>
+            <h2 className="text-2xl font-bold animate-pulse"></h2>
+            <p className="mt-2 text-gray-400"></p>
           </div>
         </div>
       ) : (

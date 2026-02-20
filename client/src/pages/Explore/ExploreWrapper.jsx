@@ -1,16 +1,24 @@
  import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
- import { startExploreThunk } from '../../app/exploreFeatures/exploreThunks';
- import { jumpToStep } from '../../app/exploreFeatures/exploreSlice';
+import { startExploreThunk } from '../../app/exploreFeatures/exploreThunks';
+import { jumpToStep } from '../../app/exploreFeatures/exploreSlice';
 import StepShell from './StepShell';
- import IntentStep from './steps/IntentStep';
- import UseCaseStep from './steps/UseCaseStep';
+import IntentStep from './steps/IntentStep';
+import UseCaseStep from './steps/UseCaseStep';
 import ToolStep from './steps/ToolStep';
 import "./styles/ExploreWrapper.css";
 
 function ExploreWrapper() {
   const dispatch = useDispatch();
-  const { currentStep, selections, loading } = useSelector((state) => state.explore);
+  
+  // ✅ Safety Guard: Agar state abhi load nahi hui toh empty object/array le lega
+  const exploreState = useSelector((state) => state.explore) || {};
+  const { 
+    currentStep = 'INTENT', 
+    selections = {}, 
+    loading = false, 
+    intents = [] // Default empty array taaki .length crash na kare
+  } = exploreState;
 
   useEffect(() => {
     dispatch(startExploreThunk());
@@ -24,7 +32,7 @@ function ExploreWrapper() {
       <StepShell 
         stepNumber="1"
         title="What's your goal?"
-        isCompleted={currentStep !== 'INTENT'} // Agar step INTENT nahi hai, matlab poora ho gaya
+        isCompleted={currentStep !== 'INTENT'}
         isLocked={false} 
         summaryValue={selections.intent}
         onEdit={() => dispatch(jumpToStep('INTENT'))}
@@ -37,7 +45,7 @@ function ExploreWrapper() {
         stepNumber="2"
         title="What exactly do you need?"
         isCompleted={currentStep === 'TOOLS' || currentStep === 'CONFIDENCE'}
-        isLocked={currentStep === 'INTENT'} // Jab tak intent nahi hota, ye locked rahega
+        isLocked={currentStep === 'INTENT'} 
         summaryValue={selections.useCase}
         onEdit={() => dispatch(jumpToStep('USE_CASE'))}
       >

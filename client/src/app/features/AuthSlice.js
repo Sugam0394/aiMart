@@ -91,11 +91,9 @@ const authSlice = createSlice({
   initialState: {
     user: savedUser,
     role: savedUser ? savedUser.role : null,
-    loading: false,
+    loading: !!localStorage.getItem("token"),
     error: null,
-    // ✅ FIX: Agar savedUser hai toh initialization FALSE rakho.
-    // Jab tak server (syncUserRole) confirm na karde, tab tak 'false' rehna chahiye.
-    isInitialized: savedUser ? false : true, 
+    isInitialized: false,
   },
 
   reducers: {

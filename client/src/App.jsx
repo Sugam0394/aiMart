@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate }from "react-router-dom";
 import { useSelector } from "react-redux";
- import { getAccessToken } from "./utils/token.js";
+import { useState, useEffect } from 'react';
+
+
+// Styles
  import "./App.css"
- import { useState, useEffect } from 'react';
- import './styles/mobile-optimization.css'; // Mobile-specific styles
+ import './styles/mobile-optimization.css';  
  
 
 //layout
@@ -64,7 +66,7 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
  function App() {
   const [isDark, setIsDark] = useState(localStorage.getItem("theme") === "dark");
   const { isInitialized } = useSelector((state) => state.auth);
-  const token = getAccessToken();
+  
 
   // Theme Logic
   useEffect(() => {
@@ -80,19 +82,22 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
     }
   }, [isDark]);
 
-  return (
+ return (
     <BrowserRouter>
-      
+      {/* 🟢 Step 1: Initialize App Data & Session */}
       <AppInitializer /> 
- 
-      {token && !isInitialized ? (
+
+      {/* 🟢 Step 2: Global Wait (Sirf tab tak jab tak Session Verify nahi hota) */}
+      {!isInitialized ? (
         <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
           <div className="text-center">
-            <h2 className="text-2xl font-bold animate-pulse"></h2>
-            <p className="mt-2 text-gray-400"></p>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <h2 className="text-xl font-semibold">AI Mart is Loading...</h2>
+            <p className="mt-2 text-gray-400">Setting up your experience</p>
           </div>
         </div>
       ) : (
+        /* 🟢 Step 3: Routes Render Only After Initialization */
         <Routes>
           {/* 🌍 1. PUBLIC ROUTES */}
           <Route element={<PublicLayout />}>
@@ -100,13 +105,13 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
             <Route path="tools/:id" element={<AiArt />} />
           </Route>
 
-          {/* 🔐 2. AUTH ROUTES */}
+          {/* 🔐 2. AUTH ROUTES (Isme logout user hi ja sakta hai) */}
           <Route element={<AuthLayout />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
 
-          {/* 🔐 3. COMMON PROTECTED ROUTES */}
+          {/* 🔐 3. COMMON PROTECTED ROUTES (User, Owner, Founder) */}
           <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
             <Route element={<UserLayout />}>
               <Route path="home" element={<Home />} />
@@ -120,7 +125,7 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
             </Route>
           </Route>
 
-          {/* 🔐 4. TOOL OWNER DASHBOARD */}
+          {/* 🔐 4. TOOL OWNER DASHBOARD (Owner Only) */}
           <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
             <Route path="toolowner" element={<ToolOwnerLayout />}>
               <Route path="dashboard" element={<ToolOwnerDashboard />}>
@@ -128,19 +133,25 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
                 <Route path="create-tool" element={<CreateTool />} />
                 <Route path="edit-tool/:id" element={<EditTool />} />
               </Route>
-              <Route path="settings" element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />} />
+              <Route 
+                path="settings" 
+                element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />} 
+              />
             </Route>
           </Route>
 
-          {/* 🔐 5. FOUNDER DASHBOARD */}
+          {/* 🔐 5. FOUNDER DASHBOARD (Founder Only) */}
           <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
             <Route element={<FounderLayout />}>
               <Route path="founder/dashboard" element={<FounderDashboard />} />
-              <Route path="founder/settings" element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />} />
+              <Route 
+                path="founder/settings" 
+                element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />} 
+              />
             </Route>
           </Route>
 
-          {/* 🛡️ CATCH-ALL */}
+          {/* 🛡️ CATCH-ALL REDIRECT */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       )}

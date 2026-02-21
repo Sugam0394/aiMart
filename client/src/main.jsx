@@ -7,6 +7,18 @@ import { Toaster } from 'react-hot-toast'
 import { GoogleOAuthProvider } from '@react-oauth/google' // Google Provider add kiya
 import './styles/design-tokens.css'
 
+
+
+
+// --- SPEED INSIGHTS IMPORT YAHA KAREIN ---
+import { injectSpeedInsights } from '@vercel/speed-insights'
+
+
+// --- ISKO INITIALIZE KAREIN ---
+injectSpeedInsights();
+
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

@@ -37,30 +37,31 @@ const processQueue = (error, token = null) => {
   });
   failedQueue = [];
 };
+ 
 
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry
-    ) {
+    // Status 401 matlab token expired hai
+    if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        }).then((token) => {
-          originalRequest.headers.Authorization =
-            "Bearer " + token;
-          return api(originalRequest);
-        });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = "Bearer " + token;
+            return api(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
       }
 
-        originalRequest._retry = true;
+      originalRequest._retry = true;
       isRefreshing = true;
 
       try {
+        console.log("🔄 Attempting to refresh token...");
         const res = await axios.post(
           `${import.meta.env.VITE_API_URL}/refreshToken`,
           {},
@@ -68,34 +69,28 @@ api.interceptors.response.use(
         );
 
         const newAccessToken = res.data?.data?.accessToken;
-
-         if (!newAccessToken) {
-          throw new Error("No access token received");
-        }
+        if (!newAccessToken) throw new Error("No access token received");
 
         setAccessToken(newAccessToken);
-
-
-        api.defaults.headers.common.Authorization =
-          "Bearer " + newAccessToken;
-
+        api.defaults.headers.common.Authorization = "Bearer " + newAccessToken;
+        
         processQueue(null, newAccessToken);
-
-         return api(originalRequest);
-
+        return api(originalRequest);
       } catch (err) {
+        console.error("❌ Refresh Token Expired or Failed:", err);
         processQueue(err, null);
         clearAccessToken();
-        window.location.href = "/login";
+        localStorage.removeItem("user");
+        
+        // IMPORTANT: window.location.href hata diya hai taaki Redux handle kare
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
     }
-
     return Promise.reject(error);
   }
-);
+)
 
 
 export default api

@@ -12,33 +12,38 @@ const AppInitializer = () => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
-    const token = getAccessToken();
+    const initializeApp = async () => {
+      const token = getAccessToken();
+      
+      if (!token) {
+        console.log("ℹ️ No token found, app initialized as guest.");
+        dispatch(setInitialized());
+        return;
+      }
 
-    if (token) {
-      dispatch(syncUserRole())
-        .unwrap()
-        .then(() => {
-          dispatch(fetchSavedTools());
-        })
-        .catch((error) => {
-          // ✅ FIX: Network error aur auth error alag handle karo
-          const isAuthError =
-            error === 'No user data' ||
-            (typeof error === 'string' &&
-              error.toLowerCase().includes('unauthorized')) ||
-            (typeof error === 'object' && error?.status === 401);
+      try {
+        console.log("📡 Syncing session...");
+        // syncUserRole call hoga, agar token expire hai toh Axios automatically use refresh karega
+        await dispatch(syncUserRole()).unwrap();
+        await dispatch(fetchSavedTools());
+      } catch (error) {
+        console.error("🔴 Auth Sync Failed:", error);
+        
+        // Sirf tab logout karo jab actual Auth Error ho (401)
+        const isAuthError = 
+          error?.status === 401 || 
+          error === 'No user data' || 
+          (error?.response && error.response.status === 401);
 
-          if (isAuthError) {
-            // Actual auth failure → logout
-            dispatch(logout());
-          } else {
-            // Network error / server down → session safe rakho
-            dispatch(setInitialized());
-          }
-        });
-    } else {
-      dispatch(setInitialized());
-    }
+        if (isAuthError) {
+          dispatch(logout());
+        }
+      } finally {
+        dispatch(setInitialized());
+      }
+    };
+
+    initializeApp();
   }, [dispatch]);
 
   return null;

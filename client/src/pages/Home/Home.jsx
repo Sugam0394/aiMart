@@ -1,5 +1,5 @@
- import React, { useState, useMemo, useEffect } from "react"; 
-import { useSelector, useDispatch } from "react-redux";  
+ import React, { useState, useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchHomeData } from "../../app/features/MomentSlice";
 
 import GreetingSection from "./GreetingSection/GreetingSection";
@@ -11,8 +11,9 @@ import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
 import SectionWrapper from "../../layouts/section/SectionWrapper";
 
-import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
-import "./Home.css";  
+import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton";
+import "./Home.css";
+import "./HomeRedesign.css";  
 
 // ── HomeSkeleton Component ──────────────────────────────
 function HomeSkeleton() {

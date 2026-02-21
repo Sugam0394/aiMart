@@ -1,0 +1,304 @@
+/* ===================================
+   AI-MART — HOME PAGE REDESIGN
+   Modern Visual Enhancement Layer
+=================================== */
+
+/* ── Enhanced Hero Section ── */
+.home-hero-container {
+  margin-bottom: 24px;
+}
+
+.search-overlay-box {
+  margin: -32px auto 0;
+  max-width: 680px;
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Modern Filter Bar Enhancement ── */
+.filter-sticky-bar {
+  border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #6B7280;
+  letter-spacing: 1.2px;
+  padding: 6px 12px;
+  background: #F3F4F6;
+  border-radius: 8px;
+}
+
+/* ── Enhanced Section Spacing ── */
+.sections-stack {
+  gap: 48px;
+}
+
+.home-page {
+  gap: 40px;
+}
+
+/* ── Improved Skeleton Loading ── */
+.skeleton-greeting {
+  height: 180px;
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    #f0f0f0 0%,
+    #e0e0e0 25%,
+    #f0f0f0 50%,
+    #e0e0e0 75%,
+    #f0f0f0 100%
+  );
+  background-size: 400% 100%;
+}
+
+.skeleton-search {
+  height: 56px;
+  border-radius: 14px;
+  max-width: 600px;
+  margin: -20px auto 0;
+}
+
+.skeleton-filter-bar {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.skeleton-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.skeleton-pill {
+  min-width: 100px;
+  height: 38px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.skeleton-section {
+  margin: 24px 0;
+}
+
+.skeleton-section-title {
+  height: 32px;
+  width: 240px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.skeleton-cards-row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 12px 0;
+  scrollbar-width: none;
+}
+
+.skeleton-cards-row::-webkit-scrollbar {
+  display: none;
+}
+
+.skeleton-shimmer {
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* ── Enhanced Horizontal Scroll ── */
+.horizontal-scroll-section {
+  padding: 16px 0 20px;
+  scroll-padding-left: 16px;
+}
+
+.horizontal-scroll-section > * {
+  gap: 16px;
+  padding-left: 4px;
+}
+
+/* ── Visual Hierarchy Enhancement ── */
+.home-container {
+  background: linear-gradient(180deg, #F9FAFB 0%, #F3F4F6 100%);
+}
+
+/* ── Smooth Transitions ── */
+.home-page > * {
+  animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.home-page > *:nth-child(1) { animation-delay: 0.1s; }
+.home-page > *:nth-child(2) { animation-delay: 0.15s; }
+.home-page > *:nth-child(3) { animation-delay: 0.2s; }
+.home-page > *:nth-child(4) { animation-delay: 0.25s; }
+.home-page > *:nth-child(5) { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Enhanced Focus States ── */
+.filter-sticky-bar:focus-within {
+  box-shadow: 0 4px 24px rgba(79, 70, 229, 0.08);
+}
+
+/* ── TABLET ENHANCEMENTS (640px+) ── */
+@media (min-width: 640px) {
+  .home-page {
+    gap: 52px;
+  }
+
+  .sections-stack {
+    gap: 56px;
+  }
+
+  .search-overlay-box {
+    margin-top: -36px;
+    max-width: 640px;
+  }
+
+  .horizontal-scroll-section > * {
+    gap: 20px;
+  }
+
+  .skeleton-greeting {
+    height: 200px;
+    border-radius: 24px;
+  }
+
+  .skeleton-search {
+    height: 60px;
+  }
+}
+
+/* ── DESKTOP ENHANCEMENTS (1024px+) ── */
+@media (min-width: 1024px) {
+  .home-page {
+    gap: 64px;
+    padding: 0 48px 80px;
+  }
+
+  .sections-stack {
+    gap: 64px;
+  }
+
+  .search-overlay-box {
+    margin-top: -40px;
+    max-width: 720px;
+  }
+
+  .horizontal-scroll-section > * {
+    gap: 24px;
+  }
+
+  .filter-sticky-bar {
+    margin-left: -48px;
+    margin-right: -48px;
+    padding: 14px 48px;
+  }
+
+  .skeleton-greeting {
+    height: 220px;
+  }
+
+  .skeleton-search {
+    height: 64px;
+  }
+
+  /* Desktop Hover Effects */
+  .horizontal-scroll-section {
+    position: relative;
+  }
+
+  .horizontal-scroll-section::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: linear-gradient(90deg, transparent, #F3F4F6);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .horizontal-scroll-section:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ── DARK MODE SUPPORT ── */
+[data-theme="dark"] .home-container {
+  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+}
+
+[data-theme="dark"] .filter-sticky-bar {
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom-color: #1e293b;
+}
+
+[data-theme="dark"] .filter-label {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .skeleton-greeting,
+[data-theme="dark"] .skeleton-search,
+[data-theme="dark"] .skeleton-pill,
+[data-theme="dark"] .skeleton-section-title {
+  background: linear-gradient(
+    135deg,
+    #1e293b 0%,
+    #334155 25%,
+    #1e293b 50%,
+    #334155 75%,
+    #1e293b 100%
+  );
+  background-size: 400% 100%;
+}
+
+/* ── Performance Optimization ── */
+.home-page,
+.horizontal-scroll-section,
+.filter-sticky-bar {
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ── Accessibility Enhancement ── */
+.filter-sticky-bar:focus-within .filter-label {
+  outline: 2px solid #4F46E5;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

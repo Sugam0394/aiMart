@@ -12,11 +12,12 @@ import './styles/design-tokens.css'
 
 // --- SPEED INSIGHTS IMPORT YAHA KAREIN ---
 import { injectSpeedInsights } from '@vercel/speed-insights'
+import { inject } from '@vercel/analytics'
 
 
 // --- ISKO INITIALIZE KAREIN ---
 injectSpeedInsights();
-
+inject();
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

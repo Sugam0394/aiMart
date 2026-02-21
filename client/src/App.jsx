@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate }from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/react";
 
 
 // Styles
@@ -155,6 +156,7 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       )}
+      <Analytics />
     </BrowserRouter>
   );
 }

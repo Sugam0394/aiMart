@@ -14,10 +14,10 @@ import SectionWrapper from "../../layouts/section/SectionWrapper";
  
 import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
 import WorkflowStrategy from "./WorkFlowStrategy/WorkFlowStrategy";
- // import "./Home.css"; 
-import "./HomeRedesign.css";  
- 
 
+
+ 
+import "./HomeRedesign.css";  
 import "./Home.css";
  
 

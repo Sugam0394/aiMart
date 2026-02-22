@@ -11,15 +11,15 @@ import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
 import SectionWrapper from "../../layouts/section/SectionWrapper";
 
-<<<<<<< HEAD
+ 
 import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
 import WorkflowStrategy from "./WorkFlowStrategy/WorkFlowStrategy";
  // import "./Home.css"; 
 import "./HomeRedesign.css";  
-=======
-import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton";
+ 
+
 import "./Home.css";
->>>>>>> cb01d2dd886103312a3de51edbb8b4aae0f939cd
+ 
 
 // ── HomeSkeleton Component ──────────────────────────────
 function HomeSkeleton() {

@@ -7,20 +7,22 @@ export const fetchHomeData = createAsyncThunk(
   async (tags, { rejectWithValue }) => {
     try {
       const res = await toolService.getHomeData(tags);
-      return res.data.data; // { useCases, trending, rising, recommended }
+      console.log("1. API RESPONSE RECEIVED:", res.data); // DEBUG 1
+      return res.data.data; 
     } catch (err) {
+      console.error("1. API ERROR:", err);
       return rejectWithValue(err.response?.data?.message || "Failed to load home data");
     }
   }
 );
 
-// ✅ 2. Independent Use Cases Thunk (For Switcher compatibility)
+// ✅ 2. Independent Use Cases Thunk
 export const fetchAvailableUseCases = createAsyncThunk(
   "moment/fetchAvailableUseCases",
   async (_, { rejectWithValue }) => {
     try {
       const res = await toolService.getAvailableUseCases();
-      return res.data.data.useCases; 
+      return res.data.data.useCases;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Failed to load use cases");
     }
@@ -46,19 +48,14 @@ export const fetchToolsByUseCase = createAsyncThunk(
 );
 
 const initialState = {
-  // Home Data Sections
   availableUseCases: [],
   trendingTools: [],
   risingTools: [],
   recommendedTools: [],
-  
-  // Status Handling
-  homeStatus: "idle", 
+  homeStatus: "idle",
   homeError: null,
-  useCasesStatus: "idle", // Specifically for Switcher
+  useCasesStatus: "idle",
   useCasesError: null,
-
-  // UI States
   agenda: [],
   detectedIntents: [],
   selectedIntent: null,
@@ -84,57 +81,47 @@ const momentSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // ========================================
-      // CASE: fetchHomeData
-      // ========================================
       .addCase(fetchHomeData.pending, (state) => {
+        console.log("2. FETCH HOME DATA PENDING...");
         state.homeStatus = "loading";
         state.homeError = null;
       })
       .addCase(fetchHomeData.fulfilled, (state, action) => {
+        console.log("3. REDUX FULFILLED - PAYLOAD:", action.payload); // DEBUG 3
         state.homeStatus = "succeeded";
-        state.availableUseCases = action.payload.useCases || [];
-        state.trendingTools = action.payload.trending || [];
-        state.risingTools = action.payload.rising || [];
-        state.recommendedTools = action.payload.recommended || [];
-        state.useCasesStatus = "succeeded"; // Sync both statuses
+        const data = action.payload || {}; 
+        
+        state.availableUseCases = data.useCases || [];
+        state.trendingTools = data.trending || [];
+        state.risingTools = data.rising || [];
+        state.recommendedTools = data.recommended || [];
+        state.useCasesStatus = "succeeded";
+        
+        console.log("4. STATE UPDATED - USECASES:", state.availableUseCases.length);
       })
       .addCase(fetchHomeData.rejected, (state, action) => {
+        console.error("3. REDUX REJECTED - ERROR:", action.payload);
         state.homeStatus = "failed";
         state.homeError = action.payload;
       })
 
-      // ========================================
-      // CASE: fetchAvailableUseCases (ADD BACK)
-      // ========================================
-      .addCase(fetchAvailableUseCases.pending, (state) => {
-        state.useCasesStatus = "loading";
-      })
       .addCase(fetchAvailableUseCases.fulfilled, (state, action) => {
         state.useCasesStatus = "succeeded";
-        state.availableUseCases = action.payload;
-      })
-      .addCase(fetchAvailableUseCases.rejected, (state, action) => {
-        state.useCasesStatus = "failed";
-        state.useCasesError = action.payload;
+        state.availableUseCases = action.payload || [];
       })
 
-      // ========================================
-      // CASE: fetchToolsByUseCase
-      // ========================================
-      .addCase(fetchToolsByUseCase.pending, (state, action) => {
-        const key = action.meta.arg;
-        state.useCaseSections[key] = { status: "loading", tools: [] };
-      })
       .addCase(fetchToolsByUseCase.fulfilled, (state, action) => {
-        const { useCase, tools, meta, count } = action.payload;
-        state.useCaseSections[useCase] = { status: "succeeded", tools, meta, count };
-      })
-      .addCase(fetchToolsByUseCase.rejected, (state, action) => {
-        const key = action.meta.arg;
-        state.useCaseSections[key] = { status: "failed", tools: [], error: action.payload };
+        const { useCase, tools, meta, count } = action.payload || {};
+        if (useCase) {
+          state.useCaseSections[useCase] = { 
+            status: "succeeded", 
+            tools: tools || [], 
+            meta, 
+            count 
+          };
+        }
       });
-  },
+  }
 });
 
 export const {

@@ -13,7 +13,7 @@ import SectionWrapper from "../../layouts/section/SectionWrapper";
 
  
 import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
-import WorkflowStrategy from "./WorkFlowStrategy/WorkFlowStrategy";
+import WorkFlowStrategy from "./WorkFlowStrategy/WorkFlowStrategy"; // ✅ NEW STRATEGY COMPONENT
 
 
  
@@ -65,7 +65,7 @@ function Home() {
   const dispatch = useDispatch(); 
   // ✅ FIX: isInitialized ko bhi yahan se nikaalo
   const { user, isInitialized } = useSelector((state) => state.auth); 
-  const { availableUseCases, homeStatus } = useSelector((state) => state.moment); 
+  const { availableUseCases = [], homeStatus = "idle" } = useSelector((state) => state.moment || {});
   
   const isAuthenticated = !!user;
   const [isPersonalized, setIsPersonalized] = useState(false);
@@ -139,7 +139,7 @@ function Home() {
           </SectionWrapper>
 
              {/* ⚡ NEW STRATEGY SECTION INSERTED HERE */}
-          <WorkflowStrategy />
+          <WorkFlowStrategy />
 
           
 

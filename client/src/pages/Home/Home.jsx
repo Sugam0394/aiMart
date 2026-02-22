@@ -12,6 +12,7 @@ import RecommendedSection from "./RecommendSection/RecommendSection";
 import SectionWrapper from "../../layouts/section/SectionWrapper";
 
 import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
+import WorkflowStrategy from "./WorkFlowStrategy/WorkFlowStrategy";
  // import "./Home.css"; 
 import "./HomeRedesign.css";  
 
@@ -131,6 +132,13 @@ function Home() {
               <TrendingForYouSection />
             </div>
           </SectionWrapper>
+
+             {/* ⚡ NEW STRATEGY SECTION INSERTED HERE */}
+          <WorkflowStrategy />
+
+          
+
+
         </div>
 
         <SectionWrapper 

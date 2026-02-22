@@ -1,74 +1,53 @@
-import { BrowserRouter, Routes, Route, Navigate }from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useState, useEffect } from 'react';
-
+ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect, lazy, Suspense } from 'react';
+ 
 
 // Styles
- import "./App.css"
- import './styles/mobile-optimization.css';  
- 
+import "./App.css"
+import './styles/mobile-optimization.css';
 
-//layout
- import PublicLayout from "./layouts/PublicLayout";
- import AuthLayout from "./layouts/AuthLayout.jsx";
- import UserLayout from "./layouts/UserLayout.jsx";
- import ToolOwnerLayout from "./layouts/ToolOwnerLayout.jsx";
- import FounderLayout from "./layouts/FounderLayout.jsx";
- 
-
- // Public Pages
- import Home from "./pages/Home/Home";
- import Login from "./pages/Login/Login";
- import Register from "./pages/Register/Register";
- import AiArt from "./pages/aiArt/AiArt.jsx";
- import SavedTools from "./components/SavedTools/SavedTools.jsx";
-
- 
-
- // user Pages
- import Explore from "./pages/Explore/Explore.jsx";
- 
- 
- 
-
-
- // Dasboard 
- import FounderDashboard from "./pages/founder/Dashboard/FounderDashboard.jsx";
- import ToolOwnerDashboard from "./pages/toolOwner/dashboard/ToolOwnerDashboard.jsx";
- import ProtectedRoute from "./routes/ProtectedRoute.jsx";
- 
-
-
-
-
- // ToolOwner Dashboard
- import CreateTool from "./pages/toolOwner/dashboard/CreateTool.jsx";
- import EditTool from "./pages/toolOwner/dashboard/EditTool.jsx";
- import MyTool from "./pages/toolOwner/dashboard/MyTool.jsx";
-
-
- // settings
- import ToolOwnerSettings from "./pages/toolOwner/settings/ToolOwnerSettings.jsx";
- import FounderSettings from "./pages/founder/settings/FounderSettings.jsx";
- import UserSettings from "./pages/user/settings/UserSettings.jsx";
- 
- 
-
-// Data Initializer 
+// 🟢 EAGER IMPORTS (Inhe lazy nahi karna taaki initial experience smooth ho)
 import AppInitializer from './components/DataInit/AppInitializer.jsx'
+import PublicLayout from "./layouts/PublicLayout";
+import AuthLayout from "./layouts/AuthLayout.jsx"; // 🛠️ Eager import for Google SDK stability
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
+// 🟡 LAZY IMPORTS (Bhaari pages jo user ke click par load honge)
+const UserLayout = lazy(() => import("./layouts/UserLayout.jsx"));
+const ToolOwnerLayout = lazy(() => import("./layouts/ToolOwnerLayout.jsx"));
+const FounderLayout = lazy(() => import("./layouts/FounderLayout.jsx"));
 
+const Explore = lazy(() => import("./pages/Explore/Explore.jsx"));
+const AiArt = lazy(() => import("./pages/aiArt/AiArt.jsx"));
+const SavedTools = lazy(() => import("./components/SavedTools/SavedTools.jsx"));
 
+const FounderDashboard = lazy(() => import("./pages/founder/Dashboard/FounderDashboard.jsx"));
+const ToolOwnerDashboard = lazy(() => import("./pages/toolOwner/dashboard/ToolOwnerDashboard.jsx"));
+const CreateTool = lazy(() => import("./pages/toolOwner/dashboard/CreateTool.jsx"));
+const EditTool = lazy(() => import("./pages/toolOwner/dashboard/EditTool.jsx"));
+const MyTool = lazy(() => import("./pages/toolOwner/dashboard/MyTool.jsx"));
 
+const ToolOwnerSettings = lazy(() => import("./pages/toolOwner/settings/ToolOwnerSettings.jsx"));
+const FounderSettings = lazy(() => import("./pages/founder/settings/FounderSettings.jsx"));
+const UserSettings = lazy(() => import("./pages/user/settings/UserSettings.jsx"));
 
+// Shared Loader (Minimal and clean)
+const PageLoader = () => (
+  <div className="flex h-screen items-center justify-center bg-gray-900">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-blue-500 mb-4 mx-auto"></div>
+      <p className="text-white opacity-70 font-medium">Loading AI Mart...</p>
+    </div>
+  </div>
+);
 
- 
- function App() {
+function App() {
   const [isDark, setIsDark] = useState(localStorage.getItem("theme") === "dark");
-  const { isInitialized } = useSelector((state) => state.auth);
-  
 
-  // Theme Logic
+  // Theme Logic (Keeps UI consistent)
   useEffect(() => {
     const root = document.documentElement;
     if (isDark) {
@@ -82,50 +61,40 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
     }
   }, [isDark]);
 
- return (
+  return (
     <BrowserRouter>
-      {/* 🟢 Step 1: Initialize App Data & Session */}
-      <AppInitializer /> 
+      {/* 🛠️ background mein session check karega bina app ko block kiye */}
+      <AppInitializer />
 
-      {/* 🟢 Step 2: Global Wait (Sirf tab tak jab tak Session Verify nahi hota) */}
-      {!isInitialized ? (
-        <div className="flex h-screen items-center justify-center bg-gray-900 text-white">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <h2 className="text-xl font-semibold">AI Mart is Loading...</h2>
-            <p className="mt-2 text-gray-400">Setting up your experience</p>
-          </div>
-        </div>
-      ) : (
-        /* 🟢 Step 3: Routes Render Only After Initialization */
+      <Suspense fallback={<PageLoader />}>
         <Routes>
-          {/* 🌍 1. PUBLIC ROUTES */}
+          {/* 🌍 1. PUBLIC ROUTES (Instant access for Guests) */}
           <Route element={<PublicLayout />}>
             <Route index element={<Home />} />
             <Route path="tools/:id" element={<AiArt />} />
           </Route>
 
-          {/* 🔐 2. AUTH ROUTES (Isme logout user hi ja sakta hai) */}
+          {/* 🔐 2. AUTH ROUTES (Google SDK wraps these via AuthLayout) */}
           <Route element={<AuthLayout />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
 
-          {/* 🔐 3. COMMON PROTECTED ROUTES (User, Owner, Founder) */}
+          {/* 🔐 3. COMMON PROTECTED ROUTES (Wait happens inside ProtectedRoute) */}
           <Route element={<ProtectedRoute allowedRoles={["user", "toolOwner", "founder"]} />}>
             <Route element={<UserLayout />}>
               <Route path="home" element={<Home />} />
               <Route path="explore" element={<Explore />} />
               <Route path="saved" element={<SavedTools />} />
-              <Route path="tools/:id" element={<AiArt />} /> 
-              <Route 
-                path="settings" 
-                element={<UserSettings isDark={isDark} setIsDark={setIsDark} />} 
+              <Route path="tools/:id" element={<AiArt />} />
+              <Route
+                path="settings"
+                element={<UserSettings isDark={isDark} setIsDark={setIsDark} />}
               />
             </Route>
           </Route>
 
-          {/* 🔐 4. TOOL OWNER DASHBOARD (Owner Only) */}
+          {/* 🔐 4. TOOL OWNER DASHBOARD */}
           <Route element={<ProtectedRoute allowedRoles={["toolOwner"]} />}>
             <Route path="toolowner" element={<ToolOwnerLayout />}>
               <Route path="dashboard" element={<ToolOwnerDashboard />}>
@@ -133,28 +102,28 @@ import AppInitializer from './components/DataInit/AppInitializer.jsx'
                 <Route path="create-tool" element={<CreateTool />} />
                 <Route path="edit-tool/:id" element={<EditTool />} />
               </Route>
-              <Route 
-                path="settings" 
-                element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />} 
+              <Route
+                path="settings"
+                element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />}
               />
             </Route>
           </Route>
 
-          {/* 🔐 5. FOUNDER DASHBOARD (Founder Only) */}
+          {/* 🔐 5. FOUNDER DASHBOARD */}
           <Route element={<ProtectedRoute allowedRoles={["founder"]} />}>
             <Route element={<FounderLayout />}>
               <Route path="founder/dashboard" element={<FounderDashboard />} />
-              <Route 
-                path="founder/settings" 
-                element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />} 
+              <Route
+                path="founder/settings"
+                element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />}
               />
             </Route>
           </Route>
 
-          {/* 🛡️ CATCH-ALL REDIRECT */}
+          {/* 🛡️ Redirect if path not found */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      )}
+      </Suspense>
     </BrowserRouter>
   );
 }

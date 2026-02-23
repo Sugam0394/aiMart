@@ -4,6 +4,7 @@ import momentReducer from './features/MomentSlice.js'
 import searchReducer from './features/searchSlice.js'
 import exploreReducer from './exploreFeatures/exploreSlice.js'
 import savedReducer from './features/SavedSlice.js'
+import workFlowReducer from './features/workFlowSlice.js'
  
  
 
@@ -13,7 +14,8 @@ export const store = configureStore({
     moment: momentReducer,
     search: searchReducer,
     explore: exploreReducer,
-    saved: savedReducer
+    saved: savedReducer,
+    workflow: workFlowReducer,
   },
 });
 

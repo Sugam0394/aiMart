@@ -2,8 +2,8 @@ import express from 'express'
 import { cacheMiddleware } from '../middlewares/cacheMiddleware.js';
 import { getToolById } from '../controllers/tool/toolController.js';
 import { getTrendingTools , getToolsByUseCaseController, getAvailableUseCases ,  getRecommendedTools, searchToolsController , getRisingTools } from '../controllers/tool/toolController.js';
-import { getHomeData } from '../controllers/tool/toolController.js';
- 
+import { getHomeData } from '../controllers/tool/toolController.js'
+import { getWorkflowByRole } from '../controllers/tool/toolController.js';
 
 const router = express.Router();
 
@@ -32,6 +32,8 @@ router.get('/risingTools' , cacheMiddleware, getRisingTools )
 router.get('/recommend' , cacheMiddleware , getRecommendedTools )
 
 router.get('/home-data' , cacheMiddleware , getHomeData)
+
+router.get('/workflow/:role' , cacheMiddleware , getWorkflowByRole)
  
 
 

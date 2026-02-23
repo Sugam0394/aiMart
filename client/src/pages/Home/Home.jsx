@@ -1,6 +1,8 @@
  import React, { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchHomeData } from "../../app/features/MomentSlice";
+  
+import { fetchWorkflow } from "../../app/features/workFlowSlice";
 
 import GreetingSection from "./GreetingSection/GreetingSection";
 import TrendingForYouSection from "./TrendingSection/TrendingForYou";
@@ -10,52 +12,59 @@ import UseCaseSection from "./useCasedSection/UseCasedSection";
 import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
 import SectionWrapper from "../../layouts/section/SectionWrapper";
-
- 
-import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton"; 
-import WorkFlowStrategy from "./WorkFlowStrategy/WorkFlowStrategy"; // ✅ NEW STRATEGY COMPONENT
-
-
- 
-import "./HomeRedesign.css";  
  
  
 
-// ── HomeSkeleton Component ──────────────────────────────
-function HomeSkeleton() {
+ 
+ import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton";
+import PersonalizedWorkflowSection from "./WorkFlowSection/WorkFlowSection";
+
+import "./HomeRedesign.css";   
+
+ function HomeSkeleton() {
   return (
     <div className="home-container">
       <main className="home-page">
-
-        {/* Greeting Card Skeleton */}
+        {/* Hero Section Skeleton */}
         <div className="home-hero-container">
           <div className="skeleton-greeting skeleton-shimmer"></div>
           <div className="skeleton-search skeleton-shimmer"></div>
         </div>
 
-        {/* Filter Pills Skeleton */}
-        <div className="skeleton-filter-bar">
-          {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="skeleton-pill skeleton-shimmer"></div>
+        <div className="sections-stack">
+          {/* 🚀 NEW: Workflow Section Skeleton */}
+          <div className="skeleton-workflow-card">
+            <div className="skeleton-workflow-header skeleton-shimmer"></div>
+            <div className="skeleton-steps-stack">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="skeleton-step-item">
+                  <div className="skeleton-circle skeleton-shimmer"></div>
+                  <div className="skeleton-line-group">
+                    <div className="skeleton-title-line skeleton-shimmer"></div>
+                    <div className="skeleton-body-line skeleton-shimmer"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Filter Bar Skeleton */}
+          <div className="skeleton-filter-bar">
+            {[1, 2, 3, 4, 5].map(i => (
+              <div key={i} className="skeleton-pill skeleton-shimmer"></div>
+            ))}
+          </div>
+
+          {/* Cards Rows Skeletons */}
+          {[1, 2].map((row) => (
+            <div key={row} className="skeleton-section">
+              <div className="skeleton-section-title skeleton-shimmer"></div>
+              <div className="skeleton-cards-row">
+                {[1, 2, 3, 4].map(i => <ToolCardSkeleton key={i} />)}
+              </div>
+            </div>
           ))}
         </div>
-
-        {/* Cards Row 1 Skeleton */}
-        <div className="skeleton-section">
-          <div className="skeleton-section-title skeleton-shimmer"></div>
-          <div className="skeleton-cards-row">
-            {[1, 2, 3, 4].map(i => <ToolCardSkeleton key={i} />)}
-          </div>
-        </div>
-
-        {/* Cards Row 2 Skeleton */}
-        <div className="skeleton-section">
-          <div className="skeleton-section-title skeleton-shimmer"></div>
-          <div className="skeleton-cards-row">
-            {[1, 2, 3, 4].map(i => <ToolCardSkeleton key={i} />)}
-          </div>
-        </div>
-
       </main>
     </div>
   );
@@ -63,22 +72,50 @@ function HomeSkeleton() {
 
 function Home() {
   const dispatch = useDispatch(); 
-  // ✅ FIX: isInitialized ko bhi yahan se nikaalo
   const { user, isInitialized } = useSelector((state) => state.auth); 
   const { availableUseCases = [], homeStatus = "idle" } = useSelector((state) => state.moment || {});
   
+  // ✅ 1. Get Workflow State
+  const workflowState = useSelector((state) => state.workflow);
+
   const isAuthenticated = !!user;
   const [isPersonalized, setIsPersonalized] = useState(false);
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
+  // ✅ 2. Initialize Profile from LocalStorage
+  const [userProfile, setUserProfile] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user_workflow_profile")) || null;
+    } catch { return null; }
+  });
+
+  // ✅ 3. Logic to fetch Workflow Data
   useEffect(() => {
-    // ✅ FIX: "isInitialized" check add kiya taaki register page par toast error na aaye [cite: 142, 148]
+    if (userProfile?.role && workflowState.status === "idle") {
+      dispatch(fetchWorkflow(userProfile.role));
+    }
+  }, [userProfile, workflowState.status, dispatch]);
+
+  // ✅ 4. Workflow Handlers
+  const handleRolePicked = (role) => {
+    const profile = { role, updatedAt: new Date().toISOString() };
+    localStorage.setItem("user_workflow_profile", JSON.stringify(profile));
+    setUserProfile(profile);
+    dispatch(fetchWorkflow(role));
+  };
+
+  const handleChangeRole = () => {
+    localStorage.removeItem("user_workflow_profile");
+    setUserProfile(null);
+  };
+
+  // Existing Logic for Moments
+  useEffect(() => {
     if (isInitialized && homeStatus === "idle") { 
       const interests = JSON.parse(localStorage.getItem("user_interests") || "[]");
       const tagsParam = interests.join(",");
       dispatch(fetchHomeData(tagsParam));
     }
-  
   }, [dispatch, homeStatus, isInitialized]); 
 
   const currentUseCaseKey = useMemo(() => {
@@ -92,7 +129,6 @@ function Home() {
   const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) || 
                        { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
 
-  
   if (homeStatus === "loading" && availableUseCases.length === 0) {
     return <HomeSkeleton />;
   }
@@ -108,6 +144,15 @@ function Home() {
         </div>
 
         <div className="sections-stack">
+          
+          {/* ✅ 5. Naya Workflow Section Placement (Hero ke thik baad) */}
+          <PersonalizedWorkflowSection 
+            userProfile={userProfile}
+            workflowState={workflowState}
+            onRolePicked={handleRolePicked}
+            onChangeRole={handleChangeRole}
+          />
+
           <div className="filter-sticky-bar">
             <div className="filter-inner-content">
               <span className="filter-label">Filters</span>
@@ -137,18 +182,6 @@ function Home() {
               <TrendingForYouSection />
             </div>
           </SectionWrapper>
-
-         
-        <SectionWrapper 
-  title="AI Workflows" 
-  subtitle="Boost your productivity with these strategies"
-> 
-  <WorkFlowStrategy />
-</SectionWrapper>
-
-          
-
-
         </div>
 
         <SectionWrapper 

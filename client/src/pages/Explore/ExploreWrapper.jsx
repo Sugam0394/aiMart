@@ -7,11 +7,11 @@ import IntentStep from './steps/IntentStep';
 import UseCaseStep from './steps/UseCaseStep';
 import ToolStep from './steps/ToolStep';
 import "./styles/ExploreWrapper.css";
+import ExploreResult from './ExploreResult';
 
-function ExploreWrapper() {
+ function ExploreWrapper() {
   const dispatch = useDispatch();
   
-  // ✅ Safety Guard: Agar state abhi load nahi hui toh empty object/array le lega
   const exploreState = useSelector((state) => state.explore) || {};
   const { 
     currentStep = 'INTENT', 
@@ -24,6 +24,11 @@ function ExploreWrapper() {
   }, [dispatch]);
 
   if (loading) return <div className="explore-loading">Loading...</div>;
+
+  // ✅ Agar currentStep 'CONFIDENCE' hai, toh pura wizard hata kar Result dikhao
+  if (currentStep === 'CONFIDENCE') {
+    return <ExploreResult intent={selections.intent} />;
+  }
 
   return (
     <div className="explore-container-main">

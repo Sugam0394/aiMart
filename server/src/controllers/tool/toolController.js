@@ -5,7 +5,7 @@ import User from "../../models/userModel.js";
 import ApiError from "../../utils/ApiError.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import ApiResponse from "../../utils/ApiResponse.js";
- 
+import { WORKFLOW_CONFIG } from "../../moment/workFlowConfig.js";
 
 
 // ✅ New Unified Home Data Controller (Fix 2)
@@ -416,6 +416,55 @@ export const getRecommendedTools = async (req, res) => {
       data: [], 
       basedOnInterests: false 
     });
+  }
+};
+
+
+ 
+// Section - 6 Workflow Controller (New)
+export const getWorkflowByRole = async (req, res) => {
+  try {
+    const { role } = req.params;
+    const config = WORKFLOW_CONFIG[role.toLowerCase()];
+
+    if (!config) {
+      return res.status(404).json({ success: false, message: "Role not found" });
+    }
+
+    // DB se tools fetch karna by slug
+    const slugs = config.steps.map(s => s.toolSlug);
+    const tools = await Tool.find({ slug: { $in: slugs }, status: "live" })
+      .select("_id name logo slug pricingType tagline")
+      .lean();
+
+    // Mapping for quick lookup
+    const toolMap = {};
+    tools.forEach(t => { toolMap[t.slug] = t; });
+
+    // Populate steps with actual tool data
+    const steps = config.steps.map(step => ({
+      ...step,
+      tool: toolMap[step.toolSlug] || { 
+        name: step.toolSlug, 
+        slug: step.toolSlug, 
+        logo: null, 
+        pricingType: "freemium" 
+      }
+    }));
+
+    res.json({
+      success: true,
+      data: {
+        role,
+        headline: config.headline,
+        subline: config.subline,
+        timeSaved: config.timeSaved,
+        steps
+      }
+    });
+  } catch (err) {
+    console.error("Workflow error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

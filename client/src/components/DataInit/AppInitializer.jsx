@@ -29,13 +29,13 @@ const AppInitializer = () => {
       } catch (error) {
         console.error("🔴 Auth Sync Failed:", error);
         
-        // Sirf tab logout karo jab actual Auth Error ho (401)
+        // ✅ BUG FIX #2: Correct Axios error status check 
         const isAuthError = 
-          error?.status === 401 || 
-          error === 'No user data' || 
-          (error?.response && error.response.status === 401);
+          error?.response?.status === 401 || 
+          error === 'No user data';
 
         if (isAuthError) {
+          console.warn("🔐 Session expired, logging out...");
           dispatch(logout());
         }
       } finally {

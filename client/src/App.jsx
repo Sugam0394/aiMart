@@ -86,7 +86,7 @@ function App() {
               <Route path="home" element={<Home />} />
               <Route path="explore" element={<Explore />} />
               <Route path="saved" element={<SavedTools />} />
-              <Route path="tools/:id" element={<AiArt />} />
+            
               <Route
                 path="settings"
                 element={<UserSettings isDark={isDark} setIsDark={setIsDark} />}

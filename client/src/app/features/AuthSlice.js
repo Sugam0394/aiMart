@@ -1,10 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/axios";
 import { setAccessToken, clearAccessToken } from "../../utils/token";
- 
+
 const savedUser = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null;
 
-// Sync User Role
+// ✅ 1. Logout User Thunk (Server side refresh token clear karne ke liye)
+export const logoutUser = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
+  try {
+    await api.post('/logout'); 
+  } catch (e) {
+    console.error('Server logout failed', e);
+  } finally {
+    dispatch(logout()); 
+  }
+});
+
+// ✅ 2. Sync User Role (Session Persistence)
 export const syncUserRole = createAsyncThunk(
   "auth/sync-role",
   async (_, { rejectWithValue }) => {
@@ -24,17 +35,12 @@ export const syncUserRole = createAsyncThunk(
   }
 );
 
-// Google Login Thunk
- export const googleLogin = createAsyncThunk(
+// ✅ 3. Google Login Thunk
+export const googleLogin = createAsyncThunk(
   "auth/google-login",
   async (idToken, { rejectWithValue }) => {
-   
- 
-
     try {
       const res = await api.post("/google-login", { idToken });
-    
-
       const { user, accessToken } = res.data.data;
 
       if (!accessToken || !user) {
@@ -54,9 +60,7 @@ export const syncUserRole = createAsyncThunk(
   }
 );
 
-
-
-// Login User
+// ✅ 4. Login User Thunk
 export const loginUser = createAsyncThunk(
   "auth/login", 
   async (formData, { rejectWithValue }) => {
@@ -70,7 +74,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Register User
+// ✅ 5. Register User Thunk (Jo miss ho gaya tha)
 export const registerUser = createAsyncThunk(
   "auth/register", 
   async (formData, { rejectWithValue }) => {
@@ -84,14 +88,12 @@ export const registerUser = createAsyncThunk(
   }
 );
 
- 
-
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: savedUser,
     role: savedUser ? savedUser.role : null,
-    loading: !!localStorage.getItem("token"),
+    loading: !!localStorage.getItem("accessToken"), // FIXED: correct key
     error: null,
     isInitialized: false,
   },
@@ -113,7 +115,7 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // PENDING
+      // PENDING STATES
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -122,27 +124,27 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+      .addCase(googleLogin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       
-      // SYNC ROLE (Session Validation)
+      // SYNC ROLE SUCCESS
       .addCase(syncUserRole.fulfilled, (state, action) => {
         state.user = action.payload;
         state.role = action.payload.role;
-        // ✅ Server ne user confirm kiya, ab app ready hai
         state.isInitialized = true; 
         state.loading = false;
         state.error = null;
       })
       
-      // ✅ FIX: Network error par session preserve karo 
+      // SYNC ROLE REJECTED
       .addCase(syncUserRole.rejected, (state, action) => {
         const isNetworkError = !action.payload; 
-
         if (isNetworkError) {
-          // Server down ya internet issue: user ko logged in rakho, bas init true kardo
           state.isInitialized = true;
           state.loading = false;
         } else {
-          // Actual Auth Failure (401/Unauthorized): Clear session
           state.user = null;
           state.role = null;
           state.isInitialized = true;
@@ -151,9 +153,10 @@ const authSlice = createSlice({
         }
       })
 
-      // AUTH SUCCESS MATCHERS (Login/Register)
+      // COMMON SUCCESS MATCHERS (Login/Register/Google)
       .addMatcher(
-        (action) => action.type.endsWith("/fulfilled") && (action.type.includes("login") || action.type.includes("register")),
+        (action) => action.type.endsWith("/fulfilled") && 
+        (action.type.includes("login") || action.type.includes("register") || action.type.includes("google-login")),
         (state, action) => {
           state.loading = false;
           state.user = action.payload;
@@ -164,7 +167,7 @@ const authSlice = createSlice({
         }
       )
       
-      // ERROR MATCHERS
+      // COMMON ERROR MATCHERS
       .addMatcher(
         (action) => action.type.endsWith("/rejected") && !action.type.includes("syncUserRole"),
         (state, action) => {
@@ -174,7 +177,6 @@ const authSlice = createSlice({
       );
   },
 });
- 
 
 export const { logout, setInitialized } = authSlice.actions;
 export default authSlice.reducer; 

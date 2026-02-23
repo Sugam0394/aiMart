@@ -114,23 +114,18 @@ function ToolStep() {
         )
       ))}
 
-      <div className="action-footer">
-        <button 
-          className="skip-btn"
-          onClick={() => handleContinue()}
-        >
-          Skip for now
-        </button>
+     
         
-    {  /*  <button
-          className="primary-action-btn"
-          onClick={handleContinue}
-          disabled={selectedTools.length === 0}
-        >
-          Continue with {selectedTools.length} tool{selectedTools.length !== 1 ? 's' : ''} →
-        </button> */ }
+     
+<button
+  className={`primary-action-btn ${selectedTools.length === 0 ? 'btn-muted' : ''}`}
+  onClick={handleContinue}
+>
+  {/* Agar koi tool select nahi hai toh 'Skip' dikhao, warna selection count */}
+  {selectedTools.length === 0 ? 'Skip for now' : `Continue with ${selectedTools.length} tool(s) →`}
+</button>
       </div>
-    </div>
+ 
   );
 }
 

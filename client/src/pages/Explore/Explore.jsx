@@ -1,20 +1,16 @@
-import React from 'react'
+ import React from 'react'
 import './styles/Explore.css'
-import ExploreWrapper from './ExploreWrapper'
+// import ExploreWrapper from './ExploreWrapper' // Ise hata dein
+import StepFlowController from './StepFlowController' // Ise use karein
 
 function Explore() {
-
- 
-
   return (
-      
- <main className="explore-layout">
+    <main className="explore-layout">
       <div className="explore-container">
-        <ExploreWrapper />
+        {/* ✅ FIXED: ExploreWrapper ki jagah StepFlowController use karein */}
+        <StepFlowController /> 
       </div>
     </main>
-
-      
   )
 }
 

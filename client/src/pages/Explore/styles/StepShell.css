@@ -1,94 +1,150 @@
  /* ===================================
-   AI-MART — STEP SHELL
+   AI-MART — STEP SHELL (FIXED)
    File: src/pages/Explore/styles/StepShell.css
 =================================== */
 
-.step-shell-container {
+/* ✅ FIX: Mismatch class name fixed (.step-shell-container -> .step-shell) */
+.step-shell {
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto 24px auto;
   background: #ffffff;
   border-radius: 16px;
   border: 1px solid #E5E7EB;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Active State Design */
+.step-shell.active {
+  border-color: #4F46E5;
+  box-shadow: 0 8px 30px rgba(79,70,229,0.1);
+}
+
+/* Completed State Design */
+.step-shell.completed {
+  background: #F9FAFB;
+  opacity: 0.9;
+}
+
+/* Locked State Design */
+.step-shell.locked {
+  opacity: 0.6;
+  pointer-events: none;
+  background: #F3F4F6;
 }
 
 /* ── Header ── */
 .step-header {
   padding: 20px 24px;
-  border-bottom: 1px solid #F3F4F6;
+  display: flex;
+  align-items: center;
+  gap: 16px;
   background: #FAFBFF;
 }
 
-.step-title {
-  font-size: 1.25rem;
+/* ✅ NEW: Step Indicator (Circle with Number/Check) */
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #E5E7EB;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.active .step-indicator {
+  background: #4F46E5;
+  color: white;
+}
+
+.completed .step-indicator {
+  background: #10B981;
+  color: white;
+}
+
+/* ✅ NEW: Title Area Layout */
+.step-title-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ✅ FIX: Mismatch class name fixed (.step-title -> .shell-title) */
+.shell-title {
+  font-size: 1.15rem;
   font-weight: 700;
   color: #111827;
   margin: 0;
 }
 
-/* ── Body ── */
-.step-body {
-  padding: 24px;
+/* ✅ NEW: Summary Pill (Selected tool/usecase badge) */
+.summary-pill {
+  background: #EEF2FF;
+  color: #4F46E5;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid #C7D2FE;
 }
 
-/* ── Footer / Navigation ── */
-.step-footer {
-  padding: 16px 24px;
-  background: #F9FAFB;
-  border-top: 1px solid #F3F4F6;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ── Navigation Buttons ── */
-.btn-step-prev {
-  background: #ffffff;
-  color: #4B5563;
-  border: 1px solid #D1D5DB;
-  padding: 10px 20px;
-  border-radius: 8px;
+/* ✅ NEW: Edit Button */
+.edit-shell-btn {
+  background: transparent;
+  color: #4F46E5;
+  border: none;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  padding: 6px 12px;
+  border-radius: 6px;
 }
 
-.btn-step-next {
-  background: #4F46E5;
-  color: #ffffff;
-  border: none;
-  padding: 10px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(79,70,229,0.2);
+.edit-shell-btn:hover {
+  background: #F3F4F6;
+  text-decoration: underline;
 }
 
-.btn-step-next:hover {
-  background: #4338CA;
-  transform: translateY(-1px);
+/* ── Body ── */
+/* ✅ FIX: Mismatch class name fixed (.step-body -> .step-content-body) */
+.step-content-body {
+  padding: 24px;
+  border-top: 1px solid #F3F4F6;
+  animation: slideDown 0.3s ease-out;
 }
 
-.btn-step-next:disabled {
-  background: #9CA3AF;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+/* ✅ NEW: Lock Overlay */
+.lock-overlay {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #9CA3AF;
+  font-size: 0.9rem;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ── Mobile Tweaks ── */
 @media (max-width: 640px) {
-  .step-shell-container {
-    border-radius: 0;
-    border: none;
+  .step-shell {
+    border-radius: 12px;
+    margin-bottom: 16px;
   }
   .step-header {
     padding: 16px;
   }
-  .step-body {
-    padding: 20px 16px;
+  .shell-title {
+    font-size: 1rem;
   }
 }

@@ -1,25 +1,22 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../app/features/AuthSlice';
-import './LogoutButton.css';
+import { logoutUser } from '../../app/features/AuthSlice';// 1. Sahi thunk import karein
 
-const LogoutButton = () => {
+const Logout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(logout()); 
-    // Replace: true se browser history clean rehti hai
-    navigate('/', { replace: true }); 
+  const handleLogout = async () => {
+    // 2. Server + Local dono logout trigger karein
+    await dispatch(logoutUser()); 
+    navigate('/', { replace: true });
   };
 
   return (
-    <button onClick={handleLogout} className="logout-btn-v3">
-      <span className="logout-icon">🚪</span>
-      <span>Sign Out</span>
+    <button onClick={handleLogout} className="logout-btn">
+      Logout
     </button>
   );
 };
 
-export default LogoutButton; 
+export default Logout;

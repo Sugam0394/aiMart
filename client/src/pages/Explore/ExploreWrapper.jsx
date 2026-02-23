@@ -16,8 +16,7 @@ function ExploreWrapper() {
   const { 
     currentStep = 'INTENT', 
     selections = {}, 
-    loading = false, 
-    intents = [] // Default empty array taaki .length crash na kare
+    loading = false
   } = exploreState;
 
   useEffect(() => {

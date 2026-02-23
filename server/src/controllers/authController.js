@@ -4,7 +4,7 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from '../models/userModel.js'
 
-const client = new OAuth2Client(process.env.VITE_GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // ✅ Helper function for dynamic cookie options (consistent across all methods)
 const getCookieOptions = () => {
@@ -28,7 +28,7 @@ const getCookieOptions = () => {
   try {
     ticket = await client.verifyIdToken({
       idToken,
-      audience: process.env.VITE_GOOGLE_CLIENT_ID,
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
   } catch (err) {
     throw new ApiError(400, "Invalid Google ID Token");

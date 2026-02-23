@@ -18,7 +18,7 @@ import WorkFlowStrategy from "./WorkFlowStrategy/WorkFlowStrategy"; // ✅ NEW S
 
  
 import "./HomeRedesign.css";  
-import "./Home.css";
+ 
  
 
 // ── HomeSkeleton Component ──────────────────────────────
@@ -138,8 +138,13 @@ function Home() {
             </div>
           </SectionWrapper>
 
-             {/* ⚡ NEW STRATEGY SECTION INSERTED HERE */}
-          <WorkFlowStrategy />
+         
+        <SectionWrapper 
+  title="AI Workflows" 
+  subtitle="Boost your productivity with these strategies"
+> 
+  <WorkFlowStrategy />
+</SectionWrapper>
 
           
 

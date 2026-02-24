@@ -9,6 +9,10 @@ const AppInitializer = () => {
   const hasInitialized = useRef(false);
 
   useEffect(() => {
+    // 🚀 PERF 1: Backend Wake-up Ping (Cold Start Fix)
+    // App load hote hi backend ko silently jagao
+    fetch(`${import.meta.env.VITE_API_URL}/health`).catch(() => {});
+
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
@@ -23,13 +27,11 @@ const AppInitializer = () => {
 
       try {
         console.log("📡 Syncing session...");
-        // syncUserRole call hoga, agar token expire hai toh Axios automatically use refresh karega
         await dispatch(syncUserRole()).unwrap();
         await dispatch(fetchSavedTools());
       } catch (error) {
         console.error("🔴 Auth Sync Failed:", error);
         
-        // ✅ BUG FIX #2: Correct Axios error status check 
         const isAuthError = 
           error?.response?.status === 401 || 
           error === 'No user data';

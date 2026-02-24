@@ -9,11 +9,7 @@ import { getWorkflowByRole } from '../controllers/tool/toolController.js';
 const router = express.Router();
 
 
-// ✅ Add request logging (helpful for debugging)
-router.use((req, res, next) => {
-  console.log(`📍 ${req.method} ${req.path}`, req.query);
-  next();
-});//
+ 
 
 
 router.get("/tools/:id",getToolById );

@@ -1,28 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { getRisingTools } from "../../../api/toolOwner/tool.services";
+ import React from "react";
+import { useSelector } from 'react-redux';
 import "./RisingTools.css";
 import ToolCard from '../../aiArt/components/ToolCard';
 import ToolCardSkeleton from "../../aiArt/components/ToolCardSkeleton";
 
 const RisingToolsSection = () => {
-  const [tools, setTools] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Redux store ka data use ho raha hai
+  const tools = useSelector((state) => state.moment.risingTools);
+  const loading = useSelector((state) => state.moment.homeStatus === 'loading');
 
-  useEffect(() => {
-    const loadTools = async () => {
-      try {
-        const data = await getRisingTools();
-        setTools(data);
-      } catch (err) {
-        console.log('err', err)
-        // Error handling service mein ho rahi hai
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadTools();
-  }, []);
-
+  // local useState aur useEffect (API call) hata diya gaya hai
   if (loading) {
     return (
       <div className="usecase-row-container skeleton-active">
@@ -33,7 +20,7 @@ const RisingToolsSection = () => {
     );
   }
 
-  if (tools.length === 0) return null;
+  if (!tools || tools.length === 0) return null;
 
   return (
     <div className="usecase-row-container">
@@ -44,4 +31,4 @@ const RisingToolsSection = () => {
   );
 };
 
-export default RisingToolsSection; 
+export default RisingToolsSection;

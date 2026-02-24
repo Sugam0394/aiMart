@@ -7,10 +7,8 @@ export const fetchHomeData = createAsyncThunk(
   async (tags, { rejectWithValue }) => {
     try {
       const res = await toolService.getHomeData(tags);
-      console.log("1. API RESPONSE RECEIVED:", res.data); // DEBUG 1
       return res.data.data; 
     } catch (err) {
-      console.error("1. API ERROR:", err);
       return rejectWithValue(err.response?.data?.message || "Failed to load home data");
     }
   }
@@ -82,12 +80,10 @@ const momentSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchHomeData.pending, (state) => {
-        console.log("2. FETCH HOME DATA PENDING...");
         state.homeStatus = "loading";
         state.homeError = null;
       })
       .addCase(fetchHomeData.fulfilled, (state, action) => {
-        console.log("3. REDUX FULFILLED - PAYLOAD:", action.payload); // DEBUG 3
         state.homeStatus = "succeeded";
         const data = action.payload || {}; 
         
@@ -96,11 +92,8 @@ const momentSlice = createSlice({
         state.risingTools = data.rising || [];
         state.recommendedTools = data.recommended || [];
         state.useCasesStatus = "succeeded";
-        
-        console.log("4. STATE UPDATED - USECASES:", state.availableUseCases.length);
       })
       .addCase(fetchHomeData.rejected, (state, action) => {
-        console.error("3. REDUX REJECTED - ERROR:", action.payload);
         state.homeStatus = "failed";
         state.homeError = action.payload;
       })

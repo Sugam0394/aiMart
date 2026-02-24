@@ -90,6 +90,10 @@ app.use('/api', ExploreRouter);
 
 app.use('/api', reviewRouter)
 
+app.get('/api/health', (req, res) => res.status(200).json({ status: 'ok' }));
+
+ 
+    
  
 
  

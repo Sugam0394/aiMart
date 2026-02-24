@@ -160,7 +160,7 @@ const AiStackSection = () => {
                   <PricingBadge type={item.tool.pricingType} />
                 </div>
               </div>
-              <button className="view-tool-btn" onClick={() => navigate(`/tool/${item.tool.slug}`)}>
+              <button className="view-tool-btn" onClick={() => navigate(`/tools/${item.tool._id}`)}>
                 View Tool →
               </button>
             </div>

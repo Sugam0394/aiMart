@@ -1,27 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { getRecommendedTools } from "../../../api/toolOwner/tool.services";
+ import React from "react";
+import { useSelector } from 'react-redux';
 import ToolCard from '../../aiArt/components/ToolCard';
 import './Recommend.css';
 
-const RecommendedSection = ({ onDataLoaded }) => {
-  const [tools, setTools] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadRecommended = async () => {
-      try {
-        const { tools, basedOnInterests } = await getRecommendedTools();
-        setTools(tools);
-        if (onDataLoaded) onDataLoaded(basedOnInterests);
-      } catch (err) {
-        console.log('err', err)
-        setTools([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadRecommended();
-  }, [onDataLoaded]);
+// onDataLoaded hata diya kyunki ab logic Redux handle kar raha hai
+const RecommendedSection = () => {
+  const tools = useSelector((state) => state.moment.recommendedTools);
+  const loading = useSelector((state) => state.moment.homeStatus === 'loading');
 
   if (loading) {
     return (
@@ -42,4 +27,4 @@ const RecommendedSection = ({ onDataLoaded }) => {
   );
 };
 
-export default RecommendedSection; 
+export default RecommendedSection;

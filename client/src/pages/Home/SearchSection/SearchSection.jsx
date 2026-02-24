@@ -84,6 +84,24 @@ const SearchSection = () => {
           )}
         </div>
 
+        {/* ✅ Naya: Popular Search Chips (Tabhi dikhenge jab search box khali ho) */}
+{!term && (
+  <div className="popular-searches-container">
+    <span className="popular-label">Try searching:</span>
+    <div className="popular-chips">
+      {["Email Assistant", "Logo Maker", "Video Editor", "Coding Bot"].map((chip) => (
+        <button 
+          key={chip} 
+          className="search-chip"
+          onClick={() => handleSearchSubmit(chip)}
+        >
+          {chip}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
+
         {/* Status Messages */}
         {loading && <div className="search-status">Searching tools...</div>}
         {error && <div className="search-status error">{error}</div>}

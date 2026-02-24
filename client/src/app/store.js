@@ -5,6 +5,7 @@ import searchReducer from './features/searchSlice.js'
 import exploreReducer from './exploreFeatures/exploreSlice.js'
 import savedReducer from './features/SavedSlice.js'
 import workFlowReducer from './features/workFlowSlice.js'
+import stackReducer from './features/stackSlice.js'
  
  
 
@@ -16,6 +17,7 @@ export const store = configureStore({
     explore: exploreReducer,
     saved: savedReducer,
     workflow: workFlowReducer,
+    stack: stackReducer,
   },
 });
 

@@ -4,7 +4,7 @@ import { fetchHomeData } from "../../app/features/MomentSlice";
   
 import { fetchWorkflow } from "../../app/features/workFlowSlice";
 
-import GreetingSection from "./GreetingSection/GreetingSection";
+ 
 import TrendingForYouSection from "./TrendingSection/TrendingForYou";
 import SearchSection from "./SearchSection/SearchSection";
 import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
@@ -12,6 +12,7 @@ import UseCaseSection from "./useCasedSection/UseCasedSection";
 import RisingToolsSection from "./RisingTool/RisingToolSection";
 import RecommendedSection from "./RecommendSection/RecommendSection";
 import SectionWrapper from "../../layouts/section/SectionWrapper";
+import AiStackSection from "./aiStackSection/AiStackSection";
  
  
 
@@ -78,9 +79,12 @@ function Home() {
   // ✅ 1. Get Workflow State
   const workflowState = useSelector((state) => state.workflow);
 
-  const isAuthenticated = !!user;
+ 
   const [isPersonalized, setIsPersonalized] = useState(false);
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
+
+
+  const isAuthenticated = !!user; // This was the "unused" variable
 
   // ✅ 2. Initialize Profile from LocalStorage
   const [userProfile, setUserProfile] = useState(() => {
@@ -136,16 +140,28 @@ function Home() {
   return (
     <div className="home-container">
       <main className="home-page">
-        <div className="home-hero-container">
-          <GreetingSection isAuthenticated={isAuthenticated} user={user} />
-          <div className="search-overlay-box">
-            <SearchSection />
+        <header className="hero-intent-section">
+          {/* ✅ Now using isAuthenticated to personalize the greeting */}
+          <h1>
+            {isAuthenticated ? `Welcome back, ${user?.name || 'User'}!` : "Find the right AI tool for your work"}
+          </h1>
+          <p className="hero-subtitle">
+            {isAuthenticated ? "What's on your agenda today?" : "Describe your goal and let AI find the perfect stack."}
+          </p>
+          
+          <div className="smart-search-container">
+            <SearchSection placeholder="Describe your goal (e.g. 'Build a website')" />
+            
           </div>
-        </div>
+        </header>
 
         <div className="sections-stack">
+
           
-          {/* ✅ 5. Naya Workflow Section Placement (Hero ke thik baad) */}
+          {/* ⭐ STEP 9: AiStack Section (STAR FEATURE) */}
+          {/* Yeh Hero ke thik baad aayega taaki user turant tools discover kare */}
+          <AiStackSection />
+       
           <PersonalizedWorkflowSection 
             userProfile={userProfile}
             workflowState={workflowState}

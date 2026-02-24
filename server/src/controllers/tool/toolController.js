@@ -1,11 +1,12 @@
 
 import Tool from "../../models/toolModel.js";
-import { getTrendingToolsService , searchToolsService , getToolsByUseCase } from "../../services/toolServices.js";
+import { getTrendingToolsService , searchToolsService , getToolsByUseCase  , getStackByRole} from "../../services/toolServices.js";
 import User from "../../models/userModel.js";
 import ApiError from "../../utils/ApiError.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import { WORKFLOW_CONFIG } from "../../moment/workFlowConfig.js";
+ 
 
 
 // ✅ New Unified Home Data Controller (Fix 2)
@@ -421,52 +422,95 @@ export const getRecommendedTools = async (req, res) => {
 
 
  
-// Section - 6 Workflow Controller (New)
+ 
+// Section - 6: Get Workflow by Role (Optimized with Config and DB)
 export const getWorkflowByRole = async (req, res) => {
   try {
     const { role } = req.params;
-    const config = WORKFLOW_CONFIG[role.toLowerCase()];
+    
+    // 1. Role match (Case insensitive)
+    const roleKey = role?.toLowerCase();
+    const config = WORKFLOW_CONFIG[roleKey];
 
     if (!config) {
-      return res.status(404).json({ success: false, message: "Role not found" });
+      // 404 bhej rahe hain par format wahi rakh rahe hain taaki frontend crash na ho
+      return res.status(404).json(
+        new ApiResponse(404, null, `Workflow for role '${role}' not found`)
+      );
     }
 
-    // DB se tools fetch karna by slug
+    // 2. Database se tools fetch karna (Optimized)
     const slugs = config.steps.map(s => s.toolSlug);
-    const tools = await Tool.find({ slug: { $in: slugs }, status: "live" })
-      .select("_id name logo slug pricingType tagline")
-      .lean();
+    const tools = await Tool.find({ 
+      slug: { $in: slugs }, 
+      status: "live" 
+    })
+    .select("_id name logo slug pricingType tagline")
+    .lean();
 
-    // Mapping for quick lookup
+    // 3. Mapping tools for quick O(1) lookup
     const toolMap = {};
-    tools.forEach(t => { toolMap[t.slug] = t; });
+    tools.forEach(t => { 
+      toolMap[t.slug] = t; 
+    });
 
-    // Populate steps with actual tool data
+    // 4. Populate steps (Safe Fallback ke saath)
     const steps = config.steps.map(step => ({
       ...step,
       tool: toolMap[step.toolSlug] || { 
-        name: step.toolSlug, 
+        name: step.toolSlug.charAt(0).toUpperCase() + step.toolSlug.slice(1), 
         slug: step.toolSlug, 
         logo: null, 
-        pricingType: "freemium" 
+        pricingType: "freemium",
+        tagline: "AI Tool"
       }
     }));
 
-    res.json({
-      success: true,
-      data: {
-        role,
+    // 5. Success Response
+    return res.status(200).json(
+      new ApiResponse(200, {
+        role: roleKey, // Yeh Redux ke liye bahut important hai
         headline: config.headline,
         subline: config.subline,
         timeSaved: config.timeSaved,
-        steps
-      }
-    });
+        steps: steps
+      }, "Workflow fetched successfully")
+    );
+
   } catch (err) {
-    console.error("Workflow error:", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Workflow Controller Error:", err);
+    return res.status(500).json(
+      new ApiResponse(500, null, "Internal server error while fetching workflow")
+    );
   }
 };
+
+
+// Section - 7: Get Tools By Use-Case Service (Optimized with Intent Expansion) 
+export const getStack = asyncHandler(async (req, res) => {
+ 
+  const { role } = req.params;
+
+ 
+  const validRoles = ['founder', 'marketer', 'creator', 'designer', 'developer', 'freelancer', 'student'];
+
+  if (!validRoles.includes(role)) {
+    throw new ApiError(400, 'Invalid role');
+  }
+
+  // 3. Service call karke stack data mangwao
+  const stack = await getStackByRole(role);
+
+  // 4. Agar stack nahi milta toh 404
+  if (!stack) {
+    throw new ApiError(404, 'Stack not found for this role');
+  }
+
+  // 5. Success response bhejo
+  return res.status(200).json(
+    new ApiResponse(200, stack, 'Stack fetched successfully')
+  );
+});
 
   
 

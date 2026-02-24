@@ -52,6 +52,11 @@ const toolSchema = new mongoose.Schema(
       validate: [(val) => val.length > 0, "At least one intent tag is required"],
       index: true,
     },
+    searchKeywords: {
+  type: [String],
+  index: true,
+  default: []
+},
 
     // =========================
     // 🔥 Use-Case Mapping Layer (HOME DISCOVERY)
@@ -189,3 +194,4 @@ toolSchema.index({ intentTags: 1, primaryCategory: 1, status: 1 });
 
 const Tool = mongoose.model("Tool", toolSchema, 'tools');
 export default Tool; 
+ 

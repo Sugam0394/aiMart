@@ -37,8 +37,16 @@ const workflowSlice = createSlice({
       })
       .addCase(fetchWorkflow.fulfilled, (state, action) => {
         state.status = "success";
-        state.data = action.payload;
-        state.currentRole = action.payload.role;
+        
+ 
+        if (action.payload) {
+          state.data = action.payload;
+          state.currentRole = action.payload.role || null;
+        } else {
+         
+          state.data = null;
+          state.currentRole = null;
+        }
       })
       .addCase(fetchWorkflow.rejected, (state) => {
         state.status = "error";

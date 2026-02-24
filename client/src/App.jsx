@@ -23,6 +23,7 @@ const FounderLayout = lazy(() => import("./layouts/FounderLayout.jsx"));
 const Explore = lazy(() => import("./pages/Explore/Explore.jsx"));
 const AiArt = lazy(() => import("./pages/aiArt/AiArt.jsx"));
 const SavedTools = lazy(() => import("./components/SavedTools/SavedTools.jsx"));
+const PublicStackPage = lazy(() => import("./components/PublicStackPage/PublicStackPage.jsx"));
 
 const FounderDashboard = lazy(() => import("./pages/founder/Dashboard/FounderDashboard.jsx"));
 const ToolOwnerDashboard = lazy(() => import("./pages/toolOwner/dashboard/ToolOwnerDashboard.jsx"));
@@ -72,6 +73,8 @@ function App() {
           <Route element={<PublicLayout />}>
             <Route index element={<Home />} />
             <Route path="tools/:id" element={<AiArt />} />
+         
+           <Route path="/stack/:role" element={<PublicStackPage />} />
           </Route>
 
           {/* 🔐 2. AUTH ROUTES (Google SDK wraps these via AuthLayout) */}

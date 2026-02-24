@@ -1,35 +1,26 @@
-// services/exploreService.js (COMPLETE FILE)
+ // services/exploreService.js (FINAL CLEAN VERSION)
 import { nanoid } from 'nanoid';
 import mongoose from 'mongoose';
 import ExploreSession from '../exploreModel/exploreModel.js';
 import Tool from '../../models/toolModel.js';
-
-import { mapIntent } from '../utils/IntentMapper.js';
-import { useCaseMap } from '../utils/useCaseMapper.js';
-import { momentMapper } from '../utils/momentMapper.js';
+import { PromptService } from './promptServices.js';
 
 export const ExploreService = {
   // ==========================================
-  // 1️⃣ CREATE SESSION
+  // 1️⃣ CREATE SESSION (GUEST SUPPORT)
   // ==========================================
-  async createSession(userId) {
+  async createSession(userId = null) {
     try {
-      if (!userId) {
-        throw new Error("userId is required");
-      }
-
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        throw new Error("Invalid User ID format");
-      }
-
-      const userObjectId = new mongoose.Types.ObjectId(userId);
-
-      const session = await ExploreSession.create({
+      const sessionData = {
         sessionId: nanoid(12),
-        userId: userObjectId,
-        currentStep: "INTENT",
-      });
+        currentStep: "ROLE",
+      };
 
+      if (userId && mongoose.Types.ObjectId.isValid(userId)) {
+        sessionData.userId = new mongoose.Types.ObjectId(userId);
+      }
+
+      const session = await ExploreSession.create(sessionData);
       console.log("✅ Session created:", session.sessionId);
 
       return { 
@@ -43,282 +34,138 @@ export const ExploreService = {
   },
 
   // ==========================================
-  // 2️⃣ PROCESS STEP
+  // 2️⃣ PROCESS STEP (ROLE -> TASK -> TOOLS -> RESULTS)
   // ==========================================
   async processStep(sessionId, currentStep, payload = {}) {
     try {
       const session = await ExploreSession.findOne({ sessionId });
-      
-      if (!session) {
-        throw new Error("Explore session not found");
-      }
+      if (!session) throw new Error("Explore session not found");
 
       let responsePayload = null;
       let nextStep = "";
 
       switch (currentStep) {
-        case "INTENT":
-          try {
-            if (!payload.intent) {
-              throw new Error("Intent is required");
-            }
+        case "ROLE": {
+          if (!payload.role) throw new Error("role is required");
+          session.selectedRole = payload.role;
+          session.currentStep = "TASK";
+          nextStep = "TASK";
 
-            console.log("📍 Processing INTENT:", payload.intent);
+          const ROLE_TASKS = {
+            founder: ["market-research", "pitch-deck", "content-writing", "logo-design", "cold-email", "seo", "automation"],
+            marketer: ["ad-copy", "social-media-posts", "email-campaigns", "seo-content", "video-scripts", "landing-page"],
+            creator: ["video-scripts", "youtube-thumbnails", "short-form-content", "podcast-editing", "caption-writing"],
+            designer: ["ui-design", "logo-design", "social-media-graphics", "presentation-design", "illustration"],
+            developer: ["code-generation", "debugging", "documentation", "api-testing", "deployment"],
+            freelancer: ["proposal-writing", "client-emails", "invoicing", "portfolio-design", "contract-writing"],
+            student: ["essay-writing", "research-summarization", "flashcard-creation", "math-solving", "note-taking"],
+          };
 
-            const normalizedIntent = await mapIntent(payload.intent);
-            console.log("🔄 Normalized intent:", normalizedIntent);
-
-            session.selectedIntent = normalizedIntent;
-            session.currentStep = "USE_CASE";
-            nextStep = "USE_CASE";
-
-            responsePayload = await useCaseMap(normalizedIntent);
-            console.log("✅ Use cases generated:", responsePayload.length);
-
-          } catch (error) {
-            console.error("❌ Error in INTENT step:", error);
-            throw new Error("Failed to process intent: " + error.message);
-          }
+          responsePayload = ROLE_TASKS[payload.role] || [];
           break;
+        }
 
-        case "USE_CASE":
-          try {
-            if (!payload.useCase) {
-              throw new Error("useCase is required");
-            }
+        case "TASK": {
+          if (!payload.task) throw new Error("task is required");
+          session.selectedIntent = payload.task;
+          session.currentStep = "TOOLS";
+          nextStep = "TOOLS";
 
-            console.log("📍 Processing USE_CASE:", payload.useCase);
+          const taskWords = payload.task.split(/[-_\s]+/).filter(w => w.length > 2);
+          const searchRegex = new RegExp(taskWords.join('|'), 'i');
 
-            session.selectedUseCase = payload.useCase;
-            session.currentStep = "TOOLS";
-            nextStep = "TOOLS";
+          const baseQuery = {
+            status: "live",
+            $or: [
+              { name: { $regex: searchRegex } },
+              { tagline: { $regex: searchRegex } },
+              { intentTags: { $in: taskWords.map(k => new RegExp(k, 'i')) } },
+              { useCases: { $in: taskWords.map(k => new RegExp(k, 'i')) } }
+            ]
+          };
 
-            const useCaseWords = payload.useCase.split(/[-_\s]+/).filter(w => w.length > 2);
-            const intentWords = (session.selectedIntent || '').split(/[-_\s]+/).filter(w => w.length > 2);
-            const allKeywords = [...new Set([...useCaseWords, ...intentWords])];
+          const allTools = await Tool.find(baseQuery).lean();
+          const scoredTools = allTools.map(tool => {
+            let score = 0;
+            if (tool.useCases?.some(uc => taskWords.some(kw => uc.includes(kw)))) score += 40;
+            if (tool.isPopular) score += 15;
+            if (tool.avgRating >= 4) score += 10;
+            return { ...tool, relevanceScore: score };
+          }).sort((a, b) => b.relevanceScore - a.relevanceScore);
 
-            const searchRegex = new RegExp(allKeywords.join('|'), 'i');
-
-            const baseQuery = {
-              status: "live",
-              $or: [
-                { name: { $regex: searchRegex } },
-                { tagline: { $regex: searchRegex } },
-                { description: { $regex: searchRegex } },
-                { primaryCategory: { $regex: searchRegex } },
-                { intentTags: { $in: allKeywords.map(k => new RegExp(k, 'i')) } },
-                { useCases: { $in: allKeywords.map(k => new RegExp(k, 'i')) } }
-              ]
-            };
-
-            const allTools = await Tool.find(baseQuery).lean();
-            console.log("📦 Tools found:", allTools.length);
-
-            const scoredTools = allTools.map(tool => {
-              let score = 0;
-
-              if (tool.primaryCategory?.toLowerCase() === session.selectedIntent?.toLowerCase()) {
-                score += 50;
-              }
-
-              if (tool.useCases?.some(uc => 
-                allKeywords.some(kw => uc.toLowerCase().includes(kw.toLowerCase()))
-              )) {
-                score += 30;
-              }
-
-              if (tool.intentTags?.some(tag => 
-                allKeywords.some(kw => tag.toLowerCase().includes(kw.toLowerCase()))
-              )) {
-                score += 20;
-              }
-
-              if (tool.isPopular) score += 15;
-              if (tool.isFeatured) score += 10;
-              if (tool.avgRating >= 4) score += 10;
-              if (tool.pricingType === 'free') score += 5;
-
-              return { ...tool, relevanceScore: score };
-            });
-
-            scoredTools.sort((a, b) => b.relevanceScore - a.relevanceScore);
-
-            responsePayload = {
-              bestMatch: scoredTools.slice(0, 10),
-              trending: scoredTools
-                .filter(t => t.isPopular || t.avgRating >= 4)
-                .sort((a, b) => (b.views || 0) - (a.views || 0))
-                .slice(0, 10),
-              premium: scoredTools
-                .filter(t => t.pricingType === 'paid' || t.pricingType === 'freemium')
-                .filter(t => t.relevanceScore > 20)
-                .slice(0, 10),
-              free: scoredTools
-                .filter(t => t.pricingType === 'free')
-                .slice(0, 10),
-              discovery: scoredTools
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 8)
-            };
-
-            if (scoredTools.length < 5) {
-              const fallbackTools = await Tool.find({ 
-                status: "live",
-                $or: [
-                  { isPopular: true },
-                  { isFeatured: true },
-                  { avgRating: { $gte: 4 } }
-                ]
-              }).limit(15).lean();
-
-              responsePayload.bestMatch = [...responsePayload.bestMatch, ...fallbackTools]
-                .filter((tool, index, self) => 
-                  index === self.findIndex(t => t._id.toString() === tool._id.toString())
-                )
-                .slice(0, 10);
-            }
-
-          } catch (error) {
-            console.error("❌ Error in USE_CASE step:", error);
-            throw new Error("Failed to process tools discovery: " + error.message);
-          }
+          responsePayload = {
+            role: session.selectedRole,
+            task: payload.task,
+            bestMatch: scoredTools.slice(0, 8),
+            free: scoredTools.filter(t => t.pricingType === 'free').slice(0, 6)
+          };
           break;
+        }
 
-        case "TOOLS":
-          try {
-            console.log("📍 Processing TOOLS selection");
-
-            session.selectedTools = Array.isArray(payload.toolIds) ? payload.toolIds : [];
-            session.currentStep = "CONFIDENCE";
-            nextStep = "CONFIDENCE";
-            
-            responsePayload = { 
-              selectedCount: session.selectedTools.length,
-              message: `${session.selectedTools.length} tools selected`
-            };
-
-          } catch (error) {
-            console.error("❌ Error in TOOLS step:", error);
-            throw new Error("Failed to save selected tools: " + error.message);
-          }
+        case "TOOLS": {
+          session.selectedTools = Array.isArray(payload.toolIds) ? payload.toolIds : [];
+          session.currentStep = "RESULTS";
+          nextStep = "RESULTS";
+          
+          responsePayload = {
+            role: session.selectedRole,
+            task: session.selectedIntent,
+            selectedCount: session.selectedTools.length
+          };
           break;
+        }
 
-        case "CONFIDENCE":
-          try {
-            console.log("📍 Processing CONFIDENCE rating");
+        case "RESULTS": {
+          // 1. Fetch full tool details
+          const selectedToolsData = await Tool.find({ 
+            _id: { $in: session.selectedTools } 
+          }).lean();
 
-            if (!payload.confidenceScore) {
-              throw new Error("confidenceScore is required");
-            }
+          // 2. Generate prompts using our Engine
+          const toolPrompts = PromptService.generateToolPrompts(
+            session.selectedRole, 
+            session.selectedIntent, 
+            selectedToolsData
+          );
 
-            const score = parseInt(payload.confidenceScore);
-            
-            if (score < 1 || score > 5) {
-              throw new Error("confidenceScore must be between 1 and 5");
-            }
+          session.currentStep = "COMPLETED";
+          session.completedAt = new Date();
+          nextStep = "COMPLETED";
+          
+          session.context = {
+            ...session.context,
+            prompts: toolPrompts,
+            summary: `Stack of ${selectedToolsData.length} tools for ${session.selectedRole}`
+          };
 
-            session.confidenceScore = score;
-            session.currentStep = "COMPLETED";
-            session.completedAt = new Date();
-            
-            session.context = momentMapper({
-              intent: session.selectedIntent,
-              useCase: session.selectedUseCase,
-            });
-
-            nextStep = "COMPLETED";
-            
-            responsePayload = {
-              intent: session.selectedIntent,
-              useCase: session.selectedUseCase,
-              tools: session.selectedTools,
-              confidenceScore: session.confidenceScore,
-              completedAt: session.completedAt,
-              message: "Explore session completed successfully!"
-            };
-
-            console.log("✅ Session completed:", session.sessionId);
-
-          } catch (error) {
-            console.error("❌ Error in CONFIDENCE step:", error);
-            throw new Error("Failed to complete session: " + error.message);
-          }
+          responsePayload = {
+            role: session.selectedRole,
+            task: session.selectedIntent,
+            tools: selectedToolsData,
+            prompts: toolPrompts,
+            completedAt: session.completedAt
+          };
           break;
+        }
 
         default:
-          throw new Error(`Invalid explore step: ${currentStep}`);
+          throw new Error(`Invalid step: ${currentStep}`);
       }
 
       await session.save();
-      console.log("💾 Session saved. Next step:", nextStep);
-
       return { nextStep, payload: responsePayload };
-
     } catch (error) {
       console.error(`❌ Error in processStep [${currentStep}]:`, error.message);
       throw error;
     }
   },
 
-  // ==========================================
-  // 3️⃣ COMPLETE SESSION (NEW)
-  // ==========================================
   async completeSession(sessionId) {
-    try {
-      console.log("🏁 Completing session:", sessionId);
-
-      const session = await ExploreSession.findOne({ sessionId });
-
-      if (!session) {
-        throw new Error("Explore session not found");
-      }
-
-      if (session.currentStep === "COMPLETED") {
-        console.log("ℹ️ Session already completed");
-        return {
-          sessionId: session.sessionId,
-          message: "Session already completed",
-          data: {
-            intent: session.selectedIntent,
-            useCase: session.selectedUseCase,
-            tools: session.selectedTools,
-            confidenceScore: session.confidenceScore,
-            completedAt: session.completedAt,
-            context: session.context,
-          }
-        };
-      }
-
-      session.currentStep = "COMPLETED";
-      session.completedAt = new Date();
-
-      if (!session.context || Object.keys(session.context).length === 0) {
-        session.context = momentMapper({
-          intent: session.selectedIntent,
-          useCase: session.selectedUseCase,
-        });
-      }
-
-      await session.save();
-
-      console.log("✅ Session completed successfully");
-
-      return {
-        sessionId: session.sessionId,
-        message: "Explore session completed successfully",
-        data: {
-          intent: session.selectedIntent,
-          useCase: session.selectedUseCase,
-          tools: session.selectedTools,
-          confidenceScore: session.confidenceScore,
-          completedAt: session.completedAt,
-          context: session.context,
-        }
-      };
-
-    } catch (error) {
-      console.error("❌ Error in completeSession:", error.message);
-      throw error;
-    }
+    const session = await ExploreSession.findOne({ sessionId });
+    if (!session) throw new Error("Explore session not found");
+    session.currentStep = "COMPLETED";
+    session.completedAt = new Date();
+    await session.save();
+    return { success: true, sessionId: session.sessionId };
   }
-}; 
+};

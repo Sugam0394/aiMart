@@ -1,17 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { startExploreThunk, submitExploreStepThunk } from "./exploreThunks";
+ import { createSlice } from "@reduxjs/toolkit";
+import { startExploreThunk,  } from "./exploreThunks";
 
 const initialState = {
   exploreSessionId: null,
-  currentStep: null,
-  // Har step ki final choice yahan save hogi summary dikhane ke liye
+  currentStep: "ROLE", 
   selections: {
-    intent: "",
-    useCase: "",
+    role: "",      // NEW
+    task: "",      // NEW (Replaces Intent/UseCase)
     tools: []
   },
-  stepPayload: null, // Backend se aane wale options
-  useCasePayload: null, // Preserved for Edit back-navigation
+  stepPayload: null, // Backend options
+  prompts: [],       // NEW: Final step prompts
   loading: false,
   error: null,
 };
@@ -31,29 +30,30 @@ const exploreSlice = createSlice({
       state.exploreSessionId = sessionId;
       state.currentStep = step;
       state.stepPayload = payload;
-      if (step === "USE_CASE") state.useCasePayload = payload;
+      
+      // Agar ye RESULTS step hai, toh prompts save karo
+      if (step === "COMPLETED" && payload?.prompts) {
+        state.prompts = payload.prompts;
+      }
+
       state.loading = false;
 
-      // Sync selections: Jo user ne abhi choose kiya, use save kar lo
       if (lastSelection) {
         const { type, value } = lastSelection;
         state.selections[type] = value;
       }
     },
 
-    // Back to Edit Action
     jumpToStep(state, action) {
-      const targetStep = action.payload; // "INTENT" or "USE_CASE"
+      const targetStep = action.payload; // "ROLE" or "TASK"
       state.currentStep = targetStep;
       
-      // Peeche jaane par aage ka data reset karna zaruri hai
-      if (targetStep === "INTENT") {
-        state.selections.useCase = "";
+      if (targetStep === "ROLE") {
+        state.selections.task = "";
         state.selections.tools = [];
       }
-      if (targetStep === "USE_CASE") {
+      if (targetStep === "TASK") {
         state.selections.tools = [];
-        state.stepPayload = state.useCasePayload;
       }
     },
 
@@ -67,46 +67,31 @@ const exploreSlice = createSlice({
     },
   },
   
-  // 🔥 IMPORTANT: Thunks ke result ko handle karne ke liye
   extraReducers: (builder) => {
     builder
-      // Handle Start Explore Thunk
       .addCase(startExploreThunk.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
       .addCase(startExploreThunk.fulfilled, (state, action) => {
         state.loading = false;
-        // Thunk se jo return data hai wo yahan action.payload mein milega
         state.exploreSessionId = action.payload.sessionId;
-        state.currentStep = action.payload.currentStep || "INTENT";
-        state.stepPayload = action.payload.payload || null;
+        state.currentStep = action.payload.currentStep || "ROLE";
       })
       .addCase(startExploreThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload; // Jo rejectWithValue se bheja tha
-      })
-      
-      // Handle Submit Step Thunk (Optional: Agar manual success nahi kar rahe)
-      .addCase(submitExploreStepThunk.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(submitExploreStepThunk.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(submitExploreStepThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const {
-  exploreStart,
-  exploreSuccess,
-  exploreFailure,
-  resetExplore,
-  jumpToStep
-} = exploreSlice.actions;
+export const { exploreStart, exploreSuccess, exploreFailure, resetExplore, jumpToStep } = exploreSlice.actions;
 
-export default exploreSlice.reducer; 
+// Selectors
+export const selectExploreState = (state) => state.explore;
+export const selectExploreSessionId = (state) => state.explore.exploreSessionId;
+export const selectCurrentStep = (state) => state.explore.currentStep;
+export const selectStepPayload = (state) => state.explore.stepPayload;
+export const selectExplorePrompts = (state) => state.explore.prompts;
+export const selectExploreLoading = (state) => state.explore.loading;
+
+export default exploreSlice.reducer;

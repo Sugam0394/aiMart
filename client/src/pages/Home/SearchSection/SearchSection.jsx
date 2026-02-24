@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import { useSearchTools } from './useSerachTools';
 import ToolCard from '../../aiArt/components/ToolCard';
 import './SearchSection.css';
@@ -152,5 +152,5 @@ const SearchSection = () => {
   );
 };
 
-export default SearchSection; 
+export default SearchSection;
 

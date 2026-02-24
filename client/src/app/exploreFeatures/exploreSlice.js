@@ -1,16 +1,16 @@
  import { createSlice } from "@reduxjs/toolkit";
-import { startExploreThunk,  } from "./exploreThunks";
+import { startExploreThunk } from "./exploreThunks";
 
 const initialState = {
   exploreSessionId: null,
   currentStep: "ROLE", 
   selections: {
-    role: "",      // NEW
-    task: "",      // NEW (Replaces Intent/UseCase)
+    role: "",      
+    task: "",      
     tools: []
   },
-  stepPayload: null, // Backend options
-  prompts: [],       // NEW: Final step prompts
+  stepPayload: null, 
+  prompts: [],       
   loading: false,
   error: null,
 };
@@ -31,8 +31,8 @@ const exploreSlice = createSlice({
       state.currentStep = step;
       state.stepPayload = payload;
       
-      // Agar ye RESULTS step hai, toh prompts save karo
-      if (step === "COMPLETED" && payload?.prompts) {
+      // BUG 2 FIX: Save prompts on both COMPLETED and RESULTS steps
+      if ((step === "COMPLETED" || step === "RESULTS") && payload?.prompts) {
         state.prompts = payload.prompts;
       }
 
@@ -45,7 +45,7 @@ const exploreSlice = createSlice({
     },
 
     jumpToStep(state, action) {
-      const targetStep = action.payload; // "ROLE" or "TASK"
+      const targetStep = action.payload; 
       state.currentStep = targetStep;
       
       if (targetStep === "ROLE") {
@@ -86,12 +86,6 @@ const exploreSlice = createSlice({
 
 export const { exploreStart, exploreSuccess, exploreFailure, resetExplore, jumpToStep } = exploreSlice.actions;
 
-// Selectors
-export const selectExploreState = (state) => state.explore;
-export const selectExploreSessionId = (state) => state.explore.exploreSessionId;
-export const selectCurrentStep = (state) => state.explore.currentStep;
-export const selectStepPayload = (state) => state.explore.stepPayload;
-export const selectExplorePrompts = (state) => state.explore.prompts;
-export const selectExploreLoading = (state) => state.explore.loading;
+ 
 
 export default exploreSlice.reducer;

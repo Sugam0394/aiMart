@@ -1,16 +1,52 @@
- import React from 'react';
-import { useSelector } from 'react-redux';
+ import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { CheckCircle, Copy, Share2, Sparkles } from "lucide-react";
+import { submitExploreStepThunk } from '../../../app/exploreFeatures/exploreThunks';
+import { selectExploreSessionId, selectExploreLoading } from '../../../app/exploreFeatures/exploreSelectors';
 import "./styles/ResultStep.css";
 
 function ResultStep() {
-  // Redux se data nikaalo jo processStep ke RESULTS case se aaya tha
+  const dispatch = useDispatch();
+  
+  // Selectors for state management
   const { selections, prompts } = useSelector((state) => state.explore);
+  const sessionId = useSelector(selectExploreSessionId);
+  const isLoading = useSelector(selectExploreLoading);
+
+  // BUG 1 FIX: Fetch prompts when component mounts
+  useEffect(() => {
+    if (sessionId && prompts.length === 0) {
+      dispatch(submitExploreStepThunk({
+        sessionId,
+        currentStep: "RESULTS",
+        stepData: {},
+      }));
+    }
+  }, [dispatch, sessionId, prompts.length]);
+
+  // BUG 3 FIX: Actual Clipboard Copy
+  const handleShareStack = () => {
+    const role = selections.role || 'general';
+    const shareUrl = `${window.location.origin}/stack/${role}`;
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => alert("Stack link copied! Share karo 🚀"))
+      .catch(() => alert("Copy failed, manually copy karo: " + shareUrl));
+  };
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     alert("Prompt copied to clipboard! 🚀");
   };
+
+  // Loading state handling
+  if (isLoading) {
+    return (
+      <div className="result-loading">
+        <div className="spinner" />
+        <p>Generating your AI prompts...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="result-step-premium">
@@ -46,7 +82,7 @@ function ResultStep() {
       </div>
 
       <div className="result-actions">
-        <button className="share-btn" onClick={() => alert("Link copied to share!")}>
+        <button className="share-btn" onClick={handleShareStack}>
           <Share2 size={18} /> Share My Stack
         </button>
         <button className="finish-btn" onClick={() => window.location.href = '/'}>

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   Briefcase, GraduationCap, PenTool, Megaphone,
   Video, Code, Palette, RefreshCw, Copy, Share2, Check
 } from 'lucide-react';
-import { fetchStack , clearStack } from '../../../app/features/stackSlice';
+import { fetchStack, clearStack } from '../../../app/features/stackSlice';
 import './AiStackSection.css';
 
 const ROLE_OPTIONS = [
-  { id: 'founder',    label: 'Founder',    icon: <Briefcase size={20} />,     desc: 'Launch & Scale' },
-  { id: 'marketer',   label: 'Marketer',   icon: <Megaphone size={20} />,     desc: 'Grow Brands' },
+  { id: 'founder',    label: 'Founder',    icon: <Briefcase size={20} />,    desc: 'Launch & Scale' },
+  { id: 'marketer',   label: 'Marketer',   icon: <Megaphone size={20} />,    desc: 'Grow Brands' },
   { id: 'creator',    label: 'Creator',    icon: <Video size={20} />,         desc: 'Content Magic' },
   { id: 'designer',   label: 'Designer',   icon: <Palette size={20} />,       desc: 'Create Visuals' },
   { id: 'developer',  label: 'Developer',  icon: <Code size={20} />,          desc: 'Ship Faster' },
@@ -110,6 +110,20 @@ const AiStackSection = () => {
         <div className="aistack-loading">
           <div className="loading-spinner" />
           <p>Building your stack...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // BUG 5 FIX: Error State (Add before success UI)
+  if (status === 'failed' || status === 'error') {
+    return (
+      <section className="aistack-section">
+        <div className="aistack-error-container" style={{ textAlign: 'center', padding: '40px' }}>
+          <p style={{ color: '#888', marginBottom: '20px' }}>Aree! Stack load nahi ho paaya. Network check karein?</p>
+          <button className="change-role-btn" onClick={handleChangeRole} style={{ margin: '0 auto' }}>
+            <RefreshCw size={14} /> Try Again
+          </button>
         </div>
       </section>
     );

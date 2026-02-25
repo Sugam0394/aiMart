@@ -1,130 +1,201 @@
+ /* =========================================
+   WORKFLOW SECTION - PREMIUM V2
+   ========================================= */
+
 .workflow-selection-card {
-  background: var(--card-bg, #ffffff);
-  border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 2rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
-.selection-header h2 { font-size: 1.5rem; color: #1a202c; margin-bottom: 4px; }
-.selection-header p { color: #718096; margin-bottom: 20px; }
+.selection-header h2 { 
+  font-size: 1.75rem; 
+  font-weight: 800;
+  color: #111827; 
+  margin-bottom: 8px; 
+  letter-spacing: -0.02em;
+}
 
+.selection-header p { 
+  color: #64748b; 
+  margin-bottom: 28px; 
+  font-size: 1.05rem;
+}
+
+/* Role Grid - Responsive */
 .role-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
 }
 
 .role-btn {
   display: flex;
   align-items: center;
-  padding: 12px;
-  border: 1px solid #edf2f7;
-  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #f1f5f9;
+  border-radius: 16px;
   background: #f8fafc;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
 }
 
-.role-btn:hover { border-color: #3182ce; background: #ebf8ff; transform: translateY(-2px); }
-
-.role-icon {
-  background: #fff;
-  padding: 8px;
-  border-radius: 8px;
-  margin-right: 12px;
-  color: #3182ce;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.role-btn:hover { 
+  border-color: #4f46e5; 
+  background: #ffffff; 
+  transform: translateY(-4px); 
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1);
 }
 
-.role-name { display: block; font-weight: 600; font-size: 0.95rem; }
-.role-desc { font-size: 0.75rem; color: #718096; }
+.role-icon {
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 12px;
+  margin-right: 16px;
+  color: #4f46e5;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-/* Active Workflow Styles */
-.active-workflow-section { margin-bottom: 3rem; animation: fadeIn 0.5s ease; }
+.role-name { 
+  display: block; 
+  font-weight: 700; 
+  font-size: 1rem; 
+  color: #1e293b;
+}
+
+.role-desc { 
+  font-size: 0.8rem; 
+  color: #64748b; 
+}
+
+/* ── Active Workflow Styles ── */
+.active-workflow-section { 
+  margin-bottom: 4rem; 
+  animation: fadeIn 0.6s ease-out; 
+}
 
 .workflow-top-bar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding: 0 8px;
 }
 
 .role-badge {
-  background: #ebf8ff;
-  color: #2b6cb0;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.7rem;
+  background: rgba(79, 70, 229, 0.1);
+  color: #4f46e5;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  display: inline-block;
 }
 
+.change-role-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.change-role-btn:hover { background: #e2e8f0; color: #1e293b; }
+
+/* Timeline Connector Logic */
 .steps-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
+  position: relative;
 }
 
 .workflow-step-card {
   display: flex;
-  gap: 16px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 16px;
-  border: 1px solid #eef2f6;
-  position: relative;
+  gap: 20px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  transition: 0.3s;
+}
+
+.workflow-step-card:hover {
+  border-color: #e2e8f0;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.04);
 }
 
 .step-number {
-  background: #2d3748;
+  background: #1e293b;
   color: #fff;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: 800;
   flex-shrink: 0;
+  z-index: 2;
 }
 
-.tool-branding { display: flex; align-items: center; gap: 12px; }
-.tool-branding img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
-.tool-branding h4 { margin: 0; font-size: 1.1rem; }
-.tool-branding span { font-size: 0.8rem; color: #718096; }
+.tool-branding img { 
+  width: 48px; 
+  height: 48px; 
+  border-radius: 12px; 
+  object-fit: cover; 
+  border: 1px solid #f1f5f9;
+}
 
 .time-tag {
-  margin-left: auto;
-  background: #c6f6d5;
-  color: #22543d;
-  padding: 4px 8px;
-  border-radius: 6px;
+  background: #dcfce7;
+  color: #166534;
+  padding: 6px 12px;
+  border-radius: 8px;
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 800;
+  margin-left: auto;
 }
-
-.step-main { display: flex; width: 100%; align-items: center; margin-bottom: 8px; }
-
-.step-why { font-size: 0.85rem; color: #4a5568; margin-bottom: 12px; line-height: 1.4; }
 
 .prompt-box {
-  background: #f7fafc;
-  border: 1px dashed #cbd5e0;
-  padding: 12px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: #1e293b; /* Dark theme for prompt like a terminal */
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 16px;
 }
 
-.prompt-box code { font-size: 0.8rem; color: #2d3748; font-family: monospace; }
-.copy-btn { background: none; border: none; cursor: pointer; color: #a0aec0; transition: 0.2s; }
-.copy-btn:hover { color: #3182ce; }
+.prompt-box code { 
+  color: #e2e8f0; 
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.copy-btn { color: #94a3b8; }
+.copy-btn:hover { color: #fff; }
+
+@media (max-width: 768px) {
+  .workflow-selection-card { padding: 20px; }
+  .role-grid { grid-template-columns: 1fr; }
+  .workflow-step-card { flex-direction: column; gap: 12px; }
+  .step-number { width: 28px; height: 28px; }
+  .workflow-top-bar { flex-direction: column; align-items: flex-start; gap: 16px; }
 }

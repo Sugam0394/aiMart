@@ -1,74 +1,132 @@
-/* =========================
-   Recommended Scroll Container
-========================= */
+ /* =========================================
+   AI-MART — RECOMMENDED SECTION (V2)
+   Theme: Professional Clean / Indigo
+   ========================================= */
+
+/* ── Wrapper & Header ── */
+.recommend-wrapper {
+  margin: 40px 0;
+  padding: 0 4px;
+}
+
+.recommend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  margin-bottom: 20px;
+}
+
+.recommend-title-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.recommend-icon {
+  background: rgba(79, 70, 229, 0.1);
+  color: #4f46e5;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.recommend-label {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.view-all-link {
+  color: #4f46e5;
+  font-weight: 700;
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.view-all-link:hover {
+  background: rgba(79, 70, 229, 0.05);
+  text-decoration: none;
+}
+
+/* ── Scroll Container ── */
 .usecase-row-container {
   display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  gap: 16px; 
-  padding: 15px 24px 35px; /* Bottom padding thodi zyada shadow visibility ke liye */
+  gap: 20px; 
+  padding: 10px 24px 30px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none; /* Hide scrollbar Firefox */
+  scrollbar-width: none; /* Firefox */
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
 }
 
 .usecase-row-container::-webkit-scrollbar {
-  display: none; /* Hide scrollbar Chrome/Safari */
+  display: none; /* Chrome/Safari */
 }
 
- /* ToolCard Wrapper - Anti-Shrink Fix */
-.usecase-row-container .tool-card {
-  flex: 0 0 180px !important; /* Shrink=0, Basis=180px */
-  min-width: 180px !important; /* Mobile stability ke liye */
+/* ── Card & Wrapper Logic ── */
+.recommend-card-item {
+  flex: 0 0 220px !important; 
+  min-width: 220px !important;
   scroll-snap-align: start;
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Subtle "Just for You" feel on hover */
-.usecase-row-container .tool-card:hover {
+.recommend-card-item:hover {
   transform: translateY(-8px);
 }
 
-/* =========================
-   Skeleton Placeholder
-========================= */
+/* ── Skeleton (Professional Shimmer) ── */
 .loading-skeleton-row {
   display: flex;
-  gap: 16px;
-  padding: 15px 24px;
+  gap: 20px;
+  padding: 10px 24px;
   overflow: hidden;
 }
 
 .skeleton-card {
-  flex: 0 0 180px;
-  height: 240px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loadingShimmer 1.5s infinite;
-  border-radius: 16px;
+  flex: 0 0 220px;
+  height: 280px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes loadingShimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.skeleton-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 1.5s infinite;
 }
 
-/* =========================
-   Mobile Optimization
-========================= */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ── Mobile Optimization ── */
 @media (max-width: 768px) {
-  .usecase-row-container {
-    padding: 10px 16px 25px;
-    gap: 12px;
+  .recommend-header { padding: 0 16px; }
+  .recommend-label { font-size: 19px; }
+  .usecase-row-container { 
+    padding: 10px 16px 25px; 
+    gap: 14px; 
   }
-
-  .usecase-row-container .tool-card,
+  .recommend-card-item, 
   .skeleton-card {
-  flex: 0 0 160px !important; /* Mobile density */
-    min-width: 160px !important;
-
+    flex: 0 0 170px !important;
+    min-width: 170px !important;
   }
 }

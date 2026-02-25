@@ -6,7 +6,6 @@ import StepShell from './StepShell';
 import RoleStep from './steps/RoleStep';
  import TaskStep from './steps/TaskStep';
 import ToolStep from './steps/ToolStep';
-import ResultStep from './steps/ResultStep';
 import './styles/StepFlowController.css';
 
 function StepFlowController() {
@@ -26,10 +25,7 @@ function StepFlowController() {
 
   const step = currentStep?.toUpperCase();
 
-  // Agar result aa gaya hai, toh seedha full-screen result dikhao
-  if (step === 'COMPLETED' || step === 'RESULTS') {
-    return <ResultStep />;
-  }
+ 
 
   return (
     <div className="step-flow-wrapper">

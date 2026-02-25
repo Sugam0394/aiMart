@@ -1,6 +1,7 @@
  import { createAsyncThunk } from "@reduxjs/toolkit";
 import { exploreFailure, exploreStart, exploreSuccess } from "./exploreSlice";
 import { startExplore, submitExploreStep, } from "../../api/explore/exploreApi";
+ 
 
 // 1️⃣ Start Explore Session (Guest Support Added)
  // exploreThunks.js
@@ -59,3 +60,6 @@ export const submitExploreStepThunk = createAsyncThunk(
     }
   }
 );
+
+ 
+ 

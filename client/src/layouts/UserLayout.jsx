@@ -1,26 +1,33 @@
-import React from "react";
+ import React from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // useDispatch add kiya
+import { resetExplore } from "../app/exploreFeatures/exploreSlice";
+import { startExploreThunk } from "../app/exploreFeatures/exploreThunks";
 import "./UserLayout.css";
 
 function UserLayout() {
   const { user, role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch(); // Dispatcher initialize kiya
+
+   
+  const handleExploreClick = (e) => {
+    e.preventDefault();  
+    
+    dispatch(resetExplore());  
+    dispatch(startExploreThunk());  
+    
+    navigate("/explore");  
+  };
 
   const handleProfileNavigation = (e) => {
     e.preventDefault();
     e.stopPropagation(); 
-
-    // FIX: Redux ke 'role' ke saath user object ke role ko bhi check karte hain
-    // Isse session restore (1-2 hours baad) wala bug theek ho jayega
     const currentRole = user?.role || role;
-
     if (!currentRole) {
       navigate("/login");
       return;
     }
-
-    // Role-based navigation logic
     if (currentRole === "user") {
       navigate("/settings");
     } else if (currentRole === "toolOwner") {
@@ -39,7 +46,16 @@ function UserLayout() {
           </h2>
           <div className="nav-links">
             <NavLink to="/home">Home</NavLink>
-            <NavLink to="/explore">Explore</NavLink>
+            
+            {/* 🛠️ Explore Link ko function se replace kiya */}
+            <a 
+              href="/explore" 
+              className={({ isActive }) => isActive ? "active" : ""} 
+              onClick={handleExploreClick}
+            >
+              Explore
+            </a>
+
             <NavLink to="/saved" className="nav-saved-link">
               <span className="nav-heart"></span> Saved
             </NavLink>
@@ -56,7 +72,6 @@ function UserLayout() {
             >
               <div className="user-info">
                 <span className="user-name">{user.name || "Account"}</span>
-                {/* Yahan bhi fallback role lagaya hai display ke liye */}
                 <span className="user-role-badge">{user.role || role}</span>
               </div>
               <div className="nav-avatar">
@@ -80,6 +95,6 @@ function UserLayout() {
   );
 }
 
-export default UserLayout;  
+export default UserLayout;
 
 

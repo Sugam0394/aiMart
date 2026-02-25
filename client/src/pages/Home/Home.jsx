@@ -12,6 +12,8 @@ import TrendingForYouSection from './TrendingSection/TrendingForYou';
 import RisingToolsSection from './RisingTool/RisingToolSection';
  import RecommendedSection from './RecommendSection/RecommendSection';
 import SectionWrapper from '../../layouts/section/SectionWrapper';
+
+import './HomeRedesign.css'
  
 
 function Home() {

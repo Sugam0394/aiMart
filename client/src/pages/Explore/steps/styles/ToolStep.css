@@ -230,6 +230,131 @@
     font-size: 14px;
   }
 }
+
+/* Card inner layout */
+.card-selection-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hide navigation button by default */
+.view-details-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.02); /* Very subtle hover feedback */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none; /* User card pe click kar sake niche */
+}
+
+/* Only trigger navigation button click on specific area */
+.view-btn-trigger {
+  pointer-events: auto; /* Button click kaam karega */
+  background: white;
+  color: #4F46E5;
+  border: 1px solid #4F46E5;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+}
+
+.horizontal-tool-item:hover .view-details-overlay {
+  opacity: 1;
+}
+
+.horizontal-tool-item:hover .view-btn-trigger {
+  transform: translateY(0);
+}
+
+.view-btn-trigger:hover {
+  background: #4F46E5;
+  color: white;
+}
+
+/* Core Layout */
+.tool-step-premium { padding: 20px 0; }
+
+.horizontal-tool-item {
+  flex: 0 0 280px;
+  position: relative;
+  cursor: pointer;
+  background: var(--bg-card, #fff);
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.horizontal-tool-item.selected {
+  border-color: #4F46E5;
+  background: #F5F7FF;
+  transform: translateY(-2px);
+}
+
+/* Indicators */
+.selection-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  background: #F3F4F6;
+  color: #6B7280;
+  z-index: 10;
+}
+
+.selection-pill.active {
+  background: #10B981;
+  color: white;
+}
+
+.match-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #4F46E5;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  z-index: 10;
+}
+
+/* Tool Footer */
+.tool-card-footer {
+  margin-top: auto;
+  border-top: 1px solid #F3F4F6;
+  padding-top: 12px;
+  text-align: right;
+}
+
+.text-view-btn {
+  background: none;
+  border: none;
+  color: #4F46E5;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.text-view-btn:hover { text-decoration: underline; }
  
 
 

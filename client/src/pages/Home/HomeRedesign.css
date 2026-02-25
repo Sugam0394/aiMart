@@ -302,3 +302,113 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =========================================
+   AI-MART — HOME REFINED (CONSTITUTION V2)
+   Focus: Sticky Dynamics & Section Stack
+   ========================================= */
+
+.home-container {
+  min-height: 100vh;
+  /* Rule 1: Visual Hierarchy Gradient */
+  background: linear-gradient(180deg, #F9FAFB 0%, #F3F4F6 100%);
+  transition: background 0.3s ease;
+}
+
+.home-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 0 100px; /* Space for footer */
+}
+
+/* --- 1. Hero Intent Section --- */
+.hero-intent-section {
+  padding: 60px 20px 40px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem); /* Rule 2: Responsive Typography */
+  font-weight: 900;
+  color: var(--color-text-primary);
+  letter-spacing: -0.04em;
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 32px;
+}
+
+/* --- 2. Sticky Filter Bar (The Engineering Marvel) --- */
+.filter-sticky-bar {
+  position: sticky;
+  top: 0; /* Align with top or Navbar height */
+  z-index: 100;
+  background: rgba(249, 250, 251, 0.8);
+  backdrop-filter: blur(12px); /* Rule 3: Premium Polish */
+  -webkit-backdrop-filter: blur(12px);
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--color-border-light);
+  margin-bottom: 24px;
+}
+
+.filter-inner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* --- 3. Section Stack (Rule 6: The "Breathable" UI) --- */
+.sections-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 64px; /* Rule 6: Large gaps prevent visual clutter */
+  padding: 0 20px;
+}
+
+/* Horizontal Scroll Container Logic */
+.usecase-row-container {
+  margin: 0 -20px; /* Edge-to-edge scroll on mobile */
+  padding: 10px 20px;
+}
+
+/* --- 4. Section Wrapper Polish --- */
+.section-wrapper h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.section-wrapper p {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+}
+
+/* --- 5. Mobile Adjustments (Rule 5) --- */
+@media (max-width: 768px) {
+  .hero-intent-section { padding: 40px 16px; }
+  .sections-stack { gap: 40px; }
+  .filter-label { display: none; } /* Space saver on mobile */
+  
+  .section-title { font-size: 2.25rem; }
+}
+
+/* --- 6. Dark Mode Override --- */
+[data-theme="dark"] .home-container {
+  background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+}
+
+[data-theme="dark"] .filter-sticky-bar {
+  background: rgba(2, 6, 23, 0.85);
+  border-color: #1e293b;
+}
+
+[data-theme="dark"] .section-title { color: #F8FAF9; }

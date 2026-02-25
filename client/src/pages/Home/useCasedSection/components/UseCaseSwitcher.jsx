@@ -1,23 +1,23 @@
- import { useEffect } from "react";
+ import { useEffect,  } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAvailableUseCases } from "../../../../app/features/MomentSlice";
 import "./UseCaseSwitcher.css";
 
 const fallbackUseCases = [
-  { key: "blog-writing", label: "Blog Writing" },
-  { key: "coding-help", label: "Coding Help" },
-  { key: "digital-art", label: "Digital Art" },
-  { key: "video-editing", label: "Video Editing" },
+  { key: "blog-writing", label: "Blog Writing", toolCount: 0 },
+  { key: "coding-help", label: "Coding Help", toolCount: 0 },
+  { key: "digital-art", label: "Digital Art", toolCount: 0 },
+  { key: "video-editing", label: "Video Editing", toolCount: 0 },
 ];
 
 function UseCaseSwitcher({ activeUseCase, onChange }) {
   const dispatch = useDispatch();
-  // Hum homeStatus bhi check karenge taaki agar Home.jsx ne data fetch kar liya ho toh dobara call na ho
+ 
+  
   const { availableUseCases, useCasesStatus, homeStatus } = useSelector((state) => state.moment);
 
   useEffect(() => {
-    // Optimization: Agar homeData load ho gaya hai ya useCases loading mein hain toh skip karo
-    if (useCasesStatus === "idle" && homeStatus !== "loading" && homeStatus !== "succeeded") {
+    if (useCasesStatus === "idle" && homeStatus !== "loading") {
       dispatch(fetchAvailableUseCases());
     }
   }, [dispatch, useCasesStatus, homeStatus]);
@@ -25,10 +25,12 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
   // Loading State
   if (useCasesStatus === "loading" || (homeStatus === "loading" && availableUseCases.length === 0)) {
     return (
-      <div className="usecase-switcher">
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="pill skeleton shimmer"></div>
-        ))}
+      <div className="usecase-container">
+        <div className="usecase-switcher">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="pill skeleton shimmer"></div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -39,20 +41,24 @@ function UseCaseSwitcher({ activeUseCase, onChange }) {
 
   return (
     <div className="usecase-container">
-      <div className="usecase-switcher">
-        {data.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            className={`pill ${activeUseCase === item.key ? "active" : ""}`}
-            onClick={() => onChange(item.key)}
-            title={item.toolCount ? `${item.toolCount} tools available` : ""}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
+    <h3 className="filters-title">Browse by Use Case</h3>
+    
+    <div className="usecase-switcher">
+      {data.map((item) => (
+        <button
+          key={item.key}
+          type="button"
+          className={`pill ${activeUseCase === item.key ? "active" : ""}`}
+          onClick={() => onChange(item.key)}
+          // Title hover par count dikhayega, pill ke upar nahi
+          title={item.toolCount ? `${item.toolCount} tools available` : "Explore tools"}
+        >
+          {/* Ab sirf saaf-suthra naam dikhega */}
+          <span className="pill-text">{item.label}</span>
+        </button>
+      ))}
     </div>
+  </div>
   );
 }
 

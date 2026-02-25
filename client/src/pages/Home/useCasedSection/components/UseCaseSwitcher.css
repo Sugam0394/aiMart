@@ -1,11 +1,12 @@
-/* ============================================================
-   CONTAINER & HEADER
+ /* ============================================================
+   CONTAINER & LAYOUT
    ============================================================ */
 .usecase-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
+  position: relative; /* Necessary for mobile fade effect */
   box-sizing: border-box;
 }
 
@@ -18,13 +19,10 @@
   text-transform: uppercase;
 }
 
-/* ============================================================
-   SWITCHER (THE WRAPPER)
-   Default: Desktop Grid
-   ============================================================ */
+/* ── Switcher Wrapper ── */
 .usecase-switcher {
   display: flex;
-  flex-wrap: wrap; /* Desktop par wrap hone do */
+  flex-wrap: wrap; /* Grid-like behavior on Desktop */
   gap: 12px;
   justify-content: flex-start;
   width: 100%;
@@ -32,7 +30,7 @@
 }
 
 /* ============================================================
-   THE PILLS (BUTTONS)
+   THE PILLS (BUTTONS) - INDIGO V2
    ============================================================ */
 .pill {
   display: inline-flex;
@@ -40,16 +38,16 @@
   justify-content: center;
   padding: 10px 22px;
   background: #ffffff;
-  color: #475569;
+  color: #64748b;
   border: 1.5px solid #e2e8f0;
-  border-radius: 99px; /* Smooth Capsule Shape */
+  border-radius: 99px; /* Premium Capsule Shape */
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
-  -webkit-tap-highlight-color: transparent; /* Mobile flash remove */
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Hover Effect (Desktop Only) */
@@ -59,11 +57,11 @@
     color: #4f46e5;
     background: #f8fafc;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
   }
 }
 
-/* Active State (Selection) */
+/* Active Selection State */
 .pill.active {
   background: #4f46e5;
   color: #ffffff !important;
@@ -73,7 +71,7 @@
 }
 
 /* ============================================================
-   LOADING SKELETON
+   LOADING SKELETON & SHIMMER
    ============================================================ */
 .pill.skeleton {
   width: 110px;
@@ -102,25 +100,21 @@
 /* ============================================================
    MOBILE OPTIMIZATION (THE UX FIX)
    ============================================================ */
-
 @media (max-width: 768px) {
   .usecase-container {
-    padding: 15px 0; /* Side padding remove for full-width scroll */
-    position: relative;
+    padding: 15px 0; /* Full width scroll feel */
   }
 
   .filters-title {
-    padding-left: 15px; /* Text aligned with edge */
+    padding-left: 16px;
   }
 
   .usecase-switcher {
-    flex-wrap: nowrap; /* Vertical wrap khatam */
-    overflow-x: auto;  /* Horizontal scroll shuru */
-    padding: 10px 15px 20px 15px; /* Bottom padding for shadow space */
+    flex-wrap: nowrap; /* Forces horizontal row */
+    overflow-x: auto; 
+    padding: 10px 16px 20px 16px;
     gap: 10px;
-    
-    /* Hide Scrollbar but keep functionality */
-    -webkit-overflow-scrolling: touch; /* Momentum scrolling for iOS */
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Firefox */
   }
 
@@ -131,29 +125,29 @@
   .pill {
     padding: 9px 18px;
     font-size: 0.85rem;
-    flex-shrink: 0; /* Pills ko pichakne se roktah hai */
+    flex-shrink: 0; /* Prevents pills from squeezing */
   }
 
-  /* Fade Effect: Yeh user ko signal deta hai ki aage scroll hai */
+  /* Premium Fade Gradient (Right Side) */
   .usecase-container::after {
     content: '';
     position: absolute;
     right: 0;
-    top: 40px; /* Aligned with pills */
+    top: 40px; 
     bottom: 20px;
-    width: 50px;
+    width: 60px;
     background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
     pointer-events: none;
     z-index: 2;
   }
 }
 
-/* Smallest phones optimization */
+/* Small Device Polish */
 @media (max-width: 480px) {
   .pill {
     padding: 8px 16px;
     font-size: 0.8rem;
   }
-} 
+}
  
 

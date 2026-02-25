@@ -153,7 +153,7 @@ if (!useCaseKey) return [];
       avgRating: -1,
       createdAt: -1
     })
-    .limit(15)
+    .limit(50)
     .lean();
 
   return tools;

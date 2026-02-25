@@ -243,9 +243,9 @@ export const getAvailableUseCases = asyncHandler(async (req, res) => {
         $project: {
           _id: 0,
           key: "$_id",
-          label: { $literal: "" }, // We'll add this in JS
+          label: "$_id",
           toolCount: "$count",
-          preview: { $slice: ["$sampleTools", 3] } // First 3 tools as preview
+          preview: { $slice: ["$sampleTools", 10] } // First 3 tools as preview
         }
       },
       
@@ -256,10 +256,11 @@ export const getAvailableUseCases = asyncHandler(async (req, res) => {
       { $limit: 25 }
     ]);
 
-    // Add humanized labels
+  
+    // Humanize logic ko inline handle kar lo agar function issue de raha hai
     const formattedUseCases = useCases.map(uc => ({
       ...uc,
-      label: humanizeUseCase(uc.key)
+      label: uc.key.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
     }));
 
     return res.status(200).json(

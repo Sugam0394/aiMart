@@ -1,6 +1,22 @@
  import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toolService } from "../../api/toolOwner/tool.services";
 
+
+ 
+const mapUseCaseData = (item) => {
+  
+
+  return {
+   
+    key: item.key || item.slug || item.id,
+
+  
+    label: item.label || item.name || item.key || "Explore", 
+
+   toolCount: item.toolCount || item.count || 0
+  };
+};
+
 // ✅ 1. Unified Home Data Thunk
 export const fetchHomeData = createAsyncThunk(
   "moment/fetchHomeData",
@@ -45,6 +61,8 @@ export const fetchToolsByUseCase = createAsyncThunk(
   }
 );
 
+ 
+
 const initialState = {
   availableUseCases: [],
   trendingTools: [],
@@ -54,10 +72,10 @@ const initialState = {
   homeError: null,
   useCasesStatus: "idle",
   useCasesError: null,
+  useCaseSections: {},
   agenda: [],
   detectedIntents: [],
   selectedIntent: null,
-  useCaseSections: {},
 };
 
 const momentSlice = createSlice({
@@ -76,18 +94,19 @@ const momentSlice = createSlice({
       state.useCasesStatus = "idle";
     }
   },
-
   extraReducers: (builder) => {
     builder
+      // --- fetchHomeData ---
       .addCase(fetchHomeData.pending, (state) => {
         state.homeStatus = "loading";
-        state.homeError = null;
       })
       .addCase(fetchHomeData.fulfilled, (state, action) => {
         state.homeStatus = "succeeded";
-        const data = action.payload || {}; 
+        const data = action.payload || {};
         
-        state.availableUseCases = data.useCases || [];
+        // Use cases mapping
+        state.availableUseCases = (data.useCases || []).map(mapUseCaseData);
+        
         state.trendingTools = data.trending || [];
         state.risingTools = data.rising || [];
         state.recommendedTools = data.recommended || [];
@@ -98,11 +117,21 @@ const momentSlice = createSlice({
         state.homeError = action.payload;
       })
 
+      // --- fetchAvailableUseCases (FIXED MAPPING) ---
+      .addCase(fetchAvailableUseCases.pending, (state) => {
+        state.useCasesStatus = "loading";
+      })
       .addCase(fetchAvailableUseCases.fulfilled, (state, action) => {
         state.useCasesStatus = "succeeded";
-        state.availableUseCases = action.payload || [];
+        // ✅ FIXED: Pehle yahan mapping nahi thi, ab frontend ko hamesha 'label' milega
+        state.availableUseCases = (action.payload || []).map(mapUseCaseData); 
+      })
+      .addCase(fetchAvailableUseCases.rejected, (state, action) => {
+        state.useCasesStatus = "failed";
+        state.useCasesError = action.payload;
       })
 
+      // --- fetchToolsByUseCase ---
       .addCase(fetchToolsByUseCase.fulfilled, (state, action) => {
         const { useCase, tools, meta, count } = action.payload || {};
         if (useCase) {
@@ -117,8 +146,7 @@ const momentSlice = createSlice({
   }
 });
 
-export const {
-  setAgenda, setDetectedIntents, setSelectedIntent, clearUseCaseSection, resetHomeStatus
-} = momentSlice.actions;
-
+export const { setAgenda, setDetectedIntents, setSelectedIntent, clearUseCaseSection, resetHomeStatus } = momentSlice.actions;
 export default momentSlice.reducer;
+
+ 

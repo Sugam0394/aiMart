@@ -17,7 +17,7 @@ const AppInitializer = () => {
     const wakeUpBackend = async (retries = 5) => {
       for (let i = 0; i < retries; i++) {
         try {
-          const res = await fetch(`${import.meta.env.VITE_API_URL}/api/health`);
+          const res = await fetch(`${import.meta.env.VITE_API_URL}/health`);
           if (res.ok) {
             console.log("🟢 Backend is awake!");
             return true;

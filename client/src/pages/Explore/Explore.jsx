@@ -1,15 +1,24 @@
  import React from 'react'
-import './styles/Explore.css'
-// import ExploreWrapper from './ExploreWrapper' // Ise hata dein
-import StepFlowController from './StepFlowController' // Ise use karein
+import './styles/Explore.css'  
+import StepFlowController from './StepFlowController'
+ 
 
 function Explore() {
   return (
-    <main className="explore-layout">
+ 
+    <main className="explore-layout"> 
       <div className="explore-container">
-        {/* ✅ FIXED: ExploreWrapper ki jagah StepFlowController use karein */}
+        
+   
+        
         <StepFlowController /> 
+        
       </div>
+      
+      {/* Tip: Agar aapke StepFlowController mein buttons hain, 
+        to ensure karein unme 'primary-action-btn' ya 'usecase-btn' 
+        classes use ho rahi hain.
+      */}
     </main>
   )
 }

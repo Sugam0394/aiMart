@@ -1,150 +1,139 @@
- /* ===================================
-   AI-MART — STEP SHELL (FIXED)
-   File: src/pages/Explore/styles/StepShell.css
-=================================== */
+ /* =========================================
+   AI-MART — STEP SHELL (CONSTITUTION V2)
+   Card-Based | System-Spacing | Mobile-First
+   ========================================= */
 
-/* ✅ FIX: Mismatch class name fixed (.step-shell-container -> .step-shell) */
 .step-shell {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto 24px auto;
-  background: #ffffff;
-  border-radius: 16px;
+  background: #FFFFFF;
+  border-radius: 10px; /* Rule 4: System Radius */
   border: 1px solid #E5E7EB;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Rule 4: System Shadow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
+  margin-bottom: 16px; /* Rule 6: Spacing scale */
 }
 
-/* Active State Design */
+/* Active State: Rule 4 Hover/Active logic */
 .step-shell.active {
   border-color: #4F46E5;
-  box-shadow: 0 8px 30px rgba(79,70,229,0.1);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
+  transform: translateY(-2px);
 }
 
-/* Completed State Design */
+/* Completed State */
 .step-shell.completed {
   background: #F9FAFB;
-  opacity: 0.9;
+  opacity: 1; 
 }
 
-/* Locked State Design */
+/* Locked State */
 .step-shell.locked {
   opacity: 0.6;
   pointer-events: none;
   background: #F3F4F6;
+  filter: grayscale(1);
 }
 
-/* ── Header ── */
+/* ── Header Section ── */
 .step-header {
-  padding: 20px 24px;
+  padding: 16px 20px; /* Rule 6: Consistent spacing */
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: #FAFBFF;
+  gap: 12px;
+  background: transparent;
 }
 
-/* ✅ NEW: Step Indicator (Circle with Number/Check) */
+/* Step Indicator (Circle) */
 .step-indicator {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #E5E7EB;
-  color: #6B7280;
+  color: #6B7280; /* Rule 2: Secondary Text */
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
   font-weight: 700;
   flex-shrink: 0;
 }
 
 .active .step-indicator {
-  background: #4F46E5;
-  color: white;
+  background: #4F46E5; /* Rule 2: Primary Brand */
+  color: #FFFFFF;
 }
 
 .completed .step-indicator {
-  background: #10B981;
-  color: white;
+  background: #10B981; /* Success State */
+  color: #FFFFFF;
 }
 
-/* ✅ NEW: Title Area Layout */
+/* Title Area */
 .step-title-area {
   flex: 1;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column; /* Mobile-First: Stack title and pill */
+  align-items: flex-start;
+  gap: 4px;
 }
 
-/* ✅ FIX: Mismatch class name fixed (.step-title -> .shell-title) */
 .shell-title {
-  font-size: 1.15rem;
+  font-size: 18px; /* Rule 2: H2 Mobile */
   font-weight: 700;
   color: #111827;
   margin: 0;
 }
 
-/* ✅ NEW: Summary Pill (Selected tool/usecase badge) */
+/* Summary Pill */
 .summary-pill {
-  background: #EEF2FF;
-  color: #4F46E5;
-  padding: 4px 12px;
-  border-radius: 99px;
-  font-size: 0.85rem;
+  background: #FEF3C7; /* Rule 2: Alert/Highlight Color */
+  color: #111827;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 12px;
   font-weight: 600;
-  border: 1px solid #C7D2FE;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
-/* ✅ NEW: Edit Button */
+/* Edit Button (System Rule 3: Touch Friendly) */
 .edit-shell-btn {
   background: transparent;
   color: #4F46E5;
   border: none;
   font-weight: 600;
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px;
+  font-size: 14px;
+  min-height: 44px; /* Rule 5: Touch-Friendly UI */
 }
 
-.edit-shell-btn:hover {
-  background: #F3F4F6;
-  text-decoration: underline;
-}
-
-/* ── Body ── */
-/* ✅ FIX: Mismatch class name fixed (.step-body -> .step-content-body) */
+/* ── Body Content ── */
 .step-content-body {
-  padding: 24px;
+  padding: 20px;
   border-top: 1px solid #F3F4F6;
+  background: #FFFFFF;
   animation: slideDown 0.3s ease-out;
 }
 
-/* ✅ NEW: Lock Overlay */
+/* Lock Message */
 .lock-overlay {
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #9CA3AF;
-  font-size: 0.9rem;
+  padding: 12px 20px;
+  color: #6B7280;
+  font-size: 14px;
+  font-style: italic;
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
+  from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Mobile Tweaks ── */
-@media (max-width: 640px) {
-  .step-shell {
-    border-radius: 12px;
-    margin-bottom: 16px;
-  }
-  .step-header {
-    padding: 16px;
-  }
-  .shell-title {
-    font-size: 1rem;
-  }
+/* ── Tablet/Desktop (Rule 5) ── */
+@media (min-width: 640px) {
+  .step-header { padding: 20px 24px; gap: 16px; }
+  .step-title-area { flex-direction: row; align-items: center; gap: 12px; }
+  .shell-title { font-size: 20px; } /* Rule 2: H2 Desktop Scale */
+  .step-content-body { padding: 24px 32px; }
 }

@@ -187,3 +187,49 @@ html, body {
   color: #4F46E5;
   border-color: #4F46E5;
 }
+
+ 
+
+:root {
+  --brand-indigo: #4F46E5;
+  --brand-indigo-hover: #4338CA;
+  --system-radius: 10px; /* Rule 4: Non-negotiable */
+}
+
+/* Force System Radius on ALL Card-like elements */
+.card, .tool-card, .step-shell, .form-container, .modal-content {
+  border-radius: var(--system-radius) !important;
+}
+
+/* Force Indigo on ALL Primary Actions */
+button[type="submit"], .primary-btn, .btn-primary {
+  background-color: var(--brand-indigo) !important;
+  border-radius: 8px !important; /* Buttons are slightly tighter than cards */
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global Scrollbar (Match Rule 2 Colors) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 10px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+}
+
+/* Responsive Image Rule 5 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

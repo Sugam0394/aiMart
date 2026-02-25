@@ -3,17 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { submitExploreStepThunk } from '../../../app/exploreFeatures/exploreThunks';
 import { selectStepPayload, selectExploreSessionId } from '../../../app/exploreFeatures/exploreSelectors';
 import SelectionOption from './components/SelectionOption';
+import "./styles/TaskStep.css"; // Critical import
 
 function TaskStep() {
   const dispatch = useDispatch();
   const sessionId = useSelector(selectExploreSessionId);
-  const stepPayload = useSelector(selectStepPayload); // Backend se tasks array aayega
+  const stepPayload = useSelector(selectStepPayload); 
   const [selectedTask, setSelectedTask] = useState(null);
 
   const tasks = Array.isArray(stepPayload) ? stepPayload : [];
 
   const handleSubmit = () => {
-    if (!selectedTask) return;
+    if (!selectedTask || !sessionId) return;
     dispatch(
       submitExploreStepThunk({
         sessionId,
@@ -23,16 +24,22 @@ function TaskStep() {
     );
   };
 
-  if (tasks.length === 0) return <p>No tasks found for this role. Try going back.</p>;
+  if (tasks.length === 0) {
+    return (
+      <div className="step-error-card">
+        <p className="error-msg">No tasks found. Please go back and re-select your role.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="usecase-step">
-      <h2 className="step-title">What do you want to achieve?</h2>
+      <h2 className="step-title">Select your priority task:</h2>
+      
       <div className="usecase-grid">
         {tasks.map((task, index) => (
           <SelectionOption
             key={task || index}
-            // "pitch-deck" ko "Pitch Deck" bana dega
             label={task.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
             isSelected={selectedTask === task}
             onClick={() => setSelectedTask(task)}

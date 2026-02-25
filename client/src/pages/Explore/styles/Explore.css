@@ -1,19 +1,17 @@
  /* =========================================
-   AI-MART — EXPLORE PAGE
-   Constitution V2: Mobile-First, #F3F4F6 BG
+   AI-MART — EXPLORE PAGE (CONSTITUTION V2)
+   Mobile-First | Card-Based | #F3F4F6
    ========================================= */
 
-/* ── Base (Mobile First) ── */
 .explore-layout {
   min-height: 100vh;
-  background-color: #F3F4F6;
+  background-color: #F3F4F6; /* Rule 2: Light Background */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px 16px 48px;
-  overflow-x: hidden;
+  padding: 16px; /* Rule 6: Spacing Scale (16px) */
+  overflow-x: hidden; /* Rule 4: No Horizontal Scroll */
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif; /* Rule 2: Typography */
 }
 
 .explore-container {
@@ -23,12 +21,13 @@
   animation: exploreReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* --- Animations --- */
 @keyframes exploreReveal {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Scrollbar ── */
+/* --- Scrollbar System --- */
 .explore-layout::-webkit-scrollbar { width: 6px; }
 .explore-layout::-webkit-scrollbar-track { background: transparent; }
 .explore-layout::-webkit-scrollbar-thumb {
@@ -36,14 +35,13 @@
   border-radius: 10px;
 }
 
-/* ── Tablet (640px+) ── */
+/* --- Tablet/Desktop (Rule 5: Media Queries) --- */
 @media (min-width: 640px) {
-  .explore-layout { padding: 28px 24px 64px; }
+  .explore-layout { padding: 32px 24px; }
 }
 
-/* ── Desktop (1024px+) ── */
 @media (min-width: 1024px) {
-  .explore-layout { padding: 40px 40px 80px; }
+  .explore-layout { padding: 48px 40px; }
 }
 
 

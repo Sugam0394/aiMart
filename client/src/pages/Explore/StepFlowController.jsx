@@ -7,6 +7,7 @@ import RoleStep from './steps/RoleStep';
  import TaskStep from './steps/TaskStep';
 import ToolStep from './steps/ToolStep';
 import ResultStep from './steps/ResultStep';
+import './styles/StepFlowController.css';
 
 function StepFlowController() {
   const dispatch = useDispatch();

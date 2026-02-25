@@ -119,13 +119,7 @@ function ToolStep() {
      
  {/* Saare groups ke baad */}
       <div className="action-footer">
-        <button className="skip-btn" onClick={handleContinue}>
-          I'll choose later
-        </button>
-        <button
-          className={`primary-action-btn ${selectedTools.length === 0 ? 'btn-muted' : ''}`}
-          onClick={handleContinue}
-        >
+        <button onClick={handleContinue}>
           {selectedTools.length === 0 ? 'Skip for now' : `Continue with ${selectedTools.length} tool(s) →`}
         </button>
       </div>

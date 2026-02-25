@@ -6,6 +6,9 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import "./App.css"
 import './styles/mobile-optimization.css';
 
+
+ 
+
 // 🟢 EAGER IMPORTS (Inhe lazy nahi karna taaki initial experience smooth ho)
 import AppInitializer from './components/DataInit/AppInitializer.jsx'
 import PublicLayout from "./layouts/PublicLayout";
@@ -36,11 +39,13 @@ const FounderSettings = lazy(() => import("./pages/founder/settings/FounderSetti
 const UserSettings = lazy(() => import("./pages/user/settings/UserSettings.jsx"));
 
 // Shared Loader (Minimal and clean)
-const PageLoader = () => (
-  <div className="flex h-screen items-center justify-center bg-gray-900">
+ const PageLoader = () => (
+  // Nayi CSS ke variable '--bg-main' ka use karein
+  <div className="flex h-screen items-center justify-center" style={{ backgroundColor: 'var(--bg-main)' }}>
     <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-blue-500 mb-4 mx-auto"></div>
-      <p className="text-white opacity-70 font-medium">Loading AI Mart...</p>
+      {/* Brand primary color ka use karein */}
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 mb-4 mx-auto" style={{ borderColor: 'var(--brand-primary)' }}></div>
+      <p style={{ color: 'var(--text-secondary)' }} className="font-medium">Loading AI Mart...</p>
     </div>
   </div>
 );

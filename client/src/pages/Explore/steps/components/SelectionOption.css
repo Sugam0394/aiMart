@@ -1,42 +1,50 @@
+ /* =========================================
+   AI-MART — SELECTION OPTION (V2)
+   System-Based | 10px Radius | Touch Ready
+   ========================================= */
+
 .usecase-btn {
-  background: #ffffff;
-  border: 2px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 1.25rem 1rem;
+  width: 100%;
+  background: #FFFFFF; /* Rule 2: Card BG */
+  border: 1px solid #E5E7EB; /* System Border */
+  border-radius: 10px; /* Rule 4: System Radius */
+  padding: 12px 16px; /* Rule 6: Spacing Scale */
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  color: #475569;
+  font-size: 15px; /* Rule 2: Body Mobile */
+  color: #111827; /* Rule 2: Primary Text */
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  text-align: center;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 48px; /* Rule 5: Touch-Friendly */
   position: relative;
-  overflow: hidden;
 }
 
-/* Hover State */
-.usecase-btn:hover:not(.active) {
-  border-color: #cbd5e1;
-  background: #f8fafc;
-  transform: translateY(-2px);
+/* Hover State (Desktop Only Rule) */
+@media (min-width: 1024px) {
+  .usecase-btn:hover:not(.active) {
+    border-color: #4F46E5;
+    background: #F9FAFB;
+    transform: translateY(-2px); /* Rule 4: Card Hover */
+  }
 }
 
-/* 🎯 Active / Selected State */
+/* 🎯 Active / Selected State (Indigo Brand) */
 .usecase-btn.active {
-  border-color: #4f46e5;
-  background: #f5f3ff;
-  color: #4f46e5;
+  border-color: #4F46E5;
+  background: #EEF2FF; /* Light Indigo Tint */
+  color: #4F46E5;
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
 }
 
-/* 📱 Tap Feedback (Important for Mobile) */
+/* Tap Feedback for Mobile */
 .usecase-btn:active {
-  transform: scale(0.95); /* Button dabne ka feel dega */
+  transform: scale(0.97);
 }
 
-/* Optional: Selected state par chota sa dot ya indicator */
+/* Selected Indicator Dot */
 .usecase-btn.active::after {
   content: '';
   position: absolute;
@@ -44,14 +52,14 @@
   right: 8px;
   width: 6px;
   height: 6px;
-  background: #4f46e5;
+  background: #4F46E5;
   border-radius: 50%;
 }
 
-@media (max-width: 640px) {
+/* Tablet/Desktop Adjustments */
+@media (min-width: 640px) {
   .usecase-btn {
-    padding: 1rem 0.75rem;
-    font-size: 0.85rem;
-    min-height: 65px;
+    font-size: 16px; /* Rule 2: Body Desktop */
+    padding: 16px 20px;
   }
 }

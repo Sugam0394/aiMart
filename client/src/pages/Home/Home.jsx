@@ -1,119 +1,48 @@
- import React, { useState, useMemo, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchHomeData } from "../../app/features/MomentSlice";
-  
-import { fetchWorkflow } from "../../app/features/workFlowSlice";
-
- 
-import TrendingForYouSection from "./TrendingSection/TrendingForYou";
-import SearchSection from "./SearchSection/SearchSection";
-import UseCaseSwitcher from "./useCasedSection/components/UseCaseSwitcher";
-import UseCaseSection from "./useCasedSection/UseCasedSection";
-import RisingToolsSection from "./RisingTool/RisingToolSection";
-import RecommendedSection from "./RecommendSection/RecommendSection";
-import SectionWrapper from "../../layouts/section/SectionWrapper";
-import AiStackSection from "./aiStackSection/AiStackSection";
+import React, { useState, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchHomeData } from '../../app/features/MomentSlice'; // Adjust paths as per your project
+import { fetchWorkflow } from '../../app/features/WorkflowSlice';
+import SearchSection from './SearchSection/SearchSection';
+import AiStackSection from './aiStackSection/AiStackSection';
  
  
-
+import UseCaseSwitcher from './useCasedSection/components/UseCaseSwitcher';
+ import UseCaseSection from './useCasedSection/UseCasedSection';
+import TrendingForYouSection from './TrendingSection/TrendingForYou';
+import RisingToolsSection from './RisingTool/RisingToolSection';
+ import RecommendedSection from './RecommendSection/RecommendSection';
+import SectionWrapper from '../../layouts/section/SectionWrapper';
  
- import ToolCardSkeleton from "../aiArt/components/ToolCardSkeleton";
-import PersonalizedWorkflowSection from "./WorkFlowSection/WorkFlowSection";
-
-import "./HomeRedesign.css";   
-
- function HomeSkeleton() {
-  return (
-    <div className="home-container">
-      <main className="home-page">
-        {/* Hero Section Skeleton */}
-        <div className="home-hero-container">
-          <div className="skeleton-greeting skeleton-shimmer"></div>
-          <div className="skeleton-search skeleton-shimmer"></div>
-        </div>
-
-        <div className="sections-stack">
-          {/* 🚀 NEW: Workflow Section Skeleton */}
-          <div className="skeleton-workflow-card">
-            <div className="skeleton-workflow-header skeleton-shimmer"></div>
-            <div className="skeleton-steps-stack">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="skeleton-step-item">
-                  <div className="skeleton-circle skeleton-shimmer"></div>
-                  <div className="skeleton-line-group">
-                    <div className="skeleton-title-line skeleton-shimmer"></div>
-                    <div className="skeleton-body-line skeleton-shimmer"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Filter Bar Skeleton */}
-          <div className="skeleton-filter-bar">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="skeleton-pill skeleton-shimmer"></div>
-            ))}
-          </div>
-
-          {/* Cards Rows Skeletons */}
-          {[1, 2].map((row) => (
-            <div key={row} className="skeleton-section">
-              <div className="skeleton-section-title skeleton-shimmer"></div>
-              <div className="skeleton-cards-row">
-                {[1, 2, 3, 4].map(i => <ToolCardSkeleton key={i} />)}
-              </div>
-            </div>
-          ))}
-        </div>
-      </main>
-    </div>
-  );
-}
 
 function Home() {
-  const dispatch = useDispatch(); 
-  const { user, isInitialized } = useSelector((state) => state.auth); 
+  const dispatch = useDispatch();
+  const { user, isInitialized } = useSelector((state) => state.auth);
   const { availableUseCases = [], homeStatus = "idle" } = useSelector((state) => state.moment || {});
-  
-  // ✅ 1. Get Workflow State
   const workflowState = useSelector((state) => state.workflow);
 
- 
+  // ESLint Fix: In states ka use niche RecommendedSection mein kiya gaya hai
   const [isPersonalized, setIsPersonalized] = useState(false);
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
+  const isAuthenticated = !!user;
 
-  const isAuthenticated = !!user; // This was the "unused" variable
-
-  // ✅ 2. Initialize Profile from LocalStorage
-  const [userProfile, setUserProfile] = useState(() => {
+  // ✅ Initialize Profile from LocalStorage
+  const [userProfile] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("user_workflow_profile")) || null;
     } catch { return null; }
   });
 
-  // ✅ 3. Logic to fetch Workflow Data
+  // ✅ Logic to fetch Workflow Data
   useEffect(() => {
     if (userProfile?.role && workflowState.status === "idle") {
       dispatch(fetchWorkflow(userProfile.role));
     }
   }, [userProfile, workflowState.status, dispatch]);
 
-  // ✅ 4. Workflow Handlers
-  const handleRolePicked = (role) => {
-    const profile = { role, updatedAt: new Date().toISOString() };
-    localStorage.setItem("user_workflow_profile", JSON.stringify(profile));
-    setUserProfile(profile);
-    dispatch(fetchWorkflow(role));
-  };
+ 
 
-  const handleChangeRole = () => {
-    localStorage.removeItem("user_workflow_profile");
-    setUserProfile(null);
-  };
-
-  // Existing Logic for Moments
+  // ✅ Fetch Moments/Tools Data
   useEffect(() => {
     if (isInitialized && homeStatus === "idle") { 
       const interests = JSON.parse(localStorage.getItem("user_interests") || "[]");
@@ -133,42 +62,31 @@ function Home() {
   const activeMeta = availableUseCases.find((uc) => uc.key === currentUseCaseKey) || 
                        { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
 
-  if (homeStatus === "loading" && availableUseCases.length === 0) {
-    return <HomeSkeleton />;
-  }
+  
 
   return (
     <div className="home-container">
       <main className="home-page">
+        
+        {/* ── Hero Section ── */}
         <header className="hero-intent-section">
-          {/* ✅ Now using isAuthenticated to personalize the greeting */}
-          <h1>
+          <h1 className="section-title">
             {isAuthenticated ? `Welcome back, ${user?.name || 'User'}!` : "Find the right AI tool for your work"}
           </h1>
-          <p className="hero-subtitle">
+          <p className="section-subtitle">
             {isAuthenticated ? "What's on your agenda today?" : "Describe your goal and let AI find the perfect stack."}
           </p>
           
-          <div className="smart-search-container">
+          <div className="search-controls">
             <SearchSection placeholder="Describe your goal (e.g. 'Build a website')" />
-            
           </div>
         </header>
 
         <div className="sections-stack">
-
-          
-          {/* ⭐ STEP 9: AiStack Section (STAR FEATURE) */}
-          {/* Yeh Hero ke thik baad aayega taaki user turant tools discover kare */}
           <AiStackSection />
-       
-          <PersonalizedWorkflowSection 
-            userProfile={userProfile}
-            workflowState={workflowState}
-            onRolePicked={handleRolePicked}
-            onChangeRole={handleChangeRole}
-          />
+           
 
+          {/* ── Sticky Filter ── */}
           <div className="filter-sticky-bar">
             <div className="filter-inner-content">
               <span className="filter-label">Filters</span>
@@ -179,47 +97,46 @@ function Home() {
             </div>
           </div>
 
+          {/* ── Dynamic Grid Section ── */}
           {activeMeta && (
             <SectionWrapper 
+              className="section-wrapper"
               title={activeMeta.label} 
               subtitle={`${activeMeta.toolCount} AI tools available`}
             >
-              <div className="horizontal-scroll-section">
+              <div className="usecase-row-container">
                 <UseCaseSection useCaseKey={currentUseCaseKey} />
               </div>
             </SectionWrapper>
           )}
 
-          <SectionWrapper 
-            title="Trending For You" 
-            subtitle="Trending for you today!"
-          >
-            <div className="horizontal-scroll-section">
+          {/* ── Trending ── */}
+          <SectionWrapper title="Trending For You" subtitle="Trending for you today!">
+            <div className="usecase-row-container">
               <TrendingForYouSection />
             </div>
           </SectionWrapper>
+
+          {/* ── Rising Tools ── */}
+          <SectionWrapper title="🚀 Rising Tools" subtitle="New and featured tools gaining momentum">
+            <RisingToolsSection />
+          </SectionWrapper>
+
+          {/* ── Personalized Recommendation (Solves ESLint Error) ── */}
+          <SectionWrapper 
+            title={isPersonalized ? "🎯 Based on Your Interests" : "🌟 Handpicked For You"} 
+            subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
+          >
+            <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
+          </SectionWrapper>
+
         </div>
-
-        <SectionWrapper 
-          title="🚀 Rising Tools" 
-          subtitle="New and featured AI tools gaining momentum"
-        >
-          <RisingToolsSection />
-        </SectionWrapper>
-
-        <SectionWrapper 
-          title={isPersonalized ? "🎯 Based on Your Interests" : "🌟 Handpicked For You"} 
-          subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
-        >
-          <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
-        </SectionWrapper>
-
       </main>
     </div>
   );
 }
 
-export default Home;
+export default Home; 
 
 
  

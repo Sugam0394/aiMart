@@ -1,0 +1,84 @@
+/* =========================================
+   AI-MART — TASK STEP (CONSTITUTION V2)
+   System Typography | Primary Actions | Grid
+   ========================================= */
+
+.usecase-step {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Rule 2: Typography - H2 Mobile Scale */
+.step-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+/* Reusing Rule 5 Grid Logic */
+.usecase-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 24px; /* Rule 6: Spacing scale */
+}
+
+/* --- Rule 8: Primary Button Consistency --- */
+.primary-action-btn {
+  background-color: #4F46E5; /* Indigo */
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px; /* Rule 8 */
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px; /* Rule 5: Touch Friendly */
+  width: 100%; /* Mobile First: Full width */
+}
+
+.primary-action-btn:hover:not(:disabled) {
+  background-color: #4338CA; /* Darker shade */
+  transform: translateY(-1px);
+}
+
+.primary-action-btn:disabled {
+  background-color: #E5E7EB;
+  color: #9CA3AF;
+  cursor: not-allowed;
+}
+
+.primary-action-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* --- Tablet/Desktop (Rule 5) --- */
+@media (min-width: 640px) {
+  .step-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .usecase-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .primary-action-btn {
+    width: max-content; /* Desktop: Don't stretch */
+    align-self: flex-end; /* Align to the right */
+    padding: 12px 32px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

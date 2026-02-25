@@ -1,4 +1,5 @@
-import './SelectionOption.css'
+ import React from 'react';
+import './SelectionOption.css';
 
 function SelectionOption({ label, isSelected, onClick }) {
   return (
@@ -6,6 +7,7 @@ function SelectionOption({ label, isSelected, onClick }) {
       type="button"
       className={`usecase-btn ${isSelected ? "active" : ""}`}
       onClick={onClick}
+      aria-pressed={isSelected}
     >
       {label}
     </button>

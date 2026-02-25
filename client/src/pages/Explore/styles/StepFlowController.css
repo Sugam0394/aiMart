@@ -1,99 +1,82 @@
-/* StepFlowController.css - The Brain of AI-Mart Explore */
+ /* =========================================
+   STEP FLOW SYSTEM — AI-MART V2
+   Consistency | Predictability | SaaS Feel
+   ========================================= */
 
 .step-flow-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  max-width: 850px;
-  margin: 0 auto;
-  position: relative;
+  gap: 16px; /* Rule 6: Spacing Rhythm */
   width: 100%;
 }
 
-/* --- AI PULSE LOADER (Optimized) --- */
-.explore-loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 1.5rem;
+/* --- Global Card Foundation (Rule 4) --- */
+.explore-loader-container, 
+.step-error-card, 
+.explore-success-screen {
+  background: #FFFFFF; /* Card Background */
+  border-radius: 10px; /* Rule 4: Non-Negotiable Radius */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* System Shadow */
+  padding: 24px;
   text-align: center;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  margin: 20px 0;
+  transition: 0.2s ease;
 }
 
+/* --- AI Pulse Loader (Rule 9: Performance First) --- */
 .ai-pulse-loader {
-  width: 50px; /* Thoda chota kiya mobile ke liye */
-  height: 50px;
-  background-color: #4F46E5;
+  width: 48px;
+  height: 48px;
+  background-color: #4F46E5; /* Rule 2: Indigo Brand */
   border-radius: 50%;
-  position: relative;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 16px;
   animation: pulse 1.5s infinite ease-in-out;
 }
 
-/* --- ERROR CARD (Better Mobile Spacing) --- */
-.step-error-card {
-  background: #FEF2F2;
-  border: 1px solid #FCA5A5;
-  padding: 2rem 1.5rem;
-  border-radius: 16px;
-  text-align: center;
-  margin: 20px 0;
+.explore-loader-container p {
+  color: #6B7280; /* Secondary Text */
+  font-size: 15px; /* Mobile Body Size */
+  font-weight: 500;
 }
 
-.error-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+/* --- Error State (Rule 2: Alert State) --- */
+.step-error-card {
+  background: #FEF3C7; /* Alert Highlight Color */
+  border: 1px solid #FCD34D;
 }
 
 .error-msg {
-  color: #B91C1C;
-  font-size: 0.95rem;
+  color: #111827; /* Primary Text */
+  font-size: 15px;
   line-height: 1.5;
-  margin-bottom: 1.5rem;
 }
 
-/* --- SUCCESS SCREEN --- */
+/* --- Success State --- */
 .explore-success-screen {
-  text-align: center;
-  padding: 2.5rem 1.5rem;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  border: 2px solid #10B981;
-  margin-top: 20px;
+  border: 2px solid #4F46E5;
 }
 
 .explore-success-screen h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+  font-size: 22px; /* Rule 2: H2 Mobile Size */
+  color: #111827;
+  margin-bottom: 8px;
 }
 
-/* --- ANIMATIONS (Tumhari original pulse rings) --- */
+/* --- Keyframes --- */
 @keyframes pulse {
-  0%, 100% { transform: scale(0.85); }
-  50% { transform: scale(1); }
+  0%, 100% { transform: scale(0.85); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.8); opacity: 0; }
+/* --- Tablet/Desktop (Rule 5: Media Queries) --- */
+@media (min-width: 640px) {
+  .step-flow-wrapper { gap: 24px; }
+  
+  .explore-loader-container, 
+  .step-error-card, 
+  .explore-success-screen {
+    padding: 32px;
+  }
 }
-
-/* --- MOBILE SPECIFIC --- */
-@media (max-width: 640px) {
-  .step-flow-wrapper {
-    gap: 1rem; /* Mobile par gap kam kar diya */
-  }
-
-  .explore-loader-container p {
-    font-size: 0.9rem;
-    color: #64748b;
-  }
-}   
 
 
 

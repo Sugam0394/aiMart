@@ -1,80 +1,85 @@
- /* =========================================
-   STEP FLOW SYSTEM — AI-MART V2
-   Consistency | Predictability | SaaS Feel
-   ========================================= */
+ /* client/src/pages/Explore/styles/StepFlowController.css */
 
 .step-flow-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Rule 6: Spacing Rhythm */
+  gap: var(--spacing-lg); /* Consistent spacing scale */
   width: 100%;
 }
 
-/* --- Global Card Foundation (Rule 4) --- */
-.explore-loader-container, 
-.step-error-card, 
+/* --- Global States (Loading/Error/Success) --- */
+.ai-pulse-loader, 
+.error-card, 
 .explore-success-screen {
-  background: #FFFFFF; /* Card Background */
-  border-radius: 10px; /* Rule 4: Non-Negotiable Radius */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* System Shadow */
-  padding: 24px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-2xl);
   text-align: center;
-  transition: 0.2s ease;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  transition: var(--transition-base);
 }
 
-/* --- AI Pulse Loader (Rule 9: Performance First) --- */
+/* --- Improved AI Pulse Loader (Rule #9 & Task #2) --- */
 .ai-pulse-loader {
-  width: 48px;
-  height: 48px;
-  background-color: #4F46E5; /* Rule 2: Indigo Brand */
-  border-radius: 50%;
-  margin: 0 auto 16px;
-  animation: pulse 1.5s infinite ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  font-weight: 600;
+  color: var(--brand-indigo);
+  min-height: 200px;
 }
 
-.explore-loader-container p {
-  color: #6B7280; /* Secondary Text */
-  font-size: 15px; /* Mobile Body Size */
+/* Custom Animation for the loader circle */
+.ai-pulse-loader::before {
+  content: "";
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--color-border-light);
+  border-top: 4px solid var(--brand-indigo);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Error State (Bug Fix: Alert Colors) --- */
+.error-card {
+  background: var(--brand-alert);
+  border: 1px solid #fcd34d;
+  color: #92400e;
   font-weight: 500;
 }
 
-/* --- Error State (Rule 2: Alert State) --- */
-.step-error-card {
-  background: #FEF3C7; /* Alert Highlight Color */
-  border: 1px solid #FCD34D;
-}
-
-.error-msg {
-  color: #111827; /* Primary Text */
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-/* --- Success State --- */
+/* --- Success State (Rule #2) --- */
 .explore-success-screen {
-  border: 2px solid #4F46E5;
+  border: 2px solid var(--brand-indigo);
 }
 
 .explore-success-screen h2 {
-  font-size: 22px; /* Rule 2: H2 Mobile Size */
-  color: #111827;
-  margin-bottom: 8px;
+  font-size: var(--font-size-section-title-mobile);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
 }
 
-/* --- Keyframes --- */
-@keyframes pulse {
-  0%, 100% { transform: scale(0.85); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.7; }
-}
-
-/* --- Tablet/Desktop (Rule 5: Media Queries) --- */
+/* --- Tablet/Desktop (Rule #5) --- */
 @media (min-width: 640px) {
-  .step-flow-wrapper { gap: 24px; }
+  .step-flow-wrapper { gap: var(--spacing-xl); }
   
-  .explore-loader-container, 
-  .step-error-card, 
+  .ai-pulse-loader, 
+  .error-card, 
   .explore-success-screen {
-    padding: 32px;
+    padding: var(--spacing-3xl);
+  }
+
+  .explore-success-screen h2 {
+    font-size: var(--font-size-section-title-desktop);
   }
 }
 

@@ -23,6 +23,8 @@ function StepFlowController() {
   if (loading && !currentStep) return <div className="ai-pulse-loader">Preparing AI Mart...</div>;
   if (error) return <div className="error-card">{error}</div>;
 
+  
+
   const step = currentStep?.toUpperCase();
 
  

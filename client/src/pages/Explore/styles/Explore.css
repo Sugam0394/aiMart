@@ -1,47 +1,45 @@
- /* =========================================
-   AI-MART — EXPLORE PAGE (CONSTITUTION V2)
-   Mobile-First | Card-Based | #F3F4F6
-   ========================================= */
+ /* client/src/pages/Explore/styles/Explore.css */
 
 .explore-layout {
   min-height: 100vh;
-  background-color: #F3F4F6; /* Rule 2: Light Background */
+  background-color: var(--bg-main); /* Using Token */
   display: flex;
   flex-direction: column;
-  padding: 16px; /* Rule 6: Spacing Scale (16px) */
-  overflow-x: hidden; /* Rule 4: No Horizontal Scroll */
+  /* Rule #6: Added bottom padding to prevent button overlap */
+  padding: 16px 16px 100px 16px; 
+  overflow-x: hidden;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif; /* Rule 2: Typography */
+  font-family: 'Inter', sans-serif;
+  transition: var(--transition-base);
 }
 
 .explore-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 800px; /* Reduced for better readability on desktop */
   margin: 0 auto;
   animation: exploreReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- Animations --- */
 @keyframes exploreReveal {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Scrollbar System --- */
+/* --- Scrollbar System (Themed) --- */
 .explore-layout::-webkit-scrollbar { width: 6px; }
 .explore-layout::-webkit-scrollbar-track { background: transparent; }
 .explore-layout::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
-  border-radius: 10px;
+  background: var(--color-border-light);
+  border-radius: var(--radius-full);
 }
 
-/* --- Tablet/Desktop (Rule 5: Media Queries) --- */
+/* --- Responsive Scaling (Rule #5) --- */
 @media (min-width: 640px) {
-  .explore-layout { padding: 32px 24px; }
+  .explore-layout { padding: 32px 24px 120px 24px; }
 }
 
 @media (min-width: 1024px) {
-  .explore-layout { padding: 48px 40px; }
+  .explore-layout { padding: 48px 40px 140px 40px; }
 }
 
 

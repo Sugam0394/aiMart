@@ -1,72 +1,70 @@
- /* =========================================
-   AI-MART — STEP SHELL (CONSTITUTION V2)
-   Card-Based | System-Spacing | Mobile-First
-   ========================================= */
+ /* client/src/pages/Explore/styles/StepShell.css */
 
 .step-shell {
   width: 100%;
-  background: #FFFFFF;
-  border-radius: 10px; /* Rule 4: System Radius */
-  border: 1px solid #E5E7EB;
+  background: var(--bg-card); /* Using Token */
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Rule 4: System Shadow */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow);
+  transition: var(--transition-base);
   position: relative;
-  margin-bottom: 16px; /* Rule 6: Spacing scale */
+  margin-bottom: var(--spacing-lg); /* Using Scale */
 }
 
-/* Active State: Rule 4 Hover/Active logic */
+/* Active State (Rule #4: Highlight) */
 .step-shell.active {
-  border-color: #4F46E5;
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
+  border-color: var(--brand-indigo);
+  box-shadow: 0 8px 30px rgba(79, 70, 229, 0.15);
   transform: translateY(-2px);
 }
 
 /* Completed State */
 .step-shell.completed {
-  background: #F9FAFB;
-  opacity: 1; 
+  background: var(--bg-secondary);
+  border-color: var(--color-border-light);
 }
 
 /* Locked State */
 .step-shell.locked {
-  opacity: 0.6;
+  opacity: 0.5;
   pointer-events: none;
-  background: #F3F4F6;
+  background: var(--bg-main);
   filter: grayscale(1);
 }
 
 /* ── Header Section ── */
 .step-header {
-  padding: 16px 20px; /* Rule 6: Consistent spacing */
+  padding: var(--spacing-md) var(--spacing-lg);
   display: flex;
   align-items: center;
   gap: 12px;
-  background: transparent;
 }
 
-/* Step Indicator (Circle) */
+/* Step Indicator */
 .step-indicator {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #E5E7EB;
-  color: #6B7280; /* Rule 2: Secondary Text */
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-light);
+  color: var(--color-text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   flex-shrink: 0;
+  transition: var(--transition-fast);
 }
 
 .active .step-indicator {
-  background: #4F46E5; /* Rule 2: Primary Brand */
+  background: var(--brand-indigo);
   color: #FFFFFF;
+  box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
 }
 
 .completed .step-indicator {
-  background: #10B981; /* Success State */
+  background: var(--role-owner); /* Using Token */
   color: #FFFFFF;
 }
 
@@ -74,55 +72,55 @@
 .step-title-area {
   flex: 1;
   display: flex;
-  flex-direction: column; /* Mobile-First: Stack title and pill */
+  flex-direction: column;
   align-items: flex-start;
   gap: 4px;
 }
 
 .shell-title {
-  font-size: 18px; /* Rule 2: H2 Mobile */
+  font-size: var(--font-size-card-title-desktop);
   font-weight: 700;
-  color: #111827;
+  color: var(--color-text-primary);
   margin: 0;
 }
 
-/* Summary Pill */
+/* Summary Pill (Rule #2: Alert Highlight) */
 .summary-pill {
-  background: #FEF3C7; /* Rule 2: Alert/Highlight Color */
-  color: #111827;
-  padding: 2px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
+  background: var(--brand-alert);
+  color: #92400e; /* Darker amber for contrast */
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
   border: 1px solid rgba(0,0,0,0.05);
+  text-transform: uppercase;
 }
 
-/* Edit Button (System Rule 3: Touch Friendly) */
+/* Edit Button */
 .edit-shell-btn {
-  background: transparent;
-  color: #4F46E5;
+  background: var(--bg-tertiary);
+  color: var(--brand-indigo);
   border: none;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  padding: 8px;
-  font-size: 14px;
-  min-height: 44px; /* Rule 5: Touch-Friendly UI */
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  min-height: 40px;
+  transition: var(--transition-fast);
+}
+
+.edit-shell-btn:hover {
+  background: var(--brand-indigo);
+  color: white;
 }
 
 /* ── Body Content ── */
 .step-content-body {
-  padding: 20px;
-  border-top: 1px solid #F3F4F6;
-  background: #FFFFFF;
+  padding: var(--spacing-xl);
+  border-top: 1px solid var(--color-border-light);
+  background: var(--bg-card);
   animation: slideDown 0.3s ease-out;
-}
-
-/* Lock Message */
-.lock-overlay {
-  padding: 12px 20px;
-  color: #6B7280;
-  font-size: 14px;
-  font-style: italic;
 }
 
 @keyframes slideDown {
@@ -130,10 +128,9 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Tablet/Desktop (Rule 5) ── */
-@media (min-width: 640px) {
-  .step-header { padding: 20px 24px; gap: 16px; }
-  .step-title-area { flex-direction: row; align-items: center; gap: 12px; }
-  .shell-title { font-size: 20px; } /* Rule 2: H2 Desktop Scale */
-  .step-content-body { padding: 24px 32px; }
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .step-header { padding: 12px 16px; }
+  .shell-title { font-size: 1rem; }
+  .step-content-body { padding: 16px; }
 }

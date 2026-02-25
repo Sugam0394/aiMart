@@ -1,176 +1,216 @@
- /* =========================================
-   AI-MART — RESULT STEP (CONSTITUTION V2)
-   Premium SaaS Output | System Colors
-   ========================================= */
+ /* client/src/pages/Explore/steps/styles/ResultStep.css */
 
 .result-step-premium {
-  padding: 16px; /* Rule 6: Spacing scale */
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: var(--spacing-md);
+  animation: resultFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --- Header System --- */
 .result-header { 
   text-align: center; 
-  margin-bottom: 32px; 
+  margin-bottom: var(--spacing-2xl); 
 }
 
 .success-badge { 
   display: inline-flex; 
   align-items: center; 
   gap: 8px;
-  background: #DCFCE7; /* System Success Green */
-  color: #10B981;
-  padding: 6px 16px; 
-  border-radius: 99px; 
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 16px;
+  background: #dcfce7; /* Light success green */
+  color: #15803d;
+  padding: 8px 16px; 
+  border-radius: var(--radius-full); 
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-md);
+  border: 1px solid #bbf7d0;
 }
 
 .result-header h1 {
-  font-size: 24px; /* Rule 2: H1 Mobile */
-  color: #111827;
+  font-size: var(--font-size-section-title-mobile);
+  color: var(--color-text-primary);
   margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
 .result-header p {
-  color: #6B7280; /* Secondary Text */
+  color: var(--color-text-secondary);
   font-size: 15px;
   line-height: 1.5;
 }
 
-/* --- Prompts Grid (Rule 5: Stack on Mobile) --- */
+/* --- Prompts Grid (Rule #5 & Bug #14 Fix) --- */
 .prompts-grid {
   display: grid; 
   grid-template-columns: 1fr;
-  gap: 16px; 
-  margin-bottom: 40px;
+  gap: var(--spacing-lg); 
+  margin-bottom: var(--spacing-3xl);
 }
 
 .prompt-card {
-  background: #FFFFFF; /* Rule 2: Card BG */
-  border: 1px solid #E5E7EB;
-  border-radius: 10px; /* Rule 4: System Radius */
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow);
+  transition: var(--transition-base);
 }
 
 .tool-info { 
   display: flex; 
   align-items: center; 
-  gap: 8px; 
-  margin-bottom: 16px; 
-  border-bottom: 1px solid #F3F4F6;
-  padding-bottom: 12px;
+  gap: 12px; 
+  margin-bottom: var(--spacing-lg); 
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: var(--spacing-md);
 }
 
-.tool-info h3 { color: #111827; margin: 0; font-size: 18px; }
-.sparkle { color: #4F46E5; }
+.tool-info h3 { 
+  color: var(--color-text-primary); 
+  margin: 0; 
+  font-size: 18px; 
+  font-weight: 800;
+}
+
+.tool-icon-mini {
+  background: var(--bg-tertiary);
+  color: var(--brand-indigo);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+}
 
 /* --- Prompt Inner Box --- */
 .prompt-box {
-  background: #F9FAFB; /* Subtle gray contrast */
-  border-radius: 8px;
-  padding: 16px; 
-  margin-top: 12px;
-  border: 1px solid #F3F4F6;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md); 
+  margin-top: var(--spacing-md);
+  border: 1px solid var(--color-border-light);
 }
 
 .prompt-meta {
   display: flex; 
   justify-content: space-between; 
   align-items: center;
-  margin-bottom: 8px; 
+  margin-bottom: 10px; 
 }
 
-.prompt-meta span {
-  font-weight: 700;
-  font-size: 12px;
+.prompt-tag {
+  background: var(--brand-indigo);
+  color: white;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 10px !important;
+  font-weight: 800;
   text-transform: uppercase;
-  color: #6B7280;
-  letter-spacing: 0.05em;
 }
 
-.prompt-meta button {
-  background: #FFFFFF; 
-  border: 1px solid #E5E7EB; 
-  color: #4F46E5; 
+.copy-mini-btn {
+  background: var(--bg-card); 
+  border: 1px solid var(--color-border); 
+  color: var(--brand-indigo); 
   cursor: pointer;
   display: flex; 
   align-items: center; 
-  gap: 4px;
-  padding: 4px 10px;
-  border-radius: 6px;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
   font-size: 12px;
-  font-weight: 600;
-  transition: all 0.2s;
+  font-weight: 700;
+  transition: var(--transition-fast);
 }
 
-.prompt-meta button:hover {
-  background: #F5F3FF;
-  border-color: #C7D2FE;
+.copy-mini-btn:hover {
+  background: var(--brand-indigo);
+  color: white;
 }
 
 .prompt-text {
-  color: #374151; /* Darker gray for readability */
+  color: var(--color-text-primary);
   line-height: 1.6; 
   font-size: 14px;
-  background: #fff;
-  padding: 12px;
-  border-radius: 6px;
-  border-left: 3px solid #4F46E5; /* Brand accent */
+  background: var(--bg-card);
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--brand-indigo);
+  margin: 0;
+  word-break: break-word; /* Bug Fix: Long prompts won't break layout */
 }
 
-/* --- Action Footer --- */
-.result-actions {
-  display: flex; 
-  flex-direction: column; /* Mobile first: Stack buttons */
+/* --- Action Footer (The Persistent CTA) --- */
+.result-actions-container {
+  margin-top: var(--spacing-3xl);
+  padding: var(--spacing-xl);
+  background: var(--bg-tertiary);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.action-card-hint {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.result-buttons-group {
+  display: flex;
+  flex-direction: column; /* Mobile First */
   gap: 12px;
+  justify-content: center;
 }
 
-.share-btn, .finish-btn {
-  padding: 14px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
+.finish-primary-btn {
+  background: var(--brand-indigo);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: var(--radius-md);
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: 0.2s;
+  gap: 10px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
 }
 
-.share-btn {
-  background: white;
-  border: 1px solid #E5E7EB;
-  color: #111827;
+.share-secondary-btn {
+  background: var(--bg-card);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  padding: 16px 32px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
-.finish-btn {
-  background: #4F46E5;
-  color: white;
-  border: none;
-}
-
-/* --- Tablet/Desktop (Rule 5) --- */
+/* --- Tablet/Desktop (Rule #5) --- */
 @media (min-width: 768px) {
   .prompts-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .result-actions {
+  .result-buttons-group {
     flex-direction: row;
-    justify-content: center;
+    gap: 16px;
   }
   .result-header h1 { font-size: 32px; }
+  .finish-primary-btn, .share-secondary-btn { width: auto; }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+/* --- Animations --- */
+@keyframes resultFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-/* --- Visual Polish Add-ons --- */
 
 .result-loading {
   display: flex;
@@ -179,92 +219,16 @@
   justify-content: center;
   min-height: 400px;
   gap: 20px;
+  color: var(--color-text-secondary);
 }
 
 .spinner-glow {
-  width: 50px;
-  height: 50px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #4F46E5;
+  width: 60px;
+  height: 60px;
+  border: 5px solid var(--color-border-light);
+  border-top: 5px solid var(--brand-indigo);
   border-radius: 50%;
-  animation: spin 1s linear infinite, glow 2s ease-in-out infinite;
+  animation: spin 1s linear infinite;
 }
 
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(79, 70, 229, 0.2); }
-  50% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.5); }
-}
-
-.tool-icon-mini {
-  background: #EEF2FF;
-  color: #4F46E5;
-  padding: 8px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-}
-
-.prompt-tag {
-  background: #E0E7FF;
-  color: #4338CA;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 10px !important;
-  font-weight: 800;
-}
-
-/* --- Action Footer Container --- */
-.result-actions-container {
-  margin-top: 40px;
-  padding: 24px;
-  background: #F9FAFB;
-  border: 1px dashed #D1D5DB;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.action-card-hint {
-  margin-bottom: 20px;
-  color: #4B5563;
-  font-size: 14px;
-}
-
-.result-buttons-group {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-}
-
-.finish-primary-btn {
-  background: #4F46E5;
-  color: white;
-  border: none;
-  padding: 14px 28px;
-  border-radius: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-}
-
-.finish-primary-btn:hover {
-  background: #4338CA;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-}
-
-.share-secondary-btn {
-  background: white;
-  color: #111827;
-  border: 1px solid #E5E7EB;
-  padding: 14px 28px;
-  border-radius: 10px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
+@keyframes spin { 100% { transform: rotate(360deg); } }

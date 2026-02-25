@@ -1,57 +1,62 @@
-/* =========================================
-   AI-MART — ROLE STEP (CONSTITUTION V2)
-   Grid System | Touch Friendly | System Text
-   ========================================= */
+ /* client/src/pages/Explore/steps/styles/RoleStep.css */
 
 .role-step-container {
   width: 100%;
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Rule 5: Stack on Mobile, Grid on Desktop */
+/* Rule 5: Optimized Grid Scaling */
 .usecase-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Stack everything on mobile */
-  gap: 12px; /* Rule 6: Spacing scale */
+  grid-template-columns: 1fr; /* Default: Single column for mobile */
+  gap: var(--spacing-md);
 }
 
 .role-card-wrapper {
   cursor: pointer;
-  transition: transform 0.2s ease;
   display: flex;
   flex-direction: column;
+  transition: var(--transition-base);
+  /* Rule 3: High Tap Target Area */
+  padding: 4px; 
 }
 
-/* Rule 4: Card System behavior */
+/* Rule 4: Card Hover Feedback */
 .role-card-wrapper:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-/* Rule 2: Typography - Subtext always gray #6B7280 */
+/* Rule 2: Typography System */
 .role-desc {
-  font-size: 14px; /* Rule 2: Small text scale */
-  color: #6B7280; 
-  margin-top: 4px;
-  margin-left: 4px; /* Slight alignment with the label */
-  line-height: 1.4;
+  font-size: 13px;
+  color: var(--color-text-secondary); /* Dynamic for Dark/Light mode */
+  margin-top: var(--spacing-xs);
+  margin-left: var(--spacing-xs);
+  line-height: 1.5;
+  font-weight: 500;
 }
 
-/* Rule 5: Grid Scaling for larger screens */
+/* Selection State Highlight (In case SelectionOption doesn't handle it) */
+.role-card-wrapper.selected .role-desc {
+  color: var(--brand-indigo);
+}
+
+/* Rule 5: Media Queries for Desktop */
 @media (min-width: 640px) {
   .usecase-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
   }
 }
 
 @media (min-width: 1024px) {
   .usecase-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop */
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr); /* Clean 3-column layout */
+    gap: var(--spacing-xl);
   }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }

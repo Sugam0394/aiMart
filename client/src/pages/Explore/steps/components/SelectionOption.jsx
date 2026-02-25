@@ -9,7 +9,7 @@ function SelectionOption({ label, isSelected, onClick }) {
       onClick={onClick}
       aria-pressed={isSelected}
     >
-      {label}
+      <span className="btn-label">{label}</span>
     </button>
   );
 }

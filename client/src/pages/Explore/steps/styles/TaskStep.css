@@ -1,7 +1,4 @@
-/* =========================================
-   AI-MART — TASK STEP (CONSTITUTION V2)
-   System Typography | Primary Actions | Grid
-   ========================================= */
+ /* client/src/pages/Explore/steps/styles/TaskStep.css */
 
 .usecase-step {
   display: flex;
@@ -9,72 +6,76 @@
   animation: fadeIn 0.4s ease-out;
 }
 
-/* Rule 2: Typography - H2 Mobile Scale */
+/* Rule 2: Typography - H2 Scale */
 .step-title {
-  font-size: 18px;
+  font-size: var(--font-size-section-title-mobile);
   font-weight: 700;
-  color: #111827;
-  margin-bottom: 16px;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
   text-align: left;
 }
 
-/* Reusing Rule 5 Grid Logic */
+/* Rule 5 & 6: Grid Spacing */
 .usecase-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 24px; /* Rule 6: Spacing scale */
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
 }
 
 /* --- Rule 8: Primary Button Consistency --- */
 .primary-action-btn {
-  background-color: #4F46E5; /* Indigo */
+  background-color: var(--brand-indigo);
   color: #FFFFFF;
   border: none;
-  border-radius: 8px; /* Rule 8 */
+  border-radius: var(--radius-md);
   padding: 14px 24px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px; /* Rule 5: Touch Friendly */
-  width: 100%; /* Mobile First: Full width */
+  min-height: 52px; /* Rule 5: Optimized Touch Height */
+  width: 100%; /* Mobile First */
+  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.3);
 }
 
 .primary-action-btn:hover:not(:disabled) {
-  background-color: #4338CA; /* Darker shade */
-  transform: translateY(-1px);
+  background-color: #4338CA;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.23);
 }
 
 .primary-action-btn:disabled {
-  background-color: #E5E7EB;
-  color: #9CA3AF;
+  background-color: var(--color-border-light);
+  color: var(--color-text-secondary);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .primary-action-btn:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 /* --- Tablet/Desktop (Rule 5) --- */
 @media (min-width: 640px) {
   .step-title {
-    font-size: 22px;
-    margin-bottom: 20px;
+    font-size: var(--font-size-section-title-desktop);
+    margin-bottom: var(--spacing-lg);
   }
 
   .usecase-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: var(--spacing-lg);
   }
 
   .primary-action-btn {
-    width: max-content; /* Desktop: Don't stretch */
-    align-self: flex-end; /* Align to the right */
-    padding: 12px 32px;
+    width: auto;
+    min-width: 180px;
+    align-self: flex-end; /* Clean right alignment for desktop flow */
+    padding: 12px 40px;
   }
 }
 

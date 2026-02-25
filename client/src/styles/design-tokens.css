@@ -1,9 +1,14 @@
-/* ===============================================================
-   DESIGN TOKENS (Sab kuch ek hi jagah - No Darr!)
+ /* ===============================================================
+   DESIGN TOKENS (The Source of Truth)
    =============================================================== */
 
 :root {
-  /* 1. SARE DIMENSIONS (Jo tumhare pehle code mein the) */
+ 
+  --brand-indigo: #4F46E5;
+  --brand-indigo-hover: #4338CA;
+  --brand-alert: #FEF3C7;
+
+ 
   --card-width-desktop: 280px;
   --card-width-tablet: 240px;
   --card-width-mobile: 180px;
@@ -15,53 +20,96 @@
   --card-image-height-tablet: 140px;
   --card-image-height-mobile: 120px;
 
-  --spacing-xs: 8px; --spacing-sm: 12px; --spacing-md: 16px;
-  --spacing-lg: 20px; --spacing-xl: 24px; --spacing-2xl: 32px;
-  --spacing-3xl: 48px; --spacing-4xl: 60px;
+ 
+  --spacing-xs: 8px; 
+  --spacing-sm: 12px; 
+  --spacing-md: 16px;
+  --spacing-lg: 20px; 
+  --spacing-xl: 24px; 
+  --spacing-2xl: 32px;
+  
+  
+  --page-padding-desktop: 40px;
+  --page-padding-tablet: 24px;
+  --page-padding-mobile: 16px;
+  --page-padding-small: 12px;
 
+   
+  --radius-sm: 6px;
+  --radius-md: 8px;
   --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  
+  --transition-fast: all 0.15s ease;
+  --transition-base: all 0.2s ease;
 
-  /* 2. LIGHT MODE COLORS (Clean & Standard) */
-  --bg-main: #F3F4F6;            /* Body background */
-  --bg-card: #ffffff;           /* Card background */
-  --color-text-primary: #0f172a;
-  --color-text-secondary: #64748b;
+  /* 5. LIGHT MODE COLORS (Default) */
+  --bg-main: #F3F4F6;
+  --bg-card: #ffffff;
+  --bg-secondary: #f8fafc; /* Bug #1 Fix */
+  --bg-tertiary: #f1f5f9;  /* Bug #1 Fix */
+  
+  --color-text-primary: #111827;   /* Constitution Rule #2 */
+  --color-text-secondary: #6B7280; /* Constitution Rule #2 */
+  --color-text-muted: #94a3b8;     /* Bug #1 Fix */
+  
   --color-border: #e2e8f0;
   --color-border-light: #f1f5f9;
-  
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
   /* Role Colors */
   --role-user: #4f46e5;
   --role-owner: #059669;
+  --role-owner-bg: #d1fae5;
   --role-founder: #d97706;
+
+  /* Bug #1: Missing Font Sizes */
+  --font-size-card-title-desktop: 1rem;
+  --font-size-card-title-tablet: 0.95rem;
+  --font-size-card-title-mobile: 0.875rem;
+  --font-size-section-title-desktop: 1.5rem;
+  --font-size-section-title-tablet: 1.3rem;
+  --font-size-section-title-mobile: 1.1rem;
 }
 
-/* 3. DARK MODE (Naya Premium Look - Browser Jaisa) */
- /* 3. DARK MODE (Naya Premium Look - Browser Jaisa) */
+/* 6. DARK MODE (Premium Look) */
 [data-theme="dark"] {
-  --bg-main: #020617;           /* Deep Dark Blue-Black (Body) */
-  --bg-card: #0f172a;           /* Lighter Dark (Cards) */
+  --bg-main: #020617;
+  --bg-card: #0f172a;
+  --bg-secondary: #0f172a;
   --bg-tertiary: #1e293b;
   
-  --text-main: #f8fafc;         /* Updated to match your color variable */
   --color-text-primary: #f8fafc;
   --color-text-secondary: #cbd5e1;
+  --color-text-muted: #64748b;
   
-  --border-color: #1e293b;
   --color-border: #1e293b;
   --color-border-light: #334155;
   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --primary-btn: #6366f1;
 }
 
-/* 4. BASE STYLES (Apply variables to HTML) */
+/* 7. BASE STYLES */
 html, body {
   background-color: var(--bg-main);
   color: var(--color-text-primary);
+  /* Rule #7 Fix: Narrowing the transition to avoid performance lag */
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif; /* Constitution Rule #2 */
 }
 
+/* Card System Base (Constitution Rule #4) */
 .tool-card {
   background: var(--bg-card);
   border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-} 
+  transition: var(--transition-base);
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}

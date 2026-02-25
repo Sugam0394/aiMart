@@ -1,257 +1,201 @@
-/* ===== Main Layout ===== */
-
+ 
 .user-settings-layout {
   display: flex;
   max-width: 1100px;
-  margin: 20px auto;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  border-radius: 16px;
+  margin: 24px auto;
+  background: var(--color-bg-primary);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-/* ===== Sidebar ===== */
-
- /* Sidebar Restructure for Logout at bottom */
-.user-settings-sidebar {
-  width: 260px;
-  padding: 24px 18px;
-  border-right: 1px solid var(--color-border); /* Using token */
-  display: flex;
-  flex-direction: column;
-  background: var(--color-bg-secondary); /* Using token */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-bg-secondary);
   min-height: 600px;
 }
 
-/* Navigation Links */
-
-.user-sidebar-nav-links {
+/* ===== Sidebar (Rule 6: Spacing) ===== */
+.user-settings-sidebar {
+  width: 260px;
+  padding: 24px;
+  border-right: 1px solid var(--color-bg-secondary);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  background: var(--color-bg-secondary);
 }
-
-.user-sidebar-nav-links button {
-  padding: 12px 14px;
-  text-align: left;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.user-sidebar-nav-links button:hover {
-  background: #e5e7eb;
-}
-
-.user-sidebar-nav-links button.active {
-  background: #4f46e5;
-  color: #ffffff;
-}
-
-/* ===== Sidebar Footer ===== */
-
-.user-sidebar-footer {
-  margin-top: 20px;
-}
-
-/* ===== Main Content ===== */
-
-.user-settings-view {
-  flex: 1;
-  padding: 32px;
-}
-
-.profile-details h2 {
-  margin-bottom: 25px;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.data-box {
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f1f1f1;
-}
-
-.data-box label {
-  font-size: 12px;
-  color: #6b7280;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  display: block;
-  margin-bottom: 4px;
-}
-
-.data-box p {
-  font-size: 15px;
-  font-weight: 500;
-  color: #111827;
-}
-
-/* ===== Logout Button ===== */
-
-.logout-button {
-  padding: 10px 20px;
-  background-color: #ef4444;
-  color: white;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  width: 100%;
-  transition: all 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #dc2626;
-}
-
-/* ========================================================= */
-/* ====================== MOBILE VIEW ====================== */
-/* ========================================================= */
-
-@media (max-width: 768px) {
-
-  .settings-layout {
-    flex-direction: column;
-    margin: 10px;
-    border-radius: 14px;
-  }
-
-  /* Sidebar becomes top tab bar */
-  .settings-sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 15px;
-    gap: 15px;
-  }
-
-  /* Tabs style */
-  .sidebar-nav-links {
-    flex-direction: row;
-    gap: 10px;
-  }
-
-  .sidebar-nav-links button {
-    flex: 1;
-    text-align: center;
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  /* Main content spacing reduce */
-  .settings-view {
-    padding: 20px 16px;
-  }
-
-  /* Footer centered */
-  .sidebar-footer {
-    display: flex;
-    justify-content: center;
-    border-top: 1px solid #eee;
-    padding-top: 12px;
-  }
-
-  .logout-button {
-    width: 100%;
-    max-width: 250px;
-  }
-}
-
- 
 
 .sidebar-user-section {
   display: flex;
   align-items: center;
   gap: 12px;
   padding-bottom: 20px;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
   margin-bottom: 20px;
 }
 
 .sidebar-avatar {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
   object-fit: cover;
 }
 
-.sidebar-nav-links {
-  flex: 1; /* Pushes footer to bottom */
+.user-info-text h4 {
+  color: var(--color-text-primary);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.role-badge {
+  font-size: 11px;
+  text-transform: uppercase;
+  background: var(--brand-indigo);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* Navigation Links (Rule 8: Button Consistency) */
+.user-sidebar-nav-links {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* Appearance Toggle Styles */
-.theme-toggle-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background: var(--color-bg-tertiary);
-  border-radius: 12px;
-  margin-top: 20px;
-}
-
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
-}
-
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
+.user-sidebar-nav-links button {
+  padding: 12px 16px;
+  text-align: left;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: var(--transition-base);
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 4px;
-  bottom: 3px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
+.user-sidebar-nav-links button:hover {
+  background: rgba(79, 70, 229, 0.05);
+  color: var(--brand-indigo);
 }
 
-input:checked + .slider {
-  background-color: #4f46e5;
+.user-sidebar-nav-links button.active {
+  background: var(--brand-indigo);
+  color: #ffffff;
 }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
+.user-sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Dark Mode support for main layout */
-[data-theme="dark"] .settings-layout {
-  background: var(--color-bg-primary);
-  border-color: var(--color-border);
+/* ===== Main Content Area ===== */
+.user-settings-view {
+  flex: 1;
+  padding: 40px;
+  background: white;
 }
 
-[data-theme="dark"] .data-box p {
+.profile-details h2 {
+  margin-bottom: 32px;
+  font-size: var(--font-size-section-title-desktop);
+  font-weight: 700;
   color: var(--color-text-primary);
+}
+
+.data-box {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-bg-secondary);
+}
+
+.data-box label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.data-box p {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+/* ===== Logout Button (Rule 8) ===== */
+.logout-button {
+  padding: 12px;
+  background-color: #ef4444;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  width: 100%;
+  transition: var(--transition-base);
+}
+
+.logout-button:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* ========================================================= */
+/* ================= MOBILE VIEW (Rule 5) ================== */
+/* ========================================================= */
+
+@media (max-width: 768px) {
+  .user-settings-layout {
+    flex-direction: column;
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  /* Sidebar becomes Top Nav */
+  .user-settings-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--color-bg-secondary);
+    padding: 16px;
+    min-height: auto;
+  }
+
+  .sidebar-user-section {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+
+  .user-sidebar-nav-links {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  .user-sidebar-nav-links button {
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .user-settings-view {
+    padding: 24px 16px;
+  }
+
+  .user-sidebar-footer {
+    display: none; /* Hide in top sidebar on mobile */
+  }
+
+  /* Add back logout at bottom of view on mobile for UX */
+  .profile-details::after {
+    content: "";
+    display: block;
+    margin-top: 40px;
+  }
 }
  

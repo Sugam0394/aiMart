@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+ import React, { useEffect, useState } from "react";
 import { getMyProfile } from "../../../api/toolOwner/setting.api";
 import ApplyToolOwner from "../../toolOwner/dashboard/ApplyToolOwner"; 
 import "../css/UserSettings.css";
 import LogoutButton from "../../../components/LogoutButton/Logout";
 
-// isDark aur setIsDark props App.jsx se aayenge
-function UserSettings({ isDark, setIsDark }) {
+function UserSettings() {
   const [profile, setProfile] = useState(null);
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(true);
@@ -27,8 +26,9 @@ function UserSettings({ isDark, setIsDark }) {
   if (loading) return <div className="loader">Loading...</div>;
 
   return (
-    <div className="settings-layout">
-      <aside className="settings-sidebar">
+    /* FIXED: className matched to CSS constitution */
+    <div className="user-settings-layout">
+      <aside className="user-settings-sidebar">
         {/* TOP: User Info Section */}
         <div className="sidebar-user-section">
           <img src={profile?.profilePicture || "https://via.placeholder.com/50"} alt="Profile" className="sidebar-avatar" />
@@ -39,15 +39,12 @@ function UserSettings({ isDark, setIsDark }) {
         </div>
 
         {/* MIDDLE: Nav Links */}
-        <div className="sidebar-nav-links">
+        <div className="user-sidebar-nav-links">
           <button className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
             👤 My Account
           </button>
           
-          {/* Appearance Tab Button */}
-          <button className={activeTab === "appearance" ? "active" : ""} onClick={() => setActiveTab("appearance")}>
-            🌙 Appearance
-          </button>
+          {/* Appearance Tab REMOVED per Task 1 */}
 
           {profile?.role === "user" && (
             <button className={activeTab === "apply" ? "active" : ""} onClick={() => setActiveTab("apply")}>
@@ -57,12 +54,12 @@ function UserSettings({ isDark, setIsDark }) {
         </div>
 
         {/* BOTTOM: Logout Button Fixed in Sidebar */}
-        <div className="sidebar-footer">
+        <div className="user-sidebar-footer">
           <LogoutButton />
         </div>
       </aside>
 
-      <main className="settings-view">
+      <main className="user-settings-view">
         {activeTab === "profile" && (
           <div className="profile-details">
             <h2>Profile Settings</h2>
@@ -77,26 +74,7 @@ function UserSettings({ isDark, setIsDark }) {
           </div>
         )}
 
-        {/* Appearance Tab Content */}
-        {activeTab === "appearance" && (
-          <div className="appearance-section">
-            <h2>Appearance</h2>
-            <p className="section-desc">Customize your theme preference.</p>
-            <div className="theme-toggle-card">
-              <div className="theme-info">
-                <span>{isDark ? "🌙 Dark Mode" : "☀️ Light Mode"}</span>
-              </div>
-              <label className="toggle-switch">
-                <input 
-                  type="checkbox" 
-                  checked={isDark} 
-                  onChange={() => setIsDark(!isDark)} 
-                />
-                <span className="slider"></span>
-              </label>
-            </div>
-          </div>
-        )}
+        {/* Appearance Tab Content REMOVED per Task 1 */}
 
         {activeTab === "apply" && <ApplyToolOwner />}
       </main>
@@ -104,5 +82,5 @@ function UserSettings({ isDark, setIsDark }) {
   );
 }
 
-export default UserSettings; 
+export default UserSettings;
  

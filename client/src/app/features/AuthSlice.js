@@ -24,7 +24,6 @@ export const syncUserRole = createAsyncThunk(
       const userData = res.data.data?.user || res.data.user; 
       
       if (userData) {
-        localStorage.setItem("user", JSON.stringify(userData));
         return userData;
       }
       return rejectWithValue("No user data");
@@ -91,7 +90,7 @@ export const registerUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: savedUser,
+    user: null,
     role: savedUser ? savedUser.role : null,
     loading: !!localStorage.getItem("accessToken"), // FIXED: correct key
     error: null,
@@ -163,7 +162,6 @@ const authSlice = createSlice({
           state.role = action.payload.role;
           state.isInitialized = true;
           state.error = null;
-          localStorage.setItem("user", JSON.stringify(action.payload));
         }
       )
       

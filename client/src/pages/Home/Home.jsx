@@ -4,6 +4,7 @@ import { fetchHomeData } from '../../app/features/MomentSlice'; // Adjust paths 
 import { fetchWorkflow } from '../../app/features/WorkflowSlice';
 import SearchSection from './SearchSection/SearchSection';
 import AiStackSection from './aiStackSection/AiStackSection';
+
  
  
 import UseCaseSwitcher from './useCasedSection/components/UseCaseSwitcher';
@@ -11,6 +12,8 @@ import UseCaseSwitcher from './useCasedSection/components/UseCaseSwitcher';
 import TrendingForYouSection from './TrendingSection/TrendingForYou';
 import RisingToolsSection from './RisingTool/RisingToolSection';
  import RecommendedSection from './RecommendSection/RecommendSection';
+ import { fetchWorkflow } from '../../app/features/WorkflowSlice';
+ 
 import SectionWrapper from '../../layouts/section/SectionWrapper';
 
 import './HomeRedesign.css'

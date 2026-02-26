@@ -25,16 +25,29 @@
   margin-bottom: 16px;
 }
 
+/* --- Discovery Unit (Glueing Switcher & Tools) --- */
+.discovery-unit-container {
+  background: var(--bg-card); /* Pure white or card bg */
+  border: 1px solid var(--color-border-light);
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 40px; /* Space from other sections */
+}
+
 /* --- The Sticky Filter --- */
 .filter-sticky-bar {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg-main-alpha); /* 80% opacity with blur */
+  background: rgba(255, 255, 255, 0.9); /* High opacity */
   backdrop-filter: blur(12px);
   padding: 14px 0;
   border-bottom: 1px solid var(--color-border-light);
-  margin-bottom: 32px;
+ 
+}
+
+.discovery-content-area {
+  padding: 30px; /* Internal padding for tools */
 }
 
 .filter-inner-content {
@@ -50,8 +63,14 @@
 .sections-stack {
   display: flex;
   flex-direction: column;
-  gap: 80px; /* High breathing space */
+  gap: 40px; /* High breathing space */
   padding: 0 0 100px;
+}
+
+.additional-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
 }
 
 /* ToolCard Grid Logic */

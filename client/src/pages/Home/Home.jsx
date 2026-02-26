@@ -67,9 +67,8 @@ function Home() {
                        { label: currentUseCaseKey.replace(/-/g, ' '), toolCount: 0 };
 
   
-
-  return (
-   <div className="home-container">
+ return (
+  <div className="home-container">
     <main className="home-page">
       <header className="hero-intent-section">
         <h1 className="section-title">
@@ -86,36 +85,41 @@ function Home() {
       <div className="sections-stack">
         <AiStackSection />
 
-        <div className="filter-sticky-bar">
-          <div className="filter-inner-content">
-            <span className="filter-label">DISCOVER</span>
-            <UseCaseSwitcher 
-              activeUseCase={currentUseCaseKey} 
-              onChange={setActiveUseCaseKey} 
-            />
+        {/* --- Unified Discovery Section (Switcher + Tools) --- */}
+        <div className="discovery-unit-container">
+          <div className="filter-sticky-bar">
+            <div className="filter-inner-content">
+              <span className="filter-label">DISCOVER</span>
+              <UseCaseSwitcher 
+                activeUseCase={currentUseCaseKey} 
+                onChange={setActiveUseCaseKey} 
+              />
+            </div>
+          </div>
+
+          <div className="discovery-content-area">
+            {activeMeta && (
+              <SectionWrapper title={activeMeta.label} subtitle={`${activeMeta.toolCount} tools`}>
+                <UseCaseSection useCaseKey={currentUseCaseKey} />
+              </SectionWrapper>
+            )}
           </div>
         </div>
+        {/* --- End Discovery Section --- */}
 
-        {/* Tools Display Logic */}
-        <div className="main-content-area">
-          {activeMeta && (
-            <SectionWrapper title={activeMeta.label} subtitle={`${activeMeta.toolCount} tools`}>
-               <UseCaseSection useCaseKey={currentUseCaseKey} />
-            </SectionWrapper>
-          )}
-
+        <div className="additional-sections">
           <SectionWrapper title="Trending For You">
-             <TrendingForYouSection />
+            <TrendingForYouSection />
           </SectionWrapper>
 
           <SectionWrapper title="🚀 Rising Tools">
-             <RisingToolsSection />
+            <RisingToolsSection />
           </SectionWrapper>
         </div>
       </div>
     </main>
   </div>
-  );
+);
 }
 
 export default Home; 

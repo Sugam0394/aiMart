@@ -1,4 +1,4 @@
- /* HomeRedesign.css - Optimized for Tool Display */
+ /* HomeRedesign.css - Final Optimized Version */
 
 .home-container {
   background: var(--bg-main);
@@ -25,29 +25,24 @@
   margin-bottom: 16px;
 }
 
-/* --- Discovery Unit (Glueing Switcher & Tools) --- */
+/* --- Discovery Unit (Switcher + Tools Together) --- */
 .discovery-unit-container {
-  background: var(--bg-card); /* Pure white or card bg */
+  background: var(--bg-card);
   border: 1px solid var(--color-border-light);
   border-radius: 24px;
   overflow: hidden;
-  margin-bottom: 40px; /* Space from other sections */
+  margin-bottom: 40px;
 }
 
-/* --- The Sticky Filter --- */
+/* --- Sticky Filter Bar --- */
 .filter-sticky-bar {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.9); /* High opacity */
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   padding: 14px 0;
   border-bottom: 1px solid var(--color-border-light);
- 
-}
-
-.discovery-content-area {
-  padding: 30px; /* Internal padding for tools */
 }
 
 .filter-inner-content {
@@ -59,11 +54,23 @@
   gap: 20px;
 }
 
-/* --- Section Stack & Grid Fix (Crucial) --- */
+.filter-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--brand-indigo);
+  letter-spacing: 0.1em;
+  flex-shrink: 0; /* Ensures label doesn't squash on desktop */
+}
+
+.discovery-content-area {
+  padding: 30px;
+}
+
+/* --- Section Stack --- */
 .sections-stack {
   display: flex;
   flex-direction: column;
-  gap: 40px; /* High breathing space */
+  gap: 40px;
   padding: 0 0 100px;
 }
 
@@ -73,43 +80,83 @@
   gap: 60px;
 }
 
-/* ToolCard Grid Logic */
-/* In classes ko apne Tool Grid components mein use karein */
+/* --- ToolCard Grid Logic --- */
 .tools-display-grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr); /* Mobile: 1 Full Card */
+  grid-template-columns: repeat(1, 1fr);
   gap: 20px;
   padding: 10px 0;
 }
 
-/* --- Responsive Scaling --- */
+/* --- Mobile Responsive Fixes (768px and below) --- */
+@media (max-width: 768px) {
+  .filter-inner-content {
+    flex-direction: column; /* Label upar, Pills niche */
+    align-items: flex-start; /* Left align */
+    gap: 12px;
+    padding: 0 16px;
+  }
 
-/* Tablet (640px to 1024px) */
+  .filter-label {
+    font-size: 10px;
+    margin-left: 4px;
+    opacity: 0.8;
+  }
+
+  /* Switcher takes full width now */
+  .filter-inner-content > :last-child {
+    width: 100%;
+  }
+
+  /* Discovery Section Mobile Padding */
+  .discovery-unit-container {
+    border-radius: 0; /* Edge to edge on mobile */
+    border-left: none;
+    border-right: none;
+    margin-bottom: 30px;
+  }
+
+  .discovery-content-area {
+    padding: 20px 15px;
+  }
+}
+
+/* --- Tablet Scaling (640px to 1024px) --- */
 @media (min-width: 640px) {
   .tools-display-grid {
-    grid-template-columns: repeat(2, 1fr); /* Tablet: 2 Cards */
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
   .hero-intent-section { padding: 100px 20px 80px; }
 }
 
-/* Desktop (1024px+) */
+/* --- Desktop Scaling (1024px+) --- */
 @media (min-width: 1024px) {
   .tools-display-grid {
-    grid-template-columns: repeat(3, 1fr); /* Large Tablet/Small Desktop: 3 Cards */
+    grid-template-columns: repeat(3, 1fr);
     gap: 32px;
   }
   .sections-stack { padding: 0 40px; }
 }
 
-/* Ultra-Wide Desktop (1280px+) */
+/* --- Ultra-Wide (1280px+) --- */
 @media (min-width: 1280px) {
   .tools-display-grid {
-    grid-template-columns: repeat(4, 1fr); /* Full Desktop: 4 Cards */
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-/* Dark Mode Transitions */
+/* --- Dark Mode --- */
 [data-theme="dark"] .home-container {
   background: #020617;
+}
+
+[data-theme="dark"] .discovery-unit-container {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
+[data-theme="dark"] .filter-sticky-bar {
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom-color: #1e293b;
 }

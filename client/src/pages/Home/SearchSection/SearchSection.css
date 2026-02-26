@@ -182,27 +182,53 @@
 }
 
 .search-status.error { color: #ef4444; }
-
-/* ── Results Row (Horizontal Scroll) ── */
+ 
+ /* ── Results Row (Horizontal Scroll) ── */
 .search-tools-row {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   width: 100%;
   margin-top: 10px;
-  padding: 12px 4px 24px; /* Space for card shadows */
+  padding: 8px 4px 24px; /* Space for card shadows */
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
 
+.search-tools-row::-webkit-scrollbar { 
+  display: none; 
+}
+
+/* ── Compact ToolCard Logic ── */
+.search-tools-row .tool-card {
+  /* Rigid width for compact look like recommended section */
+  flex: 0 0 240px; 
+  min-width: 240px;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Mobile Specific: Thoda aur chota taaki next card ka hint mile */
+@media (max-width: 480px) {
+  .search-tools-row .tool-card {
+    flex: 0 0 210px;
+    min-width: 210px;
+  }
+  .search-tools-row {
+    gap: 12px;
+  }
+}
+
+ 
+
+.search-tools-row .tool-card:hover {
+  transform: translateY(-5px);
+}
+
 .search-tools-row::-webkit-scrollbar { display: none; }
 
-.search-tools-row .tool-card {
-  flex: 0 0 280px;
-  scroll-snap-align: start;
-  transition: transform 0.3s ease;
-}
+ 
 
 /* ── Empty State ── */
 .empty-state {
@@ -253,11 +279,7 @@
   color: #94a3b8;
 }
 
-/* ── Responsive ── */
-@media (min-width: 768px) {
-  .search-controls input { height: 60px; font-size: 16px; }
-  .search-tools-row .tool-card { flex: 0 0 320px; }
-}
+ 
 
 @keyframes fadeIn {
   from { opacity: 0; }

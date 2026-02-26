@@ -1,7 +1,7 @@
  import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../app/features/AuthSlice';// 1. Sahi thunk import karein
-
+import './LogoutButton.css'
 const Logout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

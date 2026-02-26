@@ -1,9 +1,4 @@
- /* ===================================
-   AI-MART — PUBLIC/LOGGED-IN NAVBAR
-   File: src/components/navbar/Navbar.css
-=================================== */
-
-.nav-container {
+ .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,74 +14,45 @@
 }
 
 /* ── Logo ── */
+.nav-logo-wrapper {
+  flex: 1; /* Logo takes available space but doesn't squash buttons */
+  min-width: fit-content;
+}
+
 .nav-logo-text {
   color: #4F46E5;
   font-weight: 800;
   font-size: 1.3rem;
   letter-spacing: -0.5px;
   margin: 0;
+  white-space: nowrap; /* Logo kabhi line break nahi karega */
 }
 
 /* ── Nav Links Container ── */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 10px; /* Mobile par kam gap */
+  gap: 8px; /* Mobile par gap kam */
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.nav-links li {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Li ke andar buttons ka gap */
-}
-
-/* ── Links Style (Login Link) ── */
-.nav-links a {
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  color: #4B5563;
-  transition: all 0.2s;
-}
-
-.nav-links a:hover {
-  color: #4F46E5;
-}
-
-/* ── Dashboard Buttons (Home, Explore, Saved) ── */
+/* ── Dashboard Buttons Fix ── */
 .dashboard-btn {
-  padding: 8px 12px;
-  background: #F3F4F6; /* Light grey background */
+  display: inline-block;
+  padding: 8px 10px;
+  background: #F3F4F6;
   color: #4B5563 !important;
   border-radius: 8px;
-  font-size: 13px !important;
+  font-size: 12px !important;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap; /* Text ko wrap hone se rokta hai */
   transition: all 0.2s ease;
 }
 
-.dashboard-btn:hover {
-  background: #EEF2FF;
-  color: #4F46E5 !important;
-}
-
-/* ── Register / Primary Button ── */
-.register-btn {
-  background: #4F46E5 !important;
-  color: #ffffff !important;
-  padding: 10px 18px !important;
-  border-radius: 8px !important;
-  font-weight: 700 !important;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
-}
-
-.register-btn:hover {
-  background: #4338CA !important;
-  transform: translateY(-1px);
-}
-
-/* ── TABLET & DESKTOP (640px+) ── */
+/* ── Tablet & Desktop (640px+) ── */
 @media (min-width: 640px) {
   .nav-container {
     height: 72px;
@@ -98,7 +64,7 @@
   }
 
   .nav-links {
-    gap: 20px;
+    gap: 16px;
   }
 
   .dashboard-btn {
@@ -107,15 +73,30 @@
   }
 }
 
-/* ── MOBILE SPECIFIC FIX ── */
+/* ── MOBILE SPECIFIC REPAIR ── */
 @media (max-width: 480px) {
-  .nav-logo-text {
-    font-size: 1.1rem;
+  .nav-container {
+    padding: 0 12px;
   }
-  
-  /* Agar mobile par text lamba ho raha ho toh */
+
+  .nav-logo-text {
+    font-size: 1rem; /* Logo thoda chota mobile par */
+  }
+
+  .nav-links {
+    gap: 4px; /* Buttons ko chipka kar rakha taaki screen mein fit hon */
+  }
+
+  /* Agar user logged in hai aur 3 buttons hain, toh wo screen se bahar ja sakte hain */
+  /* Isliye hum buttons ki padding aur choti kar dete hain mobile par */
   .dashboard-btn {
-    padding: 6px 10px;
+    padding: 6px 8px;
+    font-size: 11px !important;
+    border-radius: 6px;
+  }
+
+  .register-btn {
+    padding: 8px 12px !important;
     font-size: 12px !important;
   }
 }

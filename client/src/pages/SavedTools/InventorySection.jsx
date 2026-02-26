@@ -1,6 +1,7 @@
  import React from 'react';
 import ToolCard from '../aiArt/components/ToolCard';
 import { Briefcase, ChevronRight } from 'lucide-react';
+import './InventorySection.css';
 
 const InventorySection = ({ items, onExploreMore }) => {
   return (

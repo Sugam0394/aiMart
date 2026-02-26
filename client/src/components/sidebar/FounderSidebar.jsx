@@ -48,7 +48,7 @@ function FounderSidebar({ activeView, setActiveView }) {
       </ul>
       
       <div className="sidebar-footer">
-        <p>© 2026 AI Bridge</p>
+        <p>© 2026 AI Mart</p>
       </div>
     </aside>
   )

@@ -3,7 +3,7 @@ import { getMyProfile } from "../../../api/toolOwner/setting.api";
 import LogoutButton from "../../../components/LogoutButton/Logout";
 import "./FounderSettings.css";
 
-function FounderSettings({ isDark, setIsDark }) {
+function FounderSettings() {
   const [profile, setProfile] = useState(null);
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ function FounderSettings({ isDark, setIsDark }) {
   if (error) return <div className="settings-error">{error}</div>;
 
   return (
-    <div className="settings-layout founder-theme">
+    <div className="founder-settings-layout">
       {/* SIDEBAR */}
       <aside className="settings-sidebar">
         <div className="sidebar-user-section">
@@ -47,9 +47,6 @@ function FounderSettings({ isDark, setIsDark }) {
         <nav className="sidebar-nav-links">
           <button className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
             👑 Admin Profile
-          </button>
-          <button className={activeTab === "appearance" ? "active" : ""} onClick={() => setActiveTab("appearance")}>
-            🌙 Appearance
           </button>
         </nav>
 
@@ -88,26 +85,6 @@ function FounderSettings({ isDark, setIsDark }) {
                 </div>
               </div>
             </section>
-          </div>
-        )}
-
-        {activeTab === "appearance" && (
-          <div className="appearance-section animate-fade">
-            <h2>Appearance</h2>
-            <p className="section-desc">Customize the system-wide theme interface.</p>
-            <div className="theme-toggle-card">
-              <div className="theme-info">
-                <span>{isDark ? "🌙 Dark Mode Active" : "☀️ Light Mode Active"}</span>
-              </div>
-              <label className="toggle-switch">
-                <input 
-                  type="checkbox" 
-                  checked={isDark} 
-                  onChange={() => setIsDark(!isDark)} 
-                />
-                <span className="slider round"></span>
-              </label>
-            </div>
           </div>
         )}
       </main>

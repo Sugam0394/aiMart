@@ -3,7 +3,7 @@ import { getMyProfile } from "../../../api/toolOwner/setting.api";
 import LogoutButton from "../../../components/LogoutButton/Logout";
 import "./ToolOwnerSettings.css";
 
-function ToolOwnerSettings({ isDark, setIsDark }) { // Props received here
+function ToolOwnerSettings() { // Props received here
   const [profile, setProfile] = useState(null);
   const [activeTab, setActiveTab] = useState("profile"); // Tab logic added
   const [loading, setLoading] = useState(true);
@@ -27,28 +27,25 @@ function ToolOwnerSettings({ isDark, setIsDark }) { // Props received here
   if (error) return <div className="settings-error">{error}</div>;
 
   return (
-    <div className="settings-layout"> {/* Consistent layout wrapper */}
-      <aside className="settings-sidebar">
-        <div className="sidebar-user-section">
+    <div className="owner-settings-layout"> 
+      <aside className="owner-settings-sidebar">
+        <div className="owner-sidebar-user-section">
           <div className="avatar-wrapper">
              {profile.profilePicture ? (
-               <img src={profile.profilePicture} alt="Owner" className="sidebar-avatar" />
+               <img src={profile.profilePicture} alt="Owner" className="owner-avatar" />
              ) : (
                <div className="owner-placeholder">{profile.name?.charAt(0)}</div>
              )}
           </div>
           <div className="user-info-text">
             <h4>{profile.name}</h4>
-            <span className="role-badge tool-owner-role">Tool Owner</span>
+            <span className="tool-owner-role">Tool Owner</span>
           </div>
         </div>
 
         <nav className="sidebar-nav-links">
           <button className={activeTab === "profile" ? "active" : ""} onClick={() => setActiveTab("profile")}>
             👤 Profile Info
-          </button>
-          <button className={activeTab === "appearance" ? "active" : ""} onClick={() => setActiveTab("appearance")}>
-            🌙 Appearance
           </button>
         </nav>
 
@@ -80,20 +77,6 @@ function ToolOwnerSettings({ isDark, setIsDark }) { // Props received here
                  <div className="value-box muted">{profile.email}</div>
                </div>
              </section>
-          </div>
-        )}
-
-        {activeTab === "appearance" && (
-          <div className="appearance-section">
-            <h2>Appearance</h2>
-            <p>Customize the look and feel of your dashboard.</p>
-            <div className="theme-toggle-card">
-              <span>{isDark ? "🌙 Dark Mode" : "☀️ Light Mode"}</span>
-              <label className="toggle-switch">
-                <input type="checkbox" checked={isDark} onChange={() => setIsDark(!isDark)} />
-                <span className="slider round"></span>
-              </label>
-            </div>
           </div>
         )}
       </main>

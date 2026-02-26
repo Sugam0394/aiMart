@@ -3,7 +3,7 @@
   display: flex;
   max-width: 1100px;
   margin: 24px auto;
-  background: var(--color-bg-primary);
+  background: var(--bg-card); /* Rule 1: Color Palette */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);

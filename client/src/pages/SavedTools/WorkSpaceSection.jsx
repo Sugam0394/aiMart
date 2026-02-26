@@ -1,5 +1,6 @@
  import React from 'react';
 import { Sparkles, Copy } from 'lucide-react';
+import './WorkSpaceSection.css';
 
 const WorkspaceSection = ({ prompts, onCopy }) => {
   if (!prompts || prompts.length === 0) return null;

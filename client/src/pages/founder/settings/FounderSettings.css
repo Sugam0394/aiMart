@@ -1,36 +1,27 @@
-/* =========================================================
-   1. CORE LAYOUT
-   ========================================================= */
-.founder-theme {
-  --founder-gold: #d97706; /* Amber-600 */
-  --founder-gold-light: #fffbeb;
+ /* client/src/pages/founder/settings/FounderSettings.css */
+
+.founder-settings-layout {
+  --founder-gold: #d97706; 
   display: flex;
-  background: var(--color-bg-primary);
+  background: var(--bg-card);
   color: var(--color-text-primary);
   min-height: 85vh;
   margin: 40px auto;
   max-width: 1100px;
-  border-radius: 24px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
-/* =========================================================
-   2. SIDEBAR
-   ========================================================= */
+/* ================= SIDEBAR ================= */
 .settings-sidebar {
   width: 280px;
-  background: var(--color-bg-secondary);
+  background: var(--bg-secondary);
   border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   padding: 40px 24px;
-}
-
-.admin-crown {
-  position: relative;
-  margin-bottom: 15px;
 }
 
 .admin-crown::after {
@@ -45,9 +36,9 @@
 .sidebar-avatar, .owner-placeholder {
   width: 80px;
   height: 80px;
-  border-radius: 22px;
+  border-radius: var(--radius-md);
   object-fit: cover;
-  border: 3px solid var(--color-bg-primary);
+  border: 3px solid var(--bg-card);
 }
 
 .owner-placeholder {
@@ -61,17 +52,13 @@
 }
 
 .founder-role {
-  background: var(--founder-gold-light);
+  background: rgba(217, 119, 6, 0.1);
   color: var(--founder-gold);
   font-size: 11px;
   font-weight: 800;
   padding: 4px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   text-transform: uppercase;
-}
-
-[data-theme="dark"] .founder-role {
-  background: rgba(217, 119, 6, 0.15);
 }
 
 .sidebar-nav-links {
@@ -87,11 +74,11 @@
   text-align: left;
   background: transparent;
   border: none;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   color: var(--color-text-secondary);
   cursor: pointer;
   font-weight: 600;
-  transition: 0.3s;
+  transition: var(--transition-base);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -100,49 +87,42 @@
 .sidebar-nav-links button.active {
   background: var(--founder-gold);
   color: white;
-  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25);
+  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.3);
 }
 
-/* =========================================================
-   3. CONTENT AREA
-   ========================================================= */
+/* ================= CONTENT AREA ================= */
 .settings-view {
   flex: 1;
   padding: 50px;
-  background: var(--color-bg-primary);
+  background: var(--bg-card);
 }
 
 .owner-header h1 {
   font-size: 32px;
   font-weight: 800;
   color: var(--color-text-primary);
+  margin: 0;
 }
 
 .admin-pill {
-  background: #fff7ed;
-  color: #c2410c;
-  border: 1px solid #ffedd5;
+  background: var(--bg-secondary);
+  color: var(--founder-gold);
+  border: 1px solid var(--color-border-light);
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 13px;
-}
-
-[data-theme="dark"] .admin-pill {
-  background: rgba(194, 65, 12, 0.1);
-  color: #fb923c;
-  border-color: rgba(194, 65, 12, 0.2);
 }
 
 .dot {
   width: 10px;
   height: 10px;
-  background: #f97316;
+  background: var(--founder-gold);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+  box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
 }
 
 .info-grid {
@@ -152,11 +132,20 @@
   margin-top: 40px;
 }
 
+.info-item label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
 .value-box {
   padding: 18px;
-  background: var(--color-bg-secondary);
-  border-radius: 16px;
-  border: 1px solid var(--color-border);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
   color: var(--color-text-primary);
   font-weight: 600;
 }
@@ -167,55 +156,6 @@
   letter-spacing: 1px;
 }
 
-/* =========================================================
-   4. APPEARANCE SECTION
-   ========================================================= */
-.theme-toggle-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px;
-  background: var(--color-bg-secondary);
-  border-radius: 24px;
-  border: 1px solid var(--color-border);
-}
-
-.toggle-switch {
-  position: relative;
-  width: 60px;
-  height: 30px;
-}
-
-.toggle-switch input { opacity: 0; width: 0; height: 0; }
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #cbd5e1;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 22px; width: 22px;
-  left: 4px; bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--founder-gold);
-}
-
-input:checked + .slider:before {
-  transform: translateX(30px);
-}
-
-/* Animations */
 .animate-fade {
   animation: fadeIn 0.4s ease-out;
 }
@@ -223,4 +163,10 @@ input:checked + .slider:before {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-} 
+}
+
+@media (max-width: 900px) {
+  .founder-settings-layout { flex-direction: column; margin: 0; border-radius: 0; }
+  .settings-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--color-border); }
+  .info-grid { grid-template-columns: 1fr; }
+}

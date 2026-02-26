@@ -25,7 +25,6 @@ const AppInitializer = () => {
         } catch (err) {
           console.error("🔴 Wake-up attempt failed:", err);
           console.warn(`🐢 Backend sleeping... Attempt ${i + 1}/${retries}`);
-          // Pehli attempt pe user ko batao ki server warm up ho raha hai
           if (i === 0) toast.loading("Server is warming up... please wait.", { id: "warmup" });
         }
         // 3 second wait karo agle try se pehle
@@ -50,9 +49,16 @@ const AppInitializer = () => {
 
       try {
         console.log("📡 Syncing session...");
-        // 2. Ab sync karo kyunki humein pata hai server awake hai
-        await dispatch(syncUserRole()).unwrap();
-        await dispatch(fetchSavedTools());
+
+
+        const user = await dispatch(syncUserRole()).unwrap();
+  
+        if (user) {
+          console.log("📦 Loading user inventory...");
+          await dispatch(fetchSavedTools());
+        }
+       
+      
       } catch (error) {
         console.error("🔴 Auth Sync Failed:", error);
         

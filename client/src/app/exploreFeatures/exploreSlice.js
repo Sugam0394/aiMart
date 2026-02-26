@@ -84,9 +84,7 @@ const exploreSlice = createSlice({
         state.exploreSessionId = action.payload.sessionId;
         state.currentStep = "ROLE";
     
-        state.selections = { role: "", task: "", tools: [] };
-        state.prompts = [];
-        state.stepPayload = null;
+        
         localStorage.setItem("active_explore_session", JSON.stringify(state));
       })
       .addCase(startExploreThunk.rejected, (state, action) => {

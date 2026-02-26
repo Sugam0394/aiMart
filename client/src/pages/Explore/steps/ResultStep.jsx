@@ -92,9 +92,10 @@ function ResultStep() {
           <button className="share-secondary-btn" onClick={handleShareStack}>
             <Share2 size={18} /> Share Stack
           </button>
-          <button className="finish-primary-btn" onClick={() => navigate('/saved-tools')}>
-            Go to My Inventory <ArrowRight size={18} />
-          </button>
+           // ✅ NAYA CODE (Isse replace karo):
+<button className="finish-primary-btn" onClick={() => navigate('/saved')}>
+  Go to My Inventory <ArrowRight size={18} />
+</button>
         </div>
       </div>
     </div>

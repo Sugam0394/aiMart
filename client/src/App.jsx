@@ -1,5 +1,5 @@
  import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
  
 
 // Styles
@@ -49,20 +49,9 @@ const UserSettings = lazy(() => import("./pages/user/settings/UserSettings.jsx")
  
 
 function App() {
-  const [isDark, setIsDark] = useState(localStorage.getItem("theme") === "dark");
+  
  
-  useEffect(() => {
-    const root = document.documentElement;
-    if (isDark) {
-      root.setAttribute('data-theme', 'dark');
-      root.style.colorScheme = 'dark';
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.setAttribute('data-theme', 'light');
-      root.style.colorScheme = 'light';
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
+ 
 
   return (
     <BrowserRouter>
@@ -92,7 +81,7 @@ function App() {
             
               <Route
                 path="settings"
-                element={<UserSettings isDark={isDark} setIsDark={setIsDark} />}
+                element={<UserSettings   />}
               />
             </Route>
           </Route>
@@ -107,7 +96,7 @@ function App() {
               </Route>
               <Route
                 path="settings"
-                element={<ToolOwnerSettings isDark={isDark} setIsDark={setIsDark} />}
+                element={<ToolOwnerSettings  />}
               />
             </Route>
           </Route>
@@ -118,7 +107,7 @@ function App() {
               <Route path="founder/dashboard" element={<FounderDashboard />} />
               <Route
                 path="founder/settings"
-                element={<FounderSettings isDark={isDark} setIsDark={setIsDark} />}
+                element={<FounderSettings  />}
               />
             </Route>
           </Route>

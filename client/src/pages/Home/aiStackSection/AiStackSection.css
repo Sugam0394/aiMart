@@ -276,86 +276,105 @@
 /* ── Animations ── */
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .aistack-section { padding: 24px; }
-  .aistack-title { font-size: 24px; }
-  .stack-actions { flex-direction: column; }
-  .stack-tools-grid { grid-template-columns: 1fr; }
-  .aistack-header { text-align: center; }
-}
-/* ── Responsive Fixes for Mobile ── */
+ /* ── Final Mobile Responsive Polish ── */
 @media (max-width: 768px) {
   .aistack-section { 
-    padding: 24px 16px; /* Side padding kam kari taaki space mile */
-    margin: 20px 0;
+    padding: 20px 12px; 
+    margin: 16px 0;
+    border-radius: 16px; /* Choti screen par chota radius */
+  }
+
+  .aistack-header {
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .aistack-title { 
-    font-size: 24px; 
-    line-height: 1.2;
+    font-size: 20px; 
+    font-weight: 800;
   }
 
   .aistack-subtitle {
-    font-size: 14px;
+    font-size: 13px;
+    padding: 0 10px;
   }
 
-  /* Role Tabs Mobile Optimization */
+  /* Role Selection Container */
   .role-tabs-wrapper {
-    margin-bottom: 24px;
-    margin-left: -16px; /* Section ki padding ko neutralize kiya taaki edge-to-edge scroll ho */
-    margin-right: -16px;
-    padding-left: 16px;
-    padding-right: 16px;
+    margin: 0 -12px 20px -12px; /* Pulling it to screen edges */
+    background: var(--bg-secondary); /* Halka different color taaki scroll area dikhe */
+    padding: 10px 0;
   }
 
   .role-tabs-scroll {
-    gap: 8px; /* Gap kam kiya */
-    padding-bottom: 12px;
-    scroll-snap-type: x mandatory; /* Smooth swiping */
+    display: flex;
+    gap: 6px;
+    padding: 0 12px 8px 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
+  /* Compact Pill Design */
   .role-tab-btn {
-    padding: 8px 14px; /* Choti padding */
-    font-size: 13px; /* Text chota kiya */
-    border-radius: 10px;
-    scroll-snap-align: start; /* Har button edge pe chipkega swipe ke baad */
+    padding: 6px 12px; 
+    height: 36px; /* Standard mobile height */
+    font-size: 12px;
+    font-weight: 700;
+    gap: 6px;
+    border-radius: 8px;
+    background: #ffffff;
+    flex-shrink: 0; /* Isse button pichkega nahi */
+    border: 1.5px solid #e2e8f0;
+  }
+
+  .role-tab-btn.active {
+    background: var(--brand-indigo);
+    border-color: var(--brand-indigo);
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
   }
 
   .tab-icon svg {
-    width: 16px; /* Icon thoda chota */
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 
-  /* Grid & Actions */
+  /* Grid Fix: Taaki mobile par card clean dikhe */
   .stack-tools-grid { 
     grid-template-columns: 1fr; 
-    gap: 16px;
-  }
-
-  .stack-tool-card {
-    padding: 16px;
-  }
-
-  .stack-actions { 
-    flex-direction: column; 
     gap: 12px;
   }
 
-  .stack-action-btn {
-    width: 100%;
-    padding: 14px;
-    font-size: 14px;
+  .stack-tool-card {
+    padding: 15px;
+    border-radius: 16px;
   }
-}
 
-/* ── Dark Mode Logic ── */
-[data-theme="dark"] .aistack-section,
-[data-theme="dark"] .stack-tool-card {
-  background: #1e293b;
-  border-color: #334155;
-}
+  .stack-card-body {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
 
-[data-theme="dark"] .role-tab-btn:not(.active) {
-  background: #0f172a;
+  .stack-tool-logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .stack-tool-name {
+    font-size: 16px;
+  }
+
+  /* Action Buttons (Copy/Share) */
+  .stack-actions { 
+    flex-direction: row; /* Mobile par upar-neeche ke bajaye side-by-side chote buttons */
+    gap: 8px;
+    padding-top: 20px;
+  }
+
+  .stack-action-btn {
+    padding: 12px 8px;
+    font-size: 12px;
+    flex: 1;
+    border-radius: 10px;
+  }
 }

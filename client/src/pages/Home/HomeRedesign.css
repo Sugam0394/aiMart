@@ -1,414 +1,96 @@
-/* ===================================
-   AI-MART — HOME PAGE REDESIGN
-   Modern Visual Enhancement Layer
-=================================== */
-
-/* ── Enhanced Hero Section ── */
-.home-hero-container {
-  margin-bottom: 24px;
-}
-
-.search-overlay-box {
-  margin: -32px auto 0;
-  max-width: 680px;
-  transform: translateY(0);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ── Modern Filter Bar Enhancement ── */
-.filter-sticky-bar {
-  border-bottom: 1px solid rgba(229, 231, 235, 0.8);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
-}
-
-.filter-label {
-  font-size: 11px;
-  font-weight: 800;
-  color: #6B7280;
-  letter-spacing: 1.2px;
-  padding: 6px 12px;
-  background: #F3F4F6;
-  border-radius: 8px;
-}
-
-/* ── Enhanced Section Spacing ── */
-.sections-stack {
-  gap: 48px;
-}
-
-.home-page {
-  gap: 40px;
-}
-
-/* ── Improved Skeleton Loading ── */
-.skeleton-greeting {
-  height: 180px;
-  border-radius: 20px;
-  background: linear-gradient(
-    135deg,
-    #f0f0f0 0%,
-    #e0e0e0 25%,
-    #f0f0f0 50%,
-    #e0e0e0 75%,
-    #f0f0f0 100%
-  );
-  background-size: 400% 100%;
-}
-
-.skeleton-search {
-  height: 56px;
-  border-radius: 14px;
-  max-width: 600px;
-  margin: -20px auto 0;
-}
-
-.skeleton-filter-bar {
-  display: flex;
-  gap: 12px;
-  padding: 12px 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.skeleton-filter-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.skeleton-pill {
-  min-width: 100px;
-  height: 38px;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-
-.skeleton-section {
-  margin: 24px 0;
-}
-
-.skeleton-section-title {
-  height: 32px;
-  width: 240px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.skeleton-cards-row {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding: 12px 0;
-  scrollbar-width: none;
-}
-
-.skeleton-cards-row::-webkit-scrollbar {
-  display: none;
-}
-
-.skeleton-shimmer {
-  animation: shimmer 2s infinite linear;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: -100% 0;
-  }
-}
-
-/* ── Enhanced Horizontal Scroll ── */
-.horizontal-scroll-section {
-  padding: 16px 0 20px;
-  scroll-padding-left: 16px;
-}
-
-.horizontal-scroll-section > * {
-  gap: 16px;
-  padding-left: 4px;
-}
-
-/* ── Visual Hierarchy Enhancement ── */
-.home-container {
-  background: linear-gradient(180deg, #F9FAFB 0%, #F3F4F6 100%);
-}
-
-/* ── Smooth Transitions ── */
-.home-page > * {
-  animation: fadeInUp 0.5s ease-out backwards;
-}
-
-.home-page > *:nth-child(1) { animation-delay: 0.1s; }
-.home-page > *:nth-child(2) { animation-delay: 0.15s; }
-.home-page > *:nth-child(3) { animation-delay: 0.2s; }
-.home-page > *:nth-child(4) { animation-delay: 0.25s; }
-.home-page > *:nth-child(5) { animation-delay: 0.3s; }
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ── Enhanced Focus States ── */
-.filter-sticky-bar:focus-within {
-  box-shadow: 0 4px 24px rgba(79, 70, 229, 0.08);
-}
-
-/* ── TABLET ENHANCEMENTS (640px+) ── */
-@media (min-width: 640px) {
-  .home-page {
-    gap: 52px;
-  }
-
-  .sections-stack {
-    gap: 56px;
-  }
-
-  .search-overlay-box {
-    margin-top: -36px;
-    max-width: 640px;
-  }
-
-  .horizontal-scroll-section > * {
-    gap: 20px;
-  }
-
-  .skeleton-greeting {
-    height: 200px;
-    border-radius: 24px;
-  }
-
-  .skeleton-search {
-    height: 60px;
-  }
-}
-
-/* ── DESKTOP ENHANCEMENTS (1024px+) ── */
-@media (min-width: 1024px) {
-  .home-page {
-    gap: 64px;
-    padding: 0 48px 80px;
-  }
-
-  .sections-stack {
-    gap: 64px;
-  }
-
-  .search-overlay-box {
-    margin-top: -40px;
-    max-width: 720px;
-  }
-
-  .horizontal-scroll-section > * {
-    gap: 24px;
-  }
-
-  .filter-sticky-bar {
-    margin-left: -48px;
-    margin-right: -48px;
-    padding: 14px 48px;
-  }
-
-  .skeleton-greeting {
-    height: 220px;
-  }
-
-  .skeleton-search {
-    height: 64px;
-  }
-
-  /* Desktop Hover Effects */
-  .horizontal-scroll-section {
-    position: relative;
-  }
-
-  .horizontal-scroll-section::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 80px;
-    background: linear-gradient(90deg, transparent, #F3F4F6);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .horizontal-scroll-section:hover::after {
-    opacity: 1;
-  }
-}
-
-/* ── DARK MODE SUPPORT ── */
-[data-theme="dark"] .home-container {
-  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-}
-
-[data-theme="dark"] .filter-sticky-bar {
-  background: rgba(15, 23, 42, 0.95);
-  border-bottom-color: #1e293b;
-}
-
-[data-theme="dark"] .filter-label {
-  background: #1e293b;
-  color: #94a3b8;
-}
-
-[data-theme="dark"] .skeleton-greeting,
-[data-theme="dark"] .skeleton-search,
-[data-theme="dark"] .skeleton-pill,
-[data-theme="dark"] .skeleton-section-title {
-  background: linear-gradient(
-    135deg,
-    #1e293b 0%,
-    #334155 25%,
-    #1e293b 50%,
-    #334155 75%,
-    #1e293b 100%
-  );
-  background-size: 400% 100%;
-}
-
-/* ── Performance Optimization ── */
-.home-page,
-.horizontal-scroll-section,
-.filter-sticky-bar {
-  will-change: transform;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-/* ── Accessibility Enhancement ── */
-.filter-sticky-bar:focus-within .filter-label {
-  outline: 2px solid #4F46E5;
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* =========================================
-   AI-MART — HOME REFINED (CONSTITUTION V2)
-   Focus: Sticky Dynamics & Section Stack
-   ========================================= */
+ /* HomeRedesign.css - Optimized for Tool Display */
 
 .home-container {
+  background: var(--bg-main);
   min-height: 100vh;
-  /* Rule 1: Visual Hierarchy Gradient */
-  background: linear-gradient(180deg, #F9FAFB 0%, #F3F4F6 100%);
-  transition: background 0.3s ease;
 }
 
 .home-page {
-  max-width: 1440px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 0 100px; /* Space for footer */
 }
 
-/* --- 1. Hero Intent Section --- */
+/* --- Hero --- */
 .hero-intent-section {
-  padding: 60px 20px 40px;
+  padding: 80px 20px 60px;
   text-align: center;
-  background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.05) 0%, transparent 50%);
 }
 
 .section-title {
-  font-size: clamp(2rem, 5vw, 3.5rem); /* Rule 2: Responsive Typography */
+  font-size: clamp(2.2rem, 6vw, 3.8rem);
   font-weight: 900;
   color: var(--color-text-primary);
-  letter-spacing: -0.04em;
-  margin-bottom: 12px;
+  letter-spacing: -0.05em;
+  margin-bottom: 16px;
 }
 
-.section-subtitle {
-  color: var(--color-text-secondary);
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto 32px;
-}
-
-/* --- 2. Sticky Filter Bar (The Engineering Marvel) --- */
+/* --- The Sticky Filter --- */
 .filter-sticky-bar {
   position: sticky;
-  top: 0; /* Align with top or Navbar height */
+  top: 0;
   z-index: 100;
-  background: rgba(249, 250, 251, 0.8);
-  backdrop-filter: blur(12px); /* Rule 3: Premium Polish */
-  -webkit-backdrop-filter: blur(12px);
-  padding: 12px 20px;
+  background: var(--bg-main-alpha); /* 80% opacity with blur */
+  backdrop-filter: blur(12px);
+  padding: 14px 0;
   border-bottom: 1px solid var(--color-border-light);
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .filter-inner-content {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
-/* --- 3. Section Stack (Rule 6: The "Breathable" UI) --- */
+/* --- Section Stack & Grid Fix (Crucial) --- */
 .sections-stack {
   display: flex;
   flex-direction: column;
-  gap: 64px; /* Rule 6: Large gaps prevent visual clutter */
-  padding: 0 20px;
+  gap: 80px; /* High breathing space */
+  padding: 0 0 100px;
 }
 
-/* Horizontal Scroll Container Logic */
-.usecase-row-container {
-  margin: 0 -20px; /* Edge-to-edge scroll on mobile */
-  padding: 10px 20px;
+/* ToolCard Grid Logic */
+/* In classes ko apne Tool Grid components mein use karein */
+.tools-display-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* Mobile: 1 Full Card */
+  gap: 20px;
+  padding: 10px 0;
 }
 
-/* --- 4. Section Wrapper Polish --- */
-.section-wrapper h2 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 4px;
-  color: var(--color-text-primary);
+/* --- Responsive Scaling --- */
+
+/* Tablet (640px to 1024px) */
+@media (min-width: 640px) {
+  .tools-display-grid {
+    grid-template-columns: repeat(2, 1fr); /* Tablet: 2 Cards */
+    gap: 24px;
+  }
+  .hero-intent-section { padding: 100px 20px 80px; }
 }
 
-.section-wrapper p {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary);
-  margin-bottom: 20px;
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .tools-display-grid {
+    grid-template-columns: repeat(3, 1fr); /* Large Tablet/Small Desktop: 3 Cards */
+    gap: 32px;
+  }
+  .sections-stack { padding: 0 40px; }
 }
 
-/* --- 5. Mobile Adjustments (Rule 5) --- */
-@media (max-width: 768px) {
-  .hero-intent-section { padding: 40px 16px; }
-  .sections-stack { gap: 40px; }
-  .filter-label { display: none; } /* Space saver on mobile */
-  
-  .section-title { font-size: 2.25rem; }
+/* Ultra-Wide Desktop (1280px+) */
+@media (min-width: 1280px) {
+  .tools-display-grid {
+    grid-template-columns: repeat(4, 1fr); /* Full Desktop: 4 Cards */
+  }
 }
 
-/* --- 6. Dark Mode Override --- */
+/* Dark Mode Transitions */
 [data-theme="dark"] .home-container {
-  background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+  background: #020617;
 }
-
-[data-theme="dark"] .filter-sticky-bar {
-  background: rgba(2, 6, 23, 0.85);
-  border-color: #1e293b;
-}
-
-[data-theme="dark"] .section-title { color: #F8FAF9; }

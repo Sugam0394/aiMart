@@ -11,7 +11,7 @@ import UseCaseSwitcher from './useCasedSection/components/UseCaseSwitcher';
  import UseCaseSection from './useCasedSection/UseCasedSection';
 import TrendingForYouSection from './TrendingSection/TrendingForYou';
 import RisingToolsSection from './RisingTool/RisingToolSection';
-import RecommendedSection from './RecommendSection/RecommendSection';
+ 
  
 import SectionWrapper from '../../layouts/section/SectionWrapper';
 
@@ -25,8 +25,7 @@ function Home() {
   const { availableUseCases = [], homeStatus = "idle" } = useSelector((state) => state.moment || {});
   const workflowState = useSelector((state) => state.workflow);
 
-  // ESLint Fix: In states ka use niche RecommendedSection mein kiya gaya hai
-  const [isPersonalized, setIsPersonalized] = useState(false);
+ 
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
   const isAuthenticated = !!user;
@@ -70,74 +69,52 @@ function Home() {
   
 
   return (
-    <div className="home-container">
-      <main className="home-page">
-        
-        {/* ── Hero Section ── */}
-        <header className="hero-intent-section">
-          <h1 className="section-title">
-            {isAuthenticated ? `Welcome back, ${user?.name || 'User'}!` : "Find the right AI tool for your work"}
-          </h1>
-          <p className="section-subtitle">
-            {isAuthenticated ? "What's on your agenda today?" : "Describe your goal and let AI find the perfect stack."}
-          </p>
-          
-          <div className="search-controls">
-            <SearchSection placeholder="Describe your goal (e.g. 'Build a website')" />
+   <div className="home-container">
+    <main className="home-page">
+      <header className="hero-intent-section">
+        <h1 className="section-title">
+          {isAuthenticated ? `Welcome back, ${user?.name}!` : "Find the perfect AI tool"}
+        </h1>
+        <p className="section-subtitle">
+          {isAuthenticated ? "Your personalized AI stack is ready." : "Describe your goal and let AI find the perfect tools."}
+        </p>
+        <div className="search-controls">
+          <SearchSection placeholder="Describe your goal..." />
+        </div>
+      </header>
+
+      <div className="sections-stack">
+        <AiStackSection />
+
+        <div className="filter-sticky-bar">
+          <div className="filter-inner-content">
+            <span className="filter-label">DISCOVER</span>
+            <UseCaseSwitcher 
+              activeUseCase={currentUseCaseKey} 
+              onChange={setActiveUseCaseKey} 
+            />
           </div>
-        </header>
+        </div>
 
-        <div className="sections-stack">
-          <AiStackSection />
-           
-
-          {/* ── Sticky Filter ── */}
-          <div className="filter-sticky-bar">
-            <div className="filter-inner-content">
-              <span className="filter-label">Filters</span>
-              <UseCaseSwitcher 
-                activeUseCase={currentUseCaseKey} 
-                onChange={setActiveUseCaseKey} 
-              />
-            </div>
-          </div>
-
-          {/* ── Dynamic Grid Section ── */}
+        {/* Tools Display Logic */}
+        <div className="main-content-area">
           {activeMeta && (
-            <SectionWrapper 
-              className="section-wrapper"
-              title={activeMeta.label} 
-              subtitle={`${activeMeta.toolCount} AI tools available`}
-            >
-              <div className="usecase-row-container">
-                <UseCaseSection useCaseKey={currentUseCaseKey} />
-              </div>
+            <SectionWrapper title={activeMeta.label} subtitle={`${activeMeta.toolCount} tools`}>
+               <UseCaseSection useCaseKey={currentUseCaseKey} />
             </SectionWrapper>
           )}
 
-          {/* ── Trending ── */}
-          <SectionWrapper title="Trending For You" subtitle="Trending for you today!">
-            <div className="usecase-row-container">
-              <TrendingForYouSection />
-            </div>
+          <SectionWrapper title="Trending For You">
+             <TrendingForYouSection />
           </SectionWrapper>
 
-          {/* ── Rising Tools ── */}
-          <SectionWrapper title="🚀 Rising Tools" subtitle="New and featured tools gaining momentum">
-            <RisingToolsSection />
+          <SectionWrapper title="🚀 Rising Tools">
+             <RisingToolsSection />
           </SectionWrapper>
-
-          {/* ── Personalized Recommendation (Solves ESLint Error) ── */}
-          <SectionWrapper 
-            title={isPersonalized ? "🎯 Based on Your Interests" : "🌟 Handpicked For You"} 
-            subtitle={isPersonalized ? "Based on your recent activity" : "Top rated tools you might like"}
-          >
-            <RecommendedSection onDataLoaded={(val) => setIsPersonalized(val)} />
-          </SectionWrapper>
-
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
+  </div>
   );
 }
 
@@ -145,6 +122,6 @@ export default Home;
 
 
  
-
+ 
 
 

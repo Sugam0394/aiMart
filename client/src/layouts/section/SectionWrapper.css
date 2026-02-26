@@ -2,16 +2,17 @@
    SECTION WRAPPER
 ================================= */
 
-.section-wrapper {
+ .section-wrapper {
   width: 100%;
+  margin-bottom: var(--spacing-4xl); /* Sections ke beech solid gap */
   transition: var(--transition-base);
 }
 
-.section-container {
+ .section-container {
   width: 100%;
-  box-sizing: border-box;
+  max-width: 1300px; /* Desktop par content limit */
+  margin: 0 auto;
 }
-
 /* ===============================
    SECTION HEADER
 ================================= */
@@ -21,6 +22,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  padding: 0 4px; /* Title halka sa andar */
 }
 
 .header-text {
@@ -47,14 +49,21 @@
    CONTENT VIEWPORT
 ================================= */
 
+ 
 .section-content-viewport {
   width: 100%;
   position: relative;
+   
+  overflow-x: auto; 
+  scrollbar-width: none;  
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  padding: 10px 4px 20px 4px; /* Card shadow na kate isliye padding */
 }
 
-/* If children need horizontal scroll, they handle it themselves */
-.section-content-viewport > * {
-  width: 100%;
+.section-content-viewport::-webkit-scrollbar {
+  display: none;
 }
 
 /* ===============================

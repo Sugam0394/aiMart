@@ -25,7 +25,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 const UserLayout = lazy(() => import("./layouts/UserLayout.jsx"));
 const ToolOwnerLayout = lazy(() => import("./layouts/ToolOwnerLayout.jsx"));
 const FounderLayout = lazy(() => import("./layouts/FounderLayout.jsx"));
-
+const PublicStackPage = lazy(() => import("./components/PublicStackPage/PublicStackPage.jsx"));
 
 // Pages (Dynamically imported for better performance)
 const Explore = lazy(() => import("./pages/Explore/Explore.jsx"));
@@ -64,6 +64,7 @@ function App() {
           <Route element={<PublicLayout />}>
             <Route index element={<Home />} />
             <Route path="tools/:id" element={<AiArt />} />
+            <Route path="stack/:role" element={<PublicStackPage />} />
           </Route>
 
           {/* 🔐 2. AUTH ROUTES (Google SDK wraps these via AuthLayout) */}

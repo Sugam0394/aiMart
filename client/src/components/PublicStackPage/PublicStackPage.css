@@ -4,19 +4,23 @@
 
 .public-stack-container {
   max-width: 600px;
-  margin: 40px auto;
-  padding: 0 20px 140px; /* Extra space for sticky CTA */
+  margin: 0 auto;
+  padding: 40px 16px 140px; /* Space for sticky bar */
   font-family: 'Inter', sans-serif;
 }
 
 /* ── Loader ── */
-.stack-loader {
+.stack-loader-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
+  min-height: 70vh;
+}
+
+.stack-loader {
   font-weight: 700;
   color: #6366f1;
+  letter-spacing: -0.01em;
 }
 
 /* ── Hero Branding ── */
@@ -29,22 +33,23 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(99, 102, 241, 0.08);
   color: #6366f1;
   padding: 8px 16px;
   border-radius: 100px;
   font-size: 13px;
   font-weight: 700;
-  margin-bottom: 20px;
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  margin-bottom: 24px;
+  border: 1px solid rgba(99, 102, 241, 0.15);
 }
 
 .viral-title {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 900;
   color: #111827;
   line-height: 1.1;
   margin-bottom: 16px;
+  letter-spacing: -0.03em;
 }
 
 .viral-title span {
@@ -56,6 +61,8 @@
 .viral-subtitle {
   color: #64748b;
   font-size: 1.1rem;
+  max-width: 450px;
+  margin: 0 auto;
   line-height: 1.5;
 }
 
@@ -72,28 +79,30 @@
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
-  padding: 20px;
-  gap: 20px;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  padding: 18px;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
 }
 
 .viral-tool-item:hover {
-  transform: scale(1.02);
-  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  border-color: #4f46e5;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
 .tool-rank {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
-  color: #cbd5e1; /* Subtle rank number */
-  min-width: 24px;
+  color: #e2e8f0;
+  min-width: 30px;
 }
 
 .tool-mini-logo {
   width: 56px;
   height: 56px;
-  border-radius: 14px;
+  border-radius: 12px;
   object-fit: cover;
   background: #f8fafc;
 }
@@ -103,99 +112,104 @@
 }
 
 .tool-details h3 {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #1e293b;
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
 }
 
 .tool-details p {
   font-size: 0.9rem;
   color: #64748b;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .v-view-btn {
   background: #f1f5f9;
   color: #475569;
   border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
+  padding: 8px 14px;
+  border-radius: 8px;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.v-view-btn:hover {
-  background: #e2e8f0;
-  color: #1e293b;
+.viral-tool-item:hover .v-view-btn {
+  background: #4f46e5;
+  color: white;
 }
 
-/* ── Sticky CTA Bar (Conversion Point) ── */
-.viral-cta-bar {
+/* ── Sticky CTA Bar ── */
+.viral-cta-bar-wrapper {
   position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 40px);
-  max-width: 540px;
-  background: #1e293b; /* Dark theme for high contrast CTA */
-  padding: 20px 24px;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 1000;
+}
+
+.viral-cta-bar {
+  width: 100%;
+  max-width: 500px;
+  background: #1e293b;
+  padding: 16px 20px;
   border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  z-index: 100;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
 }
 
 .cta-text h4 { 
   color: #ffffff; 
-  margin: 0 0 2px 0; 
-  font-size: 16px; 
+  margin: 0; 
+  font-size: 15px; 
   font-weight: 700;
 }
 
 .cta-text p { 
   color: #94a3b8; 
   margin: 0; 
-  font-size: 13px; 
+  font-size: 12px; 
 }
 
 .cta-main-btn {
   background: #4f46e5;
   color: white;
   border: none;
-  padding: 14px 24px;
-  border-radius: 14px;
+  padding: 12px 20px;
+  border-radius: 12px;
   font-weight: 700;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: 0.2s;
 }
 
 .cta-main-btn:hover {
   background: #4338ca;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+  transform: translateY(-1px);
 }
 
-/* ── Responsive ── */
-@media (max-width: 480px) {
-  .viral-title { font-size: 1.8rem; }
-  .viral-tool-item { padding: 16px; gap: 12px; }
-  .tool-mini-logo { width: 48px; height: 48px; }
-  .viral-cta-bar { 
-    flex-direction: column; 
-    text-align: center; 
-    gap: 16px; 
-    bottom: 20px;
-    padding: 24px;
-  }
+/* ── Responsive Fixes ── */
+@media (max-width: 540px) {
+  .viral-title { font-size: 2.1rem; }
+  .viral-cta-bar { padding: 14px 18px; }
+  .cta-text h4 { font-size: 14px; }
+  .cta-main-btn { padding: 10px 16px; font-size: 13px; }
+}
+
+@media (max-width: 400px) {
+  .viral-cta-bar { flex-direction: column; text-align: center; gap: 12px; }
   .cta-main-btn { width: 100%; justify-content: center; }
 }

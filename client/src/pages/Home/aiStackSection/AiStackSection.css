@@ -284,6 +284,70 @@
   .stack-tools-grid { grid-template-columns: 1fr; }
   .aistack-header { text-align: center; }
 }
+/* ── Responsive Fixes for Mobile ── */
+@media (max-width: 768px) {
+  .aistack-section { 
+    padding: 24px 16px; /* Side padding kam kari taaki space mile */
+    margin: 20px 0;
+  }
+
+  .aistack-title { 
+    font-size: 24px; 
+    line-height: 1.2;
+  }
+
+  .aistack-subtitle {
+    font-size: 14px;
+  }
+
+  /* Role Tabs Mobile Optimization */
+  .role-tabs-wrapper {
+    margin-bottom: 24px;
+    margin-left: -16px; /* Section ki padding ko neutralize kiya taaki edge-to-edge scroll ho */
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .role-tabs-scroll {
+    gap: 8px; /* Gap kam kiya */
+    padding-bottom: 12px;
+    scroll-snap-type: x mandatory; /* Smooth swiping */
+  }
+
+  .role-tab-btn {
+    padding: 8px 14px; /* Choti padding */
+    font-size: 13px; /* Text chota kiya */
+    border-radius: 10px;
+    scroll-snap-align: start; /* Har button edge pe chipkega swipe ke baad */
+  }
+
+  .tab-icon svg {
+    width: 16px; /* Icon thoda chota */
+    height: 16px;
+  }
+
+  /* Grid & Actions */
+  .stack-tools-grid { 
+    grid-template-columns: 1fr; 
+    gap: 16px;
+  }
+
+  .stack-tool-card {
+    padding: 16px;
+  }
+
+  .stack-actions { 
+    flex-direction: column; 
+    gap: 12px;
+  }
+
+  .stack-action-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 14px;
+  }
+}
 
 /* ── Dark Mode Logic ── */
 [data-theme="dark"] .aistack-section,

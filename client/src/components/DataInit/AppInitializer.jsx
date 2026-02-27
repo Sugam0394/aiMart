@@ -62,10 +62,11 @@ const AppInitializer = () => {
     }
   } catch (error) {
     console.error("🔴 Auth Sync Failed:", error);
-    // Agar token invalid nikla toh hi logout karo
-    if (error?.status === 401 || error?.response?.status === 401) {
-      dispatch(logout());
-    }
+    if (!getAccessToken()) {
+    console.log("ℹ️ Access token lost, logging out...");
+    dispatch(logout()); // Redux state clear karega
+  
+}
   }
   // Note: Finally block se dispatch(setInitialized()) hata diya kyunki upar kar diya hai
 };

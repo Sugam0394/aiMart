@@ -15,7 +15,8 @@ export const logoutUser = createAsyncThunk('auth/logout', async (_, { dispatch }
   }
 });
 
-// ✅ 2. Sync User Role (Session Persistence)
+ 
+ // ✅ 2. Sync User Role (Session Persistence)
 export const syncUserRole = createAsyncThunk(
   "auth/sync-role",
   async (_, { rejectWithValue }) => {
@@ -24,12 +25,19 @@ export const syncUserRole = createAsyncThunk(
       const userData = res.data.data?.user || res.data.user; 
       
       if (userData) {
+        // 🔥 Analysis: User login persistence ke liye yahan localStorage update karna safe hai
+        localStorage.setItem("user", JSON.stringify(userData));
         return userData;
       }
       return rejectWithValue("No user data");
     } catch (error) {
       console.error("Sync Error:", error);
-      return rejectWithValue(null);
+      
+      // ✅ FIXED: Return status and message instead of null
+      return rejectWithValue({
+        status: error?.response?.status,
+        message: error?.response?.data?.message || error.message
+      });
     }
   }
 );

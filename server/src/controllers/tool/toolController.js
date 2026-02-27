@@ -1,4 +1,4 @@
-
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import Tool from "../../models/toolModel.js";
 import { getTrendingToolsService , searchToolsService , getToolsByUseCase  , getStackByRole} from "../../services/toolServices.js";
 import User from "../../models/userModel.js";
@@ -6,6 +6,9 @@ import ApiError from "../../utils/ApiError.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import { WORKFLOW_CONFIG } from "../../moment/workFlowConfig.js";
+ 
+
+
  
 
 
@@ -487,30 +490,112 @@ export const getWorkflowByRole = async (req, res) => {
 };
 
 
-// Section - 7: Get Tools By Use-Case Service (Optimized with Intent Expansion) 
+ 
+
+ 
+// Section - 7: Get AI-Generated Stack (Gemini Integration)
 export const getStack = asyncHandler(async (req, res) => {
+
+
+// Gemini Setup
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
  
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash" // Agar ye na chale toh "gemini-pro" try karna
+  });
+  
   const { role } = req.params;
+  const { requirements } = req.query; // Frontend se ?requirements=... bhejenge
 
- 
+  // 🚀 CASE 1: Agar user ne prompt likha hai toh Gemini use karo
+  if (requirements && requirements.trim().length > 5) {
+    try {
+    
+
+      // DB se saare live tools uthao context ke liye
+      const allTools = await Tool.find({ status: 'live' }).select('name slug description primaryCategory');
+      
+      const toolContext = allTools.map(t => 
+        `Name: ${t.name}, Slug: ${t.slug}, Category: ${t.primaryCategory}, Desc: ${t.description}`
+      ).join("\n");
+
+      const prompt = `You are a tech stack expert. User is a ${role}. 
+      User specific needs: "${requirements}".
+      
+      From the list below, pick exactly 4 tools that best solve these needs.
+      Tools List:
+      ${toolContext}
+
+      Return ONLY a JSON object (no markdown):
+      {
+        "headline": "Personalized ${role} Stack",
+        "subline": "AI-curated tools based on: ${requirements}",
+        "tools": [
+          { "category": "Specific Reason", "emoji": "✨", "label": "Action", "toolSlug": "slug" }
+        ]
+      }`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text().replace(/```json|```/g, "").trim();
+      const aiData = JSON.parse(text);
+
+      // AI dwara select kiye gaye slugs ka full data fetch karo
+      const slugs = aiData.tools.map(t => t.toolSlug);
+      const toolsFromDB = await Tool.find({ slug: { $in: slugs } }).lean();
+      
+      const toolMap = {};
+      toolsFromDB.forEach(t => { toolMap[t.slug] = t; });
+
+      const finalStack = {
+        role,
+        isAiGenerated: true,
+        headline: aiData.headline,
+        subline: aiData.subline,
+        tools: aiData.tools.map(item => ({
+          category: item.category,
+          emoji: item.emoji,
+          label: item.label,
+          tool: toolMap[item.toolSlug]
+        })).filter(t => t.tool),
+        totalTools: slugs.length
+      };
+
+      return res.status(200).json(new ApiResponse(200, finalStack, "AI Stack Generated"));
+
+    } catch (error) {
+    console.error("🔴 Gemini/Database Error Details:", error);
+      // 🚀 ERROR HANDLING UPGRADE: Details ko res mein bhejo
+      const errorMsg = error.message || "Unknown error occurred";
+      const errorStack = error.stack || "";
+      
+      // Optional: Agar API issue hai toh AI specific error message
+      const isApiError = error.message && error.message.includes("API");
+
+      return res.status(500).json(
+        new ApiResponse(
+          500, 
+          { 
+            error: errorMsg, 
+            details: isApiError ? "Check Gemini API Key or Limits" : "Check Tool Slugs in DB"
+          }, 
+          "AI Generation Failed - Falling back to static"
+        )
+      );
+    }
+  }
+
+  // 🚀 CASE 2: Default Static Logic (Static config se uthao)
   const validRoles = ['founder', 'marketer', 'creator', 'designer', 'developer', 'freelancer', 'student'];
-
   if (!validRoles.includes(role)) {
     throw new ApiError(400, 'Invalid role');
   }
 
-  // 3. Service call karke stack data mangwao
   const stack = await getStackByRole(role);
+  if (!stack) throw new ApiError(404, 'Stack not found');
 
-  // 4. Agar stack nahi milta toh 404
-  if (!stack) {
-    throw new ApiError(404, 'Stack not found for this role');
-  }
-
-  // 5. Success response bhejo
-  return res.status(200).json(
-    new ApiResponse(200, stack, 'Stack fetched successfully')
-  );
+  return res.status(200).json(new ApiResponse(200, stack, 'Static Stack fetched'));
 });
 
   

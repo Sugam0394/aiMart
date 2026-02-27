@@ -82,7 +82,12 @@ const exploreSlice = createSlice({
       .addCase(startExploreThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.exploreSessionId = action.payload.sessionId;
+
+        
+        // Sirf tab reset karo agar session bilkul naya ho
+    if (!state.selections.role) {
         state.currentStep = "ROLE";
+    }
     
         
         localStorage.setItem("active_explore_session", JSON.stringify(state));

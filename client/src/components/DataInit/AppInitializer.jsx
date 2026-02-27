@@ -33,40 +33,42 @@ const AppInitializer = () => {
       return false;
     };
 
-    const initializeApp = async () => {
-      // 1. Backend check
-      await wakeUpBackend();
-      toast.dismiss("warmup");
+   const initializeApp = async () => {
+  // 1. Backend ko uthao (Warm up)
+  await wakeUpBackend();
+  toast.dismiss("warmup");
 
-      const token = getAccessToken();
-      
-      if (!token) {
-        console.log("ℹ️ No token found, app initialized as guest.");
-        dispatch(setInitialized());
-        return;
-      }
+  const token = getAccessToken();
+  
+  
+  if (!token) {
+    console.log("ℹ️ No token found, app initialized as guest.");
+    dispatch(setInitialized());
+    return;
+  }
 
-      try {
-        console.log("📡 Syncing session...");
-        
-        // Step A: Sync user profile
-        const user = await dispatch(syncUserRole()).unwrap();
-        
-        // Step B: If user valid, fetch inventory (Bug #3 Fix)
-        if (user) {
-          console.log("📦 Loading user inventory...");
-          await dispatch(fetchSavedTools());
-        }
+ 
+  dispatch(setInitialized()); 
 
-      } catch (error) {
-        console.error("🔴 Auth Sync Failed:", error);
-        if (error?.status === 401 || error?.response?.status === 401) {
-          dispatch(logout());
-        }
-      } finally {
-        dispatch(setInitialized());
-      }
-    };
+  try {
+    console.log("📡 Syncing session in background...");
+    
+    // Background mein user sync karo
+    const user = await dispatch(syncUserRole()).unwrap();
+    
+    if (user) {
+      console.log("📦 Loading user inventory...");
+      await dispatch(fetchSavedTools());
+    }
+  } catch (error) {
+    console.error("🔴 Auth Sync Failed:", error);
+    // Agar token invalid nikla toh hi logout karo
+    if (error?.status === 401 || error?.response?.status === 401) {
+      dispatch(logout());
+    }
+  }
+  // Note: Finally block se dispatch(setInitialized()) hata diya kyunki upar kar diya hai
+};
 
     initializeApp();
   }, [dispatch]);

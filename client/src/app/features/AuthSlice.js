@@ -92,7 +92,7 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     role: savedUser ? savedUser.role : null,
-    loading: !!localStorage.getItem("accessToken"), // FIXED: correct key
+    loading:  false,
     error: null,
     isInitialized: false,
   },

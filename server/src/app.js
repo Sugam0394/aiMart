@@ -8,8 +8,7 @@ const app = express();
   
  const allowedOrigins = [
  process.env.CLIENT_URL,
-  "http://localhost:5173" ,
-  "http://localhost:5174"  // 👈 Ye add karo (Tera actual Vite port)          
+  "http://localhost:5173" ,         
 ];
 
  app.use(cors({

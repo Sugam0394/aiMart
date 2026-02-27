@@ -1,8 +1,9 @@
-/* client/src/components/Skeleton/SkeletonLoader.css */
+ /* client/src/components/Skeleton/SkeletonLoader.css */
 
 .skeleton-wrapper {
   padding: var(--spacing-xl) var(--spacing-md);
-  background: var(--bg-main);
+  /* Theme handling: Make sure background matches your main page background */
+  background: var(--bg-main, #F3F4F6);
   min-height: 100vh;
 }
 
@@ -11,15 +12,16 @@
   margin: 0 auto;
 }
 
-/* Base Skeleton Item */
+/* ── Base Skeleton Item ── */
 .skeleton-box {
-  background: var(--color-border-light); /* Adaptive to theme */
+  /* Darker border color for better visibility in light theme */
+  background: var(--color-border-light, #E5E7EB);
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-md, 8px);
 }
 
-/* Shimmer Animation (Better than Pulse) */
+/* ── Branded Shimmer Animation (AI-MART Theme) ── */
 .skeleton-box::after {
   content: "";
   position: absolute;
@@ -28,63 +30,90 @@
   bottom: 0;
   left: 0;
   transform: translateX(-100%);
+  /* Branded Gradient using Indigo/Blue */
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.2) 20%,
-    rgba(255, 255, 255, 0.5) 60%,
+    rgba(79, 70, 229, 0.05) 20%, /* Subtle indigo glow */
+    rgba(79, 70, 229, 0.1) 60%,  /* Indigo shimmer */
     rgba(255, 255, 255, 0)
   );
-  animation: shimmer 2s infinite;
+  animation: shimmer 1.5s infinite; /* Slightly faster for more urgency */
 }
 
 @keyframes shimmer {
   100% { transform: translateX(100%); }
 }
 
-/* Specific Shapes */
+/* ── Specific Shapes ── */
 .skeleton-hero {
   height: 180px;
-  margin-bottom: var(--spacing-2xl);
-  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-2xl, 32px);
+  border-radius: var(--radius-lg, 12px);
 }
 
 .skeleton-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-width-desktop), 1fr));
-  gap: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg, 24px);
 }
 
 .skeleton-card {
-  height: var(--card-height-desktop);
-  background: var(--bg-card);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-md);
+  height: 320px;
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--color-border-light, #E5E7EB);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-md, 16px);
+  display: flex;
+  flex-direction: column;
 }
 
 .skeleton-img {
-  height: var(--card-image-height-desktop);
-  margin-bottom: var(--spacing-md);
+  height: 160px;
+  margin-bottom: var(--spacing-md, 16px);
+  border-radius: var(--radius-md, 8px);
 }
 
 .skeleton-title {
   height: 20px;
   width: 70%;
   margin-bottom: 12px;
+  border-radius: 4px;
 }
 
 .skeleton-text {
   height: 14px;
-  width: 40%;
+  width: 90%;
+  margin-bottom: 8px;
+  border-radius: 4px;
 }
 
-/* Mobile Adjustments */
+/* ── Mobile Adjustments ── */
 @media (max-width: 768px) {
   .skeleton-grid {
-    grid-template-columns: repeat(auto-fill, minmax(var(--card-width-mobile), 1fr));
-    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--spacing-md, 16px);
   }
-  .skeleton-card { height: var(--card-height-mobile); }
-  .skeleton-img { height: var(--card-image-height-mobile); }
+  .skeleton-card { height: 280px; }
+  .skeleton-img { height: 130px; }
+}
+
+/* ── Dark Mode Support ── */
+[data-theme="dark"] .skeleton-box {
+  background: #334155;
+}
+
+[data-theme="dark"] .skeleton-box::after {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.07) 60%,
+    rgba(255, 255, 255, 0)
+  );
+}
+
+[data-theme="dark"] .skeleton-card {
+  background: #1e293b;
+  border-color: #334155;
 }

@@ -55,7 +55,11 @@ const getCookieOptions = () => {
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
+  // 🚀 ADD-ON: Reset rotation tracking on fresh login
+  user.prevRefreshToken = null; 
   user.refreshToken = refreshToken;
+  user.refreshTokenIssuedAt = Date.now(); // Mark issue time
+ 
   await user.save({ validateBeforeSave: false });
 
   // ✅ FIXED: Using dynamic options and adding maxAge for persistence
@@ -154,9 +158,12 @@ const getCookieOptions = () => {
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
-
+ // 🚀 ADD-ON: Reset rotation tracking on fresh login
+  user.prevRefreshToken = null;
   user.refreshToken = refreshToken;
+  user.refreshTokenIssuedAt = Date.now(); // Mark issue time
   await user.save({ validateBeforeSave: false });
+ 
 
   const cookieOptions = getCookieOptions();
 

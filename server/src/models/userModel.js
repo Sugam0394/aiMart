@@ -62,6 +62,16 @@ const userSchema = new mongoose.Schema({
     refreshToken: {
       type: String,
     },
+  // 💡 FIX: Purane token ko grace period ke liye store karein
+    prevRefreshToken: {
+      type: String,
+    },
+    // 💡 FIX: Yeh check karne ke liye ki token kitna purana hai
+    refreshTokenIssuedAt: {
+      type: Date,
+      default: Date.now,
+    },
+
     savedTools: [
   {
     type: mongoose.Schema.Types.ObjectId,

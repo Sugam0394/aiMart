@@ -38,7 +38,7 @@ const getCookieOptions = () => {
   const { name, email, picture, sub: googleId } = payload;
 
   let user;
-  user = await User.findOne({ email });
+  user = await User.findOne({ email }).select('+refreshToken +prevRefreshToken +refreshTokenIssuedAt');
 
   if (!user) {
     user = await User.create({

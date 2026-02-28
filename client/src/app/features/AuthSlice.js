@@ -66,22 +66,25 @@ export const googleLogin = createAsyncThunk(
     }
   }
 );
-
-// ✅ 4. Login User Thunk
+ 
+ // ✅ UPDATED loginUser thunk
 export const loginUser = createAsyncThunk(
-  "auth/login", 
+  "auth/login",
   async (formData, { rejectWithValue }) => {
     try {
       const res = await api.post("/login", formData);
-      setAccessToken(res.data.data.accessToken);
-      return res.data.data.user;
+      const { user, accessToken } = res.data.data; // Destructure directly
+      setAccessToken(accessToken);
+      localStorage.setItem("user", JSON.stringify(user)); // ✅ ADDED: Save to localStorage
+      return user;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed");
     }
   }
 );
 
-// ✅ 5. Register User Thunk (Jo miss ho gaya tha)
+ 
+ // ✅ 5. Register User Thunk 
 export const registerUser = createAsyncThunk(
   "auth/register", 
   async (formData, { rejectWithValue }) => {
@@ -145,18 +148,23 @@ const authSlice = createSlice({
         state.error = null;
       })
       
-      // SYNC ROLE REJECTED
+     // ✅ FIXED: Only wipe state on definitive auth failures (401/403) 
       .addCase(syncUserRole.rejected, (state, action) => {
-        const isNetworkError = !action.payload; 
-        if (isNetworkError) {
-          state.isInitialized = true;
-          state.loading = false;
-        } else {
-          state.user = null;
+        const status = action.payload?.status;  
+        const isAuthFailure = status === 401 || status === 403; 
+
+        if (isAuthFailure) {
+      
+          state.user = null;  
           state.role = null;
-          state.isInitialized = true;
-          state.loading = false;
-          localStorage.removeItem('user');
+          state.isInitialized = true; 
+          state.loading = false;  
+          localStorage.removeItem('user');  
+        } else {
+        
+          state.isInitialized = true; 
+          state.loading = false; 
+         
         }
       })
 

@@ -2,7 +2,8 @@
 import { useDispatch } from 'react-redux';
 import { syncUserRole, setInitialized, logout } from '../../app/features/AuthSlice';
 import { fetchSavedTools } from '../../app/features/SavedSlice';
-import { getAccessToken } from '../../utils/token';
+import { getAccessToken , setAccessToken } from '../../utils/token';
+import axios from 'axios'
 import toast from 'react-hot-toast';
 
 const AppInitializer = () => {
@@ -33,6 +34,29 @@ const AppInitializer = () => {
       return false;
     };
 
+    // ✅ NEW: Proactive refresh function added here [cite: 24, 25]
+    const scheduleProactiveRefresh = () => {
+      const THIRTEEN_MINUTES = 13 * 60 * 1000; // Refresh 2 min before 15-min expiry
+      setTimeout(async () => {
+        try {
+          // Using axios directly to avoid interceptor recursion
+          const res = await axios.post(
+            `${import.meta.env.VITE_API_URL}/refreshToken`,
+            {},
+            { withCredentials: true }
+          );
+          const newToken = res.data?.data?.accessToken;
+          if (newToken) {
+            setAccessToken(newToken);
+            scheduleProactiveRefresh(); // Schedule next rotation automatically
+          }
+        } catch (e) {
+          console.error('Proactive refresh failed:', e);
+          // Interceptor will handle it reactively if this fails
+        }
+      }, THIRTEEN_MINUTES);
+    };
+
    const initializeApp = async () => {
   // 1. Backend ko uthao (Warm up)
   await wakeUpBackend();
@@ -58,6 +82,11 @@ const AppInitializer = () => {
     
     if (user) {
       console.log("📦 Loading user inventory...");
+
+    scheduleProactiveRefresh(); // Start proactive token refresh cycle
+
+
+
       await dispatch(fetchSavedTools());
     }
   } catch (error) {

@@ -500,10 +500,11 @@ export const getStack = asyncHandler(async (req, res) => {
 // Gemini Setup
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
- 
-  const model = genAI.getGenerativeModel({ 
-    model: "gemini-1.5-flash" // Agar ye na chale toh "gemini-pro" try karna
-  });
+ // ✅ FIXED: Force stable v1 API version
+const model = genAI.getGenerativeModel(
+  { model: 'gemini-1.5-flash' }, 
+  { apiVersion: 'v1' }            
+);
   
   const { role } = req.params;
   const { requirements } = req.query; // Frontend se ?requirements=... bhejenge

@@ -1,9 +1,27 @@
  import React from 'react'
+ import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import './styles/Explore.css'  
 import StepFlowController from './StepFlowController'
+import { resetExplore } from '../../app/exploreFeatures/exploreSlice'
  
 
 function Explore() {
+
+const dispatch = useDispatch();
+ 
+  useEffect(() => {
+    dispatch(resetExplore());
+  }, [dispatch]);
+
+
+
+
+
+
+
+
+
   return (
  
     <main className="explore-layout"> 
@@ -14,11 +32,7 @@ function Explore() {
         <StepFlowController /> 
         
       </div>
-      
-      {/* Tip: Agar aapke StepFlowController mein buttons hain, 
-        to ensure karein unme 'primary-action-btn' ya 'usecase-btn' 
-        classes use ho rahi hain.
-      */}
+     
     </main>
   )
 }

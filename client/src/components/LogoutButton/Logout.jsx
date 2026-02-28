@@ -13,7 +13,8 @@ const Logout = () => {
   };
 
   return (
-    <button onClick={handleLogout} className="logout-btn">
+ // ✅ FIX: Class name "logout-btn-v3" rakho taaki CSS match ho jaye
+    <button onClick={handleLogout} className="logout-btn-v3">
       Logout
     </button>
   );

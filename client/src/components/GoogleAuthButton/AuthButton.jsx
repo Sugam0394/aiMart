@@ -75,7 +75,6 @@ const GoogleAuthButton = () => {
       <div style={{ minHeight: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {isLoggingIn && (
           <p className="verifying-text" style={{ fontSize: '14px', color: '#3b82f6', fontWeight: '500' }}>
-            Verifying your account...
           </p>
         )}
       </div>

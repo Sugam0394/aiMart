@@ -1,15 +1,15 @@
  /* =========================================
    AI-MART — AI STACK SECTION (CONSTITUTION V2)
-   Theme: Professional Light (Indigo & Slate)
+   Theme: Permanent Dark
    ========================================= */
 
 .aistack-section {
-  background: var(--bg-card);
+  background: var(--bg-card); /* FIX: Using dark card background */
   border: 1px solid var(--color-border);
   border-radius: 24px;
   padding: 40px;
   margin: 40px 0;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2); /* FIX: Shadow adjusted for dark bg */
   transition: all 0.3s ease;
 }
 
@@ -22,8 +22,8 @@
 .aistack-tag {
   display: inline-flex;
   align-items: center;
-  background: rgba(79, 70, 229, 0.08);
-  color: var(--brand-indigo);
+  background: rgba(79, 70, 229, 0.15); /* FIX: Darker indigo tint */
+  color: #a5b4fc; /* FIX: Lighter indigo text for contrast */
   font-size: 11px;
   font-weight: 800;
   padding: 5px 14px;
@@ -51,7 +51,7 @@
 /* ── Role Tabs (Horizontal Scroll) ── */
 .role-tabs-wrapper {
   margin-bottom: 40px;
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border); /* FIX: Updated border */
   padding-bottom: 4px;
 }
 
@@ -71,7 +71,7 @@
   align-items: center;
   gap: 10px;
   padding: 10px 20px;
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary); /* FIX: Updated tab bg */
   border: 1px solid var(--color-border);
   border-radius: 14px;
   cursor: pointer;
@@ -83,9 +83,9 @@
 }
 
 .role-tab-btn:hover {
-  background: #ffffff;
+  background: var(--bg-card); /* FIX: Updated hover */
   border-color: var(--brand-indigo);
-  color: var(--brand-indigo);
+  color: #a5b4fc;
   transform: translateY(-2px);
 }
 
@@ -93,7 +93,7 @@
   background: var(--brand-indigo);
   color: #ffffff;
   border-color: var(--brand-indigo);
-  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.25);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.35);
   transform: translateY(-1px);
 }
 
@@ -117,7 +117,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--bg-card); /* FIX: Overlay matches dark background */
   backdrop-filter: blur(4px);
   z-index: 20;
   border-radius: 20px;
@@ -126,7 +126,7 @@
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #f1f5f9;
+  border: 3px solid var(--color-border); /* FIX: Spinner color */
   border-top-color: var(--brand-indigo);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -142,7 +142,7 @@
 }
 
 .stack-tool-card {
-  background: #ffffff;
+  background: var(--bg-tertiary); /* FIX: Darker card background */
   border: 1px solid var(--color-border);
   border-radius: 20px;
   padding: 24px;
@@ -153,7 +153,7 @@
 
 .stack-tool-card:hover {
   border-color: var(--brand-indigo);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* FIX: Updated shadow */
 }
 
 .stack-card-category {
@@ -162,7 +162,7 @@
   gap: 8px;
   font-size: 11px;
   font-weight: 800;
-  color: #94a3b8;
+  color: var(--color-text-secondary); /* FIX: Text color */
   margin-bottom: 20px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -178,9 +178,9 @@
   width: 52px;
   height: 52px;
   border-radius: 12px;
-  background: #f8fafc;
+  background: var(--bg-card); /* FIX: Logo background */
   object-fit: contain;
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--color-border-light);
 }
 
 .stack-tool-name {
@@ -210,7 +210,7 @@
 
 .view-tool-btn {
   width: 100%;
-  background: var(--bg-secondary);
+  background: var(--bg-card); /* FIX: Updated button bg */
   border: 1px solid var(--color-border);
   color: var(--color-text-primary);
   padding: 12px;
@@ -232,7 +232,7 @@
 .stack-actions {
   display: flex;
   gap: 16px;
-  border-top: 1px solid var(--color-border-light);
+  border-top: 1px solid var(--color-border); /* FIX: Updated border */
   padding-top: 32px;
 }
 
@@ -254,34 +254,34 @@
   background: var(--brand-indigo);
   color: #ffffff;
   border: none;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
 .copy-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
 }
 
 .share-btn {
-  background: #ffffff;
+  background: var(--bg-tertiary); /* FIX: Updated button bg */
   color: var(--color-text-secondary);
   border: 1px solid var(--color-border);
 }
 
 .share-btn:hover {
-  background: var(--bg-secondary);
-  border-color: #cbd5e1;
+  background: var(--bg-card); /* FIX: Updated hover */
+  border-color: var(--color-border-light);
 }
 
 /* ── Animations ── */
 @keyframes spin { to { transform: rotate(360deg); } }
 
- /* ── Final Mobile Responsive Polish ── */
+/* ── Final Mobile Responsive Polish ── */
 @media (max-width: 768px) {
   .aistack-section { 
     padding: 20px 12px; 
     margin: 16px 0;
-    border-radius: 16px; /* Choti screen par chota radius */
+    border-radius: 16px;
   }
 
   .aistack-header {
@@ -301,8 +301,8 @@
 
   /* Role Selection Container */
   .role-tabs-wrapper {
-    margin: 0 -12px 20px -12px; /* Pulling it to screen edges */
-    background: var(--bg-secondary); /* Halka different color taaki scroll area dikhe */
+    margin: 0 -12px 20px -12px; 
+    background: var(--bg-tertiary); /* FIX: Scroll area bg */
     padding: 10px 0;
   }
 
@@ -318,20 +318,20 @@
   /* Compact Pill Design */
   .role-tab-btn {
     padding: 6px 12px; 
-    height: 36px; /* Standard mobile height */
+    height: 36px;
     font-size: 12px;
     font-weight: 700;
     gap: 6px;
     border-radius: 8px;
-    background: #ffffff;
-    flex-shrink: 0; /* Isse button pichkega nahi */
-    border: 1.5px solid #e2e8f0;
+    background: var(--bg-card); /* FIX: Mobile button bg */
+    flex-shrink: 0; 
+    border: 1px solid var(--color-border); /* FIX: Mobile border */
   }
 
   .role-tab-btn.active {
     background: var(--brand-indigo);
     border-color: var(--brand-indigo);
-    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
   }
 
   .tab-icon svg {
@@ -339,7 +339,7 @@
     height: 14px;
   }
 
-  /* Grid Fix: Taaki mobile par card clean dikhe */
+  /* Grid Fix */
   .stack-tools-grid { 
     grid-template-columns: 1fr; 
     gap: 12px;
@@ -364,9 +364,9 @@
     font-size: 16px;
   }
 
-  /* Action Buttons (Copy/Share) */
+  /* Action Buttons */
   .stack-actions { 
-    flex-direction: row; /* Mobile par upar-neeche ke bajaye side-by-side chote buttons */
+    flex-direction: row; 
     gap: 8px;
     padding-top: 20px;
   }

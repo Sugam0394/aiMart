@@ -15,13 +15,29 @@ import { inject } from '@vercel/analytics'
 injectSpeedInsights();
 inject();
 
+ 
+ document.documentElement.setAttribute('data-theme', 'dark'); 
+ document.documentElement.style.backgroundColor = '#020617'; 
+ document.body.style.backgroundColor = '#020617'; 
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* ✅ Wrapper wapas laya gaya taaki Google Auth kaam kare  */}
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}> 
       <Provider store={store}>
         <App />
-        <Toaster position="top-right" reverseOrder={false} />
+        [cite_start]{/* FIX 1C: Updated Toaster with dark styles [cite: 7] */}
+        <Toaster 
+          position="top-right" 
+          reverseOrder={false} 
+          toastOptions={{
+            style: {
+              background: '#1e293b',
+              color: '#f8fafc',
+              border: '1px solid #334155',
+            }
+          }}
+        /> 
       </Provider>
     </GoogleOAuthProvider>
   </React.StrictMode>

@@ -5,7 +5,8 @@
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  background-color: #F8FAFC; /* Slightly cleaner grey */
+  /* FIX: Updated background to dark variable */
+  background-color: var(--bg-main, #020617);
   overflow-x: hidden;
 }
 
@@ -23,7 +24,7 @@
   width: 100%;
   box-sizing: border-box;
   /* Mobile par full width */
-  padding: 0; 
+  padding: 0;
 }
 
 /* ── Tablet & Desktop Alignment ── */

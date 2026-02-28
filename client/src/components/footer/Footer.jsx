@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { Link } from 'react-router-dom'; // Curly braces added here
 
 function Footer() {
@@ -14,8 +14,9 @@ function Footer() {
     <footer className='footer' style={{ 
       ...leftAlignStyle, 
       padding: '4rem 20px 2rem 20px', 
-      backgroundColor: '#FFFFFF',
-      borderTop: '1px solid #F1F5F9',
+      /* FIX: Dark background and border */
+      backgroundColor: 'var(--bg-main, #020617)',
+      borderTop: '1px solid var(--color-border, #1e293b)',
       boxSizing: 'border-box'
     }}>
       
@@ -28,14 +29,15 @@ function Footer() {
         
         <div className="footer-brand" style={leftAlignStyle}>
           <h3 className="footer-logo" style={{ 
-            color: '#4F46E5', 
+            color: 'var(--brand-indigo, #4F46E5)', 
             fontSize: '1.8rem', 
             fontWeight: '800', 
             marginBottom: '1rem',
             textAlign: 'left'
           }}>AI-Mart</h3>
           <p style={{ 
-            color: '#64748B', 
+            /* FIX: Secondary text color */
+            color: 'var(--color-text-secondary, #94a3b8)', 
             margin: '0', 
             textAlign: 'left',
             maxWidth: '300px'
@@ -45,10 +47,11 @@ function Footer() {
         </div>
 
         <div className="footer-links" style={leftAlignStyle}>
-          <h4 style={{ color: '#111827', marginBottom: '1.2rem', textAlign: 'left', fontSize: '0.9rem', textTransform: 'uppercase' }}>Support</h4>
+          {/* FIX: Primary text color */}
+          <h4 style={{ color: 'var(--color-text-primary, #f8fafc)', marginBottom: '1.2rem', textAlign: 'left', fontSize: '0.9rem', textTransform: 'uppercase' }}>Support</h4>
           <ul style={{ listStyle: 'none', padding: '0', margin: '0', textAlign: 'left' }}>
             <li>
-              <a href="mailto:sugamsingh022@gmail.com" style={{ color: '#6B7280', textDecoration: 'none' }}>
+              <a href="mailto:sugamsingh022@gmail.com" style={{ color: 'var(--color-text-secondary, #94a3b8)', textDecoration: 'none' }}>
                 sugam@aimart.com
               </a>
             </li>
@@ -56,14 +59,16 @@ function Footer() {
         </div>
 
         <div className="footer-links" style={leftAlignStyle}>
-          <h4 style={{ color: '#111827', marginBottom: '1.2rem', textAlign: 'left', fontSize: '0.9rem', textTransform: 'uppercase' }}>Team</h4>
+          {/* FIX: Primary text color */}
+          <h4 style={{ color: 'var(--color-text-primary, #f8fafc)', marginBottom: '1.2rem', textAlign: 'left', fontSize: '0.9rem', textTransform: 'uppercase' }}>Team</h4>
           <ul style={{ listStyle: 'none', padding: '0', margin: '0', textAlign: 'left' }}>
             <li>
               <a 
                 href="https://www.linkedin.com/in/sugam-singh-2693a6386" 
                 target="_blank" 
                 rel="noreferrer"
-                style={{ color: '#6B7280', textDecoration: 'none' }}
+                /* FIX: Secondary text color */
+                style={{ color: 'var(--color-text-secondary, #94a3b8)', textDecoration: 'none' }}
               >
                 LinkedIn
               </a>
@@ -76,9 +81,10 @@ function Footer() {
         width: '100%', 
         maxWidth: '1200px', 
         textAlign: 'left', 
-        borderTop: '1px solid #F1F5F9', 
+        /* FIX: Dark border and muted text */
+        borderTop: '1px solid var(--color-border, #1e293b)', 
         paddingTop: '2rem',
-        color: '#9CA3AF',
+        color: '#64748B',
         fontSize: '0.85rem'
       }}>
         <p style={{ margin: '0', textAlign: 'left' }}>© 2026 AI-Mart. All rights reserved.</p>
@@ -87,4 +93,4 @@ function Footer() {
   );
 }
 
-export default Footer; 
+export default Footer;

@@ -10,8 +10,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background: #ffffff;
-  border-bottom: 1px solid #E5E7EB;
+  /* FIX: Background updated to dark variables with blur */
+  background: var(--nav-bg, rgba(2, 6, 23, 0.88));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
   box-sizing: border-box;
   position: sticky;
   top: 0;
@@ -40,7 +43,8 @@
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
-  color: #6B7280;
+  /* FIX: Color updated to dark text variable */
+  color: var(--color-text-secondary);
   transition: color 0.2s;
   padding: 8px 0;
   min-height: 44px;
@@ -50,7 +54,16 @@
 
 .nav-center li a:hover,
 .nav-center li a.active {
-  color: #4F46E5;
+  /* FIX: Color updated to primary text variable */
+  color: var(--color-text-primary);
+}
+
+/* FIX: Added nav-right for logout button placement */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
 }
 
 /* ── TABLET (640px+): Show center links ── */

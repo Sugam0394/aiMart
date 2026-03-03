@@ -4,6 +4,10 @@ import mongoose from 'mongoose';
 import ExploreSession from '../exploreModel/exploreModel.js';
 import Tool from '../../models/toolModel.js';
 import { PromptService } from './promptServices.js';
+import User from '../../models/userModel.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { groqServices } from './groqServices.js';
 
 export const ExploreService = {
   // ==========================================
@@ -51,6 +55,16 @@ export const ExploreService = {
           session.currentStep = "TASK";
           nextStep = "TASK";
 
+          // ✅ PERSISTENCE: Save role to user profile if logged in 
+          if (session.userId) {
+            await User.findByIdAndUpdate(session.userId, {
+              preferredRole: payload.role
+            });
+          }
+
+
+
+
           const ROLE_TASKS = {
             founder: ["market-research", "pitch-deck", "content-writing", "logo-design", "cold-email", "seo", "automation"],
             marketer: ["ad-copy", "social-media-posts", "email-campaigns", "seo-content", "video-scripts", "landing-page"],
@@ -65,7 +79,7 @@ export const ExploreService = {
           break;
         }
 
-        case "TASK": {
+       {/*             case "TASK": {
           if (!payload.task) throw new Error("task is required");
           session.selectedIntent = payload.task;
           session.currentStep = "TOOLS";
@@ -100,6 +114,37 @@ export const ExploreService = {
             free: scoredTools.filter(t => t.pricingType === 'free').slice(0, 6)
           };
           break;
+        }                                         */}
+
+      case "TASK": {
+          // ✅ AI UPGRADE: Replaced Regex search with Groq AI Ranking [cite: 142]
+          if (!payload.task) throw new Error('task is required');
+          session.selectedIntent = payload.task;
+          session.currentStep = 'TOOLS';
+          nextStep = 'TOOLS';
+
+          // Step A: Database se live tools nikalo [cite: 148]
+          const allTools = await Tool.find({ status: 'live' }).lean();
+
+          console.log("🛠️ DB Debug: Found", allTools.length, "tools in database");
+
+          // Step B: Groq AI se tools rank karwao (Expertise: No more regex limitation!) [cite: 150]
+          const aiRankedTools = await groqServices.rankToolsForUser(
+            session.selectedRole,
+            payload.task,
+            allTools
+          );
+
+          // Step C: AI results ko filter karke free tools alag karo [cite: 156]
+          const freeTools = aiRankedTools.filter(t => t.pricingType === 'free');
+
+          responsePayload = {
+            role: session.selectedRole,
+            task: payload.task,
+            bestMatch: aiRankedTools.slice(0, 8), // AI ranked list [cite: 161]
+            free: freeTools.slice(0, 6),          // AI ranked free list [cite: 162]
+          };
+          break;
         }
 
         case "TOOLS": {
@@ -122,7 +167,7 @@ export const ExploreService = {
           }).lean();
 
           // 2. Generate prompts using our Engine
-          const toolPrompts = PromptService.generateToolPrompts(
+          const toolPrompts = await PromptService.generateToolPrompts(
             session.selectedRole, 
             session.selectedIntent, 
             selectedToolsData

@@ -232,3 +232,83 @@
 }
 
 @keyframes spin { 100% { transform: rotate(360deg); } }
+
+
+/* ... Aapka existing CSS code yahan tak rahega ... */
+
+/* --- AI Specific Enhancements (Add at the bottom) --- */
+
+.tool-name-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-curated-label {
+  font-size: 10px;
+  color: #8b5cf6; /* Violet */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.prompts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.prompt-description-text {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-style: italic;
+  padding: 0 4px;
+}
+
+.bulb-icon {
+  color: #f59e0b; /* Amber/Yellow */
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.prompt-content {
+  position: relative;
+}
+
+/* Loading State Enhancements */
+.loading-text-glow {
+  text-align: center;
+}
+
+.loading-text-glow p {
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.loading-text-glow span {
+  font-size: 12px;
+  color: var(--brand-indigo);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+}
+
+/* Prompt Card Animation Delay */
+.prompt-card:nth-child(1) { animation-delay: 0.1s; }
+.prompt-card:nth-child(2) { animation-delay: 0.2s; }
+.prompt-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Desktop Hover */
+@media (min-width: 768px) {
+  .prompt-card:hover {
+    border-color: var(--brand-indigo);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+  }
+}

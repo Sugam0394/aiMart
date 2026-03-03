@@ -1,7 +1,7 @@
  import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, Copy, Share2, Sparkles, LayoutDashboard, ArrowRight } from "lucide-react";
+import { CheckCircle, Copy, Share2, Sparkles, LayoutDashboard, ArrowRight, Lightbulb } from "lucide-react";
 import { submitExploreStepThunk } from '../../../app/exploreFeatures/exploreThunks';
 import { selectExploreSessionId, selectExploreLoading } from '../../../app/exploreFeatures/exploreSelectors';
 import "./styles/ResultStep.css";
@@ -41,7 +41,10 @@ function ResultStep() {
     return (
       <div className="result-loading">
         <div className="spinner-glow" />
-        <p>Architecting your custom AI workflow...</p>
+        <div className="loading-text-glow">
+          <p>Architecting your custom AI workflow...</p>
+          <span>Llama 3.1 is crafting expert prompts for you</span>
+        </div>
       </div>
     );
   }
@@ -51,7 +54,7 @@ function ResultStep() {
       {/* Launchpad Header */}
       <div className="result-header">
         <div className="success-badge">
-          <CheckCircle size={20} /> Selection Saved to Inventory
+          <CheckCircle size={16} /> Selection Saved to Inventory
         </div>
         <h1>Your AI Power-Stack is Ready</h1>
         <p>We've curated these specialized prompts for a <b>{selections.role}</b> to master <b>{selections.task}</b>.</p>
@@ -63,22 +66,37 @@ function ResultStep() {
           <div key={idx} className="prompt-card">
             <div className="tool-info">
               <div className="tool-icon-mini">
-                <Sparkles size={16} />
+                <Sparkles size={18} />
               </div>
-              <h3>{item.toolName}</h3>
+              <div className="tool-name-container">
+                <h3>{item.toolName}</h3>
+                <span className="ai-curated-label">Expert Curated</span>
+              </div>
             </div>
             
-            {item.prompts.map((p, pIdx) => (
-              <div key={pIdx} className="prompt-box">
-                <div className="prompt-meta">
-                  <span className="prompt-tag">{p.title}</span>
-                  <button className="copy-mini-btn" onClick={() => copyToClipboard(p.prompt)}>
-                    <Copy size={12} /> Copy
-                  </button>
+            <div className="prompts-container">
+              {item.prompts.map((p, pIdx) => (
+                <div key={pIdx} className="prompt-box">
+                  <div className="prompt-meta">
+                    <span className="prompt-tag">{p.title}</span>
+                    <button className="copy-mini-btn" onClick={() => copyToClipboard(p.prompt)}>
+                      <Copy size={12} /> Copy
+                    </button>
+                  </div>
+                  
+                  {/* ✨ AI Description (Added) */}
+                  {p.description && (
+                    <p className="prompt-description-text">
+                      <Lightbulb size={12} className="bulb-icon" /> {p.description}
+                    </p>
+                  )}
+
+                  <div className="prompt-content">
+                    <p className="prompt-text">{p.prompt}</p>
+                  </div>
                 </div>
-                <p className="prompt-text">{p.prompt}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         ))}
       </div>
@@ -92,10 +110,9 @@ function ResultStep() {
           <button className="share-secondary-btn" onClick={handleShareStack}>
             <Share2 size={18} /> Share Stack
           </button>
-           // ✅ NAYA CODE (Isse replace karo):
-<button className="finish-primary-btn" onClick={() => navigate('/saved')}>
-  Go to My Inventory <ArrowRight size={18} />
-</button>
+          <button className="finish-primary-btn" onClick={() => navigate('/saved')}>
+            Go to My Inventory <ArrowRight size={18} />
+          </button>
         </div>
       </div>
     </div>

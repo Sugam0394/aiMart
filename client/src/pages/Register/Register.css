@@ -18,7 +18,7 @@
 /* 2. The Auth Card (Login & Register Box) */
 .login-box, 
 .register-box {
-  background: #ffffff;
+  color: #111827;
   width: 100%;
   max-width: 400px; 
   padding: 40px 32px;
@@ -31,7 +31,7 @@
 /* 3. Typography */
 .login-box h2, 
 .register-box h2 {
-  color: #111827;
+   
   font-size: 26px;
   font-weight: 800;
   margin-bottom: 12px;
@@ -62,7 +62,7 @@ input {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   color: #111827;
-  background: #F9FAFB;
+  background-color: #111827;
   transition: all 0.2s ease;
 }
 

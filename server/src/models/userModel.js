@@ -52,6 +52,12 @@ const userSchema = new mongoose.Schema({
       default: null,
     },
 
+    preferredRole: {
+  type: String,
+  enum: ['founder', 'marketer', 'creator', 'designer', 'developer', 'freelancer', 'student'],
+  default: null,
+},
+
     roleStatus: {
       type: String,
       enum: ["pending", "approved", "rejected"],

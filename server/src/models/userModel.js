@@ -67,6 +67,7 @@ const userSchema = new mongoose.Schema({
  // Auth Tokens
     refreshToken: {
       type: String,
+      select : false,
     },
   // 💡 FIX: Purane token ko grace period ke liye store karein
     prevRefreshToken: {

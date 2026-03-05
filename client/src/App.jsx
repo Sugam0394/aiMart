@@ -12,6 +12,7 @@ import './styles/mobile-optimization.css';
  // Components
 import AppInitializer from './components/DataInit/AppInitializer.jsx'
 import SkeletonLoader from "./components/SkeletonLoader/SkeletonLoader.jsx";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 
 // Pages (Eagerly loaded for instant access on critical routes)
 import PublicLayout from "./layouts/PublicLayout";
@@ -54,6 +55,7 @@ function App() {
  
 
   return (
+    <ErrorBoundary>
     <BrowserRouter>
       {/* 🛠️ background mein session check karega bina app ko block kiye */}
       <AppInitializer />
@@ -118,6 +120,7 @@ function App() {
         </Routes>
       </Suspense>
     </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

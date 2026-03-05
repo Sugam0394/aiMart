@@ -39,13 +39,19 @@ const processQueue = (error, token = null) => {
 };
  
 
-api.interceptors.response.use(
+ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Status 401 matlab token expired hai
+ 
+    if (originalRequest.url?.includes('/refreshToken')) {
+      return Promise.reject(error); 
+    }
+
+ 
     if (error.response?.status === 401 && !originalRequest._retry) {
+      
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -61,7 +67,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-     
+        // Token refresh call
         const res = await axios.post(
           `${import.meta.env.VITE_API_URL}/refreshToken`,
           {},
@@ -71,26 +77,33 @@ api.interceptors.response.use(
         const newAccessToken = res.data?.data?.accessToken;
         if (!newAccessToken) throw new Error("No access token received");
 
+        // Sync State
         setAccessToken(newAccessToken);
         api.defaults.headers.common.Authorization = "Bearer " + newAccessToken;
-        
+        originalRequest.headers.Authorization = "Bearer " + newAccessToken;
+
         processQueue(null, newAccessToken);
         return api(originalRequest);
+
       } catch (err) {
-        console.error("❌ Refresh Token Expired or Failed:", err);
         processQueue(err, null);
+        
+        // Final Cleanup
         clearAccessToken();
         localStorage.removeItem("user");
         
-        // IMPORTANT: window.location.href hata diya hai taaki Redux handle kare
+        // Notify components/Redux to logout
+        window.dispatchEvent(new CustomEvent('tokenExpired'));
+        
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
     }
+
     return Promise.reject(error);
   }
-)
+);
 
 
 export default api

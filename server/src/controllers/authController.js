@@ -47,18 +47,26 @@ const getCookieOptions = () => {
       profilePicture: picture,
       googleId,
       isEmailVerified: true,
+      role: "user",
     });
-  } else if (!user.googleId) {
-    user.googleId = googleId;
-    await user.save({ validateBeforeSave: false });
+  } else {
+    // Update googleId if missing
+    if (!user.googleId) {
+      user.googleId = googleId;
+    }
+    // Update profile picture if it changed
+    user.profilePicture = picture;
   }
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
-  // 🚀 ADD-ON: Reset rotation tracking on fresh login
-  user.prevRefreshToken = null; 
+
+
+
+ // Reset rotation tracking on fresh login to prevent stale data issues
+  user.prevRefreshToken = user.refreshToken; // Move current to previous before updating
   user.refreshToken = refreshToken;
-  user.refreshTokenIssuedAt = Date.now(); // Mark issue time
+  user.refreshTokenIssuedAt = Date.now();
  
   await user.save({ validateBeforeSave: false });
 

@@ -98,12 +98,12 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-const authSlice = createSlice({
+ const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    user: savedUser, // ✅ FIXED: null ki jagah savedUser taaki sync tak UI khali na dikhe
     role: savedUser ? savedUser.role : null,
-    loading:  false,
+    loading: false,
     error: null,
     isInitialized: false,
   },
@@ -148,23 +148,22 @@ const authSlice = createSlice({
         state.error = null;
       })
       
-     // ✅ FIXED: Only wipe state on definitive auth failures (401/403) 
+      // ✅ FIXED: Definitive auth failures (401/403) handling
       .addCase(syncUserRole.rejected, (state, action) => {
         const status = action.payload?.status;  
         const isAuthFailure = status === 401 || status === 403; 
 
         if (isAuthFailure) {
-      
           state.user = null;  
           state.role = null;
           state.isInitialized = true; 
           state.loading = false;  
+          clearAccessToken(); // 🔥 ADDED: Memory se token clear karna zaroori hai
           localStorage.removeItem('user');  
         } else {
-        
+          // Network error ya server down (500) ke case mein user ko eject mat karo
           state.isInitialized = true; 
           state.loading = false; 
-         
         }
       })
 

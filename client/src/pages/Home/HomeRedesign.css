@@ -1,4 +1,4 @@
- /* HomeRedesign.css - Final Optimized Version */
+ /* HomeRedesign.css - Final Optimized & Bug-Fixed Version */
 
 .home-container {
   background: var(--bg-main);
@@ -25,7 +25,7 @@
   margin-bottom: 16px;
 }
 
-/* --- Discovery Unit (Switcher + Tools Together) --- */
+/* --- Discovery Unit --- */
 .discovery-unit-container {
   background: var(--bg-card);
   border: 1px solid var(--color-border-light);
@@ -34,13 +34,14 @@
   margin-bottom: 40px;
 }
 
-/* --- Sticky Filter Bar --- */
+/* --- Sticky Filter Bar Fix (Removed Hardcoded White) --- */
 .filter-sticky-bar {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--bg-sticky, rgba(255, 255, 255, 0.9));
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 14px 0;
   border-bottom: 1px solid var(--color-border-light);
 }
@@ -59,7 +60,7 @@
   font-weight: 800;
   color: var(--brand-indigo);
   letter-spacing: 0.1em;
-  flex-shrink: 0; /* Ensures label doesn't squash on desktop */
+  flex-shrink: 0;
 }
 
 .discovery-content-area {
@@ -88,89 +89,14 @@
   padding: 10px 0;
 }
 
-/* --- Mobile Responsive Fixes (768px and below) --- */
-@media (max-width: 768px) {
-  .filter-inner-content {
-    flex-direction: column; /* Label upar, Pills niche */
-    align-items: flex-start; /* Left align */
-    gap: 12px;
-    padding: 0 16px;
-  }
-
-  .filter-label {
-    font-size: 10px;
-    margin-left: 4px;
-    opacity: 0.8;
-  }
-
-  /* Switcher takes full width now */
-  .filter-inner-content > :last-child {
-    width: 100%;
-  }
-
-  /* Discovery Section Mobile Padding */
-  .discovery-unit-container {
-    border-radius: 0; /* Edge to edge on mobile */
-    border-left: none;
-    border-right: none;
-    margin-bottom: 30px;
-  }
-
-  .discovery-content-area {
-    padding: 20px 15px;
-  }
-}
-
-/* --- Tablet Scaling (640px to 1024px) --- */
-@media (min-width: 640px) {
-  .tools-display-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-  .hero-intent-section { padding: 100px 20px 80px; }
-}
-
-/* --- Desktop Scaling (1024px+) --- */
-@media (min-width: 1024px) {
-  .tools-display-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-  }
-  .sections-stack { padding: 0 40px; }
-}
-
-/* --- Ultra-Wide (1280px+) --- */
-@media (min-width: 1280px) {
-  .tools-display-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* --- Dark Mode --- */
-[data-theme="dark"] .home-container {
-  background: #020617;
-}
-
-[data-theme="dark"] .discovery-unit-container {
-  background: #0f172a;
-  border-color: #1e293b;
-}
-
-[data-theme="dark"] .filter-sticky-bar {
-  background: rgba(15, 23, 42, 0.9);
-  border-bottom-color: #1e293b;
-}
-
- /* --- Change 2: Upgraded Premium Hero Badge --- */
+/* --- Hero Badge (Cleaned & Combined) --- */
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  /* Glassmorphism effect */
   background: rgba(255, 255, 255, 0.6); 
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  
-  color: #1e293b; /* Sleek Slate Dark */
+  color: #1e293b;
   padding: 6px 14px;
   border-radius: 99px;
   font-size: 0.82rem;
@@ -180,7 +106,7 @@
   gap: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   letter-spacing: 0.02em;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease; /* Optimized transition */
   cursor: default;
 }
 
@@ -192,15 +118,13 @@
 .badge-dot {
   width: 6px;
   height: 6px;
-  background-color: #10b981; /* Premium Emerald Green */
+  background-color: #10b981;
   border-radius: 50%;
   position: relative;
   display: inline-block;
-  /* Glow Effect */
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
 }
 
-/* Advanced Pulse Animation */
 .badge-dot::after {
   content: '';
   position: absolute;
@@ -219,14 +143,47 @@
   100% { transform: scale(1); opacity: 0; }
 }
 
-/* Dark Mode Optimization */
+/* --- Responsiveness --- */
+@media (max-width: 768px) {
+  .filter-inner-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 16px;
+  }
+  .filter-label { font-size: 10px; margin-left: 4px; opacity: 0.8; }
+  .filter-inner-content > :last-child { width: 100%; }
+  .discovery-unit-container { border-radius: 0; border-left: none; border-right: none; margin-bottom: 30px; }
+  .discovery-content-area { padding: 20px 15px; }
+}
+
+@media (min-width: 640px) {
+  .tools-display-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .hero-intent-section { padding: 100px 20px 80px; }
+}
+
+@media (min-width: 1024px) {
+  .tools-display-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .sections-stack { padding: 0 40px; }
+}
+
+@media (min-width: 1280px) {
+  .tools-display-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* --- Dark Mode Optimization (Unified) --- */
+[data-theme="dark"] {
+  --bg-main: #020617;
+  --bg-sticky: rgba(15, 23, 42, 0.9);
+}
+
+[data-theme="dark"] .discovery-unit-container {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+
 [data-theme="dark"] .hero-badge {
   background: rgba(30, 41, 59, 0.5);
   border-color: rgba(51, 65, 85, 0.8);
   color: #f1f5f9;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-[data-theme="dark"] .badge-dot {
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.8);
 }

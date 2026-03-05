@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   Briefcase, GraduationCap, PenTool, Megaphone,
-  Video, Code, Palette, RefreshCw, Copy, Share2, Check
+  Video, Code, Palette, Copy, Share2, Check, Sparkles
 } from 'lucide-react';
 import { fetchStack } from '../../../app/features/stackSlice';
 import "./AiStackSection.css";
@@ -37,20 +37,26 @@ const AiStackSection = () => {
   const navigate = useNavigate();
   const { data, status } = useSelector((state) => state.stack);
 
-  // Default to 'founder' if nothing in localStorage
-  const [selectedRole, setSelectedRole] = useState(() => {
-    return localStorage.getItem('aimart_stack_role') || 'founder';
-  });
+  const [selectedRole, setSelectedRole] = useState(() => localStorage.getItem('aimart_stack_role') || 'founder');
+  // ✅ ADDED: Requirements state for Groq AI
+  const [requirements, setRequirements] = useState('');
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
 
+  // ✅ UPDATED: Initial fetch
   useEffect(() => {
-    dispatch(fetchStack(selectedRole));
+    dispatch(fetchStack({ role: selectedRole, requirements: '' }));
   }, [selectedRole, dispatch]);
 
   const handleRoleSelect = (roleId) => {
     localStorage.setItem('aimart_stack_role', roleId);
     setSelectedRole(roleId);
+  };
+
+  // ✅ ADDED: Handle AI Rank Button
+  const handleAiRank = (e) => {
+    e.preventDefault();
+    dispatch(fetchStack({ role: selectedRole, requirements }));
   };
 
   const handleShareStack = () => {
@@ -63,7 +69,7 @@ const AiStackSection = () => {
   const handleCopyStack = () => {
     if (!data?.tools) return;
     const stackText = data.tools
-      .map(item => `${item.emoji} ${item.category}: ${item.tool.name}`)
+      .map(item => `${item.emoji} ${item.tool.name}: ${item.aiReason || item.reason}`)
       .join('\n');
     const fullText = `My ${data.role} aiStack from aiMart:\n\n${stackText}\n\nBuild yours → aimart.com`;
     navigator.clipboard.writeText(fullText);
@@ -75,11 +81,10 @@ const AiStackSection = () => {
     <section className="aistack-section">
       <div className="aistack-header">
         <div className="aistack-tag">⚡ AI RECOMMENDED</div>
-        <h2 className="aistack-title">Professional aiStacks</h2>
-        <p className="aistack-subtitle">Choose your role to instantly see the perfect AI toolkit.</p>
+        <h2 className="aistack-title">{data?.headline || "Professional aiStacks"}</h2>
+        <p className="aistack-subtitle">{data?.subline || "Choose your role to instantly see the perfect AI toolkit."}</p>
       </div>
 
-      {/* ── ROLE SELECTION TABS ── */}
       <div className="role-tabs-wrapper">
         <div className="role-tabs-scroll">
           {ROLE_OPTIONS.map((role) => (
@@ -95,36 +100,57 @@ const AiStackSection = () => {
         </div>
       </div>
 
-      {/* ── TOOLS DISPLAY AREA ── */}
+      {/* ── ✅ NEW: AI INPUT BOX ── */}
+      <form className="ai-input-container" onSubmit={handleAiRank}>
+        <div className="ai-input-glow-wrapper">
+          <input 
+            type="text" 
+            className="ai-custom-input"
+            placeholder="What do you want to achieve? (e.g. Automate my social media...)"
+            value={requirements}
+            onChange={(e) => setRequirements(e.target.value)}
+          />
+          <button type="submit" className="ai-rank-btn" disabled={status === 'loading'}>
+            <Sparkles size={16} />
+            {status === 'loading' ? 'Ranking...' : 'Rank with AI'}
+          </button>
+        </div>
+      </form>
+
       <div className={`stack-display-container ${status === 'loading' ? 'is-loading' : ''}`}>
         {status === 'loading' ? (
           <div className="aistack-loading-overlay">
             <div className="loading-spinner" />
-            <p>Updating {selectedRole} stack...</p>
-          </div>
-        ) : status === 'failed' ? (
-          <div className="aistack-error">
-             <p>Aree! Load nahi ho paaya. <span onClick={() => dispatch(fetchStack(selectedRole))}>Try Again</span></p>
+            <p>AI is curating your {selectedRole} stack...</p>
           </div>
         ) : (
           <>
             <div className="stack-tools-grid">
               {data?.tools?.map((item, idx) => (
-                <div key={idx} className="stack-tool-card">
-                  <div className="stack-card-category">
-                    <span>{item.emoji}</span> {item.category}
+                <div key={idx} className="stack-tool-card-wrapper">
+                  
+                  {/* ✅ NEW: Groq AI Reason Bubble */}
+                  <div className="ai-reason-bubble">
+                    <Sparkles size={12} className="sparkle-icon" />
+                    {item.aiReason || item.reason}
                   </div>
-                  <div className="stack-card-body">
-                    <img src={item.tool.logo || '/default-tool.png'} alt={item.tool.name} className="stack-tool-logo" />
-                    <div className="stack-tool-info">
-                      <h4 className="stack-tool-name">{item.tool.name}</h4>
-                      <p className="stack-tool-label">{item.label}</p>
-                      <PricingBadge type={item.tool.pricingType} />
+
+                  <div className="stack-tool-card">
+                    <div className="stack-card-category">
+                      <span>{item.emoji}</span> {item.tool.primaryCategory || 'Tool'}
                     </div>
+                    <div className="stack-card-body">
+                      <img src={item.tool.logo || '/default-tool.png'} alt={item.tool.name} className="stack-tool-logo" />
+                      <div className="stack-tool-info">
+                        <h4 className="stack-tool-name">{item.tool.name}</h4>
+                        <p className="stack-tool-label">{item.tool.tagline || item.label}</p>
+                        <PricingBadge type={item.tool.pricingType} />
+                      </div>
+                    </div>
+                    <button className="view-tool-btn" onClick={() => navigate(`/tools/${item.tool._id}`)}>
+                      View Tool →
+                    </button>
                   </div>
-                  <button className="view-tool-btn" onClick={() => navigate(`/tools/${item.tool._id}`)}>
-                    View Tool →
-                  </button>
                 </div>
               ))}
             </div>

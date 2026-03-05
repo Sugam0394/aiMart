@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchHomeData } from '../../app/features/MomentSlice'; // Adjust paths as per your project
 import { fetchWorkflow } from '../../app/features/workFlowSlice';
+import { fetchToolsCount } from '../../app/features/stackSlice';
 import SearchSection from './SearchSection/SearchSection';
 import AiStackSection from './aiStackSection/AiStackSection';
 
@@ -24,7 +25,8 @@ function Home() {
   const { user, isInitialized } = useSelector((state) => state.auth);
   const { availableUseCases = [], homeStatus = "idle" } = useSelector((state) => state.moment || {});
   const workflowState = useSelector((state) => state.workflow);
-
+ 
+  const { toolsCount } = useSelector((state) => state.stack);
  
   const [activeUseCaseKey, setActiveUseCaseKey] = useState("");
 
@@ -43,6 +45,11 @@ function Home() {
       dispatch(fetchWorkflow(userProfile.role));
     }
   }, [userProfile, workflowState.status, dispatch]);
+
+  // 2. Is useEffect ko add/update karo (Yahi missing hai)
+  useEffect(() => {
+    dispatch(fetchToolsCount()); // <--- Ye line warning hata degi aur data fetch karegi
+  }, [dispatch]);
 
  
 
@@ -71,6 +78,15 @@ function Home() {
   <div className="home-container">
     <main className="home-page">
       <header className="hero-intent-section">
+
+      {/* ✅ CHANGE 2: Live Tools Count Badge */}
+        {toolsCount > 0 && (
+          <div className="hero-badge animate-fade-in">
+            <span className="badge-dot"></span>
+            Explore <strong>{toolsCount}+ AI Tools</strong> curated for you
+          </div>
+        )}
+
         <h1 className="section-title">
           {isAuthenticated ? `Welcome back, ${user?.name}!` : "Find the perfect AI tool"}
         </h1>

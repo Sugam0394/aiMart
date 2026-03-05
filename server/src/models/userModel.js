@@ -86,6 +86,15 @@ const userSchema = new mongoose.Schema({
   }
 ],
 
+savedPrompts: [
+    {
+      role: { type: String, required: true },
+      task: { type: String },
+      content: { type: String, required: true },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
+
     isEmailVerified: {
       type: Boolean,
       default: false,

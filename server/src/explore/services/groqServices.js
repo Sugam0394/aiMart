@@ -2,13 +2,14 @@
 import Groq from 'groq-sdk';
  
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+ 
 
 export const groqServices = {
     /**
      * Ranks tools using Groq AI based on User Role and Task
      */
     async rankToolsForUser(role, task, tools) {
+        const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
         if (!tools || tools.length === 0) return [];
 
         // 🛠️ EXPERTISE TIP: Hum sirf top 25 tools bhej rahe hain prompt mein.

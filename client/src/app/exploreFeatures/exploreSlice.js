@@ -1,25 +1,45 @@
  import { createSlice } from "@reduxjs/toolkit";
 import { startExploreThunk } from "./exploreThunks";
 
-const baseInitialState = {
-  exploreSessionId: null,
-  currentStep: "ROLE",
-  selections: { role: "", task: "", tools: [] },
-  stepPayload: null,
-  prompts: [],
-  loading: false,
-  error: null,
-};
-
+ 
 const getInitialState = () => {
   try {
-    const saved = localStorage.getItem("active_explore_session");
-  
-    return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(baseInitialState));
+    const saved = localStorage.getItem("exploreSession"); // Standardized key
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return {
+        exploreSessionId: parsed.exploreSessionId || null,
+        currentStep: parsed.currentStep || "ROLE",
+        selections: parsed.selections || { role: "", task: "", tools: [] },
+        stepPayload: parsed.stepPayload || null,
+        prompts: parsed.prompts || [],
+        loading: false, // Reset loading on refresh
+        error: null,    // Reset error on refresh
+      };
+    }
   } catch (err) {
-    console.error("Error retrieving explore session from localStorage:", err);
-    return JSON.parse(JSON.stringify(baseInitialState));
+    console.error("Hydration failed:", err);
   }
+  return {
+    exploreSessionId: null,
+    currentStep: "ROLE",
+    selections: { role: "", task: "", tools: [] },
+    stepPayload: null,
+    prompts: [],
+    loading: false,
+    error: null,
+  };
+};
+ 
+const syncStorage = (state) => {
+  const dataToSave = {
+    exploreSessionId: state.exploreSessionId,
+    currentStep: state.currentStep,
+    selections: state.selections,
+    stepPayload: state.stepPayload,
+    prompts: state.prompts,
+  };
+  localStorage.setItem("exploreSession", JSON.stringify(dataToSave));
 };
 
 const exploreSlice = createSlice({
@@ -33,25 +53,17 @@ const exploreSlice = createSlice({
 
     exploreSuccess(state, action) {
       const { sessionId, step, payload, lastSelection } = action.payload;
-
       state.exploreSessionId = sessionId;
       state.currentStep = step;
       state.stepPayload = payload;
 
-    
-      if (payload?.prompts) {
-        state.prompts = payload.prompts;
+      if (payload?.prompts) state.prompts = payload.prompts;
+      if (lastSelection) {
+        state.selections[lastSelection.type] = lastSelection.value;
       }
 
       state.loading = false;
-
-      if (lastSelection) {
-        const { type, value } = lastSelection;
-        state.selections[type] = value;
-      }
-
- 
-      localStorage.setItem("active_explore_session", JSON.stringify(state));
+      syncStorage(state); // ✅ Sync selective data
     },
 
     exploreFailure(state, action) {
@@ -62,15 +74,26 @@ const exploreSlice = createSlice({
     jumpToStep(state, action) {
       const targetStep = action.payload;
       state.currentStep = targetStep;
-      if (targetStep === "ROLE") { state.selections.task = ""; state.selections.tools = []; }
-      if (targetStep === "TASK") { state.selections.tools = []; }
-      localStorage.setItem("active_explore_session", JSON.stringify(state));
+      if (targetStep === "ROLE") { 
+        state.selections.task = ""; 
+        state.selections.tools = []; 
+      }
+      if (targetStep === "TASK") { 
+        state.selections.tools = []; 
+      }
+      syncStorage(state);
     },
 
-    resetExplore() {
-      localStorage.removeItem("active_explore_session");
-  
-      return JSON.parse(JSON.stringify(baseInitialState));
+    resetExplore(state) {
+      localStorage.removeItem("exploreSession");
+      // Mutate state instead of returning for consistency
+      state.exploreSessionId = null;
+      state.currentStep = "ROLE";
+      state.selections = { role: "", task: "", tools: [] };
+      state.stepPayload = null;
+      state.prompts = [];
+      state.loading = false;
+      state.error = null;
     },
   },
 
@@ -82,15 +105,8 @@ const exploreSlice = createSlice({
       .addCase(startExploreThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.exploreSessionId = action.payload.sessionId;
-
-        
-        // Sirf tab reset karo agar session bilkul naya ho
-    if (!state.selections.role) {
-        state.currentStep = "ROLE";
-    }
-    
-        
-        localStorage.setItem("active_explore_session", JSON.stringify(state));
+        if (!state.selections.role) state.currentStep = "ROLE";
+        syncStorage(state); // ✅ Fixed hydration on fullfill
       })
       .addCase(startExploreThunk.rejected, (state, action) => {
         state.loading = false;

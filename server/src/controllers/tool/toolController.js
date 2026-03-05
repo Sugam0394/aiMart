@@ -1,16 +1,22 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
+
 import Tool from "../../models/toolModel.js";
-import { getTrendingToolsService , searchToolsService , getToolsByUseCase  , getStackByRole} from "../../services/toolServices.js";
+import { getTrendingToolsService , searchToolsService , getToolsByUseCase } from "../../services/toolServices.js";
 import User from "../../models/userModel.js";
 import ApiError from "../../utils/ApiError.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import { WORKFLOW_CONFIG } from "../../moment/workFlowConfig.js";
+import { groqServices } from '../../explore/services/groqServices.js';
+
+
+ // New: Get Total Live Tools Count for Hero Badge
+export const getToolsCount = asyncHandler(async (req, res) => {
+  const count = await Tool.countDocuments({ status: "live" });
+  return res.status(200).json(
+    new ApiResponse(200, { count }, "Total tools count fetched")
+  );
+});
  
-
-
- 
-
 
 // ✅ New Unified Home Data Controller (Fix 2)
 export const getHomeData = asyncHandler(async (req, res) => {
@@ -426,7 +432,6 @@ export const getRecommendedTools = async (req, res) => {
 
 
  
- 
 // Section - 6: Get Workflow by Role (Optimized with Config and DB)
 export const getWorkflowByRole = async (req, res) => {
   try {
@@ -493,110 +498,44 @@ export const getWorkflowByRole = async (req, res) => {
  
 
  
-// Section - 7: Get AI-Generated Stack (Gemini Integration)
-export const getStack = asyncHandler(async (req, res) => {
-
-
-// Gemini Setup
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
- // ✅ FIXED: Force stable v1 API version
-const model = genAI.getGenerativeModel(
-  { model: 'gemini-1.5-flash' }, 
-  { apiVersion: 'v1' }            
-);
-  
+ 
+ // Section - 7: Get AI-Generated Stack (Groq AI Integration)
+ export const getStack = asyncHandler(async (req, res) => {
   const { role } = req.params;
-  const { requirements } = req.query; // Frontend se ?requirements=... bhejenge
+  const { requirements } = req.query;
+  
+  try {
+    // 1. Context ke liye tools fetch karo
+    const allTools = await Tool.find({ status: 'live' })
+      .select('name slug tagline description primaryCategory logo pricingType avgRating')
+      .limit(40)
+      .lean();
 
-  // 🚀 CASE 1: Agar user ne prompt likha hai toh Gemini use karo
-  if (requirements && requirements.trim().length > 5) {
-    try {
-    
+    // 2. Apni groqService use karo ranking ke liye
+    // Hum 'requirements' ko hi 'task' ki tarah bhej rahe hain
+    const rankedTools = await groqServices.rankToolsForUser(role, requirements, allTools);
 
-      // DB se saare live tools uthao context ke liye
-      const allTools = await Tool.find({ status: 'live' }).select('name slug description primaryCategory');
-      
-      const toolContext = allTools.map(t => 
-        `Name: ${t.name}, Slug: ${t.slug}, Category: ${t.primaryCategory}, Desc: ${t.description}`
-      ).join("\n");
+    // 3. Response format maintain rakhein jo frontend expect kar raha hai
+    const finalStack = {
+      role,
+      isAiGenerated: true,
+      headline: requirements ? `Personalized ${role} Stack` : `Top AI Tools for ${role}s`,
+      subline: requirements ? `AI-curated for: ${requirements}` : `Handpicked workflow to boost your productivity`,
+      tools: rankedTools.map(t => ({
+        reason: t.aiReason || "Highly recommended for your workflow",
+        emoji: "🚀", // Default emoji
+        tool: t // Poora tool object
+      })).slice(0, 6) // Max 6 tools
+    };
 
-      const prompt = `You are a tech stack expert. User is a ${role}. 
-      User specific needs: "${requirements}".
-      
-      From the list below, pick exactly 4 tools that best solve these needs.
-      Tools List:
-      ${toolContext}
+    return res.status(200).json(
+      new ApiResponse(200, finalStack, "AI Stack Generated via Groq Service")
+    );
 
-      Return ONLY a JSON object (no markdown):
-      {
-        "headline": "Personalized ${role} Stack",
-        "subline": "AI-curated tools based on: ${requirements}",
-        "tools": [
-          { "category": "Specific Reason", "emoji": "✨", "label": "Action", "toolSlug": "slug" }
-        ]
-      }`;
-
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text().replace(/```json|```/g, "").trim();
-      const aiData = JSON.parse(text);
-
-      // AI dwara select kiye gaye slugs ka full data fetch karo
-      const slugs = aiData.tools.map(t => t.toolSlug);
-      const toolsFromDB = await Tool.find({ slug: { $in: slugs } }).lean();
-      
-      const toolMap = {};
-      toolsFromDB.forEach(t => { toolMap[t.slug] = t; });
-
-      const finalStack = {
-        role,
-        isAiGenerated: true,
-        headline: aiData.headline,
-        subline: aiData.subline,
-        tools: aiData.tools.map(item => ({
-          category: item.category,
-          emoji: item.emoji,
-          label: item.label,
-          tool: toolMap[item.toolSlug]
-        })).filter(t => t.tool),
-        totalTools: slugs.length
-      };
-
-      return res.status(200).json(new ApiResponse(200, finalStack, "AI Stack Generated"));
-
-    } catch (error) {
-    console.error("🔴 Gemini/Database Error Details:", error);
-      // 🚀 ERROR HANDLING UPGRADE: Details ko res mein bhejo
-      const errorMsg = error.message || "Unknown error occurred";
-      const errorStack = error.stack || "";
-      
-      // Optional: Agar API issue hai toh AI specific error message
-      const isApiError = error.message && error.message.includes("API");
-
-      return res.status(500).json(
-        new ApiResponse(
-          500, 
-          { 
-            error: errorMsg, 
-            details: isApiError ? "Check Gemini API Key or Limits" : "Check Tool Slugs in DB"
-          }, 
-          "AI Generation Failed - Falling back to static"
-        )
-      );
-    }
+  } catch (error) {
+    console.error("🔴 Groq Service Error in Controller:", error);
+    return res.status(500).json(new ApiResponse(500, null, "AI Generation Failed"));
   }
-
-  // 🚀 CASE 2: Default Static Logic (Static config se uthao)
-  const validRoles = ['founder', 'marketer', 'creator', 'designer', 'developer', 'freelancer', 'student'];
-  if (!validRoles.includes(role)) {
-    throw new ApiError(400, 'Invalid role');
-  }
-
-  const stack = await getStackByRole(role);
-  if (!stack) throw new ApiError(404, 'Stack not found');
-
-  return res.status(200).json(new ApiResponse(200, stack, 'Static Stack fetched'));
 });
 
   

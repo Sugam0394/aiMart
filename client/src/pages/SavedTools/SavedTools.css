@@ -7,7 +7,7 @@
   padding-bottom: 80px;
 }
 
-/* --- Hero Section --- */
+/* --- Hero Section --- */ 
 .saved-hero {
   background: var(--bg-card);
   padding: 80px 20px;
@@ -128,4 +128,31 @@
   .saved-hero { padding: 40px 16px; }
   .workspace-prompts-grid { grid-template-columns: 1fr; }
   .premium-grid { grid-template-columns: 1fr; }
+}
+
+/* --- Add-on for Workspace Delete Action --- */
+.delete-prompt-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444; /* Red color for delete */
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+.delete-prompt-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.wp-tool-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }

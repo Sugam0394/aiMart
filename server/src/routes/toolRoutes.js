@@ -5,6 +5,7 @@ import { getTrendingTools , getToolsByUseCaseController, getAvailableUseCases , 
 import { getHomeData } from '../controllers/tool/toolController.js'
 import { getWorkflowByRole } from '../controllers/tool/toolController.js';
  import { getStack } from '../controllers/tool/toolController.js';
+ import { getToolsCount} from '../controllers/tool/toolController.js';
 
 const router = express.Router();
 
@@ -33,6 +34,8 @@ router.get('/home-data' , cacheMiddleware , getHomeData)
 router.get('/workflow/:role' , cacheMiddleware , getWorkflowByRole)
 
 router.get('/stack/:role' , cacheMiddleware , getStack)
+
+router.get('/count' , cacheMiddleware , getToolsCount)
  
 
 

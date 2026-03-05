@@ -85,9 +85,42 @@ const getMyToolOwnerRequest = asyncHandler(async (req, res) => {
   );
 });
 
+// 1. Save Prompt to DB
+const savePrompt = asyncHandler(async (req, res) => {
+    const { role, task, content } = req.body;
+
+    if (!content) {
+        throw new ApiError(400, "Prompt content is required");
+    }
+
+    const user = await User.findById(req.user._id);
+    
+    // Check if already saved (optional)
+    const isDuplicate = user.savedPrompts.find(p => p.content === content);
+    if (isDuplicate) {
+        return res.status(200).json(new ApiResponse(200, user.savedPrompts, "Prompt already in workspace"));
+    }
+
+    user.savedPrompts.push({ role, task, content });
+    await user.save();
+
+    res.status(200).json(new ApiResponse(200, user.savedPrompts, "Prompt saved successfully"));
+});
+
+// 2. Remove Prompt from DB
+ const removePrompt = asyncHandler(async (req, res) => {
+    const { promptId } = req.params;
+    
+    const user = await User.findById(req.user._id);
+    user.savedPrompts = user.savedPrompts.filter(p => p._id.toString() !== promptId);
+    await user.save();
+
+    res.status(200).json(new ApiResponse(200, user.savedPrompts, "Prompt removed from workspace"));
+});
+
 
 export {
 
- requestToolOwner, getMyToolOwnerRequest
+ requestToolOwner, getMyToolOwnerRequest , savePrompt , removePrompt
 
 }

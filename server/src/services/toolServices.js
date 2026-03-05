@@ -159,49 +159,7 @@ if (!useCaseKey) return [];
   return tools;
 };
 
-
-// section - 4: Get Stack By Role Service (New Feature for Founder, Marketer, Creator, Designer, Developer Stacks
-export const getStackByRole = async (role) => {
-  const config = STACK_CONFIG[role];
-  if (!config) return null;
-
-  // 1. Config se saare tool slugs ki array nikalo
-  const slugs = config.tools.map(t => t.toolSlug);
-
-  // 2. Database se sirf woh tools fetch karo jo config mein hain
-  // Optimization: Sirf zaroori fields hi select kar rahe hain
-  const toolsFromDB = await Tool.find({
-    slug: { $in: slugs },
-    status: 'live' // Sirf live tools dikhao
-  })
-  .select('name slug logo tagline primaryCategory pricingType avgRating')
-  .lean();
-
-  // 3. Fast lookup ke liye ek Map (object) banao
-  const toolMap = {};
-  toolsFromDB.forEach(t => { 
-    toolMap[t.slug] = t; 
-  });
-
-  // 4. Config ke order ke hisaab se data assemble karo
-  // Agar koi tool DB mein nahi milta, toh filter out ho jayega
-  const stackTools = config.tools
-    .map(item => ({
-      category: item.category,
-      emoji: item.emoji,
-      label: item.label,
-      tool: toolMap[item.toolSlug] || null
-    }))
-    .filter(item => item.tool !== null); 
-
-  return {
-    role,
-    headline: config.headline,
-    subline: config.subline,
-    tools: stackTools,
-    totalTools: stackTools.length,
-  };
-};
+ 
 
 
 

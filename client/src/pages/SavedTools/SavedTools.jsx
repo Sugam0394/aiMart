@@ -1,13 +1,13 @@
- import React, { useEffect } from 'react';
+  import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle , Zap } from 'lucide-react';
+import { CheckCircle, Zap } from 'lucide-react';
 
 // Thunks & Actions
 import { submitExploreStepThunk, startExploreThunk } from '../../app/exploreFeatures/exploreThunks';
 import { resetExplore } from '../../app/exploreFeatures/exploreSlice';
 import { selectExploreSessionId, selectExploreLoading } from '../../app/exploreFeatures/exploreSelectors';
-import { fetchSavedTools } from '../../app/features/SavedSlice';
+import { fetchSavedTools, fetchSavedPrompts } from '../../app/features/SavedSlice';
 import SkeletonLoader from '../../components/SkeletonLoader/SkeletonLoader';
 
 // Components
@@ -21,24 +21,31 @@ const SavedTools = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  const { items, status: savedStatus } = useSelector((state) => state.saved);
-  const { prompts, selections } = useSelector((state) => state.explore);
+  // ✅ 1. Get both DB items (Permanent) and Explore items (Temporary)
+  const { items, dbPrompts, status: savedStatus } = useSelector((state) => state.saved);
+  const { prompts: explorePrompts, selections } = useSelector((state) => state.explore);
+  
   const sessionId = useSelector(selectExploreSessionId);
   const isExploring = useSelector(selectExploreLoading);
 
   useEffect(() => {
-    // 1. Sync Inventory (Nav Fix: Bina refresh ke data fetch)
+    // 2. Sync Inventory & Permanent Prompts from DB
     dispatch(fetchSavedTools());
+    dispatch(fetchSavedPrompts()); // ✅ DB se data mangwane ke liye
 
-    // 2. Sync Prompts (Refresh Fix: Session restore)
-    if (sessionId && prompts.length === 0) {
+    // 3. Sync Temporary Prompts (Explore session restore)
+    if (sessionId && explorePrompts.length === 0) {
       dispatch(submitExploreStepThunk({
         sessionId,
         currentStep: "RESULTS",
         stepData: {},
       }));
     }
-  }, [dispatch, sessionId, prompts.length]);
+  }, [dispatch, sessionId, explorePrompts.length]);
+
+  // ✅ 4. Combine both lists (Explore results + DB results)
+  // Taaki save button dabane ke baad data "dbPrompts" se load ho sake
+  const allPrompts = [...dbPrompts, ...explorePrompts];
 
   const handleExploreMore = () => {
     dispatch(resetExplore());
@@ -46,12 +53,11 @@ const SavedTools = () => {
     navigate('/explore');
   };
 
- const copyToClipboard = (text) => {
+  const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    // Custom toast logic here if needed
   };
 
- // Skeleton UI instead of boring spinner
+  // Skeleton UI for loading states
   if (savedStatus === 'loading' || isExploring) {
     return <SkeletonLoader />;
   }
@@ -72,22 +78,22 @@ const SavedTools = () => {
       </header>
 
       <main className="saved-container">
-        {/* Section 1: Tools Grid */}
+        {/* Section 1: Tools Grid (Inventory) */}
         <InventorySection 
           items={items} 
           onExploreMore={handleExploreMore} 
         />
 
-        {/* Dynamic Separator */}
-        {prompts.length > 0 && (
+        {/* Dynamic Separator: Trigger if either DB or Explore has prompts */}
+        {allPrompts.length > 0 && (
           <div className="workspace-separator">
             <span>AI Command Center</span>
           </div>
         )}
 
-        {/* Section 2: AI Prompts */}
+        {/* Section 2: AI Prompts (Passing the merged "allPrompts" list) */}
         <WorkspaceSection 
-          prompts={prompts} 
+          prompts={allPrompts} 
           onCopy={copyToClipboard} 
         />
       </main>

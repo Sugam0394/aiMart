@@ -141,3 +141,31 @@
     padding: 16px;
   }
 }
+
+/* --- Add-on for WorkspaceSection.css --- */
+
+.delete-prompt-btn {
+  background: transparent;
+  border: none;
+  color: #ff4d4f;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.delete-prompt-btn:hover {
+  background: rgba(255, 77, 79, 0.1);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.section-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}

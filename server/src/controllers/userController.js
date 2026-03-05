@@ -2,6 +2,9 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 import ToolOwnerRequest from "../models/toolFormModel.js";
+import User from "../models/userModel.js";
+import Tool from "../models/toolModel.js";
+ 
  
 
 
@@ -107,6 +110,25 @@ const savePrompt = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, user.savedPrompts, "Prompt saved successfully"));
 });
 
+ 
+// 3. Get Saved Prompts from DB
+const getSavedPrompts = asyncHandler(async (req, res) => {
+    // User ko find karo login ID se
+    const user = await User.findById(req.user._id);
+    
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    // Saved prompts return karo
+    res.status(200).json(
+        new ApiResponse(200, user.savedPrompts, "Fetched saved prompts successfully")
+    );
+});
+
+ 
+ 
+
 // 2. Remove Prompt from DB
  const removePrompt = asyncHandler(async (req, res) => {
     const { promptId } = req.params;
@@ -121,6 +143,6 @@ const savePrompt = asyncHandler(async (req, res) => {
 
 export {
 
- requestToolOwner, getMyToolOwnerRequest , savePrompt , removePrompt
+ requestToolOwner, getMyToolOwnerRequest , savePrompt , removePrompt , getSavedPrompts
 
 }

@@ -37,12 +37,7 @@ function ToolCard({ tool }) {
   return (
     <div className="tool-card" onClick={() => navigate(`/tools/${tool._id}`)}>
       <div className="tool-card-image">
-        {/* ✨ NEW: AI BADGE ON IMAGE */}
-        {tool.aiReason && (
-          <div className="ai-badge-floating">
-            <span className="ai-sparkle">✨</span> AI RECOMMENDED
-          </div>
-        )}
+       
 
         {shouldShowFallback ? (
           <div className="tool-gradient-placeholder" style={{ background: getGradient() }}>

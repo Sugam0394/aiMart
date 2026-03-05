@@ -78,20 +78,13 @@ const SavedTools = () => {
       </header>
 
       <main className="saved-container">
-        {/* Section 1: Tools Grid (Inventory) */}
+        {/* Section 1: Tools Grid */}
         <InventorySection 
           items={items} 
           onExploreMore={handleExploreMore} 
         />
 
-        {/* Dynamic Separator: Trigger if either DB or Explore has prompts */}
-        {allPrompts.length > 0 && (
-          <div className="workspace-separator">
-            <span>AI Command Center</span>
-          </div>
-        )}
-
-        {/* Section 2: AI Prompts (Passing the merged "allPrompts" list) */}
+       
         <WorkspaceSection 
           prompts={allPrompts} 
           onCopy={copyToClipboard} 

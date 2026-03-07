@@ -1,10 +1,12 @@
  import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { useSelector } from "react-redux";
  
 
 // Styles
 import "./App.css"
 import './styles/mobile-optimization.css';
+import './styles/animations.css';
 
 
  
@@ -48,18 +50,38 @@ const FounderSettings = lazy(() => import("./pages/founder/settings/FounderSetti
 const UserSettings = lazy(() => import("./pages/user/settings/UserSettings.jsx"));
 
  
+ 
+
+
+ // ✅ SplashScreen Component using your CSS classes
+
+const SplashScreen = () => {
+  const cachedUser = JSON.parse(localStorage.getItem("user") || "null");
+  return (
+    <div className="splash-container">
+      {cachedUser?.name && (
+        <p className="splash-greeting">
+          Welcome back, {cachedUser.name.split(" ")[0]} 👋
+        </p>
+      )}
+      <h1 className="splash-logo">aiMart</h1>
+      <div className="splash-spinner"></div>
+    </div>
+  );
+};
 
 function App() {
-  
- 
- 
 
+  const isInitialized = useSelector((state) => state.auth.isInitialized);
   return (
     <ErrorBoundary>
     <BrowserRouter>
       {/* 🛠️ background mein session check karega bina app ko block kiye */}
       <AppInitializer />
-
+    {/* ✅ Logic: If not initialized, show Splash. Once done, show Routes. */}
+        {!isInitialized ? (
+          <SplashScreen />
+        ) : (
       <Suspense fallback={<SkeletonLoader />}>
         <Routes>
           {/* 🌍 1. PUBLIC ROUTES (Instant access for Guests) */}
@@ -119,6 +141,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
+        )}
     </BrowserRouter>
     </ErrorBoundary>
   );

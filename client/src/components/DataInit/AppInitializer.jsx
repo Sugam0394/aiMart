@@ -10,12 +10,10 @@ const AppInitializer = () => {
   const dispatch = useDispatch();
   const hasInitialized = useRef(false);
   const refreshTimeoutRef = useRef(null);
-  
-  // ✅ Create a ref to hold the function to solve the "access before declaration" issue
   const refreshFunctionRef = useRef(null);
 
   const scheduleProactiveRefresh = useCallback(() => {
-    // Clear previous timer
+  
     if (refreshTimeoutRef.current) {
       clearTimeout(refreshTimeoutRef.current);
     }
@@ -57,7 +55,7 @@ const AppInitializer = () => {
     refreshFunctionRef.current = scheduleProactiveRefresh;
   }, [scheduleProactiveRefresh]);
 
-  // ✅ CLEANUP on Unmount
+ 
   useEffect(() => {
     return () => {
       if (refreshTimeoutRef.current) {
@@ -109,12 +107,11 @@ const AppInitializer = () => {
         }
       } catch (error) {
         console.error("🔴 Auth Sync Failed:", error);
-        if (!getAccessToken()) {
-          dispatch(logout());
+        } finally {
+         
+        dispatch(setInitialized());
         }
       }
-    };
-
     initializeApp();
   }, [dispatch, scheduleProactiveRefresh]); 
 

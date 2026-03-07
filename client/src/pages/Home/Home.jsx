@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchHomeData } from '../../app/features/MomentSlice'; // Adjust paths as per your project
+import { fetchHomeData } from '../../app/features/MomentSlice';
 import { fetchWorkflow } from '../../app/features/workFlowSlice';
 import { fetchToolsCount } from '../../app/features/stackSlice';
 import SearchSection from './SearchSection/SearchSection';
@@ -9,7 +9,7 @@ import AiStackSection from './aiStackSection/AiStackSection';
  
  
 import UseCaseSwitcher from './useCasedSection/components/UseCaseSwitcher';
- import UseCaseSection from './useCasedSection/UseCasedSection';
+import UseCaseSection from './useCasedSection/UseCasedSection';
 import TrendingForYouSection from './TrendingSection/TrendingForYou';
 import RisingToolsSection from './RisingTool/RisingToolSection';
  

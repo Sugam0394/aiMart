@@ -82,7 +82,7 @@ const AppInitializer = () => {
           console.log(`⚠️ Backend wake-up attempt ${i + 1} failed.` , err);
           if (i === 0) toast.loading("Server is warming up...", { id: "warmup" });
         }
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 5000));
       }
       toast.error("Server unreachable.", { id: "warmup" });
       return false;

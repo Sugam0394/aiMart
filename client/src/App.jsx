@@ -64,7 +64,7 @@ const SplashScreen = () => {
           Welcome back, {cachedUser.name.split(" ")[0]} 👋
         </p>
       )}
-      <h1 className="splash-logo">aiMart</h1>
+      <h1 className="splash-logo">AIMart</h1>
       <div className="splash-spinner"></div>
     </div>
   );

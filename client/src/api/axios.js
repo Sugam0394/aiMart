@@ -92,12 +92,13 @@ const processQueue = (error, token = null) => {
         clearAccessToken();
         localStorage.removeItem("user");
 
-        // 2. ✅ FIX: Redux store ko directly update karo taaki UI turant update ho
-        import('../App/store').then(({ default: store }) => {
-          store.dispatch({ type: 'auth/logout' }); 
-        });
+   
+        import('../app/store').then(({ default: store }) => {
+          if (store && store.dispatch) {
+            store.dispatch({ type: 'auth/logout' }); 
+          }
+        }).catch(e => console.error("Store import failed:", e));
         
-        // Notify components/Redux to logout
         window.dispatchEvent(new CustomEvent('tokenExpired'));
         
         return Promise.reject(err);

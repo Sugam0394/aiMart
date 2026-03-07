@@ -69,7 +69,7 @@ const AppInitializer = () => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
-    const wakeUpBackend = async (retries = 5) => {
+    const wakeUpBackend = async (retries = 10) => {
       for (let i = 0; i < retries; i++) {
         try {
           const res = await fetch(`${import.meta.env.VITE_API_URL}/health`);
@@ -89,15 +89,24 @@ const AppInitializer = () => {
     };
 
     const initializeApp = async () => {
-      await wakeUpBackend();
+   
+      const backendReady = await wakeUpBackend();
       toast.dismiss("warmup");
+
+      if (!backendReady) {
+        dispatch(setInitialized());
+        return;
+      }
+
+
+
 
       if (!getAccessToken()) {
         dispatch(setInitialized());
         return;
       }
 
-      dispatch(setInitialized());
+     { /* dispatch(setInitialized()); */ }
 
       try {
         const userData = await dispatch(syncUserRole()).unwrap();
@@ -109,7 +118,7 @@ const AppInitializer = () => {
         console.error("🔴 Auth Sync Failed:", error);
         } finally {
          
-        dispatch(setInitialized());
+      { /* dispatch(setInitialized()); */ }
         }
       }
     initializeApp();

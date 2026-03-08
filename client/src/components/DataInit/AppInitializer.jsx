@@ -35,6 +35,7 @@ const AppInitializer = () => {
         if (newToken) {
           setAccessToken(newToken);
           console.log("✅ Proactive refresh success");
+          scheduleProactiveRefresh();
           
           // ✅ Use the ref to call the function recursively
           if (refreshFunctionRef.current) {
@@ -80,7 +81,7 @@ const AppInitializer = () => {
         } catch (err) {
 
           console.log(`⚠️ Backend wake-up attempt ${i + 1} failed.` , err);
-          if (i === 0) toast.loading("Server is warming up...", { id: "warmup" });
+          if (i === 0) toast.loading("", { id: "warmup" });
         }
         await new Promise(resolve => setTimeout(resolve, 5000));
       }
@@ -118,7 +119,7 @@ const AppInitializer = () => {
         console.error("🔴 Auth Sync Failed:", error);
         } finally {
          
-      { /* dispatch(setInitialized()); */ }
+     dispatch(setInitialized()); 
         }
       }
     initializeApp();

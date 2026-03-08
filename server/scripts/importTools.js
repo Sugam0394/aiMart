@@ -20,6 +20,10 @@ const importData = async () => {
       fs.readFileSync("./scripts/toolsData.json", "utf-8")
     );
 
+    if (!tools || tools.length === 0) {
+      throw new Error("JSON file is empty or not found!");
+    }
+
     const adminId = "695bc902b7845f99ecd1ad14";
 
     // ✅ SIMPLIFIED: Just map directly, useCases already in JSON

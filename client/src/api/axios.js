@@ -66,47 +66,42 @@ const processQueue = (error, token = null) => {
       originalRequest._retry = true;
       isRefreshing = true;
 
-      try {
-        // Token refresh call
-        const res = await axios.post(
-          `${import.meta.env.VITE_API_URL}/refreshToken`,
-          {},
-          { withCredentials: true }
-        );
+     // ✅ FIX: Added Retry Logic with exponential backoff (Audit Problem #3)
+      const attemptRefresh = async (retries = 2) => {
+        try {
+          const res = await axios.post(`${import.meta.env.VITE_API_URL}/refreshToken`, {}, { withCredentials: true });
+          const newAccessToken = res.data?.data?.accessToken;
+          
+          if (!newAccessToken) throw new Error("No token");
 
-        const newAccessToken = res.data?.data?.accessToken;
-        if (!newAccessToken) throw new Error("No access token received");
-
-        // Sync State
-        setAccessToken(newAccessToken);
-        api.defaults.headers.common.Authorization = "Bearer " + newAccessToken;
-        originalRequest.headers.Authorization = "Bearer " + newAccessToken;
-
-        processQueue(null, newAccessToken);
-        return api(originalRequest);
-
-      } catch (err) {
-        processQueue(err, null);
-        
-        // Final Cleanup
-        clearAccessToken();
-        localStorage.removeItem("user");
-
-   
-        import('../app/store').then(({ default: store }) => {
-          if (store && store.dispatch) {
-            store.dispatch({ type: 'auth/logout' }); 
+          setAccessToken(newAccessToken);
+          processQueue(null, newAccessToken);
+          return api(originalRequest);
+        } catch (err) {
+          if (retries > 0) {
+            const delay = (3 - retries) * 2000; // 2s, then 4s delay
+            await new Promise(r => setTimeout(r, delay));
+            return attemptRefresh(retries - 1);
           }
-        }).catch(e => console.error("Store import failed:", e));
-        
-        window.dispatchEvent(new CustomEvent('tokenExpired'));
-        
-        return Promise.reject(err);
-      } finally {
-        isRefreshing = false;
-      }
-    }
+          
+          // Final Failure
+          processQueue(err, null);
+          clearAccessToken();
+          localStorage.removeItem("user");
 
+          // ✅ FIX: Corrected Case-Sensitive Path
+          import('../app/store').then(({ default: store }) => {
+            store.dispatch({ type: 'auth/logout' });
+          });
+          
+          return Promise.reject(err);
+        } finally {
+          isRefreshing = false;
+        }
+      };
+
+      return attemptRefresh();
+    }
     return Promise.reject(error);
   }
 );

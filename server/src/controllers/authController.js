@@ -12,10 +12,12 @@ const getCookieOptions = () => {
   return {
     httpOnly: true,
     secure: isProduction,  // TRUE on Render/Production
-    sameSite: isProduction ? 'none' : 'lax',
-    path: '/'
+    sameSite: 'none',
+      path: '/'
   };
 };
+
+  {  /* sameSite: isProduction ? 'none' : 'lax', */ } // Optional: Adjust sameSite based on environment
 
   const googleLogin = asyncHandler(async (req, res) => {
   const { idToken } = req.body;

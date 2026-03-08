@@ -10,7 +10,7 @@ const AppInitializer = () => {
   const dispatch = useDispatch();
   const hasInitialized = useRef(false);
   const refreshTimeoutRef = useRef(null);
-  const refreshFunctionRef = useRef(null);
+ 
 
   const scheduleProactiveRefresh = useCallback(() => {
   
@@ -34,13 +34,9 @@ const AppInitializer = () => {
         const newToken = res.data?.data?.accessToken;
         if (newToken) {
           setAccessToken(newToken);
-          console.log("✅ Proactive refresh success");
-          scheduleProactiveRefresh();
           
-          // ✅ Use the ref to call the function recursively
-          if (refreshFunctionRef.current) {
-            refreshFunctionRef.current();
-          }
+          scheduleProactiveRefresh();
+          console.log("✅ Proactive refresh successful, next refresh scheduled.");
         }
       } catch (e) {
         console.error('❌ Proactive refresh failed:', e);
@@ -51,10 +47,7 @@ const AppInitializer = () => {
     }, THIRTEEN_MINUTES);
   }, [dispatch]);
 
-  // ✅ Update the ref whenever the function changes
-  useEffect(() => {
-    refreshFunctionRef.current = scheduleProactiveRefresh;
-  }, [scheduleProactiveRefresh]);
+ 
 
  
   useEffect(() => {
@@ -92,7 +85,7 @@ const AppInitializer = () => {
     const initializeApp = async () => {
    
       const backendReady = await wakeUpBackend();
-      toast.dismiss("warmup");
+     
 
       if (!backendReady) {
         dispatch(setInitialized());

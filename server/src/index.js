@@ -4,8 +4,7 @@ import app from './app.js';
 import ConnectDB from './db/index.js';
 
  
-const startSelfPing = (port) => {
-   
+ const startSelfPing = (port) => {
   const isLocal = process.env.NODE_ENV !== 'production' || !process.env.RENDER_EXTERNAL_URL;
   if (isLocal) {
     console.log('ℹ️ Self-ping skipped: Running in local environment');
@@ -18,20 +17,40 @@ const startSelfPing = (port) => {
     return;
   }
 
-  const PING_INTERVAL = 14 * 60 * 1000; // 14 minutes
+  // ✅ FIXED: Changed to 8 minutes to stay ahead of Render's 15-minute spin-down
+  const PING_INTERVAL = 8 * 60 * 1000; 
 
-  setInterval(async () => {
+  const performPing = async () => {
     try {
-      const res = await fetch(`${RENDER_URL}/api/health`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+      
+      const res = await fetch(`${RENDER_URL}/api/health`, {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
       if (res.ok) {
         console.log(`✅ Self-ping success [${new Date().toISOString()}]`);
+      } else {
+        console.warn(`⚠️ Self-ping returned status ${res.status}`);
       }
     } catch (err) {
       console.error('❌ Self-ping failed:', err.message);
     }
-  }, PING_INTERVAL);
+  };
 
-  console.log(`🏓 Self-ping started (every 14 min) → ${RENDER_URL}/api/health`);
+  // ✅ Initial ping 5 seconds after server starts
+  setTimeout(performPing, 5000);
+
+  // ✅ Recurring ping every 8 minutes
+  const pingInterval = setInterval(performPing, PING_INTERVAL);
+
+  console.log(`🏓 Self-ping started: Interval: 8 minutes, Target: ${RENDER_URL}/api/health`);
+
+  // ✅ Cleanup on process exit
+  process.on('SIGTERM', () => clearInterval(pingInterval));
 };
 
 const startServer = async () => {

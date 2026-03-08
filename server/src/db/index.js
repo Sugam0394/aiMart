@@ -2,20 +2,32 @@ import mongoose from 'mongoose'
 import { DB_NAME } from '../constant.js'
 
 
- const ConnectDB = async() => {
+ const ConnectDB = async () => {
     try {
-        // Option 2 use karo, lekin options object mein dbName daal do 
-        // Ye sabse safe method hai, URL mein kuch bhi ho, ye database name ko override kar dega.
-        const connectionInstance = await mongoose.connect(process.env.MONGODB_URL, {
-            dbName: DB_NAME, // 👈 Ye 'SugamSingh' folder hi target karega
-        });
+        // ✅ Connection Pooling options add kiye hain
+        const connectionOptions = {
+            dbName: DB_NAME,
+            maxPoolSize: 10, // Ek saath 10 connections rakhega (fast response)
+            minPoolSize: 2,  // Hamesha 2 connection ready rakhega (no cold start)
+            serverSelectionTimeoutMS: 5000, // 5s mein fail hona better hai bajaye hang hone ke
+            socketTimeoutMS: 45000,
+        };
 
-        console.log(`✅ MongoDB Connected: || DB:HOST: ${connectionInstance.connection.host}`);
-        console.log(`📂 Connected to Database: ${connectionInstance.connection.name}`); 
+        const connectionInstance = await mongoose.connect(
+            `${process.env.MONGODB_URL}`, 
+            connectionOptions
+        );
+
+        console.log(`✅ MongoDB Connected: ${connectionInstance.connection.host}`);
+        
+        // ✅ DB Events listener (Server jaagne par logs dikhengi)
+        mongoose.connection.on('connected', () => console.log('📂 MongoDB event connected'));
+        mongoose.connection.on('error', (err) => console.error('❌ MongoDB event error:', err));
+        
     } catch (error) {
         console.error('❌ MongoDB connection failed:', error.message);
         process.exit(1); 
     }
-}
+};
 
 export default ConnectDB

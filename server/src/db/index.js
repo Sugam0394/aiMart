@@ -1,3 +1,9 @@
+ import dns from 'dns'
+
+// Force Google's DNS resolvers so mongodb+srv:// SRV lookups
+// don't fail/hang on ISPs or networks with unreliable default DNS.
+dns.setServers(["8.8.8.8", "8.8.4.4"])
+
 import mongoose from 'mongoose'
 import { DB_NAME } from '../constant.js'
 
